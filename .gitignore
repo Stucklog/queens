@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Retired local v1 generator prototype; the shared Dart generator replaces it.
+/puzzle_generator/
