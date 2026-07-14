@@ -62,6 +62,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   final RuleEngine ruleEngine;
   final HumanSolver humanSolver;
   late final SharedPreferences _preferences;
+  late final String _catalogFingerprint;
   PuzzleCatalog? catalog;
   PuzzleDefinition? tutorialPuzzle;
   AppSettings settings = const AppSettings();
@@ -82,6 +83,8 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
       'assets/puzzles/tutorial.json',
     );
     catalog = PuzzleCatalog.fromJsonString(source);
+    _catalogFingerprint =
+        '${catalog!.schemaVersion}:${catalog!.puzzles.map((puzzle) => puzzle.contentHash).join(',')}';
     tutorialPuzzle = PuzzleDefinition.fromJson(
       jsonDecode(tutorialSource) as Map<String, Object?>,
     );
@@ -91,6 +94,21 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         const AppSettings();
     tutorialComplete =
         _preferences.getBool('regalia.tutorialComplete') ?? false;
+    if (_preferences.getString('regalia.catalogFingerprint') !=
+        _catalogFingerprint) {
+      // Puzzle IDs stay stable between curated releases. Discard attempt data
+      // when their underlying boards change so marks and completions cannot be
+      // applied to a different puzzle.
+      await Future.wait([
+        _preferences.remove('regalia.boards'),
+        _preferences.remove('regalia.records'),
+        _preferences.remove('regalia.lastPuzzle'),
+        _preferences.setString(
+          'regalia.catalogFingerprint',
+          _catalogFingerprint,
+        ),
+      ]);
+    }
     final puzzleSizes = {
       for (final puzzle in catalog!.puzzles) puzzle.id: puzzle.size,
     };
@@ -243,6 +261,17 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     return completed;
   }
 
+  void beginCellBatch(PuzzleDefinition puzzle) {
+    boardFor(puzzle).beginBatch();
+  }
+
+  void endCellBatch(PuzzleDefinition puzzle) {
+    if (boardFor(puzzle).endBatch()) {
+      unawaited(_save());
+      notifyListeners();
+    }
+  }
+
   bool _recordCompletionIfNeeded(PuzzleDefinition puzzle, BoardState board) {
     if (!ruleEngine.isComplete(puzzle, board)) return false;
     records[puzzle.id] = recordFor(
@@ -352,6 +381,10 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     _saveChain = _saveChain.then(
       (_) => Future.wait([
         _preferences.setString('regalia.settings', settingsJson),
+        _preferences.setString(
+          'regalia.catalogFingerprint',
+          _catalogFingerprint,
+        ),
         _preferences.setString('regalia.boards', boardsJson),
         _preferences.setString('regalia.records', recordsJson),
         if (latestPuzzle != null)

@@ -51,7 +51,7 @@ class RegaliaApp extends StatelessWidget {
     animation: controller,
     builder:
         (context, _) => MaterialApp(
-          title: 'Regalia',
+          title: "Queen's Regalia",
           debugShowCheckedModeBanner: false,
           theme: RegaliaTheme.light(),
           darkTheme: RegaliaTheme.dark(),
@@ -99,7 +99,9 @@ class _StartupError extends StatelessWidget {
           children: [
             const Icon(Icons.error_outline, size: 48),
             const SizedBox(height: 16),
-            const Text('Regalia could not open its bundled puzzle catalog.'),
+            const Text(
+              "Queen's Regalia could not open its bundled puzzle catalog.",
+            ),
             const SizedBox(height: 8),
             Text('$error', textAlign: TextAlign.center),
           ],

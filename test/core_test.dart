@@ -261,10 +261,23 @@ void main() {
                 as Map<String, Object?>;
         final entries = report['puzzles']! as List<Object?>;
         expect(entries, hasLength(120));
+        final solutionLayouts = <String>{};
         for (final raw in entries) {
           final entry = raw! as Map<String, Object?>;
           final puzzle = catalog.byId(entry['id']! as String);
-          expect(entry['solution']! as List<Object?>, hasLength(puzzle.size));
+          final solution = entry['solution']! as List<Object?>;
+          expect(solution, hasLength(puzzle.size));
+          final columnsByRow = List.filled(puzzle.size, -1);
+          for (final rawCell in solution) {
+            final cell = rawCell! as Map<String, Object?>;
+            columnsByRow[(cell['row']! as num).toInt()] =
+                (cell['column']! as num).toInt();
+          }
+          expect(
+            solutionLayouts.add('${puzzle.size}:${columnsByRow.join(',')}'),
+            isTrue,
+            reason: '${puzzle.id} repeats a crown layout',
+          );
           final human = entry['human']! as Map<String, Object?>;
           expect(human['deductions']! as List<Object?>, isNotEmpty);
           final score = entry['generationScore']! as Map<String, Object?>;

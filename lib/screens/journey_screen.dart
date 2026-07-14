@@ -48,8 +48,12 @@ class JourneyScreen extends StatelessWidget {
             CrownMark(size: 30),
             SizedBox(width: 10),
             Text(
-              'REGALIA',
-              style: TextStyle(letterSpacing: 3, fontWeight: FontWeight.w700),
+              "QUEEN'S\nREGALIA",
+              style: TextStyle(
+                height: .9,
+                letterSpacing: 1.5,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ],
         ),

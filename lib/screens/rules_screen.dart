@@ -44,7 +44,7 @@ class RulesScreen extends StatelessWidget {
           icon: Icons.touch_app_outlined,
           title: 'Mark your thinking',
           body:
-              'Tap a cell to cycle empty → X → crown → empty. Soft dots are automatic exclusions and do not count as assistance.',
+              'Tap a cell to cycle empty → X → crown → empty, or drag across cells to mark them X. Soft dots are automatic exclusions and do not count as assistance.',
         ),
       ],
     ),

@@ -15,7 +15,7 @@ void main() {
     await tester.runAsync(controller.initialize);
     await tester.pumpWidget(RegaliaApp(controller: controller));
     await tester.pump();
-    expect(find.text('Welcome to Regalia'), findsOneWidget);
+    expect(find.text("Welcome to Queen's Regalia"), findsOneWidget);
 
     await tester.tap(find.text('Skip'));
     await tester.pump(const Duration(milliseconds: 100));

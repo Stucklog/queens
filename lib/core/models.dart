@@ -290,16 +290,30 @@ class BoardState {
   bool assisted;
   final List<BoardSnapshot> undoStack = [];
   final List<BoardSnapshot> redoStack = [];
+  BoardSnapshot? _batchStart;
 
   ManualCellState at(Cell cell) => cells[cell.index(size)];
 
   void set(Cell cell, ManualCellState value, {bool recordUndo = true}) {
     if (at(cell) == value) return;
-    if (recordUndo) {
+    if (recordUndo && _batchStart == null) {
       undoStack.add(BoardSnapshot(List.of(cells)));
       redoStack.clear();
     }
     cells[cell.index(size)] = value;
+  }
+
+  void beginBatch() {
+    _batchStart ??= BoardSnapshot(List.of(cells));
+  }
+
+  bool endBatch() {
+    final start = _batchStart;
+    _batchStart = null;
+    if (start == null || _sameCells(start.cells, cells)) return false;
+    undoStack.add(start);
+    redoStack.clear();
+    return true;
   }
 
   void cycle(Cell cell) {
@@ -320,6 +334,14 @@ class BoardState {
     if (redoStack.isEmpty) return false;
     undoStack.add(BoardSnapshot(List.of(cells)));
     cells.setAll(0, redoStack.removeLast().cells);
+    return true;
+  }
+
+  bool _sameCells(List<ManualCellState> first, List<ManualCellState> second) {
+    if (first.length != second.length) return false;
+    for (var index = 0; index < first.length; index++) {
+      if (first[index] != second[index]) return false;
+    }
     return true;
   }
 

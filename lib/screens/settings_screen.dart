@@ -85,7 +85,7 @@ class SettingsScreen extends StatelessWidget {
             leading: Icon(Icons.shield_outlined),
             title: Text('Private by design'),
             subtitle: Text(
-              'Regalia uses local device storage only. It has no accounts, analytics, ads, or runtime network services.',
+              "Queen's Regalia uses local device storage only. It has no accounts, analytics, ads, or runtime network services.",
             ),
           ),
         ],

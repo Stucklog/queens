@@ -145,4 +145,26 @@ void main() {
     expect(controller.recommendedPuzzle(), controller.catalog!.puzzles.first);
     controller.dispose();
   });
+
+  test('a changed catalog clears puzzle-specific local progress', () async {
+    SharedPreferences.setMockInitialValues({'regalia.tutorialComplete': true});
+    final original = AppController();
+    await original.initialize();
+    final puzzle = original.catalog!.puzzles.first;
+    original.openPuzzle(puzzle);
+    original.cycle(puzzle, const Cell(0, 0));
+    await original.flushPersistence();
+    original.dispose();
+
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setString('regalia.catalogFingerprint', 'old-catalog');
+
+    final restored = AppController();
+    await restored.initialize();
+    expect(restored.boards, isEmpty);
+    expect(restored.records, isEmpty);
+    expect(restored.lastPuzzleId, isNull);
+    expect(restored.tutorialComplete, isTrue);
+    restored.dispose();
+  });
 }

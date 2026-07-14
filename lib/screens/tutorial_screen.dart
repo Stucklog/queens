@@ -102,7 +102,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
         const CrownMark(size: 112),
         const SizedBox(height: 30),
         Text(
-          'Welcome to Regalia',
+          "Welcome to Queen's Regalia",
           style: Theme.of(context).textTheme.displaySmall,
           textAlign: TextAlign.center,
         ),
@@ -176,6 +176,11 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   automaticExclusions: widget.controller.ruleEngine
                       .automaticExclusions(_puzzle, _board),
                   onCellPressed: (cell) => setState(() => _board.cycle(cell)),
+                  onCellExcluded: (cell) {
+                    if (_board.at(cell) != ManualCellState.crown) {
+                      setState(() => _board.set(cell, ManualCellState.cross));
+                    }
+                  },
                 ),
               ),
             ],
@@ -190,7 +195,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
     if (_board.cells.contains(ManualCellState.cross)) {
       return 'Good. Tap that X again to turn it into a crown.';
     }
-    return 'Tap any cell once to mark it with an X.';
+    return 'Tap once, or drag across several cells, to mark them with X.';
   }
 }
 

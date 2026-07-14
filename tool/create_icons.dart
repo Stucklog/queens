@@ -42,7 +42,9 @@ Future<void> main() async {
   await File(
     'windows/runner/resources/app_icon.ico',
   ).writeAsBytes(_ico(windowsPng), flush: true);
-  stdout.writeln('Created ${outputs.length + 1} Regalia crown-and-grid icons.');
+  stdout.writeln(
+    "Created ${outputs.length + 1} Queen's Regalia crown-and-grid icons.",
+  );
 }
 
 Uint8List _iconPng(int size) {

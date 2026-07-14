@@ -129,7 +129,9 @@ Future<void> main(List<String> arguments) async {
         }
         if (!report.solved || report.tier != puzzle.tier) mismatches++;
       }
-      stdout.writeln('Regalia catalog: ${catalog.puzzles.length} puzzles');
+      stdout.writeln(
+        "Queen's Regalia catalog: ${catalog.puzzles.length} puzzles",
+      );
       for (final entry in counts.entries) {
         stdout.writeln('  ${entry.key}: ${entry.value}');
       }

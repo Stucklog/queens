@@ -80,14 +80,8 @@ class PuzzleGenerator {
   }) {
     final output = <GeneratedPuzzle>[];
     final fingerprints = <String>{};
+    final solutionLayouts = <String>{};
     final tierNumbers = <DifficultyTier, int>{};
-    final baseByBand =
-        <
-          ({int size, DifficultyTier tier}),
-          ({List<List<int>> grid, List<Cell> solution})
-        >{};
-    final latestBaseBySize =
-        <int, ({List<List<int>> grid, List<Cell> solution})>{};
     final workingBaseByBand =
         <
           ({int size, DifficultyTier tier}),
@@ -113,16 +107,28 @@ class PuzzleGenerator {
               request.size * 8191;
           final random = Random(candidateSeed);
           final bandKey = (size: request.size, tier: request.tier);
+          if (attempt > 0 && attempt % 300 == 0) {
+            // Some crown layouts cannot be shaped into every requested human
+            // tier. Restart periodically instead of cloning a previously
+            // accepted puzzle for the rest of the band.
+            workingBaseByBand.remove(bandKey);
+          }
           final working = workingBaseByBand[bandKey];
           final base =
-              baseByBand[bandKey] ??
-              (working == null
-                  ? latestBaseBySize[request.size]
-                  : (grid: working.grid, solution: working.solution));
+              working == null
+                  ? null
+                  : (grid: working.grid, solution: working.solution);
           late final List<Cell> solution;
           late final List<List<int>> regions;
           if (base == null) {
             solution = _generateCrownLayout(request.size, random);
+            if (solutionLayouts.contains(
+              _solutionKey(request.size, solution),
+            )) {
+              diagnostics['duplicate crown layout'] =
+                  (diagnostics['duplicate crown layout'] ?? 0) + 1;
+              continue;
+            }
             regions = _growRegions(request.size, solution, random);
             _mutateBoundaries(regions, solution, random);
             if (!_eliminateAlternativeSolutions(regions, solution, random)) {
@@ -182,6 +188,15 @@ class PuzzleGenerator {
             diagnostics['not uniquely solved by generated layout'] =
                 (diagnostics['not uniquely solved by generated layout'] ?? 0) +
                 1;
+            continue;
+          }
+          final solutionKey = _solutionKey(
+            request.size,
+            exact.solutions.single,
+          );
+          if (solutionLayouts.contains(solutionKey)) {
+            diagnostics['duplicate crown layout'] =
+                (diagnostics['duplicate crown layout'] ?? 0) + 1;
             continue;
           }
           final human = humanSolver.analyze(definition);
@@ -245,19 +260,8 @@ class PuzzleGenerator {
             candidateSeed,
           );
           fingerprints.add(fingerprint);
+          solutionLayouts.add(solutionKey);
           tierNumbers[request.tier] = number;
-          final acceptedBase = (
-            grid: List.generate(
-              request.size,
-              (row) => scoredDefinition.regions.sublist(
-                row * request.size,
-                (row + 1) * request.size,
-              ),
-            ),
-            solution: List.of(exact.solutions.single),
-          );
-          baseByBand[bandKey] = acceptedBase;
-          latestBaseBySize[request.size] = acceptedBase;
           workingBaseByBand.remove(bandKey);
           break;
         }
@@ -643,6 +647,14 @@ class PuzzleGenerator {
     return [
       for (final value in values) labels.putIfAbsent(value, () => next++),
     ];
+  }
+
+  String _solutionKey(int size, Iterable<Cell> solution) {
+    final byRow = List.filled(size, -1);
+    for (final cell in solution) {
+      byRow[cell.row] = cell.column;
+    }
+    return '$size:${byRow.join(',')}';
   }
 
   Iterable<Cell> _neighbors(Cell cell, int size) sync* {

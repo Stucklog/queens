@@ -112,6 +112,11 @@ class _GameScreenState extends State<GameScreen> {
                     highlighted: _highlighted,
                     selected: _selected,
                     onCellPressed: _pressCell,
+                    onCellExcluded: _excludeCell,
+                    onExclusionDragStarted:
+                        () => widget.controller.beginCellBatch(puzzle),
+                    onExclusionDragEnded:
+                        () => widget.controller.endCellBatch(puzzle),
                   ),
                 );
                 final controls = _Controls(
@@ -169,6 +174,20 @@ class _GameScreenState extends State<GameScreen> {
     });
     final completed = widget.controller.cycle(widget.puzzle, cell);
     if (completed) _showCompletion();
+  }
+
+  void _excludeCell(Cell cell) {
+    final board = widget.controller.boardFor(widget.puzzle);
+    if (board.at(cell) == ManualCellState.crown ||
+        board.at(cell) == ManualCellState.cross) {
+      return;
+    }
+    setState(() {
+      _selected = cell;
+      _highlighted = {};
+      _conflicts = {};
+    });
+    widget.controller.setCell(widget.puzzle, cell, ManualCellState.cross);
   }
 
   void _setSelected(ManualCellState state) {

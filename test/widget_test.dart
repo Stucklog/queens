@@ -89,6 +89,58 @@ void main() {
 
     await tester.pumpWidget(const SizedBox.shrink());
   });
+
+  testWidgets('dragging across the board excludes every crossed cell', (
+    tester,
+  ) async {
+    final catalog = PuzzleCatalog.fromJsonString(
+      File('assets/puzzles/catalog.json').readAsStringSync(),
+    );
+    final puzzle = catalog.puzzles.first;
+    final board = BoardState(puzzleId: puzzle.id, size: puzzle.size)
+      ..set(const Cell(0, 2), ManualCellState.crown);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Center(
+          child: SizedBox.square(
+            dimension: 480,
+            child: RegaliaBoard(
+              puzzle: puzzle,
+              board: board,
+              onCellPressed: board.cycle,
+              onCellExcluded: (cell) {
+                if (board.at(cell) != ManualCellState.crown) {
+                  board.set(cell, ManualCellState.cross);
+                }
+              },
+              onExclusionDragStarted: board.beginBatch,
+              onExclusionDragEnded: board.endBatch,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    final topLeft = tester.getTopLeft(find.byType(RegaliaBoard));
+    final cellSize = 480 / puzzle.size;
+    await tester.dragFrom(
+      topLeft + Offset(cellSize / 2, cellSize / 2),
+      Offset(cellSize * 3, 0),
+    );
+    await tester.pump();
+
+    expect(board.at(const Cell(0, 0)), ManualCellState.cross);
+    expect(board.at(const Cell(0, 1)), ManualCellState.cross);
+    expect(board.at(const Cell(0, 2)), ManualCellState.crown);
+    expect(board.at(const Cell(0, 3)), ManualCellState.cross);
+
+    expect(board.undo(), isTrue);
+    expect(board.at(const Cell(0, 0)), ManualCellState.empty);
+    expect(board.at(const Cell(0, 1)), ManualCellState.empty);
+    expect(board.at(const Cell(0, 2)), ManualCellState.crown);
+    expect(board.at(const Cell(0, 3)), ManualCellState.empty);
+  });
 }
 
 class _TimerlessController extends AppController {
