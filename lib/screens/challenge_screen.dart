@@ -205,13 +205,14 @@ class _ChallengeSetup extends StatelessWidget {
         child: PixelStoryScene(
           chapter: journeyChapters.first,
           kind: PixelSceneKind.panorama,
+          placement: PixelArtPlacement.banner,
           semanticLabel:
-              'The crown bearer waits beside an endless road of logic puzzles.',
+              'The Regalia bearer stands before an endless road of shifting trials.',
         ),
       ),
       const SizedBox(height: 26),
       Text(
-        'The road without end',
+        'The Endless Crucible',
         style: Theme.of(context).textTheme.headlineMedium,
         textAlign: TextAlign.center,
       ),
@@ -333,11 +334,10 @@ class _ChallengeRun extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              CustomPaint(
-                painter: PixelLandscapePainter(
-                  chapter: chapter,
-                  brightness: Theme.of(context).brightness,
-                ),
+              PixelLandscape(
+                chapter: chapter,
+                brightness: Theme.of(context).brightness,
+                placement: PixelArtPlacement.banner,
               ),
               const Align(
                 alignment: Alignment(-.58, .72),

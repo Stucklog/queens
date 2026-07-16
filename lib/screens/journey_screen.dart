@@ -396,7 +396,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Text(
-                                      'Walking... tap to skip',
+                                      'Crossing the realm… tap to skip',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
@@ -446,7 +446,7 @@ class _JourneyHeader extends StatelessWidget {
     final target = controller.recommendedPuzzle();
     final title =
         progress.isJourneyComplete
-            ? 'The road remains open'
+            ? 'The realms remain open'
             : chapterForOrder(target.order).title;
     final label =
         progress.isJourneyComplete
@@ -620,11 +620,10 @@ class _RouteSection extends StatelessWidget {
                     clipBehavior: Clip.none,
                     children: [
                       Positioned.fill(
-                        child: CustomPaint(
-                          painter: PixelLandscapePainter(
-                            chapter: chapter,
-                            brightness: Theme.of(context).brightness,
-                          ),
+                        child: PixelLandscape(
+                          chapter: chapter,
+                          brightness: Theme.of(context).brightness,
+                          placement: PixelArtPlacement.route,
                         ),
                       ),
                       Positioned(
@@ -871,8 +870,8 @@ class _FinalLandmark extends StatelessWidget {
       enabled: reached,
       label:
           reached
-              ? 'The crown has returned. Replay the finale.'
-              : 'The Queen at Crownspire. Complete puzzle 120 to arrive.',
+              ? 'Dawn has returned to the realms. Replay the finale.'
+              : 'The Queen waits in the Empyrean Citadel. Complete puzzle 120 to reach the Sky Throne.',
       child: InkWell(
         key: const ValueKey('final-landmark'),
         onTap:
@@ -888,13 +887,12 @@ class _FinalLandmark extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Positioned.fill(
-              child: CustomPaint(
-                painter: PixelLandscapePainter(
-                  chapter: journeyChapters.last,
-                  brightness: Theme.of(context).brightness,
-                  sceneKind:
-                      reached ? PixelSceneKind.finale : PixelSceneKind.panorama,
-                ),
+              child: PixelLandscape(
+                chapter: journeyChapters.last,
+                brightness: Theme.of(context).brightness,
+                sceneKind:
+                    reached ? PixelSceneKind.finale : PixelSceneKind.panorama,
+                placement: PixelArtPlacement.banner,
               ),
             ),
             if (reached) ...[
@@ -934,7 +932,7 @@ class _FinalLandmark extends StatelessWidget {
                   const SizedBox(width: 10),
                   Flexible(
                     child: Text(
-                      reached ? 'The Crown Returns' : 'The Queen Awaits',
+                      reached ? 'The Dawn Returns' : 'The Sky Throne Awaits',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),

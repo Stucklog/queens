@@ -26,11 +26,12 @@ class StorySceneScreen extends StatelessWidget {
   }) => StorySceneScreen(
     controller: controller,
     beatId: StoryBeatIds.opening,
-    title: 'The Crown Takes Flight',
-    caption: 'A magical wind scatters the royal crown beyond Crownspire.',
+    title: 'The Night of Crownfall',
+    caption:
+        'When the Hollow Star steals the dawn, the Queen’s Regalia falls into the hands of an unknown knight.',
     semanticLabel:
-        'A knight in Clovermead holds the recovered crown while Crownspire rises in the distance.',
-    actionLabel: 'Begin journey',
+        'A lone knight holds the fallen Regalia beside a star-scarred crater as the Hollow Star eclipses the distant Empyrean Citadel.',
+    actionLabel: 'Take up the Regalia',
     sceneKind: PixelSceneKind.opening,
     chapter: journeyChapters.first,
     popOnContinue: popOnContinue,
@@ -45,8 +46,8 @@ class StorySceneScreen extends StatelessWidget {
     title: chapter.title,
     caption: chapter.caption,
     semanticLabel:
-        'The crown bearer reaches ${chapter.title}, the next location on the road to Crownspire.',
-    actionLabel: 'Follow the road',
+        'The Regalia bearer enters ${chapter.title} beneath the advancing Hollow Star.',
+    actionLabel: 'Press onward',
     sceneKind: PixelSceneKind.chapter,
     chapter: chapter,
   );
@@ -56,11 +57,12 @@ class StorySceneScreen extends StatelessWidget {
   }) => StorySceneScreen(
     controller: controller,
     beatId: StoryBeatIds.finale,
-    title: 'The Crown Returns',
-    caption: 'Morning reaches Crownspire, and the long road is complete.',
+    title: 'The Dawn Returns',
+    caption:
+        'The Regalia crowns its queen, the Hollow Star breaks, and morning returns to every realm.',
     semanticLabel:
-        'At sunrise in Crownspire, the Queen wears the recovered crown beside the returning knight.',
-    actionLabel: 'Open the journey',
+        'At sunrise in the Empyrean Citadel, the Queen wears the restored Regalia beside the returning knight as the Hollow Star shatters above the awakened city.',
+    actionLabel: 'Return to the realms',
     sceneKind: PixelSceneKind.finale,
     chapter: journeyChapters.last,
   );

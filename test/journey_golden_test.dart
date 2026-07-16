@@ -36,7 +36,7 @@ void main() {
     )..addFont(Future<ByteData>.value(ByteData.sublistView(iconBytes)))).load();
   });
 
-  testWidgets('early Clovermead route in light theme', (tester) async {
+  testWidgets('early Asterfall Vale route in light theme', (tester) async {
     final controller = await _controllerAt(tester, completed: 0);
     await _goldenMap(
       tester,
@@ -47,7 +47,7 @@ void main() {
     );
   });
 
-  testWidgets('Goblin Underkeep panorama in portrait dark theme', (
+  testWidgets('Brasswake Arsenal panorama in portrait dark theme', (
     tester,
   ) async {
     final controller = await _controllerAt(tester, completed: 80);
@@ -60,7 +60,7 @@ void main() {
     );
   });
 
-  testWidgets('Crownspire route in narrow dark theme', (tester) async {
+  testWidgets('Empyrean Citadel route in narrow dark theme', (tester) async {
     final controller = await _controllerAt(tester, completed: 100);
     await _goldenMap(
       tester,

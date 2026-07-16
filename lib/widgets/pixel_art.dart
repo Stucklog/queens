@@ -6,7 +6,87 @@ import '../app/journey.dart';
 
 enum PixelSceneKind { panorama, opening, chapter, finale }
 
+enum PixelArtPlacement { story, route, banner }
+
 enum PixelStatusGlyph { lock, crown, star, arrow, dots }
+
+class PixelLandscape extends StatelessWidget {
+  const PixelLandscape({
+    super.key,
+    required this.chapter,
+    required this.brightness,
+    this.sceneKind = PixelSceneKind.panorama,
+    this.placement = PixelArtPlacement.story,
+    this.frame = 0,
+  });
+
+  static const _chapterAssets = <String, String>{
+    'clovermead': 'assets/art/backgrounds/chapter_clovermead.webp',
+    'whisperwood': 'assets/art/backgrounds/chapter_whisperwood.webp',
+    'windmill-heights': 'assets/art/backgrounds/chapter_windmill_heights.webp',
+    'sunken-cloister': 'assets/art/backgrounds/chapter_sunken_cloister.webp',
+    'emberbell-caverns':
+        'assets/art/backgrounds/chapter_emberbell_caverns.webp',
+    'goblin-underkeep': 'assets/art/backgrounds/chapter_goblin_underkeep.webp',
+    'moonlit-catacombs':
+        'assets/art/backgrounds/chapter_moonlit_catacombs.webp',
+    'crownspire': 'assets/art/backgrounds/chapter_crownspire.webp',
+  };
+
+  final JourneyChapter chapter;
+  final Brightness brightness;
+  final PixelSceneKind sceneKind;
+  final PixelArtPlacement placement;
+  final int frame;
+
+  String get _assetPath => switch (sceneKind) {
+    PixelSceneKind.opening => 'assets/art/backgrounds/story_opening.webp',
+    PixelSceneKind.finale => 'assets/art/backgrounds/story_finale.webp',
+    _ =>
+      _chapterAssets[chapter.id] ??
+          'assets/art/backgrounds/chapter_${chapter.id.replaceAll('-', '_')}.webp',
+  };
+
+  Alignment get _alignment {
+    if (sceneKind == PixelSceneKind.finale &&
+        placement == PixelArtPlacement.banner) {
+      return const Alignment(0, -.48);
+    }
+    return switch (placement) {
+      PixelArtPlacement.story => Alignment.center,
+      PixelArtPlacement.route => Alignment.center,
+      PixelArtPlacement.banner => const Alignment(0, -.1),
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final fallback = CustomPaint(
+      painter: PixelLandscapePainter(
+        chapter: chapter,
+        brightness: brightness,
+        frame: frame,
+      ),
+    );
+    return ClipRect(
+      child: RepaintBoundary(
+        child: Image.asset(
+          _assetPath,
+          fit: BoxFit.cover,
+          alignment: _alignment,
+          filterQuality: FilterQuality.medium,
+          gaplessPlayback: true,
+          excludeFromSemantics: true,
+          frameBuilder: (context, child, imageFrame, wasLoaded) {
+            if (wasLoaded || imageFrame != null) return child;
+            return fallback;
+          },
+          errorBuilder: (context, error, stackTrace) => fallback,
+        ),
+      ),
+    );
+  }
+}
 
 class PixelStoryScene extends StatefulWidget {
   const PixelStoryScene({
@@ -14,11 +94,13 @@ class PixelStoryScene extends StatefulWidget {
     required this.chapter,
     required this.kind,
     required this.semanticLabel,
+    this.placement = PixelArtPlacement.story,
   });
 
   final JourneyChapter chapter;
   final PixelSceneKind kind;
   final String semanticLabel;
+  final PixelArtPlacement placement;
 
   @override
   State<PixelStoryScene> createState() => _PixelStorySceneState();
@@ -71,13 +153,12 @@ class _PixelStorySceneState extends State<PixelStoryScene>
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    CustomPaint(
-                      painter: PixelLandscapePainter(
-                        chapter: widget.chapter,
-                        brightness: Theme.of(context).brightness,
-                        sceneKind: widget.kind,
-                        frame: frame,
-                      ),
+                    PixelLandscape(
+                      chapter: widget.chapter,
+                      brightness: Theme.of(context).brightness,
+                      sceneKind: widget.kind,
+                      placement: widget.placement,
+                      frame: frame,
                     ),
                     if (widget.kind == PixelSceneKind.opening) ...[
                       Align(
@@ -146,6 +227,9 @@ class PixelLandscapePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final index = journeyChapters.indexOf(chapter).clamp(0, 7);
     final dark = brightness == Brightness.dark;
+    final ink = dark ? const Color(0xffefe8d5) : const Color(0xff25231f);
+    final grid = math.max(1.0, (size.shortestSide / 180).floorToDouble());
+    final p = _PixelCanvas(canvas, size, grid);
     final background = chapter.palette.background(brightness);
     final surface = chapter.palette.surface(brightness);
     final skyTop =
@@ -162,9 +246,6 @@ class PixelLandscapePainter extends CustomPainter {
         )!;
     final near =
         Color.lerp(chapter.palette.secondary, background, dark ? .25 : .44)!;
-    final ink = dark ? const Color(0xffefe8d5) : const Color(0xff25231f);
-    final grid = math.max(1.0, (size.shortestSide / 180).floorToDouble());
-    final p = _PixelCanvas(canvas, size, grid);
 
     p.rect(0, 0, size.width, size.height, skyTop);
     for (var band = 0; band < 28; band++) {
@@ -1877,11 +1958,39 @@ class PixelQueenSprite extends StatelessWidget {
   final double height;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    width: width,
-    height: height,
-    child: CustomPaint(painter: _PixelQueenPainter(frame)),
-  );
+  Widget build(BuildContext context) {
+    final bob = frame == 2 || frame == 5 ? height / 72 : 0.0;
+    final sway = switch (frame % 4) {
+      1 => -.008,
+      3 => .008,
+      _ => 0.0,
+    };
+
+    return Transform.translate(
+      offset: Offset(0, bob),
+      child: Transform.rotate(
+        angle: sway,
+        alignment: Alignment.bottomCenter,
+        child: SizedBox(
+          width: width,
+          height: height,
+          child: Image.asset(
+            'assets/art/queen.png',
+            fit: BoxFit.contain,
+            filterQuality: FilterQuality.none,
+            excludeFromSemantics: true,
+            frameBuilder: (context, child, imageFrame, wasLoaded) {
+              if (wasLoaded || imageFrame != null) return child;
+              return CustomPaint(painter: _PixelQueenPainter(frame));
+            },
+            errorBuilder:
+                (context, error, stackTrace) =>
+                    CustomPaint(painter: _PixelQueenPainter(frame)),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _PixelQueenPainter extends CustomPainter {

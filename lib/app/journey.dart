@@ -55,8 +55,9 @@ class JourneyChapter {
 const journeyChapters = <JourneyChapter>[
   JourneyChapter(
     id: 'clovermead',
-    title: 'Clovermead',
-    caption: 'A small crown begins a very long road.',
+    title: 'Asterfall Vale',
+    caption:
+        'Where heaven struck the earth, the fallen Regalia chooses its bearer.',
     startOrder: 1,
     endOrder: 20,
     difficulty: DifficultyTier.easy,
@@ -72,8 +73,8 @@ const journeyChapters = <JourneyChapter>[
   ),
   JourneyChapter(
     id: 'whisperwood',
-    title: 'Whisperwood',
-    caption: 'Moths and mushrooms keep the hidden path.',
+    title: 'Myrrhveil Wilds',
+    caption: 'Ancient roots part for the crown—and wake what sleeps below.',
     startOrder: 21,
     endOrder: 30,
     difficulty: DifficultyTier.easy,
@@ -89,8 +90,9 @@ const journeyChapters = <JourneyChapter>[
   ),
   JourneyChapter(
     id: 'windmill-heights',
-    title: 'Windmill Heights',
-    caption: 'High bridges turn beneath a restless sky.',
+    title: 'Skyglass Reach',
+    caption:
+        'Ancient wind arches awaken, carrying the bearer beyond the storm.',
     startOrder: 31,
     endOrder: 40,
     difficulty: DifficultyTier.medium,
@@ -106,8 +108,9 @@ const journeyChapters = <JourneyChapter>[
   ),
   JourneyChapter(
     id: 'sunken-cloister',
-    title: 'Sunken Cloister',
-    caption: 'Old stones listen beneath the water.',
+    title: 'Nacre Basilica',
+    caption:
+        'Beneath the drowned bells, a forgotten covenant opens the deep road.',
     startOrder: 41,
     endOrder: 60,
     difficulty: DifficultyTier.medium,
@@ -123,8 +126,8 @@ const journeyChapters = <JourneyChapter>[
   ),
   JourneyChapter(
     id: 'emberbell-caverns',
-    title: 'Emberbell Caverns',
-    caption: 'Warm bells glow in the deep road.',
+    title: 'Pyreheart Caldera',
+    caption: 'At the world’s molten heart, living crystal answers the crown.',
     startOrder: 61,
     endOrder: 80,
     difficulty: DifficultyTier.hard,
@@ -140,8 +143,8 @@ const journeyChapters = <JourneyChapter>[
   ),
   JourneyChapter(
     id: 'goblin-underkeep',
-    title: 'Goblin Underkeep',
-    caption: 'Brass doors turn through a clever maze.',
+    title: 'Brasswake Arsenal',
+    caption: 'The old empire’s last war-engine wakes to bar the ascent.',
     startOrder: 81,
     endOrder: 90,
     difficulty: DifficultyTier.hard,
@@ -157,8 +160,9 @@ const journeyChapters = <JourneyChapter>[
   ),
   JourneyChapter(
     id: 'moonlit-catacombs',
-    title: 'Moonlit Catacombs',
-    caption: 'Silver lanterns wake beneath the moon.',
+    title: 'Pale Moon Necropolis',
+    caption:
+        'Seven fallen queens rise beneath the pale moon to judge the bearer.',
     startOrder: 91,
     endOrder: 100,
     difficulty: DifficultyTier.expert,
@@ -174,8 +178,8 @@ const journeyChapters = <JourneyChapter>[
   ),
   JourneyChapter(
     id: 'crownspire',
-    title: 'Crownspire',
-    caption: 'The last stair rises into morning.',
+    title: 'Empyrean Citadel',
+    caption: 'Above the clouds, the vacant throne waits beneath a dying sun.',
     startOrder: 101,
     endOrder: 120,
     difficulty: DifficultyTier.expert,

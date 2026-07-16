@@ -276,7 +276,7 @@ void main() {
           ManualCellState.crown,
         );
       }
-      expect(boundaryOutcome?.enteredChapter?.title, 'Whisperwood');
+      expect(boundaryOutcome?.enteredChapter?.title, 'Myrrhveil Wilds');
       expect(controller.frontierPuzzle?.order, 21);
 
       for (final puzzle in puzzles.take(119)) {

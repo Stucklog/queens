@@ -21,8 +21,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(controller.frontierPuzzle?.order, 21);
-    expect(find.text('Whisperwood'), findsWidgets);
-    expect(find.text('Follow the road'), findsOneWidget);
+    expect(find.text('Myrrhveil Wilds'), findsWidgets);
+    expect(find.text('Press onward'), findsOneWidget);
     expect(find.textContaining('tap to skip'), findsNothing);
   });
 
@@ -38,9 +38,9 @@ void main() {
     await tester.tap(find.text('Return to journey'));
     await tester.pumpAndSettle();
 
-    expect(find.text('The Crown Returns'), findsOneWidget);
+    expect(find.text('The Dawn Returns'), findsOneWidget);
     expect(controller.isJourneyComplete, isTrue);
-    await tester.tap(find.text('Open the journey'));
+    await tester.tap(find.text('Return to the realms'));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('final-landmark')), findsOneWidget);
     expect(controller.catalog!.puzzles.every(controller.canOpenPuzzle), isTrue);

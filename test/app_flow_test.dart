@@ -20,14 +20,14 @@ void main() {
 
     await tester.tap(find.text('Skip'));
     await tester.pumpAndSettle();
-    expect(find.text('The Crown Takes Flight'), findsOneWidget);
+    expect(find.text('The Night of Crownfall'), findsOneWidget);
 
-    await tester.tap(find.text('Begin journey'));
+    await tester.tap(find.text('Take up the Regalia'));
     await tester.pumpAndSettle();
-    expect(find.text('Clovermead'), findsWidgets);
-    expect(find.text('Follow the road'), findsOneWidget);
+    expect(find.text('Asterfall Vale'), findsWidgets);
+    expect(find.text('Press onward'), findsOneWidget);
 
-    await tester.tap(find.text('Follow the road'));
+    await tester.tap(find.text('Press onward'));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('puzzle-node-120')), findsOneWidget);
 

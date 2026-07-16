@@ -52,6 +52,11 @@ void main() {
         ),
       ),
     );
+    await tester.pump();
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 100)),
+    );
+    await tester.pumpAndSettle();
 
     await expectLater(
       find.byKey(const ValueKey('chapter-art-atlas')),
@@ -72,14 +77,12 @@ class _ChapterTile extends StatelessWidget {
       border: Border.all(color: const Color(0xffeee8d6), width: 2),
     ),
     child: ClipRect(
-      child: CustomPaint(
-        painter: PixelLandscapePainter(
-          chapter: chapter,
-          brightness: brightness,
-          sceneKind: PixelSceneKind.chapter,
-          frame: 3,
-        ),
-        child: const SizedBox.expand(),
+      child: PixelLandscape(
+        chapter: chapter,
+        brightness: brightness,
+        sceneKind: PixelSceneKind.chapter,
+        placement: PixelArtPlacement.story,
+        frame: 3,
       ),
     ),
   );
