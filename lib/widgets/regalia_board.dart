@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../app/theme.dart';
 import '../core/models.dart';
 import 'crown_mark.dart';
 
@@ -45,6 +46,8 @@ class RegaliaBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
+    final boardColors =
+        (dark ? RegaliaTheme.dark() : RegaliaTheme.light()).colorScheme;
     return AspectRatio(
       aspectRatio: 1,
       child: _DragExcluder(
@@ -54,10 +57,7 @@ class RegaliaBoard extends StatelessWidget {
         onDragEnded: onExclusionDragEnded,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).colorScheme.onSurface,
-              width: 3,
-            ),
+            border: Border.all(color: boardColors.onSurface, width: 3),
             borderRadius: BorderRadius.circular(9),
             boxShadow: [
               BoxShadow(
@@ -100,9 +100,9 @@ class RegaliaBoard extends StatelessWidget {
                 final right =
                     cell.column == puzzle.size - 1 ||
                     puzzle.regionAt(Cell(cell.row, cell.column + 1)) != region;
-                final regionColor = Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: .82);
+                final regionColor = boardColors.onSurface.withValues(
+                  alpha: .82,
+                );
                 return Semantics(
                   button: true,
                   label:
@@ -120,23 +120,15 @@ class RegaliaBoard extends StatelessWidget {
                     color:
                         highlighted.contains(cell)
                             ? Color.alphaBlend(
-                              Theme.of(
-                                context,
-                              ).colorScheme.secondary.withValues(alpha: .38),
+                              boardColors.secondary.withValues(alpha: .38),
                               background,
                             )
                             : background,
                     child: InkWell(
                       key: ValueKey('cell-${cell.row}-${cell.column}'),
                       onTap: () => onCellPressed(cell),
-                      focusColor: Theme.of(
-                        context,
-                      ).colorScheme.secondary.withValues(alpha: .45),
-                      child: AnimatedContainer(
-                        duration:
-                            MediaQuery.disableAnimationsOf(context)
-                                ? Duration.zero
-                                : const Duration(milliseconds: 120),
+                      focusColor: boardColors.secondary.withValues(alpha: .45),
+                      child: Container(
                         decoration: BoxDecoration(
                           border: Border(
                             top: BorderSide(
@@ -161,13 +153,12 @@ class RegaliaBoard extends StatelessWidget {
                             selected == cell
                                 ? BoxDecoration(
                                   border: Border.all(
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
+                                    color: boardColors.secondary,
                                     width: 3,
                                   ),
                                 )
                                 : null,
-                        child: Center(child: _mark(context, cell, state)),
+                        child: Center(child: _mark(cell, state, boardColors)),
                       ),
                     ),
                   ),
@@ -180,7 +171,7 @@ class RegaliaBoard extends StatelessWidget {
     );
   }
 
-  Widget? _mark(BuildContext context, Cell cell, ManualCellState state) {
+  Widget? _mark(Cell cell, ManualCellState state, ColorScheme boardColors) {
     if (state == ManualCellState.crown) {
       return Padding(
         padding: const EdgeInsets.all(5),
@@ -188,8 +179,8 @@ class RegaliaBoard extends StatelessWidget {
           child: CrownMark(
             color:
                 conflicts.contains(cell)
-                    ? Theme.of(context).colorScheme.error
-                    : null,
+                    ? boardColors.error
+                    : boardColors.primary,
             size: 30,
           ),
         ),
@@ -201,9 +192,7 @@ class RegaliaBoard extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Icon(
             Icons.close_rounded,
-            color: Theme.of(
-              context,
-            ).colorScheme.onSurface.withValues(alpha: .9),
+            color: boardColors.onSurface.withValues(alpha: .9),
             size: 28,
           ),
         ),
@@ -215,9 +204,7 @@ class RegaliaBoard extends StatelessWidget {
         heightFactor: .18,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: Theme.of(
-              context,
-            ).colorScheme.onSurface.withValues(alpha: .25),
+            color: boardColors.onSurface.withValues(alpha: .25),
             shape: BoxShape.circle,
           ),
         ),

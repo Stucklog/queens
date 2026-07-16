@@ -5,7 +5,8 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = Queen's Regalia
+// Keep the build product shell-safe. The visible name lives in Info.plist.
+PRODUCT_NAME = Queens Regalia
 
 // The application's bundle identifier
 PRODUCT_BUNDLE_IDENTIFIER = com.example.queens

@@ -6,9 +6,11 @@ class CrownMark extends StatelessWidget {
   final double size;
 
   @override
-  Widget build(BuildContext context) => CustomPaint(
-    size: Size.square(size),
-    painter: _CrownPainter(color ?? Theme.of(context).colorScheme.primary),
+  Widget build(BuildContext context) => SizedBox.square(
+    dimension: size,
+    child: CustomPaint(
+      painter: _CrownPainter(color ?? Theme.of(context).colorScheme.primary),
+    ),
   );
 }
 
@@ -18,30 +20,33 @@ class _CrownPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = color;
-    final path =
-        Path()
-          ..moveTo(size.width * .13, size.height * .34)
-          ..lineTo(size.width * .34, size.height * .57)
-          ..lineTo(size.width * .5, size.height * .22)
-          ..lineTo(size.width * .66, size.height * .57)
-          ..lineTo(size.width * .87, size.height * .34)
-          ..lineTo(size.width * .78, size.height * .76)
-          ..lineTo(size.width * .22, size.height * .76)
-          ..close();
-    canvas.drawPath(path, paint);
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
+    final unit = size.width / 16;
+    final shade = Color.lerp(color, Colors.black, .3)!;
+    final highlight = Color.lerp(color, Colors.white, .32)!;
+    void pixel(int x, int y, int width, int height, Color fill) {
+      canvas.drawRect(
         Rect.fromLTWH(
-          size.width * .2,
-          size.height * .8,
-          size.width * .6,
-          size.height * .1,
+          (x * unit).roundToDouble(),
+          (y * unit).roundToDouble(),
+          (width * unit).roundToDouble(),
+          (height * unit).roundToDouble(),
         ),
-        Radius.circular(size.width * .04),
-      ),
-      paint,
-    );
+        Paint()
+          ..color = fill
+          ..isAntiAlias = false,
+      );
+    }
+
+    pixel(2, 5, 4, 7, shade);
+    pixel(7, 2, 4, 10, shade);
+    pixel(12, 5, 3, 7, shade);
+    pixel(3, 5, 3, 6, color);
+    pixel(8, 2, 3, 9, color);
+    pixel(12, 5, 3, 6, color);
+    pixel(3, 9, 12, 4, color);
+    pixel(5, 9, 7, 1, highlight);
+    pixel(4, 14, 10, 2, shade);
+    pixel(5, 14, 8, 1, color);
   }
 
   @override

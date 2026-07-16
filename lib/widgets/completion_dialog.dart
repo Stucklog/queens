@@ -9,15 +9,21 @@ class CompletionDialog extends StatelessWidget {
     required this.board,
     required this.onReplay,
     required this.onNext,
+    this.advancesJourney,
+    this.isJourneyComplete = false,
+    this.nextLabel,
   });
 
   final BoardState board;
   final VoidCallback onReplay;
   final VoidCallback onNext;
+  final bool? advancesJourney;
+  final bool isJourneyComplete;
+  final String? nextLabel;
 
   @override
   Widget build(BuildContext context) => AlertDialog(
-    icon: const CrownMark(size: 64),
+    icon: const SizedBox(height: 64, child: Center(child: CrownMark(size: 64))),
     title: Text(board.assisted ? 'Board complete' : 'A clean coronation'),
     content: Text(
       board.assisted
@@ -25,8 +31,21 @@ class CompletionDialog extends StatelessWidget {
           : 'Solved without hints or checks in ${formatTime(board.elapsedSeconds)}.',
     ),
     actions: [
-      TextButton(onPressed: onReplay, child: const Text('Replay')),
-      FilledButton(onPressed: onNext, child: const Text('Next puzzle')),
+      if (advancesJourney != true)
+        TextButton(onPressed: onReplay, child: const Text('Replay')),
+      FilledButton(
+        onPressed: onNext,
+        child: Text(
+          nextLabel ??
+              (advancesJourney == null
+                  ? 'Next puzzle'
+                  : advancesJourney!
+                  ? isJourneyComplete
+                      ? 'Return to journey'
+                      : 'Advance'
+                  : 'Return to journey'),
+        ),
+      ),
     ],
   );
 

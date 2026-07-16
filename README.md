@@ -2,7 +2,11 @@
 
 Queen's Regalia is an original, offline Flutter implementation of the one-crown-per-row, column, and region logic puzzle. Crowns may not touch, including diagonally; diagonal alignment at a distance is legal.
 
-The app contains 120 deterministic, uniquely solvable puzzles plus a separate guided tutorial. It has no backend, accounts, analytics, ads, or runtime network services. Progress and preferences stay in platform-local storage.
+The app contains 120 deterministic, uniquely solvable puzzles plus a separate guided tutorial. They form a linear 16-bit-style scrolling panorama across eight locations: each clean or assisted solve advances an unnamed crown bearer toward Crownspire. Completed puzzles remain replayable, while future route nodes stay visible and locked. All higher-resolution journey scenery and sprites are drawn in Flutter, with no bundled illustration files.
+
+Challenge Mode is a separate endless run of puzzles generated and verified entirely on the device. Players can choose Easy, Medium, Hard, Expert, or a rotating Mixed run; the next board is prepared while the current one is played. Challenge boards, marks, elapsed time, assistance, and run statistics resume after relaunch without changing the story frontier.
+
+It has no backend, accounts, analytics, ads, or runtime network services. Story progress, challenge runs, story beats, and preferences stay in platform-local storage. Journey schema version 1 performs a one-time reset of puzzle attempts and completions while preserving settings and tutorial completion.
 
 ## Run the app
 

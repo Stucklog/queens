@@ -2,15 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../app/app_controller.dart';
+import '../app/challenge.dart';
+import '../app/journey.dart';
+import '../app/theme.dart';
 import '../core/models.dart';
 import '../widgets/completion_dialog.dart';
 import '../widgets/regalia_board.dart';
 import 'rules_screen.dart';
 
+enum PuzzlePlayMode { journey, challenge }
+
 class GameScreen extends StatefulWidget {
-  const GameScreen({super.key, required this.controller, required this.puzzle});
+  const GameScreen({
+    super.key,
+    required this.controller,
+    required this.puzzle,
+    this.playMode = PuzzlePlayMode.journey,
+    this.challengeNumber,
+  });
   final AppController controller;
   final PuzzleDefinition puzzle;
+  final PuzzlePlayMode playMode;
+  final int? challengeNumber;
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -54,114 +67,130 @@ class _GameScreenState extends State<GameScreen> {
         board,
       )) ...[conflict.first, conflict.second],
     };
-    return PopScope(
-      onPopInvokedWithResult: (_, __) => widget.controller.stopTimer(),
-      child: KeyboardListener(
-        autofocus: true,
-        focusNode: _keyboardFocus,
-        onKeyEvent: _onKey,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                Text(
-                  'Puzzle ${puzzle.order} of 120',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
-            ),
-            actions: [
-              if (widget.controller.settings.showTimer)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Center(
-                    child: Text(
-                      CompletionDialog.formatTime(board.elapsedSeconds),
-                      style: const TextStyle(
-                        fontFeatures: [FontFeature.tabularFigures()],
-                      ),
+    final visualChapter =
+        widget.playMode == PuzzlePlayMode.challenge
+            ? challengeChapterFor(puzzle.tier, widget.challengeNumber ?? 1)
+            : chapterForOrder(puzzle.order);
+    final themed = RegaliaTheme.forChapter(
+      Theme.of(context).brightness,
+      visualChapter,
+    );
+    return Theme(
+      data: themed,
+      child: Builder(
+        builder:
+            (context) => PopScope(
+              onPopInvokedWithResult: (_, __) => widget.controller.stopTimer(),
+              child: KeyboardListener(
+                autofocus: true,
+                focusNode: _keyboardFocus,
+                onKeyEvent: _onKey,
+                child: Scaffold(
+                  appBar: AppBar(
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        Text(
+                          widget.playMode == PuzzlePlayMode.challenge
+                              ? 'Challenge ${widget.challengeNumber ?? puzzle.order}'
+                              : 'Puzzle ${puzzle.order} of 120',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-              IconButton(
-                tooltip: 'Rules',
-                onPressed: _openRules,
-                icon: const Icon(Icons.menu_book_outlined),
-              ),
-            ],
-          ),
-          body: SafeArea(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final wide = constraints.maxWidth >= 850;
-                final boardWidget = ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: wide ? 650 : 620,
-                    maxHeight: wide ? 650 : 620,
-                  ),
-                  child: RegaliaBoard(
-                    puzzle: puzzle,
-                    board: board,
-                    automaticExclusions: automatic,
-                    conflicts: {...directConflictCells, ..._conflicts},
-                    highlighted: _highlighted,
-                    selected: _selected,
-                    onCellPressed: _pressCell,
-                    onCellExcluded: _excludeCell,
-                    onExclusionDragStarted:
-                        () => widget.controller.beginCellBatch(puzzle),
-                    onExclusionDragEnded:
-                        () => widget.controller.endCellBatch(puzzle),
-                  ),
-                );
-                final controls = _Controls(
-                  board: board,
-                  onUndo:
-                      board.undoStack.isEmpty
-                          ? null
-                          : () => widget.controller.undo(puzzle),
-                  onRedo:
-                      board.redoStack.isEmpty
-                          ? null
-                          : () => widget.controller.redo(puzzle),
-                  onReset: _confirmReset,
-                  onCheck: _check,
-                  onHint: _hint,
-                );
-                if (wide) {
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(child: Center(child: boardWidget)),
-                          const SizedBox(width: 36),
-                          SizedBox(width: 240, child: controls),
-                        ],
+                    actions: [
+                      if (widget.controller.settings.showTimer)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Center(
+                            child: Text(
+                              CompletionDialog.formatTime(board.elapsedSeconds),
+                              style: const TextStyle(
+                                fontFeatures: [FontFeature.tabularFigures()],
+                              ),
+                            ),
+                          ),
+                        ),
+                      IconButton(
+                        tooltip: 'Rules',
+                        onPressed: _openRules,
+                        icon: const Icon(Icons.menu_book_outlined),
                       ),
-                    ),
-                  );
-                }
-                return SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
-                  child: Column(
-                    children: [
-                      boardWidget,
-                      const SizedBox(height: 18),
-                      controls,
                     ],
                   ),
-                );
-              },
+                  body: SafeArea(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final wide = constraints.maxWidth >= 850;
+                        final boardWidget = ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: wide ? 650 : 620,
+                            maxHeight: wide ? 650 : 620,
+                          ),
+                          child: RegaliaBoard(
+                            puzzle: puzzle,
+                            board: board,
+                            automaticExclusions: automatic,
+                            conflicts: {...directConflictCells, ..._conflicts},
+                            highlighted: _highlighted,
+                            selected: _selected,
+                            onCellPressed: _pressCell,
+                            onCellExcluded: _excludeCell,
+                            onExclusionDragStarted:
+                                () => widget.controller.beginCellBatch(puzzle),
+                            onExclusionDragEnded:
+                                () => widget.controller.endCellBatch(puzzle),
+                          ),
+                        );
+                        final controls = _Controls(
+                          board: board,
+                          onUndo:
+                              board.undoStack.isEmpty
+                                  ? null
+                                  : () => widget.controller.undo(puzzle),
+                          onRedo:
+                              board.redoStack.isEmpty
+                                  ? null
+                                  : () => widget.controller.redo(puzzle),
+                          onReset: _confirmReset,
+                          onCheck: _check,
+                          onHint: _hint,
+                        );
+                        if (wide) {
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(24),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(child: Center(child: boardWidget)),
+                                  const SizedBox(width: 36),
+                                  SizedBox(width: 240, child: controls),
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                        return SingleChildScrollView(
+                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
+                          child: Column(
+                            children: [
+                              boardWidget,
+                              const SizedBox(height: 18),
+                              controls,
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
       ),
     );
   }
@@ -172,8 +201,8 @@ class _GameScreenState extends State<GameScreen> {
       _highlighted = {};
       _conflicts = {};
     });
-    final completed = widget.controller.cycle(widget.puzzle, cell);
-    if (completed) _showCompletion();
+    final outcome = widget.controller.cycle(widget.puzzle, cell);
+    if (outcome != null) _showCompletion(outcome);
   }
 
   void _excludeCell(Cell cell) {
@@ -195,12 +224,8 @@ class _GameScreenState extends State<GameScreen> {
       _highlighted = {};
       _conflicts = {};
     });
-    final completed = widget.controller.setCell(
-      widget.puzzle,
-      _selected,
-      state,
-    );
-    if (completed) _showCompletion();
+    final outcome = widget.controller.setCell(widget.puzzle, _selected, state);
+    if (outcome != null) _showCompletion(outcome);
   }
 
   void _onKey(KeyEvent event) {
@@ -355,19 +380,17 @@ class _GameScreenState extends State<GameScreen> {
     if (mounted) widget.controller.startTimer(widget.puzzle.id);
   }
 
-  Future<void> _showCompletion() async {
+  Future<void> _showCompletion(PuzzleCompletionOutcome outcome) async {
     final board = widget.controller.boardFor(widget.puzzle);
-    final nextIndex =
-        widget.puzzle.order < widget.controller.catalog!.puzzles.length
-            ? widget.puzzle.order
-            : 0;
-    final next = widget.controller.catalog!.puzzles[nextIndex];
     final action = await showDialog<String>(
       context: context,
       barrierDismissible: false,
       builder:
           (context) => CompletionDialog(
             board: board,
+            advancesJourney: outcome.advancedJourney,
+            isJourneyComplete: outcome.isJourneyComplete,
+            nextLabel: outcome.isChallenge ? 'Next challenge' : null,
             onReplay: () => Navigator.pop(context, 'replay'),
             onNext: () => Navigator.pop(context, 'next'),
           ),
@@ -378,14 +401,10 @@ class _GameScreenState extends State<GameScreen> {
       widget.controller.startTimer(widget.puzzle.id);
     } else if (action == 'next') {
       widget.controller.stopTimer();
-      widget.controller.openPuzzle(next);
       if (!mounted) return;
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder:
-              (_) => GameScreen(controller: widget.controller, puzzle: next),
-        ),
-      );
+      Navigator.of(
+        context,
+      ).pop(outcome.isChallenge || outcome.advancedJourney ? outcome : null);
     }
   }
 }

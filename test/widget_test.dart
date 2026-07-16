@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
+import 'package:regalia/app/journey.dart';
 import 'package:regalia/core/models.dart';
 import 'package:regalia/screens/game_screen.dart';
+import 'package:regalia/screens/journey_screen.dart';
 import 'package:regalia/widgets/regalia_board.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -140,6 +142,83 @@ void main() {
     expect(board.at(const Cell(0, 1)), ManualCellState.empty);
     expect(board.at(const Cell(0, 2)), ManualCellState.crown);
     expect(board.at(const Cell(0, 3)), ManualCellState.empty);
+  });
+
+  testWidgets('full route exposes clean, assisted, current, and locked nodes', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    SharedPreferences.setMockInitialValues({
+      'regalia.tutorialComplete': true,
+      'regalia.journeySchemaVersion': 1,
+    });
+    final controller = _TimerlessController();
+    await tester.runAsync(controller.initialize);
+    addTearDown(controller.dispose);
+    await controller.markStoryBeatSeen(StoryBeatIds.opening);
+    await controller.markStoryBeatSeen(journeyChapters.first.storyBeatId);
+    final puzzles = controller.catalog!.puzzles;
+    controller.records[puzzles[0].id] = const CompletionRecord(
+      status: CompletionStatus.cleanSolved,
+    );
+    controller.records[puzzles[1].id] = const CompletionRecord(
+      status: CompletionStatus.assistedSolved,
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(home: JourneyScreen(controller: controller)),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.byKey(const ValueKey('puzzle-node-1')), findsOneWidget);
+    expect(find.byKey(const ValueKey('puzzle-node-120')), findsOneWidget);
+    Finder semanticsWithLabel(String label) => find.byWidgetPredicate(
+      (widget) => widget is Semantics && widget.properties.label == label,
+    );
+    expect(semanticsWithLabel('Puzzle 1, clean.'), findsOneWidget);
+    expect(semanticsWithLabel('Puzzle 2, assisted.'), findsOneWidget);
+    expect(semanticsWithLabel('Puzzle 3, current.'), findsOneWidget);
+    expect(
+      semanticsWithLabel('Puzzle 4, locked. Complete puzzle 3 first.'),
+      findsOneWidget,
+    );
+    expect(semanticsWithLabel('Crown bearer at puzzle 3'), findsOneWidget);
+
+    final beforeBoards = Map<String, BoardState>.of(controller.boards);
+    expect(controller.openPuzzle(puzzles[3]), isFalse);
+    expect(controller.boards, beforeBoards);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('landscape host retains every panorama landmark', (tester) async {
+    tester.view.physicalSize = const Size(1200, 800);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    SharedPreferences.setMockInitialValues({
+      'regalia.tutorialComplete': true,
+      'regalia.journeySchemaVersion': 1,
+    });
+    final controller = _TimerlessController();
+    await tester.runAsync(controller.initialize);
+    addTearDown(controller.dispose);
+    await controller.markStoryBeatSeen(StoryBeatIds.opening);
+    await controller.markStoryBeatSeen(journeyChapters.first.storyBeatId);
+
+    await tester.pumpWidget(
+      MaterialApp(home: JourneyScreen(controller: controller)),
+    );
+    await tester.pump(const Duration(milliseconds: 500));
+
+    for (final chapter in journeyChapters) {
+      expect(find.byKey(ValueKey('landmark-${chapter.id}')), findsOneWidget);
+    }
+    expect(find.byKey(const ValueKey('final-landmark')), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 }
 

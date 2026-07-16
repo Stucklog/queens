@@ -4,10 +4,11 @@ import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/core/exact_solver.dart';
 import 'package:regalia/core/models.dart';
 import 'package:regalia/main.dart';
+import 'package:regalia/screens/game_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  testWidgets('tutorial to clean solve to persistence to replay', (
+  testWidgets('tutorial to opening to puzzle one and map movement', (
     tester,
   ) async {
     SharedPreferences.setMockInitialValues({});
@@ -18,12 +19,22 @@ void main() {
     expect(find.text("Welcome to Queen's Regalia"), findsOneWidget);
 
     await tester.tap(find.text('Skip'));
-    await tester.pump(const Duration(milliseconds: 100));
-    expect(find.text('Your royal journey'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.text('The Crown Takes Flight'), findsOneWidget);
 
-    await tester.tap(find.text('Play next'));
-    await tester.pump();
-    await tester.pump(const Duration(seconds: 1));
+    await tester.tap(find.text('Begin journey'));
+    await tester.pumpAndSettle();
+    expect(find.text('Clovermead'), findsWidgets);
+    expect(find.text('Follow the road'), findsOneWidget);
+
+    await tester.tap(find.text('Follow the road'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('puzzle-node-120')), findsOneWidget);
+
+    final firstNode = find.byKey(const ValueKey('puzzle-node-1'));
+    await tester.ensureVisible(firstNode);
+    await tester.tap(firstNode);
+    await tester.pumpAndSettle();
     final puzzle = controller.catalog!.puzzles.first;
     expect(
       find.text('${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'),
@@ -51,12 +62,31 @@ void main() {
       CompletionStatus.cleanSolved,
     );
 
-    await tester.tap(find.text('Replay'));
+    await tester.tap(find.text('Advance'));
+    for (
+      var frame = 0;
+      frame < 16 && find.byType(GameScreen).evaluate().isNotEmpty;
+      frame++
+    ) {
+      await tester.pump(const Duration(milliseconds: 50));
+    }
     await tester.pump(const Duration(milliseconds: 100));
-    expect(
-      controller.boardFor(puzzle).cells,
-      everyElement(ManualCellState.empty),
-    );
+    expect(find.byType(GameScreen), findsNothing);
+    expect(find.textContaining('tap to skip'), findsOneWidget);
+    await tester.tap(find.textContaining('tap to skip'));
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 450));
+    expect(controller.frontierPuzzle?.order, 2);
+    expect(find.byKey(const ValueKey('puzzle-node-2')), findsOneWidget);
+
+    expect(find.text('Next puzzle'), findsOneWidget);
+    final secondNode = find.byKey(const ValueKey('puzzle-node-2'));
+    await tester.ensureVisible(secondNode);
+    await tester.tap(secondNode);
+    await tester.pumpAndSettle();
+    final second = controller.catalog!.puzzles[1];
+    expect(find.text('Puzzle ${second.order} of 120'), findsOneWidget);
+
     await tester.runAsync(controller.flushPersistence);
     await tester.pumpWidget(const SizedBox.shrink());
     controller.dispose();
@@ -65,10 +95,8 @@ void main() {
     await tester.runAsync(restored.initialize);
     expect(restored.tutorialComplete, isTrue);
     expect(restored.recordFor(puzzle.id).status, CompletionStatus.cleanSolved);
-    expect(
-      restored.boardFor(puzzle).cells,
-      everyElement(ManualCellState.empty),
-    );
+    expect(restored.frontierPuzzle?.order, 2);
+    expect(restored.hasSeenStoryBeat('opening'), isTrue);
     restored.dispose();
   });
 }

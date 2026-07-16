@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../core/challenge_generator.dart';
 import '../core/human_solver.dart';
 import '../core/models.dart';
 import '../core/rule_engine.dart';
+import 'challenge.dart';
+import 'journey.dart';
 
 class AppSettings {
   const AppSettings({
@@ -57,10 +60,13 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   AppController({
     this.ruleEngine = const RuleEngine(),
     this.humanSolver = const HumanSolver(),
+    this.challengePuzzleFactory = generateChallengePuzzle,
   });
 
   final RuleEngine ruleEngine;
   final HumanSolver humanSolver;
+  final ChallengePuzzleFactory challengePuzzleFactory;
+  static const journeySchemaVersion = 1;
   late final SharedPreferences _preferences;
   late final String _catalogFingerprint;
   PuzzleCatalog? catalog;
@@ -68,11 +74,18 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   AppSettings settings = const AppSettings();
   final Map<String, BoardState> boards = {};
   final Map<String, CompletionRecord> records = {};
+  final Set<String> seenStoryBeatIds = {};
+  ChallengeSession? challengeSession;
+  bool isStartingChallenge = false;
+  bool isPreparingChallenge = false;
+  Object? challengeGenerationError;
   bool tutorialComplete = false;
   String? lastPuzzleId;
   Timer? _timer;
   String? _activePuzzleId;
   Future<void> _saveChain = Future.value();
+  Future<void>? _challengePrefetch;
+  bool _disposed = false;
 
   bool get isReady => catalog != null;
 
@@ -92,8 +105,28 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     settings =
         _decode('regalia.settings', AppSettings.fromJson) ??
         const AppSettings();
+    challengeSession = _decode(
+      'regalia.challengeSession',
+      ChallengeSession.fromJson,
+    );
     tutorialComplete =
         _preferences.getBool('regalia.tutorialComplete') ?? false;
+    if (_preferences.getInt('regalia.journeySchemaVersion') !=
+        journeySchemaVersion) {
+      // Version one changes a freely selectable collection into a strict
+      // journey. Old attempt data cannot establish a trustworthy frontier, so
+      // it is cleared once while settings and tutorial completion survive.
+      await Future.wait([
+        _preferences.remove('regalia.boards'),
+        _preferences.remove('regalia.records'),
+        _preferences.remove('regalia.lastPuzzle'),
+        _preferences.remove('regalia.seenStoryBeats'),
+        _preferences.setInt(
+          'regalia.journeySchemaVersion',
+          journeySchemaVersion,
+        ),
+      ]);
+    }
     if (_preferences.getString('regalia.catalogFingerprint') !=
         _catalogFingerprint) {
       // Puzzle IDs stay stable between curated releases. Discard attempt data
@@ -157,7 +190,12 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         debugPrint('Ignoring invalid completion records: $error');
       }
     }
+    final seenPayload = _preferences.getStringList('regalia.seenStoryBeats');
+    if (seenPayload != null) seenStoryBeatIds.addAll(seenPayload);
     notifyListeners();
+    if (challengeSession != null && challengeSession!.queuedPuzzle == null) {
+      unawaited(ensureChallengeQueued());
+    }
   }
 
   T? _decode<T>(String key, T Function(Map<String, Object?>) decode) {
@@ -171,13 +209,177 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     }
   }
 
-  BoardState boardFor(PuzzleDefinition puzzle) => boards.putIfAbsent(
-    puzzle.id,
-    () => BoardState(puzzleId: puzzle.id, size: puzzle.size),
-  );
+  BoardState boardFor(PuzzleDefinition puzzle) {
+    final challenge = challengeSession;
+    if (challenge?.currentPuzzle.id == puzzle.id) return challenge!.board;
+    return boards.putIfAbsent(
+      puzzle.id,
+      () => BoardState(puzzleId: puzzle.id, size: puzzle.size),
+    );
+  }
+
+  BoardState? _boardById(String puzzleId) {
+    final challenge = challengeSession;
+    if (challenge?.currentPuzzle.id == puzzleId) return challenge!.board;
+    return boards[puzzleId];
+  }
+
+  bool get hasChallenge => challengeSession != null;
+
+  Future<bool> startChallenge(ChallengeMode mode, {int? seed}) async {
+    if (isStartingChallenge) return false;
+    isStartingChallenge = true;
+    challengeGenerationError = null;
+    notifyListeners();
+    final sessionSeed =
+        seed ?? (DateTime.now().microsecondsSinceEpoch & 0x7fffffff);
+    final spec = challengeSpec(mode: mode, sessionSeed: sessionSeed, number: 1);
+    try {
+      final puzzle = await challengePuzzleFactory(spec);
+      if (_disposed) return false;
+      challengeSession = ChallengeSession(
+        seed: sessionSeed,
+        mode: mode,
+        currentNumber: 1,
+        currentPuzzle: puzzle,
+        board: BoardState(puzzleId: puzzle.id, size: puzzle.size),
+        completedCount: 0,
+        cleanCount: 0,
+        assistedCount: 0,
+      );
+      isStartingChallenge = false;
+      challengeGenerationError = null;
+      notifyListeners();
+      await _save();
+      unawaited(ensureChallengeQueued());
+      return true;
+    } on Object catch (error) {
+      if (_disposed) return false;
+      isStartingChallenge = false;
+      challengeGenerationError = error;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<void> ensureChallengeQueued() {
+    final session = challengeSession;
+    if (session == null || session.queuedPuzzle != null) {
+      return Future.value();
+    }
+    final existing = _challengePrefetch;
+    if (existing != null) return existing;
+    isPreparingChallenge = true;
+    challengeGenerationError = null;
+    if (!_disposed) notifyListeners();
+    final operation = _runChallengePrefetch(
+      session.seed,
+      session.currentNumber,
+      challengeSpec(
+        mode: session.mode,
+        sessionSeed: session.seed,
+        number: session.currentNumber + 1,
+      ),
+    );
+    _challengePrefetch = operation;
+    return operation;
+  }
+
+  Future<void> _runChallengePrefetch(
+    int sessionSeed,
+    int currentNumber,
+    ChallengeGenerationSpec spec,
+  ) async {
+    try {
+      final puzzle = await challengePuzzleFactory(spec);
+      if (_disposed) return;
+      final current = challengeSession;
+      if (current != null &&
+          current.seed == sessionSeed &&
+          current.currentNumber == currentNumber &&
+          current.queuedPuzzle == null) {
+        challengeSession = current.withQueued(puzzle);
+        challengeGenerationError = null;
+        await _save();
+      }
+    } on Object catch (error) {
+      if (!_disposed) challengeGenerationError = error;
+    } finally {
+      if (!_disposed) {
+        final current = challengeSession;
+        final prepareReplacement =
+            current != null &&
+            current.queuedPuzzle == null &&
+            (current.seed != sessionSeed ||
+                current.currentNumber != currentNumber);
+        isPreparingChallenge = false;
+        _challengePrefetch = null;
+        notifyListeners();
+        if (prepareReplacement) unawaited(ensureChallengeQueued());
+      }
+    }
+  }
+
+  bool openChallengePuzzle() {
+    if (challengeSession == null) return false;
+    unawaited(_save());
+    notifyListeners();
+    return true;
+  }
+
+  Future<PuzzleDefinition?> advanceChallenge() async {
+    var session = challengeSession;
+    if (session == null) return null;
+    if (!session.currentCompleted) return session.currentPuzzle;
+    if (session.queuedPuzzle == null) {
+      await ensureChallengeQueued();
+      session = challengeSession;
+    }
+    final next = session?.queuedPuzzle;
+    if (session == null || next == null) return null;
+    challengeSession = session.advanceTo(next);
+    challengeGenerationError = null;
+    notifyListeners();
+    await _save();
+    unawaited(ensureChallengeQueued());
+    return next;
+  }
+
+  Future<void> abandonChallenge() async {
+    stopTimer();
+    challengeSession = null;
+    challengeGenerationError = null;
+    isPreparingChallenge = false;
+    notifyListeners();
+    await _save();
+  }
 
   CompletionRecord recordFor(String id) =>
       records[id] ?? const CompletionRecord();
+
+  JourneyProgress get journeyProgress => JourneyProgress.derive(
+    catalog: catalog!,
+    recordFor: recordFor,
+    hasActiveBoard: hasActiveBoard,
+  );
+
+  PuzzleDefinition? get frontierPuzzle => journeyProgress.frontierPuzzle;
+
+  bool get isJourneyComplete => journeyProgress.isJourneyComplete;
+
+  bool canOpenPuzzle(PuzzleDefinition puzzle) =>
+      journeyProgress.canOpen(puzzle, recordFor(puzzle.id));
+
+  bool hasSeenStoryBeat(String id) => seenStoryBeatIds.contains(id);
+
+  Future<void> markStoryBeatSeen(String id) async {
+    if (!seenStoryBeatIds.add(id)) return;
+    notifyListeners();
+    await _preferences.setStringList(
+      'regalia.seenStoryBeats',
+      seenStoryBeatIds.toList()..sort(),
+    );
+  }
 
   CompletionStatus statusFor(PuzzleDefinition puzzle) =>
       hasActiveBoard(puzzle)
@@ -186,21 +388,12 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
 
   PuzzleDefinition recommendedPuzzle() {
     final puzzles = catalog!.puzzles;
-    if (lastPuzzleId != null) {
-      final board = boards[lastPuzzleId!];
-      final puzzle = catalog!.byId(lastPuzzleId!);
-      if (board != null && hasActiveBoard(puzzle)) {
-        return puzzle;
-      }
-    }
+    final frontier = frontierPuzzle;
+    if (frontier != null) return frontier;
     return puzzles.firstWhere(
-      (puzzle) => recordFor(puzzle.id).status == CompletionStatus.newPuzzle,
-      orElse:
-          () => puzzles.firstWhere(
-            (puzzle) =>
-                recordFor(puzzle.id).status == CompletionStatus.assistedSolved,
-            orElse: () => puzzles.first,
-          ),
+      (puzzle) =>
+          recordFor(puzzle.id).status == CompletionStatus.assistedSolved,
+      orElse: () => puzzles.first,
     );
   }
 
@@ -211,7 +404,10 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         !ruleEngine.isComplete(puzzle, board);
   }
 
-  void openPuzzle(PuzzleDefinition puzzle) {
+  bool openPuzzle(PuzzleDefinition puzzle) {
+    // Keep this guard before every mutation, including board creation and the
+    // last-puzzle pointer. A locked node is a completely read-only action.
+    if (!canOpenPuzzle(puzzle)) return false;
     lastPuzzleId = puzzle.id;
     final board = boardFor(puzzle);
     final record = recordFor(puzzle.id);
@@ -225,7 +421,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
       if (hasActiveBoard(puzzle)) {
         unawaited(_save());
         notifyListeners();
-        return;
+        return true;
       }
       board.cells.fillRange(0, board.cells.length, ManualCellState.empty);
       board.undoStack.clear();
@@ -243,9 +439,10 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     }
     unawaited(_save());
     notifyListeners();
+    return true;
   }
 
-  bool cycle(PuzzleDefinition puzzle, Cell cell) {
+  PuzzleCompletionOutcome? cycle(PuzzleDefinition puzzle, Cell cell) {
     final board = boardFor(puzzle)..cycle(cell);
     final completed = _recordCompletionIfNeeded(puzzle, board);
     unawaited(_save());
@@ -253,7 +450,11 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     return completed;
   }
 
-  bool setCell(PuzzleDefinition puzzle, Cell cell, ManualCellState state) {
+  PuzzleCompletionOutcome? setCell(
+    PuzzleDefinition puzzle,
+    Cell cell,
+    ManualCellState state,
+  ) {
     final board = boardFor(puzzle)..set(cell, state);
     final completed = _recordCompletionIfNeeded(puzzle, board);
     unawaited(_save());
@@ -272,13 +473,44 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     }
   }
 
-  bool _recordCompletionIfNeeded(PuzzleDefinition puzzle, BoardState board) {
-    if (!ruleEngine.isComplete(puzzle, board)) return false;
+  PuzzleCompletionOutcome? _recordCompletionIfNeeded(
+    PuzzleDefinition puzzle,
+    BoardState board,
+  ) {
+    if (!ruleEngine.isComplete(puzzle, board)) return null;
+    final challenge = challengeSession;
+    if (challenge?.currentPuzzle.id == puzzle.id) {
+      challengeSession = challenge!.complete(assisted: board.assisted);
+      stopTimer();
+      return PuzzleCompletionOutcome(
+        puzzle: puzzle,
+        advancedJourney: false,
+        nextPuzzle: null,
+        enteredChapter: null,
+        isJourneyComplete: false,
+        isChallenge: true,
+      );
+    }
+    final wasFrontier = frontierPuzzle?.id == puzzle.id;
     records[puzzle.id] = recordFor(
       puzzle.id,
     ).complete(assisted: board.assisted, seconds: board.elapsedSeconds);
     stopTimer();
-    return true;
+    final next = frontierPuzzle;
+    final currentChapter = chapterForOrder(puzzle.order);
+    final nextChapter = next == null ? null : chapterForOrder(next.order);
+    return PuzzleCompletionOutcome(
+      puzzle: puzzle,
+      advancedJourney: wasFrontier,
+      nextPuzzle: wasFrontier ? next : null,
+      enteredChapter:
+          wasFrontier &&
+                  nextChapter != null &&
+                  nextChapter.id != currentChapter.id
+              ? nextChapter
+              : null,
+      isJourneyComplete: wasFrontier && next == null,
+    );
   }
 
   void undo(PuzzleDefinition puzzle) {
@@ -302,6 +534,11 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     board.assisted = false;
     board.hintCount = 0;
     board.checkCount = 0;
+    if (challengeSession?.currentPuzzle.id == puzzle.id) {
+      unawaited(_save());
+      notifyListeners();
+      return;
+    }
     final record = recordFor(puzzle.id);
     records[puzzle.id] = CompletionRecord(
       status:
@@ -342,7 +579,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     _activePuzzleId = puzzleId;
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      final board = boards[puzzleId];
+      final board = _boardById(puzzleId);
       if (board == null) return;
       board.elapsedSeconds++;
       if (board.elapsedSeconds % 10 == 0) unawaited(_save());
@@ -378,6 +615,10 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
       records.map((key, value) => MapEntry(key, value.toJson())),
     );
     final latestPuzzle = lastPuzzleId;
+    final challengeJson =
+        challengeSession == null
+            ? null
+            : jsonEncode(challengeSession!.toJson());
     _saveChain = _saveChain.then(
       (_) => Future.wait([
         _preferences.setString('regalia.settings', settingsJson),
@@ -387,6 +628,18 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         ),
         _preferences.setString('regalia.boards', boardsJson),
         _preferences.setString('regalia.records', recordsJson),
+        _preferences.setInt(
+          'regalia.journeySchemaVersion',
+          journeySchemaVersion,
+        ),
+        _preferences.setStringList(
+          'regalia.seenStoryBeats',
+          seenStoryBeatIds.toList()..sort(),
+        ),
+        if (challengeJson == null)
+          _preferences.remove('regalia.challengeSession')
+        else
+          _preferences.setString('regalia.challengeSession', challengeJson),
         if (latestPuzzle != null)
           _preferences.setString('regalia.lastPuzzle', latestPuzzle),
       ]),
@@ -409,6 +662,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    _disposed = true;
     WidgetsBinding.instance.removeObserver(this);
     _timer?.cancel();
     super.dispose();

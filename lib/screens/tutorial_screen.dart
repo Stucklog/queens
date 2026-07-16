@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../app/app_controller.dart';
@@ -75,13 +77,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                     if (_page == 2) {
                       widget.controller.finishTutorial();
                     } else {
-                      _pages.nextPage(
-                        duration:
-                            MediaQuery.disableAnimationsOf(context)
-                                ? Duration.zero
-                                : const Duration(milliseconds: 240),
-                        curve: Curves.easeOut,
-                      );
+                      _pages.jumpToPage(_page + 1);
                     }
                   },
                   child: Text(_page == 2 ? 'Begin journey' : 'Next'),
@@ -94,62 +90,75 @@ class _TutorialScreenState extends State<TutorialScreen> {
     ),
   );
 
-  Widget _intro(BuildContext context) => Padding(
-    padding: const EdgeInsets.all(32),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const CrownMark(size: 112),
-        const SizedBox(height: 30),
-        Text(
-          "Welcome to Queen's Regalia",
-          style: Theme.of(context).textTheme.displaySmall,
-          textAlign: TextAlign.center,
+  Widget _intro(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      return SingleChildScrollView(
+        padding: const EdgeInsets.all(28),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: math.max(0, constraints.maxHeight - 56),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CrownMark(size: 88),
+              const SizedBox(height: 24),
+              Text(
+                "Welcome to Queen's Regalia",
+                style: Theme.of(context).textTheme.displaySmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 14),
+              Text(
+                'A quiet logic journey. No accounts, no ads, and every puzzle is available offline.',
+                style: Theme.of(context).textTheme.titleMedium,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 16),
-        Text(
-          'A quiet logic journey. No accounts, no ads, and every puzzle is available offline.',
-          style: Theme.of(context).textTheme.titleMedium,
-          textAlign: TextAlign.center,
-        ),
-      ],
-    ),
+      );
+    },
   );
 
-  Widget _rules(BuildContext context) => Center(
-    child: ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 680),
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Three kinds of royalty',
-              style: Theme.of(context).textTheme.headlineMedium,
-              textAlign: TextAlign.center,
+  Widget _rules(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      return SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: constraints.maxHeight),
+          child: Padding(
+            padding: const EdgeInsets.all(28),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Three kinds of royalty',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                const _TutorialRule(
+                  icon: Icons.table_rows,
+                  text: 'Exactly one crown in every row',
+                ),
+                const _TutorialRule(
+                  icon: Icons.view_column,
+                  text: 'Exactly one crown in every column',
+                ),
+                const _TutorialRule(
+                  icon: Icons.grid_view_rounded,
+                  text: 'Exactly one crown in every colored region',
+                ),
+                const _TutorialRule(
+                  icon: Icons.open_with_rounded,
+                  text: 'Crowns may not touch, including diagonally',
+                ),
+              ],
             ),
-            const SizedBox(height: 24),
-            const _TutorialRule(
-              icon: Icons.table_rows,
-              text: 'Exactly one crown in every row',
-            ),
-            const _TutorialRule(
-              icon: Icons.view_column,
-              text: 'Exactly one crown in every column',
-            ),
-            const _TutorialRule(
-              icon: Icons.grid_view_rounded,
-              text: 'Exactly one crown in every colored region',
-            ),
-            const _TutorialRule(
-              icon: Icons.open_with_rounded,
-              text: 'Crowns may not touch, including diagonally',
-            ),
-          ],
+          ),
         ),
-      ),
-    ),
+      );
+    },
   );
 
   Widget _tryBoard(BuildContext context) => LayoutBuilder(

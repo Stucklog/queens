@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'journey.dart';
+
 class RegaliaTheme {
   static const ivory = Color(0xfff8f1e3);
   static const ink = Color(0xff24201d);
@@ -7,21 +9,26 @@ class RegaliaTheme {
   static const charcoal = Color(0xff17191c);
   static const jewel = Color(0xff3d8078);
 
-  static ThemeData light() => _theme(
+  static ThemeData light([JourneyPalette? palette]) => _theme(
     brightness: Brightness.light,
-    background: ivory,
-    surface: const Color(0xfffffbf3),
-    primary: ink,
-    secondary: gold,
+    background: palette?.lightBackground ?? ivory,
+    surface: palette?.lightSurface ?? const Color(0xfffffbf3),
+    primary: palette?.primary ?? ink,
+    secondary: palette?.secondary ?? gold,
   );
 
-  static ThemeData dark() => _theme(
+  static ThemeData dark([JourneyPalette? palette]) => _theme(
     brightness: Brightness.dark,
-    background: charcoal,
-    surface: const Color(0xff24272b),
+    background: palette?.darkBackground ?? charcoal,
+    surface: palette?.darkSurface ?? const Color(0xff24272b),
     primary: const Color(0xffe9dfcf),
-    secondary: jewel,
+    secondary: palette?.secondary ?? jewel,
   );
+
+  static ThemeData forChapter(Brightness brightness, JourneyChapter chapter) =>
+      brightness == Brightness.dark
+          ? dark(chapter.palette)
+          : light(chapter.palette);
 
   static ThemeData _theme({
     required Brightness brightness,
@@ -42,7 +49,11 @@ class RegaliaTheme {
       cardTheme: CardThemeData(
         color: surface,
         elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: const RoundedRectangleBorder(side: BorderSide(width: 2)),
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: surface,
+        shape: const RoundedRectangleBorder(side: BorderSide(width: 3)),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
@@ -52,13 +63,24 @@ class RegaliaTheme {
       fontFamily: 'RegaliaSans',
       textTheme: _type(ThemeData(brightness: brightness).textTheme, primary),
       focusColor: secondary.withValues(alpha: .35),
+      splashFactory: NoSplash.splashFactory,
+      filledButtonTheme: const FilledButtonThemeData(
+        style: ButtonStyle(
+          shape: WidgetStatePropertyAll(RoundedRectangleBorder()),
+        ),
+      ),
+      outlinedButtonTheme: const OutlinedButtonThemeData(
+        style: ButtonStyle(
+          shape: WidgetStatePropertyAll(RoundedRectangleBorder()),
+        ),
+      ),
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {
-          TargetPlatform.android: FadeForwardsPageTransitionsBuilder(),
-          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.windows: FadeForwardsPageTransitionsBuilder(),
-          TargetPlatform.linux: FadeForwardsPageTransitionsBuilder(),
+          TargetPlatform.android: _InstantPageTransitionsBuilder(),
+          TargetPlatform.iOS: _InstantPageTransitionsBuilder(),
+          TargetPlatform.macOS: _InstantPageTransitionsBuilder(),
+          TargetPlatform.windows: _InstantPageTransitionsBuilder(),
+          TargetPlatform.linux: _InstantPageTransitionsBuilder(),
         },
       ),
     );
@@ -98,4 +120,17 @@ class RegaliaTheme {
           color: color,
         ),
       );
+}
+
+class _InstantPageTransitionsBuilder extends PageTransitionsBuilder {
+  const _InstantPageTransitionsBuilder();
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) => child;
 }

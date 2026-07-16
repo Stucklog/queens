@@ -50,8 +50,14 @@ Future<void> main() async {
 Uint8List _iconPng(int size) {
   final pixels = Uint8List(size * size * 4);
   const ivory = [248, 241, 227, 255];
+  const ivoryShade = [222, 211, 191, 255];
   const ink = [36, 32, 29, 255];
+  const inkLight = [70, 62, 55, 255];
   const gold = [182, 128, 50, 255];
+  const goldShadow = [120, 78, 35, 255];
+  const goldLight = [240, 190, 78, 255];
+  const jewel = [61, 128, 120, 255];
+  const gridSize = 48;
 
   void pixel(int x, int y, List<int> color) {
     if (x < 0 || y < 0 || x >= size || y >= size) return;
@@ -61,55 +67,52 @@ Uint8List _iconPng(int size) {
 
   for (var y = 0; y < size; y++) {
     for (var x = 0; x < size; x++) {
-      final radius = size * .19;
-      final dx =
-          x < radius
-              ? radius - x
-              : x > size - radius
-              ? x - (size - radius)
-              : 0;
-      final dy =
-          y < radius
-              ? radius - y
-              : y > size - radius
-              ? y - (size - radius)
-              : 0;
-      pixel(x, y, dx * dx + dy * dy > radius * radius ? ink : ivory);
-    }
-  }
+      final gx = x * gridSize ~/ size;
+      final gy = y * gridSize ~/ size;
+      final edgeX = gx < gridSize - 1 - gx ? gx : gridSize - 1 - gx;
+      final edgeY = gy < gridSize - 1 - gy ? gy : gridSize - 1 - gy;
+      final clippedCorner = edgeX < 5 && edgeY < 5 && edgeX + edgeY < 5;
+      var color = clippedCorner ? ink : ivory;
 
-  final line = (size * .035).ceil();
-  for (final fraction in [.32, .68]) {
-    final center = (size * fraction).round();
-    for (var offset = -line ~/ 2; offset <= line ~/ 2; offset++) {
-      for (
-        var axis = (size * .12).round();
-        axis < (size * .88).round();
-        axis++
-      ) {
-        pixel(center + offset, axis, ink);
-        pixel(axis, center + offset, ink);
-      }
-    }
-  }
+      final onGrid =
+          ((gx == 15 || gx == 16 || gx == 31 || gx == 32) &&
+              gy >= 6 &&
+              gy <= 41) ||
+          ((gy == 15 || gy == 16 || gy == 31 || gy == 32) &&
+              gx >= 6 &&
+              gx <= 41);
+      if (onGrid) color = ink;
+      final gridHighlight =
+          ((gx == 17 || gx == 33) && gy >= 6 && gy <= 41) ||
+          ((gy == 17 || gy == 33) && gx >= 6 && gx <= 41);
+      if (gridHighlight) color = inkLight;
 
-  final crown = <(double, double)>[
-    (.18, .39),
-    (.34, .57),
-    (.50, .24),
-    (.66, .57),
-    (.82, .39),
-    (.74, .73),
-    (.26, .73),
-  ];
-  for (var y = (size * .2).floor(); y <= (size * .78).ceil(); y++) {
-    for (var x = (size * .14).floor(); x <= (size * .86).ceil(); x++) {
-      if (_inside(x / size, y / size, crown)) pixel(x, y, gold);
-    }
-  }
-  for (var y = (size * .77).floor(); y <= (size * .84).ceil(); y++) {
-    for (var x = (size * .24).floor(); x <= (size * .76).ceil(); x++) {
-      pixel(x, y, gold);
+      bool inRect(int left, int top, int width, int height) =>
+          gx >= left && gx < left + width && gy >= top && gy < top + height;
+      final crownShadow =
+          inRect(8, 14, 7, 18) ||
+          inRect(21, 8, 8, 24) ||
+          inRect(35, 14, 6, 18) ||
+          inRect(10, 25, 31, 12) ||
+          inRect(13, 40, 26, 5);
+      if (crownShadow) color = goldShadow;
+      final onCrown =
+          inRect(10, 14, 5, 16) ||
+          inRect(23, 8, 6, 22) ||
+          inRect(36, 14, 5, 16) ||
+          inRect(11, 25, 30, 10) ||
+          inRect(14, 39, 25, 4);
+      if (onCrown) color = gold;
+      final crownHighlight =
+          inRect(11, 14, 2, 12) ||
+          inRect(24, 8, 2, 17) ||
+          inRect(37, 14, 2, 12) ||
+          inRect(13, 26, 19, 2) ||
+          inRect(16, 39, 16, 1);
+      if (crownHighlight) color = goldLight;
+      if (inRect(22, 30, 7, 4)) color = jewel;
+      if (inRect(23, 30, 4, 1)) color = ivoryShade;
+      pixel(x, y, color);
     }
   }
 
@@ -125,19 +128,6 @@ Uint8List _iconPng(int size) {
   png.add(_chunk('IDAT', ZLibEncoder().convert(raw.takeBytes())));
   png.add(_chunk('IEND', const []));
   return png.takeBytes();
-}
-
-bool _inside(double x, double y, List<(double, double)> polygon) {
-  var inside = false;
-  for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-    final a = polygon[i];
-    final b = polygon[j];
-    if ((a.$2 > y) != (b.$2 > y) &&
-        x < (b.$1 - a.$1) * (y - a.$2) / (b.$2 - a.$2) + a.$1) {
-      inside = !inside;
-    }
-  }
-  return inside;
 }
 
 List<int> _chunk(String type, List<int> data) {

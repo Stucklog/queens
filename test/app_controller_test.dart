@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
+import 'package:regalia/app/journey.dart';
 import 'package:regalia/core/exact_solver.dart';
 import 'package:regalia/core/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -167,4 +168,178 @@ void main() {
     expect(restored.tutorialComplete, isTrue);
     restored.dispose();
   });
+
+  test(
+    'only the first frontier can open and locked attempts are inert',
+    () async {
+      SharedPreferences.setMockInitialValues({
+        'regalia.tutorialComplete': true,
+      });
+      final controller = AppController();
+      await controller.initialize();
+      final first = controller.catalog!.puzzles.first;
+      final second = controller.catalog!.puzzles[1];
+
+      expect(controller.frontierPuzzle, first);
+      expect(controller.canOpenPuzzle(first), isTrue);
+      expect(controller.canOpenPuzzle(second), isFalse);
+      expect(controller.openPuzzle(second), isFalse);
+      expect(controller.boards, isEmpty);
+      expect(controller.records, isEmpty);
+      expect(controller.lastPuzzleId, isNull);
+
+      expect(controller.openPuzzle(first), isTrue);
+      expect(controller.boards.keys, contains(first.id));
+      controller.dispose();
+    },
+  );
+
+  test('clean and assisted frontier solves both advance', () async {
+    SharedPreferences.setMockInitialValues({'regalia.tutorialComplete': true});
+    final controller = AppController();
+    await controller.initialize();
+    final solver = const ExactSolver();
+    final first = controller.catalog!.puzzles.first;
+    controller.openPuzzle(first);
+    final firstSolution = solver.solve(first, limit: 1).solutions.single;
+    PuzzleCompletionOutcome? cleanOutcome;
+    for (final cell in firstSolution) {
+      cleanOutcome = controller.setCell(first, cell, ManualCellState.crown);
+    }
+    expect(cleanOutcome?.advancedJourney, isTrue);
+    expect(cleanOutcome?.nextPuzzle?.order, 2);
+    expect(controller.frontierPuzzle?.order, 2);
+
+    final second = controller.frontierPuzzle!;
+    controller.openPuzzle(second);
+    controller.checkProgress(second);
+    final secondSolution = solver.solve(second, limit: 1).solutions.single;
+    PuzzleCompletionOutcome? assistedOutcome;
+    for (final cell in secondSolution) {
+      assistedOutcome = controller.setCell(second, cell, ManualCellState.crown);
+    }
+    expect(assistedOutcome?.advancedJourney, isTrue);
+    expect(
+      controller.recordFor(second.id).status,
+      CompletionStatus.assistedSolved,
+    );
+    expect(controller.frontierPuzzle?.order, 3);
+    controller.dispose();
+  });
+
+  test('replaying an older puzzle cannot move the frontier', () async {
+    SharedPreferences.setMockInitialValues({'regalia.tutorialComplete': true});
+    final controller = AppController();
+    await controller.initialize();
+    final puzzle = controller.catalog!.puzzles.first;
+    final solution =
+        const ExactSolver().solve(puzzle, limit: 1).solutions.single;
+    controller.openPuzzle(puzzle);
+    for (final cell in solution) {
+      controller.setCell(puzzle, cell, ManualCellState.crown);
+    }
+    expect(controller.frontierPuzzle?.order, 2);
+
+    controller.openPuzzle(puzzle);
+    PuzzleCompletionOutcome? replayOutcome;
+    for (final cell in solution) {
+      replayOutcome = controller.setCell(puzzle, cell, ManualCellState.crown);
+    }
+    expect(replayOutcome?.advancedJourney, isFalse);
+    expect(replayOutcome?.nextPuzzle, isNull);
+    expect(controller.frontierPuzzle?.order, 2);
+    controller.dispose();
+  });
+
+  test(
+    'chapter boundaries and the final completion are derived in order',
+    () async {
+      SharedPreferences.setMockInitialValues({
+        'regalia.tutorialComplete': true,
+      });
+      final controller = AppController();
+      await controller.initialize();
+      final puzzles = controller.catalog!.puzzles;
+      for (final puzzle in puzzles.take(19)) {
+        controller.records[puzzle.id] = const CompletionRecord(
+          status: CompletionStatus.cleanSolved,
+        );
+      }
+      final twentieth = puzzles[19];
+      controller.openPuzzle(twentieth);
+      PuzzleCompletionOutcome? boundaryOutcome;
+      for (final cell
+          in const ExactSolver().solve(twentieth, limit: 1).solutions.single) {
+        boundaryOutcome = controller.setCell(
+          twentieth,
+          cell,
+          ManualCellState.crown,
+        );
+      }
+      expect(boundaryOutcome?.enteredChapter?.title, 'Whisperwood');
+      expect(controller.frontierPuzzle?.order, 21);
+
+      for (final puzzle in puzzles.take(119)) {
+        controller.records[puzzle.id] = CompletionRecord(
+          status:
+              puzzle.order == 7
+                  ? CompletionStatus.assistedSolved
+                  : CompletionStatus.cleanSolved,
+        );
+      }
+      final finalPuzzle = puzzles.last;
+      controller.openPuzzle(finalPuzzle);
+      PuzzleCompletionOutcome? finalOutcome;
+      for (final cell
+          in const ExactSolver()
+              .solve(finalPuzzle, limit: 1)
+              .solutions
+              .single) {
+        finalOutcome = controller.setCell(
+          finalPuzzle,
+          cell,
+          ManualCellState.crown,
+        );
+      }
+      expect(finalOutcome?.isJourneyComplete, isTrue);
+      expect(controller.isJourneyComplete, isTrue);
+      expect(controller.recommendedPuzzle().order, 7);
+      expect(puzzles.every(controller.canOpenPuzzle), isTrue);
+      controller.dispose();
+    },
+  );
+
+  test(
+    'journey migration resets progress once but preserves preferences',
+    () async {
+      SharedPreferences.setMockInitialValues({});
+      final first = AppController();
+      await first.initialize();
+      await first.finishTutorial();
+      first.updateSettings(
+        first.settings.copyWith(themeMode: ThemeMode.dark, reducedMotion: true),
+      );
+      await first.markStoryBeatSeen('opening');
+      final puzzle = first.catalog!.puzzles.first;
+      first.openPuzzle(puzzle);
+      first.cycle(puzzle, const Cell(0, 0));
+      await first.flushPersistence();
+      first.dispose();
+
+      final preferences = await SharedPreferences.getInstance();
+      await preferences.setInt('regalia.journeySchemaVersion', 0);
+
+      final migrated = AppController();
+      await migrated.initialize();
+      expect(migrated.boards, isEmpty);
+      expect(migrated.records, isEmpty);
+      expect(migrated.lastPuzzleId, isNull);
+      expect(migrated.seenStoryBeatIds, isEmpty);
+      expect(migrated.tutorialComplete, isTrue);
+      expect(migrated.settings.themeMode, ThemeMode.dark);
+      expect(migrated.settings.reducedMotion, isTrue);
+      expect(preferences.getInt('regalia.journeySchemaVersion'), 1);
+      migrated.dispose();
+    },
+  );
 }

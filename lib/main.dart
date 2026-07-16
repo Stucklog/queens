@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'app/app_controller.dart';
+import 'app/journey.dart';
 import 'app/theme.dart';
 import 'screens/journey_screen.dart';
+import 'screens/story_scene_screen.dart';
 import 'screens/tutorial_screen.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const RegaliaBootstrap());
 }
 
@@ -58,13 +62,33 @@ class RegaliaApp extends StatelessWidget {
           themeMode: controller.settings.themeMode,
           builder: (context, child) {
             final media = MediaQuery.of(context);
-            return MediaQuery(
-              data: media.copyWith(
-                disableAnimations:
-                    media.disableAnimations ||
-                    controller.settings.reducedMotion,
+            final portraitWidth =
+                media.size.width
+                    .clamp(
+                      0.0,
+                      media.size.height * .62 > 600
+                          ? 600
+                          : media.size.height * .62,
+                    )
+                    .toDouble();
+            return ColoredBox(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: SizedBox(
+                  width: portraitWidth,
+                  height: media.size.height,
+                  child: MediaQuery(
+                    data: media.copyWith(
+                      size: Size(portraitWidth, media.size.height),
+                      disableAnimations:
+                          media.disableAnimations ||
+                          controller.settings.reducedMotion,
+                    ),
+                    child: child!,
+                  ),
+                ),
               ),
-              child: child!,
             );
           },
           home:
@@ -72,9 +96,11 @@ class RegaliaApp extends StatelessWidget {
                   ? _StartupError(error: startupError!)
                   : !controller.isReady
                   ? const _LoadingScreen()
-                  : controller.tutorialComplete
-                  ? JourneyScreen(controller: controller)
-                  : TutorialScreen(controller: controller),
+                  : !controller.tutorialComplete
+                  ? TutorialScreen(controller: controller)
+                  : !controller.hasSeenStoryBeat(StoryBeatIds.opening)
+                  ? StorySceneScreen.opening(controller: controller)
+                  : JourneyScreen(controller: controller),
         ),
   );
 }
