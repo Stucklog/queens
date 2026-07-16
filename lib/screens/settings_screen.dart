@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app/app_controller.dart';
+import '../app/branding.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key, required this.controller});
@@ -85,7 +86,7 @@ class SettingsScreen extends StatelessWidget {
             leading: Icon(Icons.shield_outlined),
             title: Text('Private by design'),
             subtitle: Text(
-              "Queen's Regalia uses local device storage only. It has no accounts, analytics, ads, or runtime network services.",
+              '$appName uses local device storage only. It has no accounts, analytics, ads, or runtime network services.',
             ),
           ),
         ],

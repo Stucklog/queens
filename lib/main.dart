@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'app/app_controller.dart';
+import 'app/branding.dart';
 import 'app/journey.dart';
 import 'app/theme.dart';
 import 'screens/journey_screen.dart';
@@ -55,7 +56,7 @@ class RegaliaApp extends StatelessWidget {
     animation: controller,
     builder:
         (context, _) => MaterialApp(
-          title: "Queen's Regalia",
+          title: appName,
           debugShowCheckedModeBanner: false,
           theme: RegaliaTheme.light(),
           darkTheme: RegaliaTheme.dark(),
@@ -125,9 +126,7 @@ class _StartupError extends StatelessWidget {
           children: [
             const Icon(Icons.error_outline, size: 48),
             const SizedBox(height: 16),
-            const Text(
-              "Queen's Regalia could not open its bundled puzzle catalog.",
-            ),
+            const Text('$appName could not open its bundled puzzle catalog.'),
             const SizedBox(height: 8),
             Text('$error', textAlign: TextAlign.center),
           ],

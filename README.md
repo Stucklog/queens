@@ -1,6 +1,6 @@
-# Queen's Regalia
+# Queen’s Regalia
 
-Queen's Regalia is an original, offline Flutter implementation of the one-crown-per-row, column, and region logic puzzle. Crowns may not touch, including diagonally; diagonal alignment at a distance is legal.
+Queen’s Regalia is an original, offline Flutter implementation of the one-crown-per-row, column, and region logic puzzle. Crowns may not touch, including diagonally; diagonal alignment at a distance is legal.
 
 The app contains 120 deterministic, uniquely solvable puzzles plus a separate guided tutorial. They form a linear 16-bit-style scrolling panorama across eight locations: each clean or assisted solve advances an unnamed crown bearer toward Crownspire. Completed puzzles remain replayable, while future route nodes stay visible and locked. All higher-resolution journey scenery and sprites are drawn in Flutter, with no bundled illustration files.
 

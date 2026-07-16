@@ -1,4 +1,4 @@
-name: Deploy Queen's Regalia to GitHub Pages
+name: Deploy Queen’s Regalia to GitHub Pages
 
 on:
   push:

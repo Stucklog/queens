@@ -43,7 +43,7 @@ Future<void> main() async {
     'windows/runner/resources/app_icon.ico',
   ).writeAsBytes(_ico(windowsPng), flush: true);
   stdout.writeln(
-    "Created ${outputs.length + 1} Queen's Regalia jeweled-crown icons.",
+    'Created ${outputs.length + 1} Queen’s Regalia jeweled-crown icons.',
   );
 }
 
