@@ -394,8 +394,10 @@ class _ChallengeRun extends StatelessWidget {
             FilledButton.icon(
               key: const ValueKey('play-challenge'),
               onPressed:
-                  advancing ||
+                  controller.isStartingChallenge ||
+                          advancing ||
                           (session.currentCompleted &&
+                              session.queuedPuzzle == null &&
                               controller.isPreparingChallenge)
                       ? null
                       : onPlay,
@@ -418,6 +420,12 @@ class _ChallengeRun extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 18),
+      if (controller.isStartingChallenge) ...[
+        const LinearProgressIndicator(),
+        const SizedBox(height: 10),
+        const Text('Forging the new run without interrupting this one…'),
+        const SizedBox(height: 18),
+      ],
       Row(
         children: [
           PixelStatusIcon(
@@ -431,7 +439,13 @@ class _ChallengeRun extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: Text(
-              session.queuedPuzzle != null
+              session.preparedPuzzles.length ==
+                      ChallengeSession.preparedCapacity
+                  ? 'Two verified boards are ready.'
+                  : session.queuedPuzzle != null &&
+                      controller.isPreparingChallenge
+                  ? 'The next board is ready while another is prepared.'
+                  : session.queuedPuzzle != null
                   ? 'The next verified board is ready.'
                   : controller.challengeGenerationError != null
                   ? 'The next board needs another generation attempt.'
@@ -459,7 +473,10 @@ class _ChallengeRun extends StatelessWidget {
         ],
       ),
       const SizedBox(height: 12),
-      TextButton(onPressed: onEndRun, child: const Text('End this run')),
+      TextButton(
+        onPressed: controller.isStartingChallenge ? null : onEndRun,
+        child: const Text('End this run'),
+      ),
     ],
   );
 }

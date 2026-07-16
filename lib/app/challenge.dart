@@ -1,4 +1,5 @@
 import '../core/models.dart';
+import '../core/generator.dart';
 import 'journey.dart';
 
 enum ChallengeMode { easy, medium, hard, expert, mixed }
@@ -107,10 +108,14 @@ class ChallengeSession {
     required this.cleanCount,
     required this.assistedCount,
     this.currentCompleted = false,
-    this.queuedPuzzle,
+    this.preparedPuzzles = const [],
+    this.recentSignatures = const [],
   });
 
-  static const schemaVersion = 1;
+  static const schemaVersion = 2;
+  static const preparedCapacity = 2;
+  static const recentSignatureCapacityPerSize = 16;
+  static const recentSignatureCapacity = 80;
 
   final int seed;
   final ChallengeMode mode;
@@ -121,20 +126,62 @@ class ChallengeSession {
   final int cleanCount;
   final int assistedCount;
   final bool currentCompleted;
-  final PuzzleDefinition? queuedPuzzle;
+  final List<PuzzleDefinition> preparedPuzzles;
+  final List<PuzzleDiversitySignature> recentSignatures;
 
-  ChallengeSession withQueued(PuzzleDefinition puzzle) => ChallengeSession(
-    seed: seed,
-    mode: mode,
-    currentNumber: currentNumber,
-    currentPuzzle: currentPuzzle,
-    board: board,
-    completedCount: completedCount,
-    cleanCount: cleanCount,
-    assistedCount: assistedCount,
-    currentCompleted: currentCompleted,
-    queuedPuzzle: puzzle,
-  );
+  PuzzleDefinition? get queuedPuzzle =>
+      preparedPuzzles.isEmpty ? null : preparedPuzzles.first;
+
+  static List<PuzzleDiversitySignature> rememberSignature(
+    Iterable<PuzzleDiversitySignature> existing,
+    PuzzleDiversitySignature signature,
+  ) {
+    final history = [
+      for (final item in existing)
+        if (item.canonicalFingerprint != signature.canonicalFingerprint) item,
+      signature,
+    ];
+    while (history.where((item) => item.size == signature.size).length >
+        recentSignatureCapacityPerSize) {
+      history.removeAt(
+        history.indexWhere((item) => item.size == signature.size),
+      );
+    }
+    if (history.length > recentSignatureCapacity) {
+      history.removeRange(0, history.length - recentSignatureCapacity);
+    }
+    return List.unmodifiable(history);
+  }
+
+  static List<PuzzleDiversitySignature> normalizeSignatures(
+    Iterable<PuzzleDiversitySignature> signatures,
+  ) {
+    var normalized = const <PuzzleDiversitySignature>[];
+    for (final signature in signatures) {
+      normalized = rememberSignature(normalized, signature);
+    }
+    return normalized;
+  }
+
+  ChallengeSession withPrepared(
+    PuzzleDefinition puzzle,
+    PuzzleDiversitySignature signature,
+  ) {
+    if (preparedPuzzles.length >= preparedCapacity) return this;
+    return ChallengeSession(
+      seed: seed,
+      mode: mode,
+      currentNumber: currentNumber,
+      currentPuzzle: currentPuzzle,
+      board: board,
+      completedCount: completedCount,
+      cleanCount: cleanCount,
+      assistedCount: assistedCount,
+      currentCompleted: currentCompleted,
+      preparedPuzzles: [...preparedPuzzles, puzzle],
+      recentSignatures: rememberSignature(recentSignatures, signature),
+    );
+  }
 
   ChallengeSession complete({required bool assisted}) {
     if (currentCompleted) return this;
@@ -148,20 +195,29 @@ class ChallengeSession {
       cleanCount: cleanCount + (assisted ? 0 : 1),
       assistedCount: assistedCount + (assisted ? 1 : 0),
       currentCompleted: true,
-      queuedPuzzle: queuedPuzzle,
+      preparedPuzzles: preparedPuzzles,
+      recentSignatures: recentSignatures,
     );
   }
 
-  ChallengeSession advanceTo(PuzzleDefinition puzzle) => ChallengeSession(
-    seed: seed,
-    mode: mode,
-    currentNumber: currentNumber + 1,
-    currentPuzzle: puzzle,
-    board: BoardState(puzzleId: puzzle.id, size: puzzle.size),
-    completedCount: completedCount,
-    cleanCount: cleanCount,
-    assistedCount: assistedCount,
-  );
+  ChallengeSession advanceToPrepared() {
+    if (preparedPuzzles.isEmpty) {
+      throw StateError('No prepared challenge puzzle');
+    }
+    final puzzle = preparedPuzzles.first;
+    return ChallengeSession(
+      seed: seed,
+      mode: mode,
+      currentNumber: currentNumber + 1,
+      currentPuzzle: puzzle,
+      board: BoardState(puzzleId: puzzle.id, size: puzzle.size),
+      completedCount: completedCount,
+      cleanCount: cleanCount,
+      assistedCount: assistedCount,
+      preparedPuzzles: preparedPuzzles.skip(1).toList(),
+      recentSignatures: recentSignatures,
+    );
+  }
 
   Map<String, Object?> toJson() => {
     'schemaVersion': schemaVersion,
@@ -174,48 +230,105 @@ class ChallengeSession {
     'cleanCount': cleanCount,
     'assistedCount': assistedCount,
     'currentCompleted': currentCompleted,
-    'queuedPuzzle': queuedPuzzle?.toJson(),
+    'preparedPuzzles': [for (final puzzle in preparedPuzzles) puzzle.toJson()],
+    'recentSignatures': [
+      for (final signature in recentSignatures) signature.toJson(),
+    ],
   };
 
   factory ChallengeSession.fromJson(Map<String, Object?> json) {
-    if ((json['schemaVersion'] as num?)?.toInt() != schemaVersion) {
+    final storedSchema = (json['schemaVersion'] as num?)?.toInt();
+    if (storedSchema != 1 && storedSchema != schemaVersion) {
       throw const FormatException('Unsupported challenge session schema');
     }
+    final seed = (json['seed']! as num).toInt();
+    final mode = ChallengeMode.values.firstWhere(
+      (value) => value.name == json['mode'],
+    );
+    final currentNumber = (json['currentNumber']! as num).toInt();
     final puzzle = PuzzleDefinition.fromJson(
       json['currentPuzzle']! as Map<String, Object?>,
     );
     final board = BoardState.fromJson(json['board']! as Map<String, Object?>);
-    if (!puzzle.id.startsWith('challenge-') ||
+    final currentSpec = challengeSpec(
+      mode: mode,
+      sessionSeed: seed,
+      number: currentNumber,
+    );
+    if (currentNumber < 1 ||
+        puzzle.id != currentSpec.puzzleId ||
+        puzzle.order != currentNumber ||
+        puzzle.tier != currentSpec.tier ||
+        puzzle.size != currentSpec.size ||
         board.puzzleId != puzzle.id ||
         board.size != puzzle.size ||
         PuzzleDefinition.stableHash(puzzle.size, puzzle.regions) !=
             puzzle.contentHash) {
       throw const FormatException('Invalid saved challenge puzzle');
     }
-    final queuedJson = json['queuedPuzzle'];
-    final queued =
-        queuedJson is Map<String, Object?>
-            ? PuzzleDefinition.fromJson(queuedJson)
-            : null;
-    if (queued != null &&
-        (!queued.id.startsWith('challenge-') ||
-            PuzzleDefinition.stableHash(queued.size, queued.regions) !=
-                queued.contentHash)) {
-      throw const FormatException('Invalid queued challenge puzzle');
+
+    final storedPrepared = json['preparedPuzzles'];
+    final rawPrepared =
+        storedSchema == 1
+            ? [if (json['queuedPuzzle'] != null) json['queuedPuzzle']]
+            : storedPrepared is List<Object?>
+            ? storedPrepared
+            : const <Object?>[];
+    final prepared = <PuzzleDefinition>[];
+    for (final raw in rawPrepared.take(preparedCapacity)) {
+      try {
+        final candidate = PuzzleDefinition.fromJson(
+          raw! as Map<String, Object?>,
+        );
+        final expectedNumber = currentNumber + prepared.length + 1;
+        final expected = challengeSpec(
+          mode: mode,
+          sessionSeed: seed,
+          number: expectedNumber,
+        );
+        if (candidate.id != expected.puzzleId ||
+            candidate.order != expectedNumber ||
+            candidate.tier != expected.tier ||
+            candidate.size != expected.size ||
+            PuzzleDefinition.stableHash(candidate.size, candidate.regions) !=
+                candidate.contentHash) {
+          break;
+        }
+        prepared.add(candidate);
+      } on Object {
+        break;
+      }
+    }
+
+    final recentSignatures = <PuzzleDiversitySignature>[];
+    if (storedSchema == schemaVersion) {
+      final storedSignatures = json['recentSignatures'];
+      final rawSignatures =
+          storedSignatures is List<Object?>
+              ? storedSignatures
+              : const <Object?>[];
+      for (final raw in rawSignatures) {
+        try {
+          recentSignatures.add(
+            PuzzleDiversitySignature.fromJson(raw! as Map<String, Object?>),
+          );
+        } on Object {
+          // A damaged diversity entry should not discard a valid run.
+        }
+      }
     }
     return ChallengeSession(
-      seed: (json['seed']! as num).toInt(),
-      mode: ChallengeMode.values.firstWhere(
-        (value) => value.name == json['mode'],
-      ),
-      currentNumber: (json['currentNumber']! as num).toInt(),
+      seed: seed,
+      mode: mode,
+      currentNumber: currentNumber,
       currentPuzzle: puzzle,
       board: board,
       completedCount: (json['completedCount'] as num?)?.toInt() ?? 0,
       cleanCount: (json['cleanCount'] as num?)?.toInt() ?? 0,
       assistedCount: (json['assistedCount'] as num?)?.toInt() ?? 0,
       currentCompleted: json['currentCompleted'] as bool? ?? false,
-      queuedPuzzle: queued,
+      preparedPuzzles: prepared,
+      recentSignatures: normalizeSignatures(recentSignatures),
     );
   }
 }

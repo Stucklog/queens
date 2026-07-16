@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/challenge_generator.dart';
+import '../core/generator.dart';
 import '../core/human_solver.dart';
 import '../core/models.dart';
 import '../core/rule_engine.dart';
@@ -85,12 +87,19 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   String? _activePuzzleId;
   Future<void> _saveChain = Future.value();
   Future<void>? _challengePrefetch;
+  final Map<String, int> _challengeRetrySalts = {};
+  List<PuzzleDiversitySignature> _challengeDiversityHistory = const [];
+  bool _challengePreparationAllowed = true;
+  int _challengeStartEpoch = 0;
   bool _disposed = false;
 
   bool get isReady => catalog != null;
 
   Future<void> initialize() async {
     WidgetsBinding.instance.addObserver(this);
+    final lifecycleState = WidgetsBinding.instance.lifecycleState;
+    _challengePreparationAllowed =
+        lifecycleState == null || lifecycleState == AppLifecycleState.resumed;
     final source = await rootBundle.loadString('assets/puzzles/catalog.json');
     final tutorialSource = await rootBundle.loadString(
       'assets/puzzles/tutorial.json',
@@ -109,6 +118,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
       'regalia.challengeSession',
       ChallengeSession.fromJson,
     );
+    _restoreChallengeGenerationState();
     tutorialComplete =
         _preferences.getBool('regalia.tutorialComplete') ?? false;
     if (_preferences.getInt('regalia.journeySchemaVersion') !=
@@ -193,9 +203,70 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     final seenPayload = _preferences.getStringList('regalia.seenStoryBeats');
     if (seenPayload != null) seenStoryBeatIds.addAll(seenPayload);
     notifyListeners();
-    if (challengeSession != null && challengeSession!.queuedPuzzle == null) {
+    if (challengeSession != null &&
+        challengeSession!.preparedPuzzles.length < _challengePreparedTarget) {
       unawaited(ensureChallengeQueued());
     }
+  }
+
+  int get _challengePreparedTarget =>
+      kIsWeb ? 1 : ChallengeSession.preparedCapacity;
+
+  void _restoreChallengeGenerationState() {
+    final historyPayload = _preferences.getString(
+      'regalia.challengeDiversityHistory',
+    );
+    if (historyPayload != null) {
+      try {
+        final raw = jsonDecode(historyPayload);
+        if (raw is List<Object?>) {
+          final restored = <PuzzleDiversitySignature>[];
+          for (final item in raw) {
+            try {
+              restored.add(
+                PuzzleDiversitySignature.fromJson(
+                  item! as Map<String, Object?>,
+                ),
+              );
+            } on Object {
+              // Ignore a damaged entry without discarding the useful history.
+            }
+          }
+          _challengeDiversityHistory = ChallengeSession.normalizeSignatures(
+            restored,
+          );
+        }
+      } on Object catch (error) {
+        debugPrint('Ignoring invalid challenge diversity history: $error');
+      }
+    }
+    for (final signature in challengeSession?.recentSignatures ?? const []) {
+      _rememberChallengeSignature(signature);
+    }
+
+    final retryPayload = _preferences.getString('regalia.challengeRetrySalts');
+    if (retryPayload != null) {
+      try {
+        final raw = jsonDecode(retryPayload);
+        if (raw is Map<String, Object?>) {
+          for (final entry in raw.entries) {
+            final value = entry.value;
+            if (value is num && value.toInt() > 0) {
+              _challengeRetrySalts[entry.key] = value.toInt();
+            }
+          }
+        }
+      } on Object catch (error) {
+        debugPrint('Ignoring invalid challenge retry state: $error');
+      }
+    }
+  }
+
+  void _rememberChallengeSignature(PuzzleDiversitySignature signature) {
+    _challengeDiversityHistory = ChallengeSession.rememberSignature(
+      _challengeDiversityHistory,
+      signature,
+    );
   }
 
   T? _decode<T>(String key, T Function(Map<String, Object?>) decode) {
@@ -228,6 +299,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
 
   Future<bool> startChallenge(ChallengeMode mode, {int? seed}) async {
     if (isStartingChallenge) return false;
+    final startEpoch = ++_challengeStartEpoch;
     isStartingChallenge = true;
     challengeGenerationError = null;
     notifyListeners();
@@ -235,8 +307,22 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         seed ?? (DateTime.now().microsecondsSinceEpoch & 0x7fffffff);
     final spec = challengeSpec(mode: mode, sessionSeed: sessionSeed, number: 1);
     try {
-      final puzzle = await challengePuzzleFactory(spec);
-      if (_disposed) return false;
+      // A replacement run waits for the single existing worker instead of
+      // competing with it for CPU and battery. The busy flag also prevents the
+      // old prefetch from chaining another board while this request waits.
+      final pendingPrefetch = _challengePrefetch;
+      if (pendingPrefetch != null) await pendingPrefetch;
+      if (_disposed || startEpoch != _challengeStartEpoch) return false;
+      challengeGenerationError = null;
+      final result = await challengePuzzleFactory(
+        spec,
+        _challengeGenerationContext(spec),
+      );
+      if (_disposed || startEpoch != _challengeStartEpoch) return false;
+      _validateChallengeResult(result, spec);
+      final puzzle = result.puzzle;
+      _rememberChallengeSignature(result.signature);
+      _challengeRetrySalts.remove(spec.puzzleId);
       challengeSession = ChallengeSession(
         seed: sessionSeed,
         mode: mode,
@@ -246,6 +332,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         completedCount: 0,
         cleanCount: 0,
         assistedCount: 0,
+        recentSignatures: _challengeDiversityHistory,
       );
       isStartingChallenge = false;
       challengeGenerationError = null;
@@ -254,17 +341,22 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
       unawaited(ensureChallengeQueued());
       return true;
     } on Object catch (error) {
-      if (_disposed) return false;
+      if (_disposed || startEpoch != _challengeStartEpoch) return false;
+      _challengeRetrySalts[spec.puzzleId] =
+          (_challengeRetrySalts[spec.puzzleId] ?? 0) + 1;
       isStartingChallenge = false;
       challengeGenerationError = error;
       notifyListeners();
+      await _save();
       return false;
     }
   }
 
   Future<void> ensureChallengeQueued() {
     final session = challengeSession;
-    if (session == null || session.queuedPuzzle != null) {
+    if (session == null ||
+        !_challengePreparationAllowed ||
+        session.preparedPuzzles.length >= _challengePreparedTarget) {
       return Future.value();
     }
     final existing = _challengePrefetch;
@@ -272,56 +364,122 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     isPreparingChallenge = true;
     challengeGenerationError = null;
     if (!_disposed) notifyListeners();
-    final operation = _runChallengePrefetch(
-      session.seed,
-      session.currentNumber,
-      challengeSpec(
-        mode: session.mode,
-        sessionSeed: session.seed,
-        number: session.currentNumber + 1,
-      ),
+    final nextNumber =
+        session.currentNumber + session.preparedPuzzles.length + 1;
+    final spec = challengeSpec(
+      mode: session.mode,
+      sessionSeed: session.seed,
+      number: nextNumber,
     );
+    final operation = _runChallengePrefetch(session.seed, session.mode, spec);
     _challengePrefetch = operation;
     return operation;
   }
 
   Future<void> _runChallengePrefetch(
     int sessionSeed,
-    int currentNumber,
+    ChallengeMode mode,
     ChallengeGenerationSpec spec,
   ) async {
     try {
-      final puzzle = await challengePuzzleFactory(spec);
+      final result = await challengePuzzleFactory(
+        spec,
+        _challengeGenerationContext(spec),
+      );
       if (_disposed) return;
       final current = challengeSession;
       if (current != null &&
           current.seed == sessionSeed &&
-          current.currentNumber == currentNumber &&
-          current.queuedPuzzle == null) {
-        challengeSession = current.withQueued(puzzle);
+          current.mode == mode &&
+          current.currentNumber + current.preparedPuzzles.length + 1 ==
+              spec.number) {
+        _validateChallengeResult(result, spec);
+        _rememberChallengeSignature(result.signature);
+        challengeSession = current.withPrepared(
+          result.puzzle,
+          result.signature,
+        );
+        _challengeRetrySalts.remove(spec.puzzleId);
         challengeGenerationError = null;
         await _save();
       }
     } on Object catch (error) {
-      if (!_disposed) challengeGenerationError = error;
+      final current = challengeSession;
+      if (!_disposed &&
+          current != null &&
+          current.seed == sessionSeed &&
+          current.mode == mode &&
+          current.currentNumber + current.preparedPuzzles.length + 1 ==
+              spec.number) {
+        _challengeRetrySalts[spec.puzzleId] =
+            (_challengeRetrySalts[spec.puzzleId] ?? 0) + 1;
+        challengeGenerationError = error;
+        await _save();
+      }
     } finally {
       if (!_disposed) {
-        final current = challengeSession;
-        final prepareReplacement =
-            current != null &&
-            current.queuedPuzzle == null &&
-            (current.seed != sessionSeed ||
-                current.currentNumber != currentNumber);
         isPreparingChallenge = false;
         _challengePrefetch = null;
         notifyListeners();
-        if (prepareReplacement) unawaited(ensureChallengeQueued());
+        final current = challengeSession;
+        if (!isStartingChallenge &&
+            _challengePreparationAllowed &&
+            challengeGenerationError == null &&
+            current != null &&
+            current.preparedPuzzles.length < _challengePreparedTarget) {
+          unawaited(ensureChallengeQueued());
+        }
       }
     }
   }
 
+  ChallengeGenerationContext _challengeGenerationContext(
+    ChallengeGenerationSpec spec,
+  ) {
+    final session = challengeSession;
+    return ChallengeGenerationContext(
+      storyPuzzles: [
+        for (final puzzle in catalog!.puzzles)
+          if (puzzle.size == spec.size) puzzle,
+      ],
+      recentPuzzles: [
+        if (session != null && session.currentPuzzle.size == spec.size)
+          session.currentPuzzle,
+        if (session != null)
+          for (final puzzle in session.preparedPuzzles)
+            if (puzzle.size == spec.size) puzzle,
+      ],
+      recentSignatures: [
+        for (final signature in _challengeDiversityHistory)
+          if (signature.size == spec.size) signature,
+      ],
+      retrySalt: _challengeRetrySalts[spec.puzzleId] ?? 0,
+    );
+  }
+
+  void _validateChallengeResult(
+    ChallengePuzzleResult result,
+    ChallengeGenerationSpec spec,
+  ) {
+    final puzzle = result.puzzle;
+    const generator = PuzzleGenerator();
+    if (puzzle.id != spec.puzzleId ||
+        puzzle.order != spec.number ||
+        puzzle.tier != spec.tier ||
+        puzzle.size != spec.size ||
+        result.signature.size != spec.size ||
+        result.signature.canonicalFingerprint !=
+            generator.canonicalFingerprint(puzzle) ||
+        result.signature.boundarySignature !=
+            generator.boundarySignature(puzzle) ||
+        PuzzleDefinition.stableHash(puzzle.size, puzzle.regions) !=
+            puzzle.contentHash) {
+      throw const FormatException('Invalid generated challenge puzzle');
+    }
+  }
+
   bool openChallengePuzzle() {
-    if (challengeSession == null) return false;
+    if (challengeSession == null || isStartingChallenge) return false;
     unawaited(_save());
     notifyListeners();
     return true;
@@ -337,7 +495,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     }
     final next = session?.queuedPuzzle;
     if (session == null || next == null) return null;
-    challengeSession = session.advanceTo(next);
+    challengeSession = session.advanceToPrepared();
     challengeGenerationError = null;
     notifyListeners();
     await _save();
@@ -346,10 +504,13 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   Future<void> abandonChallenge() async {
+    _challengeStartEpoch++;
     stopTimer();
     challengeSession = null;
     challengeGenerationError = null;
     isPreparingChallenge = false;
+    isStartingChallenge = false;
+    _challengeRetrySalts.clear();
     notifyListeners();
     await _save();
   }
@@ -619,6 +780,10 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         challengeSession == null
             ? null
             : jsonEncode(challengeSession!.toJson());
+    final challengeDiversityJson = jsonEncode([
+      for (final signature in _challengeDiversityHistory) signature.toJson(),
+    ]);
+    final challengeRetryJson = jsonEncode(_challengeRetrySalts);
     _saveChain = _saveChain.then(
       (_) => Future.wait([
         _preferences.setString('regalia.settings', settingsJson),
@@ -640,6 +805,14 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
           _preferences.remove('regalia.challengeSession')
         else
           _preferences.setString('regalia.challengeSession', challengeJson),
+        _preferences.setString(
+          'regalia.challengeDiversityHistory',
+          challengeDiversityJson,
+        ),
+        _preferences.setString(
+          'regalia.challengeRetrySalts',
+          challengeRetryJson,
+        ),
         if (latestPuzzle != null)
           _preferences.setString('regalia.lastPuzzle', latestPuzzle),
       ]),
@@ -651,9 +824,14 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed && _activePuzzleId != null) {
-      startTimer(_activePuzzleId!);
-    } else if (state != AppLifecycleState.resumed) {
+    _challengePreparationAllowed = state == AppLifecycleState.resumed;
+    if (state == AppLifecycleState.resumed) {
+      if (_activePuzzleId != null) startTimer(_activePuzzleId!);
+      if (challengeSession != null &&
+          challengeSession!.preparedPuzzles.length < _challengePreparedTarget) {
+        unawaited(ensureChallengeQueued());
+      }
+    } else {
       _timer?.cancel();
       _timer = null;
       if (isReady) unawaited(_save());

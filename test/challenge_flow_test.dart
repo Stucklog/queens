@@ -1,13 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/app/challenge.dart';
 import 'package:regalia/app/journey.dart';
+import 'package:regalia/core/challenge_generator.dart';
 import 'package:regalia/core/exact_solver.dart';
 import 'package:regalia/core/models.dart';
+import 'package:regalia/screens/challenge_screen.dart';
 import 'package:regalia/screens/game_screen.dart';
 import 'package:regalia/screens/journey_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'support/challenge_fixture.dart';
 
 void main() {
   testWidgets('challenge mode generates, plays, and continues in isolation', (
@@ -23,7 +29,8 @@ void main() {
     });
     late AppController controller;
     controller = AppController(
-      challengePuzzleFactory: (spec) async => _fixtureForSpec(controller, spec),
+      challengePuzzleFactory:
+          (spec, _) async => challengeFixtureForSpec(controller, spec),
     );
     await tester.runAsync(controller.initialize);
     var controllerDisposed = false;
@@ -90,24 +97,68 @@ void main() {
     controller.dispose();
     controllerDisposed = true;
   });
-}
 
-PuzzleDefinition _fixtureForSpec(
-  AppController controller,
-  ChallengeGenerationSpec spec,
-) {
-  final source = controller.catalog!.puzzles.firstWhere(
-    (puzzle) => puzzle.tier == spec.tier && puzzle.size == spec.size,
-  );
-  return PuzzleDefinition(
-    id: spec.puzzleId,
-    order: spec.number,
-    size: source.size,
-    tier: source.tier,
-    regions: source.regions,
-    schemaVersion: source.schemaVersion,
-    contentHash: source.contentHash,
-    difficultyScore: source.difficultyScore,
-    scoringModel: source.scoringModel,
-  );
+  testWidgets('a slot-two generation never disables the ready next board', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      'regalia.tutorialComplete': true,
+      'regalia.journeySchemaVersion': 1,
+    });
+    final thirdGeneration = Completer<ChallengePuzzleResult>();
+    late ChallengeGenerationSpec thirdSpec;
+    late AppController controller;
+    controller = AppController(
+      challengePuzzleFactory: (spec, _) {
+        if (spec.number < 3) {
+          return Future.value(challengeFixtureForSpec(controller, spec));
+        }
+        thirdSpec = spec;
+        return thirdGeneration.future;
+      },
+    );
+    await tester.runAsync(controller.initialize);
+    addTearDown(controller.dispose);
+    expect(
+      await controller.startChallenge(ChallengeMode.easy, seed: 202),
+      isTrue,
+    );
+    for (var frame = 0; frame < 50; frame++) {
+      if (controller.challengeSession?.preparedPuzzles.length == 1 &&
+          controller.isPreparingChallenge) {
+        break;
+      }
+      await tester.pump(const Duration(milliseconds: 10));
+    }
+    expect(controller.challengeSession?.preparedPuzzles.length, 1);
+    expect(controller.isPreparingChallenge, isTrue);
+
+    final current = controller.challengeSession!.currentPuzzle;
+    await tester.runAsync(() async {
+      for (final cell
+          in const ExactSolver().solve(current, limit: 1).solutions.single) {
+        controller.setCell(current, cell, ManualCellState.crown);
+      }
+      await controller.flushPersistence();
+    });
+    expect(controller.challengeSession?.currentCompleted, isTrue);
+
+    await tester.pumpWidget(
+      MaterialApp(home: ChallengeScreen(controller: controller)),
+    );
+    await tester.pump();
+
+    final play = tester.widget<FilledButton>(
+      find.byKey(const ValueKey('play-challenge')),
+    );
+    expect(play.onPressed, isNotNull);
+    expect(
+      find.text('The next board is ready while another is prepared.'),
+      findsOneWidget,
+    );
+
+    thirdGeneration.complete(challengeFixtureForSpec(controller, thirdSpec));
+    await tester.pump();
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
 }
