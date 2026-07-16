@@ -8,7 +8,7 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
@@ -16,12 +16,25 @@ jobs:
       - run: flutter pub get
       - run: dart format --output=none --set-exit-if-changed lib test tool
       - run: flutter analyze
-      - run: flutter test
+      - run: flutter test --exclude-tags=golden
       - run: dart run tool/generate_puzzles.dart validate
       - run: dart run tool/verify_offline.dart
 
+  goldens:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter test --tags=golden
+
   build:
-    needs: verify
+    needs:
+      - verify
+      - goldens
     strategy:
       fail-fast: false
       matrix:
@@ -56,7 +69,7 @@ jobs:
             artifact: build/ios/iphoneos/Runner.app
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
