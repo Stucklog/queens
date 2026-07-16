@@ -9,6 +9,7 @@ Future<void> main(List<String> arguments) async {
     'flutter',
     'cupertino_icons',
     'shared_preferences',
+    'url_launcher',
   };
   final unexpected = dependencies.difference(allowedDependencies);
   if (unexpected.isNotEmpty) {
@@ -21,11 +22,21 @@ Future<void> main(List<String> arguments) async {
     RegExp(r'\b(HttpClient|WebSocket|Socket\.connect)\b'),
     RegExp(r'''Uri\.parse\(\s*['"]https?://'''),
   ];
+  final approvedExternalUri = RegExp(
+    r'''Uri\.https\(\s*['"]buymeacoffee\.com['"]\s*,\s*['"]/philosophyforge['"]\s*,?\s*\)''',
+    multiLine: true,
+  );
   for (final file in Directory('lib')
       .listSync(recursive: true)
       .whereType<File>()
       .where((file) => file.path.endsWith('.dart'))) {
     final source = await file.readAsString();
+    final externalUriCount = RegExp(r'Uri\.https\(').allMatches(source).length;
+    final approvedExternalUriCount =
+        approvedExternalUri.allMatches(source).length;
+    if (externalUriCount != approvedExternalUriCount) {
+      failures.add('${file.path} contains an unapproved external URL');
+    }
     for (final pattern in networkPatterns) {
       if (pattern.hasMatch(source)) {
         failures.add(

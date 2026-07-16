@@ -195,6 +195,45 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('support action opens the approved Buy Me a Coffee page', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    SharedPreferences.setMockInitialValues({
+      'regalia.tutorialComplete': true,
+      'regalia.journeySchemaVersion': 1,
+    });
+    final controller = _TimerlessController();
+    await tester.runAsync(controller.initialize);
+    addTearDown(controller.dispose);
+    await controller.markStoryBeatSeen(StoryBeatIds.opening);
+    await controller.markStoryBeatSeen(journeyChapters.first.storyBeatId);
+    Uri? launchedUri;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: JourneyScreen(
+          controller: controller,
+          externalUrlLauncher: (uri) async {
+            launchedUri = uri;
+            return true;
+          },
+        ),
+      ),
+    );
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.byTooltip('Support Queen’s Regalia'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('buy-me-a-coffee')));
+    await tester.pump();
+
+    expect(launchedUri, Uri.parse('https://buymeacoffee.com/philosophyforge'));
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('landscape host retains every panorama landmark', (tester) async {
     tester.view.physicalSize = const Size(1200, 800);
     tester.view.devicePixelRatio = 1;
