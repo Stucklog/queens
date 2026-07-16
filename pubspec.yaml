@@ -56,6 +56,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+    - assets/art/knight.png
     - assets/puzzles/catalog.json
     - assets/puzzles/tutorial.json
   fonts:

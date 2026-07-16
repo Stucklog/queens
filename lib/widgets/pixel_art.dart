@@ -1512,11 +1512,39 @@ class PixelKnightSprite extends StatelessWidget {
   final double height;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    width: width,
-    height: height,
-    child: CustomPaint(painter: _PixelKnightPainter(frame: frame)),
-  );
+  Widget build(BuildContext context) {
+    final bob = frame == 1 || frame == 4 ? height / 72 : 0.0;
+    final sway = switch (frame % 4) {
+      1 => -.008,
+      3 => .008,
+      _ => 0.0,
+    };
+
+    return Transform.translate(
+      offset: Offset(0, bob),
+      child: Transform.rotate(
+        angle: sway,
+        alignment: Alignment.bottomCenter,
+        child: SizedBox(
+          width: width,
+          height: height,
+          child: Image.asset(
+            'assets/art/knight.png',
+            fit: BoxFit.fill,
+            filterQuality: FilterQuality.none,
+            excludeFromSemantics: true,
+            frameBuilder: (context, child, imageFrame, wasLoaded) {
+              if (wasLoaded || imageFrame != null) return child;
+              return CustomPaint(painter: _PixelKnightPainter(frame: frame));
+            },
+            errorBuilder:
+                (context, error, stackTrace) =>
+                    CustomPaint(painter: _PixelKnightPainter(frame: frame)),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _PixelKnightPainter extends CustomPainter {

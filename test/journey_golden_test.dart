@@ -142,7 +142,11 @@ Future<void> _goldenMap(
     ),
   );
   await tester.pump();
+  await tester.runAsync(
+    () => Future<void>.delayed(const Duration(milliseconds: 100)),
+  );
   await tester.pump(const Duration(seconds: 1));
+  await tester.pump();
   await expectLater(
     find.byKey(const ValueKey('journey-golden')),
     matchesGoldenFile(file),
@@ -169,7 +173,11 @@ Future<void> _goldenStory(
     ),
   );
   await tester.pump();
+  await tester.runAsync(
+    () => Future<void>.delayed(const Duration(milliseconds: 100)),
+  );
   await tester.pump(const Duration(seconds: 1));
+  await tester.pump();
   await expectLater(
     find.byKey(const ValueKey('story-golden')),
     matchesGoldenFile(file),
