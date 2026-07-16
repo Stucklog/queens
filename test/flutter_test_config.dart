@@ -6,16 +6,11 @@ import 'package:flutter_test/flutter_test.dart';
 const double _goldenRasterizationTolerance = 0.025;
 
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
-  final previousComparator = goldenFileComparator;
   goldenFileComparator = _TolerantGoldenFileComparator(
     Uri.parse('test/flutter_test_config.dart'),
     precisionTolerance: _goldenRasterizationTolerance,
   );
-  try {
-    await testMain();
-  } finally {
-    goldenFileComparator = previousComparator;
-  }
+  await testMain();
 }
 
 /// Allows small host-renderer differences while retaining structural goldens.
