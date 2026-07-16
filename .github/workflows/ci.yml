@@ -1,4 +1,4 @@
-name: Queen's Regalia CI
+name: Queen’s Regalia CI
 
 on:
   push:
@@ -8,20 +8,33 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: 3.29.3
           cache: true
       - run: flutter pub get
       - run: dart format --output=none --set-exit-if-changed lib test tool
       - run: flutter analyze
-      - run: flutter test
+      - run: flutter test --exclude-tags=golden
       - run: dart run tool/generate_puzzles.dart validate
       - run: dart run tool/verify_offline.dart
 
+  goldens:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.29.3
+          cache: true
+      - run: flutter pub get
+      - run: flutter test --tags=golden
+
   build:
-    needs: verify
+    needs:
+      - verify
+      - goldens
     strategy:
       fail-fast: false
       matrix:
@@ -42,7 +55,7 @@ jobs:
             target: android-aab
             command: flutter build appbundle --release
             artifact: build/app/outputs/bundle/release/app-release.aab
-          - os: windows-latest
+          - os: windows-2022
             target: windows
             command: flutter build windows --release
             artifact: build/windows/x64/runner/Release
@@ -56,10 +69,10 @@ jobs:
             artifact: build/ios/iphoneos/Runner.app
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: 3.29.3
           cache: true
       - run: flutter pub get
       - if: matrix.target == 'linux'

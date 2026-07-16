@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../app/app_controller.dart';
+import '../app/branding.dart';
 import '../core/models.dart';
 import '../widgets/crown_mark.dart';
 import '../widgets/regalia_board.dart';
@@ -104,7 +105,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
               const CrownMark(size: 88),
               const SizedBox(height: 24),
               Text(
-                "Welcome to Queen's Regalia",
+                'Welcome to $appName',
                 style: Theme.of(context).textTheme.displaySmall,
                 textAlign: TextAlign.center,
               ),

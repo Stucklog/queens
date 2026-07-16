@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../app/app_controller.dart';
+import '../app/branding.dart';
 import '../app/journey.dart';
 import '../app/theme.dart';
 import '../core/models.dart';
@@ -229,22 +230,29 @@ class _JourneyScreenState extends State<JourneyScreen> {
             (context) => Scaffold(
               appBar: AppBar(
                 title: const Row(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    CrownMark(size: 26),
-                    SizedBox(width: 8),
-                    Text(
-                      'REGALIA',
-                      style: TextStyle(
-                        fontSize: 14,
-                        letterSpacing: 1.2,
-                        fontWeight: FontWeight.w700,
+                    CrownMark(size: 24),
+                    SizedBox(width: 7),
+                    Expanded(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          appNameUppercase,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 1.2,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
                 actions: [
-                  TextButton(
+                  IconButton(
+                    tooltip: 'How to play',
                     onPressed:
                         () => Navigator.push(
                           context,
@@ -252,9 +260,10 @@ class _JourneyScreenState extends State<JourneyScreen> {
                             builder: (_) => const RulesScreen(),
                           ),
                         ),
-                    child: const Text('RULES'),
+                    icon: const Icon(Icons.menu_book_outlined),
                   ),
-                  TextButton(
+                  IconButton(
+                    tooltip: 'Settings',
                     onPressed:
                         () => Navigator.push(
                           context,
@@ -265,9 +274,8 @@ class _JourneyScreenState extends State<JourneyScreen> {
                                 ),
                           ),
                         ),
-                    child: const Text('SET'),
+                    icon: const Icon(Icons.settings_outlined),
                   ),
-                  const SizedBox(width: 8),
                 ],
               ),
               body: Stack(

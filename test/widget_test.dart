@@ -174,6 +174,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
 
+    expect(find.text('QUEEN’S REGALIA'), findsOneWidget);
     expect(find.byKey(const ValueKey('puzzle-node-1')), findsOneWidget);
     expect(find.byKey(const ValueKey('puzzle-node-120')), findsOneWidget);
     Finder semanticsWithLabel(String label) => find.byWidgetPredicate(

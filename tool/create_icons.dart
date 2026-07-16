@@ -43,21 +43,74 @@ Future<void> main() async {
     'windows/runner/resources/app_icon.ico',
   ).writeAsBytes(_ico(windowsPng), flush: true);
   stdout.writeln(
-    "Created ${outputs.length + 1} Queen's Regalia crown-and-grid icons.",
+    'Created ${outputs.length + 1} Queen’s Regalia jeweled-crown icons.',
   );
 }
 
 Uint8List _iconPng(int size) {
   final pixels = Uint8List(size * size * 4);
-  const ivory = [248, 241, 227, 255];
-  const ivoryShade = [222, 211, 191, 255];
-  const ink = [36, 32, 29, 255];
-  const inkLight = [70, 62, 55, 255];
-  const gold = [182, 128, 50, 255];
-  const goldShadow = [120, 78, 35, 255];
-  const goldLight = [240, 190, 78, 255];
-  const jewel = [61, 128, 120, 255];
-  const gridSize = 48;
+  const midnight = [17, 24, 49, 255];
+  const midnightLight = [25, 37, 69, 255];
+  const royalShadow = [28, 45, 83, 255];
+  const royal = [35, 66, 116, 255];
+  const royalLight = [45, 83, 139, 255];
+  const ink = [43, 29, 36, 255];
+  const goldDeep = [108, 65, 29, 255];
+  const goldShadow = [166, 105, 31, 255];
+  const gold = [218, 153, 43, 255];
+  const goldLight = [255, 213, 91, 255];
+  const ivory = [255, 239, 178, 255];
+  const crimson = [177, 49, 62, 255];
+  const crimsonLight = [231, 83, 83, 255];
+  const sapphire = [54, 91, 174, 255];
+  const teal = [54, 142, 128, 255];
+  const gridSize = 64;
+
+  const crownOutline = <(int, int)>[
+    (7, 40),
+    (8, 21),
+    (18, 29),
+    (23, 12),
+    (31, 27),
+    (32, 5),
+    (34, 27),
+    (42, 12),
+    (47, 29),
+    (56, 21),
+    (57, 40),
+    (55, 53),
+    (9, 53),
+  ];
+  const crownFace = <(int, int)>[
+    (10, 39),
+    (11, 26),
+    (18, 33),
+    (23, 18),
+    (31, 32),
+    (32, 11),
+    (34, 32),
+    (42, 18),
+    (47, 33),
+    (53, 26),
+    (54, 39),
+    (52, 49),
+    (12, 49),
+  ];
+  const leftFacet = <(int, int)>[
+    (11, 38),
+    (12, 28),
+    (18, 35),
+    (23, 20),
+    (24, 25),
+    (20, 38),
+  ];
+  const rightFacet = <(int, int)>[
+    (42, 19),
+    (47, 34),
+    (52, 28),
+    (53, 39),
+    (45, 39),
+  ];
 
   void pixel(int x, int y, List<int> color) {
     if (x < 0 || y < 0 || x >= size || y >= size) return;
@@ -69,49 +122,49 @@ Uint8List _iconPng(int size) {
     for (var x = 0; x < size; x++) {
       final gx = x * gridSize ~/ size;
       final gy = y * gridSize ~/ size;
-      final edgeX = gx < gridSize - 1 - gx ? gx : gridSize - 1 - gx;
-      final edgeY = gy < gridSize - 1 - gy ? gy : gridSize - 1 - gy;
-      final clippedCorner = edgeX < 5 && edgeY < 5 && edgeX + edgeY < 5;
-      var color = clippedCorner ? ink : ivory;
+      var color = midnight;
 
-      final onGrid =
-          ((gx == 15 || gx == 16 || gx == 31 || gx == 32) &&
-              gy >= 6 &&
-              gy <= 41) ||
-          ((gy == 15 || gy == 16 || gy == 31 || gy == 32) &&
-              gx >= 6 &&
-              gx <= 41);
-      if (onGrid) color = ink;
-      final gridHighlight =
-          ((gx == 17 || gx == 33) && gy >= 6 && gy <= 41) ||
-          ((gy == 17 || gy == 33) && gx >= 6 && gx <= 41);
-      if (gridHighlight) color = inkLight;
+      final diamondDistance = (gx - 32).abs() + (gy - 32).abs();
+      if (diamondDistance <= 30) color = royalShadow;
+      if (diamondDistance <= 26) color = royal;
+      if (diamondDistance <= 22 && gx <= 32) color = royalLight;
+      if ((gx * 11 + gy * 7) % 53 == 0 && diamondDistance > 30) {
+        color = midnightLight;
+      }
 
       bool inRect(int left, int top, int width, int height) =>
           gx >= left && gx < left + width && gy >= top && gy < top + height;
-      final crownShadow =
-          inRect(8, 14, 7, 18) ||
-          inRect(21, 8, 8, 24) ||
-          inRect(35, 14, 6, 18) ||
-          inRect(10, 25, 31, 12) ||
-          inRect(13, 40, 26, 5);
-      if (crownShadow) color = goldShadow;
-      final onCrown =
-          inRect(10, 14, 5, 16) ||
-          inRect(23, 8, 6, 22) ||
-          inRect(36, 14, 5, 16) ||
-          inRect(11, 25, 30, 10) ||
-          inRect(14, 39, 25, 4);
-      if (onCrown) color = gold;
-      final crownHighlight =
-          inRect(11, 14, 2, 12) ||
-          inRect(24, 8, 2, 17) ||
-          inRect(37, 14, 2, 12) ||
-          inRect(13, 26, 19, 2) ||
-          inRect(16, 39, 16, 1);
-      if (crownHighlight) color = goldLight;
-      if (inRect(22, 30, 7, 4)) color = jewel;
-      if (inRect(23, 30, 4, 1)) color = ivoryShade;
+
+      if (_insidePolygon(gx, gy, crownOutline)) color = ink;
+      if (_insidePolygon(gx, gy, crownFace)) color = gold;
+      if (_insidePolygon(gx, gy, leftFacet)) color = goldLight;
+      if (_insidePolygon(gx, gy, rightFacet)) color = goldShadow;
+
+      // The broad band keeps the crown readable at 16–20 px while providing
+      // enough layers and gemstones to match the in-game 16-bit rendering.
+      if (inRect(8, 38, 49, 15)) color = ink;
+      if (inRect(11, 38, 43, 11)) color = goldShadow;
+      if (inRect(12, 39, 41, 8)) color = gold;
+      if (inRect(14, 39, 28, 2)) color = goldLight;
+      if (inRect(12, 49, 41, 2)) color = goldDeep;
+      if (inRect(14, 51, 37, 2)) color = ink;
+
+      if (inRect(18, 42, 5, 4)) color = crimson;
+      if (inRect(19, 42, 3, 1)) color = crimsonLight;
+      if (inRect(30, 41, 5, 5)) color = sapphire;
+      if (inRect(31, 41, 3, 2)) color = ivory;
+      if (inRect(42, 42, 5, 4)) color = teal;
+      if (inRect(43, 42, 3, 1)) color = ivory;
+
+      // Bright tip clusters keep the five-point silhouette crisp when the
+      // artwork is downsampled to favicons and notification icons.
+      if (inRect(7, 21, 3, 3) ||
+          inRect(22, 13, 3, 3) ||
+          inRect(31, 6, 3, 3) ||
+          inRect(41, 13, 3, 3) ||
+          inRect(55, 21, 3, 3)) {
+        color = goldLight;
+      }
       pixel(x, y, color);
     }
   }
@@ -128,6 +181,27 @@ Uint8List _iconPng(int size) {
   png.add(_chunk('IDAT', ZLibEncoder().convert(raw.takeBytes())));
   png.add(_chunk('IEND', const []));
   return png.takeBytes();
+}
+
+bool _insidePolygon(int x, int y, List<(int, int)> points) {
+  var inside = false;
+  for (
+    var current = 0, previous = points.length - 1;
+    current < points.length;
+    previous = current++
+  ) {
+    final currentPoint = points[current];
+    final previousPoint = points[previous];
+    final crosses =
+        (currentPoint.$2 > y) != (previousPoint.$2 > y) &&
+        x <
+            (previousPoint.$1 - currentPoint.$1) *
+                    (y - currentPoint.$2) /
+                    (previousPoint.$2 - currentPoint.$2) +
+                currentPoint.$1;
+    if (crosses) inside = !inside;
+  }
+  return inside;
 }
 
 List<int> _chunk(String type, List<int> data) {
