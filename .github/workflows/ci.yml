@@ -55,7 +55,7 @@ jobs:
             target: android-aab
             command: flutter build appbundle --release
             artifact: build/app/outputs/bundle/release/app-release.aab
-          - os: windows-latest
+          - os: windows-2022
             target: windows
             command: flutter build windows --release
             artifact: build/windows/x64/runner/Release
