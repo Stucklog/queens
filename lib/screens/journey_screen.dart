@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../app/app_controller.dart';
 import '../app/branding.dart';
@@ -16,9 +17,19 @@ import 'rules_screen.dart';
 import 'settings_screen.dart';
 import 'story_scene_screen.dart';
 
+final Uri buyMeACoffeeUri = Uri.https('buymeacoffee.com', '/philosophyforge');
+
+typedef ExternalUrlLauncher = Future<bool> Function(Uri uri);
+
 class JourneyScreen extends StatefulWidget {
-  const JourneyScreen({super.key, required this.controller});
+  const JourneyScreen({
+    super.key,
+    required this.controller,
+    this.externalUrlLauncher,
+  });
+
   final AppController controller;
+  final ExternalUrlLauncher? externalUrlLauncher;
 
   @override
   State<JourneyScreen> createState() => _JourneyScreenState();
@@ -212,6 +223,21 @@ class _JourneyScreenState extends State<JourneyScreen> {
     ),
   );
 
+  Future<void> _openSupportPage() async {
+    var opened = false;
+    try {
+      opened = await (widget.externalUrlLauncher ?? _launchExternalUrl)(
+        buyMeACoffeeUri,
+      );
+    } on Object {
+      opened = false;
+    }
+    if (!mounted || opened) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Could not open the support page.')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final progress = widget.controller.journeyProgress;
@@ -261,6 +287,12 @@ class _JourneyScreenState extends State<JourneyScreen> {
                           ),
                         ),
                     icon: const Icon(Icons.menu_book_outlined),
+                  ),
+                  IconButton(
+                    key: const ValueKey('buy-me-a-coffee'),
+                    tooltip: 'Support Queen’s Regalia',
+                    onPressed: _openSupportPage,
+                    icon: const Icon(Icons.local_cafe_outlined),
                   ),
                   IconButton(
                     tooltip: 'Settings',
@@ -389,6 +421,12 @@ class _JourneyScreenState extends State<JourneyScreen> {
     );
   }
 }
+
+Future<bool> _launchExternalUrl(Uri uri) => launchUrl(
+  uri,
+  mode: LaunchMode.externalApplication,
+  webOnlyWindowName: '_blank',
+);
 
 class _JourneyHeader extends StatelessWidget {
   const _JourneyHeader({
