@@ -72,12 +72,13 @@ void main() {
     await tester.tap(find.text('Next challenge'));
     for (
       var frame = 0;
-      frame < 20 && find.text('Challenge 2').evaluate().isEmpty;
+      frame < 40 &&
+          (find.text('Challenge 2').evaluate().isEmpty ||
+              find.byType(GameScreen).evaluate().length != 1);
       frame++
     ) {
       await tester.pump(const Duration(milliseconds: 50));
     }
-    await tester.pump(const Duration(milliseconds: 350));
     expect(find.byType(GameScreen), findsOneWidget);
     expect(find.text('Challenge 2'), findsOneWidget);
     expect(controller.challengeSession?.currentNumber, 2);
