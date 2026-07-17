@@ -2246,15 +2246,36 @@ class _PixelStatusPainter extends CustomPainter {
         p.rect(7, 9, 3, 3, light);
         p.rect(8, 11, 1, 2, shade);
       case PixelStatusGlyph.crown:
-        p.rect(2, 5, 3, 7, shade);
-        p.rect(7, 2, 3, 10, shade);
-        p.rect(12, 5, 2, 7, shade);
-        p.rect(3, 5, 2, 6, color);
-        p.rect(8, 2, 2, 9, color);
-        p.rect(12, 5, 2, 6, color);
-        p.rect(3, 9, 11, 4, color);
-        p.rect(5, 9, 6, 1, light);
-        p.rect(4, 14, 9, 1, shade);
+        p.polygon(const [
+          Offset(2, 13),
+          Offset(2, 6),
+          Offset(4, 10),
+          Offset(5, 4),
+          Offset(7, 10),
+          Offset(8, 2),
+          Offset(9, 10),
+          Offset(11, 4),
+          Offset(12, 10),
+          Offset(14, 6),
+          Offset(14, 13),
+        ], shade);
+        p.polygon(const [
+          Offset(3, 12),
+          Offset(3, 8),
+          Offset(4.5, 10.5),
+          Offset(5.3, 6.5),
+          Offset(7.2, 11),
+          Offset(8, 5),
+          Offset(8.8, 11),
+          Offset(10.7, 6.5),
+          Offset(11.5, 10.5),
+          Offset(13, 8),
+          Offset(13, 12),
+        ], color);
+        p.rect(2, 11, 12, 4, shade);
+        p.rect(3, 11, 10, 3, color);
+        p.rect(4, 11, 8, 1, light);
+        p.rect(4, 14, 8, 1, shade);
       case PixelStatusGlyph.star:
         p.rect(7, 1, 3, 14, shade);
         p.rect(1, 7, 14, 3, shade);

@@ -18,6 +18,7 @@ jobs:
       - run: flutter analyze
       - run: flutter test --exclude-tags=golden
       - run: dart run tool/generate_puzzles.dart validate
+      - run: dart run tool/verify_crown_art.dart
       - run: dart run tool/verify_offline.dart
 
   goldens:
