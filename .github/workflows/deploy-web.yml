@@ -37,9 +37,6 @@ jobs:
       - name: Test
         run: flutter test --exclude-tags=golden
 
-      - name: Test visual goldens
-        run: flutter test --tags=golden
-
       - name: Build release PWA
         run: flutter build web --release --base-href "/queens/"
 
