@@ -7,7 +7,7 @@ import 'package:regalia/app/journey.dart';
 import 'package:regalia/widgets/pixel_art.dart';
 
 void main() {
-  testWidgets('all eight chapter landscapes retain high-detail pixel art', (
+  testWidgets('all eight chapter landscapes retain high-detail midnight art', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(430, 840);
@@ -35,10 +35,6 @@ void main() {
                             Expanded(
                               child: _ChapterTile(
                                 chapter: journeyChapters[row * 2 + column],
-                                brightness:
-                                    row * 2 + column < 4
-                                        ? Brightness.light
-                                        : Brightness.dark,
                               ),
                             ),
                           ],
@@ -60,16 +56,15 @@ void main() {
 
     await expectLater(
       find.byKey(const ValueKey('chapter-art-atlas')),
-      matchesGoldenFile('goldens/chapter_art_atlas.png'),
+      matchesGoldenFile('goldens/chapter_art_atlas_midnight.png'),
     );
   });
 }
 
 class _ChapterTile extends StatelessWidget {
-  const _ChapterTile({required this.chapter, required this.brightness});
+  const _ChapterTile({required this.chapter});
 
   final JourneyChapter chapter;
-  final Brightness brightness;
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
@@ -79,7 +74,7 @@ class _ChapterTile extends StatelessWidget {
     child: ClipRect(
       child: PixelLandscape(
         chapter: chapter,
-        brightness: brightness,
+        brightness: Brightness.dark,
         sceneKind: PixelSceneKind.chapter,
         placement: PixelArtPlacement.story,
         frame: 3,

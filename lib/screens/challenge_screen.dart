@@ -153,7 +153,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
               session.currentNumber,
             );
     return Theme(
-      data: RegaliaTheme.forChapter(Theme.of(context).brightness, chapter),
+      data: RegaliaTheme.forChapter(chapter),
       child: Builder(
         builder:
             (context) => Scaffold(

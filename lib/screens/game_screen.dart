@@ -71,10 +71,7 @@ class _GameScreenState extends State<GameScreen> {
         widget.playMode == PuzzlePlayMode.challenge
             ? challengeChapterFor(puzzle.tier, widget.challengeNumber ?? 1)
             : chapterForOrder(puzzle.order);
-    final themed = RegaliaTheme.forChapter(
-      Theme.of(context).brightness,
-      visualChapter,
-    );
+    final themed = RegaliaTheme.forChapter(visualChapter);
     return Theme(
       data: themed,
       child: Builder(

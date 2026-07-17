@@ -87,7 +87,7 @@ class Win32Window {
   // Retrieves a class instance pointer for |window|
   static Win32Window* GetThisFromHandle(HWND const window) noexcept;
 
-  // Update the window frame's theme to match the system theme.
+  // Reapply the fixed dark window frame after system chrome changes.
   static void UpdateTheme(HWND const window);
 
   bool quit_on_close_ = false;

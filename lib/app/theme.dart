@@ -3,65 +3,75 @@ import 'package:flutter/material.dart';
 import 'journey.dart';
 
 class RegaliaTheme {
-  static const ivory = Color(0xfff8f1e3);
-  static const ink = Color(0xff24201d);
-  static const gold = Color(0xffb68032);
-  static const charcoal = Color(0xff17191c);
-  static const jewel = Color(0xff3d8078);
+  static const midnightBlue = regaliaMidnight;
+  static const midnightSurface = regaliaMidnightSurface;
+  static const midnightSurfaceLow = Color(0xff1b2444);
+  static const midnightSurfaceHigh = Color(0xff303c60);
+  static const ivory = Color(0xfffff3dc);
+  static const gold = Color(0xffd6af53);
 
-  static ThemeData light([JourneyPalette? palette]) => _theme(
-    brightness: Brightness.light,
-    background: palette?.lightBackground ?? ivory,
-    surface: palette?.lightSurface ?? const Color(0xfffffbf3),
-    primary: palette?.primary ?? ink,
-    secondary: palette?.secondary ?? gold,
-  );
+  static ThemeData midnight([JourneyPalette? palette]) =>
+      _theme(secondary: palette?.secondary ?? gold);
 
-  static ThemeData dark([JourneyPalette? palette]) => _theme(
-    brightness: Brightness.dark,
-    background: palette?.darkBackground ?? charcoal,
-    surface: palette?.darkSurface ?? const Color(0xff24272b),
-    primary: const Color(0xffe9dfcf),
-    secondary: palette?.secondary ?? jewel,
-  );
+  static ThemeData forChapter(JourneyChapter chapter) =>
+      midnight(chapter.palette);
 
-  static ThemeData forChapter(Brightness brightness, JourneyChapter chapter) =>
-      brightness == Brightness.dark
-          ? dark(chapter.palette)
-          : light(chapter.palette);
-
-  static ThemeData _theme({
-    required Brightness brightness,
-    required Color background,
-    required Color surface,
-    required Color primary,
-    required Color secondary,
-  }) {
+  static ThemeData _theme({required Color secondary}) {
+    final secondaryContainer = Color.lerp(midnightSurface, secondary, .24)!;
     final scheme = ColorScheme.fromSeed(
       seedColor: secondary,
-      brightness: brightness,
-    ).copyWith(surface: surface, primary: primary, secondary: secondary);
+      brightness: Brightness.dark,
+    ).copyWith(
+      surface: midnightSurface,
+      onSurface: ivory,
+      surfaceDim: midnightBlue,
+      surfaceBright: midnightSurfaceHigh,
+      surfaceContainerLowest: midnightBlue,
+      surfaceContainerLow: midnightSurfaceLow,
+      surfaceContainer: midnightSurface,
+      surfaceContainerHigh: const Color(0xff2a3659),
+      surfaceContainerHighest: midnightSurfaceHigh,
+      onSurfaceVariant: const Color(0xffd3d7e7),
+      outline: const Color(0xff919cbd),
+      outlineVariant: const Color(0xff4b587c),
+      primary: ivory,
+      onPrimary: midnightBlue,
+      primaryContainer: midnightSurfaceHigh,
+      onPrimaryContainer: ivory,
+      secondary: secondary,
+      onSecondary: _foregroundFor(secondary),
+      secondaryContainer: secondaryContainer,
+      onSecondaryContainer: ivory,
+      inverseSurface: ivory,
+      onInverseSurface: midnightBlue,
+      inversePrimary: secondary,
+      surfaceTint: Colors.transparent,
+    );
     return ThemeData(
       useMaterial3: true,
-      brightness: brightness,
+      brightness: Brightness.dark,
       colorScheme: scheme,
-      scaffoldBackgroundColor: background,
+      scaffoldBackgroundColor: midnightBlue,
       cardTheme: CardThemeData(
-        color: surface,
+        color: midnightSurface,
         elevation: 0,
-        shape: const RoundedRectangleBorder(side: BorderSide(width: 2)),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: scheme.outlineVariant, width: 2),
+        ),
       ),
       dialogTheme: DialogThemeData(
-        backgroundColor: surface,
-        shape: const RoundedRectangleBorder(side: BorderSide(width: 3)),
+        backgroundColor: midnightSurface,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: scheme.outline, width: 3),
+        ),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        foregroundColor: primary,
+        foregroundColor: ivory,
       ),
       fontFamily: 'RegaliaSans',
-      textTheme: _type(ThemeData(brightness: brightness).textTheme, primary),
+      textTheme: _type(ThemeData.dark().textTheme, ivory),
       focusColor: secondary.withValues(alpha: .35),
       splashFactory: NoSplash.splashFactory,
       filledButtonTheme: const FilledButtonThemeData(
@@ -84,6 +94,14 @@ class RegaliaTheme {
         },
       ),
     );
+  }
+
+  static Color _foregroundFor(Color background) {
+    final luminance = background.computeLuminance();
+    final darkContrast =
+        (luminance + .05) / (midnightBlue.computeLuminance() + .05);
+    final lightContrast = (ivory.computeLuminance() + .05) / (luminance + .05);
+    return darkContrast >= lightContrast ? midnightBlue : ivory;
   }
 
   static TextTheme _type(TextTheme base, Color color) => base

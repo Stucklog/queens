@@ -80,10 +80,7 @@ class StorySceneScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectedChapter = chapter ?? journeyChapters.first;
-    final themed = RegaliaTheme.forChapter(
-      Theme.of(context).brightness,
-      selectedChapter,
-    );
+    final themed = RegaliaTheme.forChapter(selectedChapter);
     return Theme(
       data: themed,
       child: Builder(

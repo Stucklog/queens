@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/app/journey.dart';
@@ -16,9 +15,7 @@ void main() {
     final puzzle = first.catalog!.puzzles.first;
     first.openPuzzle(puzzle);
     first.cycle(puzzle, const Cell(0, 0));
-    first.updateSettings(
-      first.settings.copyWith(themeMode: ThemeMode.dark, showTimer: false),
-    );
+    first.updateSettings(first.settings.copyWith(showTimer: false));
     await first.flushPersistence();
     first.dispose();
 
@@ -28,7 +25,6 @@ void main() {
       restored.boardFor(puzzle).at(const Cell(0, 0)),
       ManualCellState.cross,
     );
-    expect(restored.settings.themeMode, ThemeMode.dark);
     expect(restored.settings.showTimer, isFalse);
     expect(restored.recordFor(puzzle.id).status, CompletionStatus.inProgress);
     restored.dispose();
@@ -316,9 +312,7 @@ void main() {
       final first = AppController();
       await first.initialize();
       await first.finishTutorial();
-      first.updateSettings(
-        first.settings.copyWith(themeMode: ThemeMode.dark, reducedMotion: true),
-      );
+      first.updateSettings(first.settings.copyWith(reducedMotion: true));
       await first.markStoryBeatSeen('opening');
       final puzzle = first.catalog!.puzzles.first;
       first.openPuzzle(puzzle);
@@ -336,7 +330,6 @@ void main() {
       expect(migrated.lastPuzzleId, isNull);
       expect(migrated.seenStoryBeatIds, isEmpty);
       expect(migrated.tutorialComplete, isTrue);
-      expect(migrated.settings.themeMode, ThemeMode.dark);
       expect(migrated.settings.reducedMotion, isTrue);
       expect(preferences.getInt('regalia.journeySchemaVersion'), 1);
       migrated.dispose();

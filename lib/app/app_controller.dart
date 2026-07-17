@@ -16,24 +16,20 @@ import 'journey.dart';
 
 class AppSettings {
   const AppSettings({
-    this.themeMode = ThemeMode.system,
     this.showTimer = true,
     this.showAutomaticExclusions = true,
     this.reducedMotion = false,
   });
 
-  final ThemeMode themeMode;
   final bool showTimer;
   final bool showAutomaticExclusions;
   final bool reducedMotion;
 
   AppSettings copyWith({
-    ThemeMode? themeMode,
     bool? showTimer,
     bool? showAutomaticExclusions,
     bool? reducedMotion,
   }) => AppSettings(
-    themeMode: themeMode ?? this.themeMode,
     showTimer: showTimer ?? this.showTimer,
     showAutomaticExclusions:
         showAutomaticExclusions ?? this.showAutomaticExclusions,
@@ -41,17 +37,12 @@ class AppSettings {
   );
 
   Map<String, Object> toJson() => {
-    'themeMode': themeMode.name,
     'showTimer': showTimer,
     'showAutomaticExclusions': showAutomaticExclusions,
     'reducedMotion': reducedMotion,
   };
 
   factory AppSettings.fromJson(Map<String, Object?> json) => AppSettings(
-    themeMode: ThemeMode.values.firstWhere(
-      (mode) => mode.name == json['themeMode'],
-      orElse: () => ThemeMode.system,
-    ),
     showTimer: json['showTimer'] as bool? ?? true,
     showAutomaticExclusions: json['showAutomaticExclusions'] as bool? ?? true,
     reducedMotion: json['reducedMotion'] as bool? ?? false,

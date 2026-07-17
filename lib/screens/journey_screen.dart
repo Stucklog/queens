@@ -245,10 +245,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
         progress.frontierPuzzle == null
             ? journeyChapters.last
             : chapterForOrder(progress.frontierPuzzle!.order);
-    final themed = RegaliaTheme.forChapter(
-      Theme.of(context).brightness,
-      activeChapter,
-    );
+    final themed = RegaliaTheme.forChapter(activeChapter);
     return Theme(
       data: themed,
       child: Builder(
@@ -582,10 +579,7 @@ class _RouteSection extends StatelessWidget {
         controller.catalog!.puzzles
             .where((puzzle) => chapter.contains(puzzle.order))
             .toList();
-    final chapterTheme = RegaliaTheme.forChapter(
-      Theme.of(context).brightness,
-      chapter,
-    );
+    final chapterTheme = RegaliaTheme.forChapter(chapter);
     return Theme(
       data: chapterTheme,
       child: Builder(

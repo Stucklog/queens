@@ -15,45 +15,6 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Appearance',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 12),
-                  SegmentedButton<ThemeMode>(
-                    segments: const [
-                      ButtonSegment(
-                        value: ThemeMode.system,
-                        label: Text('System'),
-                        icon: Icon(Icons.brightness_auto),
-                      ),
-                      ButtonSegment(
-                        value: ThemeMode.light,
-                        label: Text('Light'),
-                        icon: Icon(Icons.light_mode),
-                      ),
-                      ButtonSegment(
-                        value: ThemeMode.dark,
-                        label: Text('Dark'),
-                        icon: Icon(Icons.dark_mode),
-                      ),
-                    ],
-                    selected: {settings.themeMode},
-                    onSelectionChanged:
-                        (value) => controller.updateSettings(
-                          settings.copyWith(themeMode: value.single),
-                        ),
-                  ),
-                ],
-              ),
-            ),
-          ),
           SwitchListTile(
             title: const Text('Show timer'),
             subtitle: const Text('Display active solving time'),

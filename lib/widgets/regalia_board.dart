@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../app/theme.dart';
 import '../core/models.dart';
 import 'crown_mark.dart';
 
@@ -30,7 +29,7 @@ class RegaliaBoard extends StatelessWidget {
   final Set<Cell> highlighted;
   final Cell? selected;
 
-  static const _lightRegions = [
+  static const _regionSeeds = [
     Color(0xffffd8c9),
     Color(0xffd9e9cb),
     Color(0xffcfe2ef),
@@ -45,9 +44,9 @@ class RegaliaBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    final boardColors =
-        (dark ? RegaliaTheme.dark() : RegaliaTheme.light()).colorScheme;
+    final theme = Theme.of(context);
+    final boardColors = theme.colorScheme;
+    final midnightTint = theme.scaffoldBackgroundColor;
     return AspectRatio(
       aspectRatio: 1,
       child: _DragExcluder(
@@ -80,14 +79,11 @@ class RegaliaBoard extends StatelessWidget {
                 final cell = Cell.fromIndex(index, puzzle.size);
                 final state = board.at(cell);
                 final region = puzzle.regionAt(cell);
-                final base = _lightRegions[region % _lightRegions.length];
-                final background =
-                    dark
-                        ? Color.alphaBlend(
-                          Colors.black.withValues(alpha: .54),
-                          base,
-                        )
-                        : base;
+                final base = _regionSeeds[region % _regionSeeds.length];
+                final background = Color.alphaBlend(
+                  midnightTint.withValues(alpha: .54),
+                  base,
+                );
                 final top =
                     cell.row == 0 ||
                     puzzle.regionAt(Cell(cell.row - 1, cell.column)) != region;

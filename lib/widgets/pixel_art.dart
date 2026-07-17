@@ -230,8 +230,8 @@ class PixelLandscapePainter extends CustomPainter {
     final ink = dark ? const Color(0xffefe8d5) : const Color(0xff25231f);
     final grid = math.max(1.0, (size.shortestSide / 180).floorToDouble());
     final p = _PixelCanvas(canvas, size, grid);
-    final background = chapter.palette.background(brightness);
-    final surface = chapter.palette.surface(brightness);
+    final background = chapter.palette.background;
+    final surface = chapter.palette.surface;
     final skyTop =
         Color.lerp(background, dark ? Colors.black : Colors.white, .28)!;
     final skyLow =

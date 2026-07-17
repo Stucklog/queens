@@ -2,28 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../core/models.dart';
 
-class JourneyPalette {
-  const JourneyPalette({
-    required this.lightBackground,
-    required this.lightSurface,
-    required this.darkBackground,
-    required this.darkSurface,
-    required this.primary,
-    required this.secondary,
-  });
+const regaliaMidnight = Color(0xff151d3b);
+const regaliaMidnightSurface = Color(0xff253052);
 
-  final Color lightBackground;
-  final Color lightSurface;
-  final Color darkBackground;
-  final Color darkSurface;
+class JourneyPalette {
+  const JourneyPalette({required this.primary, required this.secondary});
+
   final Color primary;
   final Color secondary;
 
-  Color background(Brightness brightness) =>
-      brightness == Brightness.dark ? darkBackground : lightBackground;
-
-  Color surface(Brightness brightness) =>
-      brightness == Brightness.dark ? darkSurface : lightSurface;
+  Color get background => regaliaMidnight;
+  Color get surface => regaliaMidnightSurface;
 }
 
 class JourneyChapter {
@@ -63,10 +52,6 @@ const journeyChapters = <JourneyChapter>[
     difficulty: DifficultyTier.easy,
     size: 6,
     palette: JourneyPalette(
-      lightBackground: Color(0xfffff3bc),
-      lightSurface: Color(0xfffffbea),
-      darkBackground: Color(0xff25332f),
-      darkSurface: Color(0xff34433d),
       primary: Color(0xff527663),
       secondary: Color(0xff5d9ab5),
     ),
@@ -80,10 +65,6 @@ const journeyChapters = <JourneyChapter>[
     difficulty: DifficultyTier.easy,
     size: 7,
     palette: JourneyPalette(
-      lightBackground: Color(0xffdce4ca),
-      lightSurface: Color(0xfff2f1dc),
-      darkBackground: Color(0xff172c2a),
-      darkSurface: Color(0xff263c38),
       primary: Color(0xff365f50),
       secondary: Color(0xff704d78),
     ),
@@ -98,10 +79,6 @@ const journeyChapters = <JourneyChapter>[
     difficulty: DifficultyTier.medium,
     size: 7,
     palette: JourneyPalette(
-      lightBackground: Color(0xffdce3e8),
-      lightSurface: Color(0xfffff8e8),
-      darkBackground: Color(0xff27313d),
-      darkSurface: Color(0xff354251),
       primary: Color(0xff536d88),
       secondary: Color(0xffa75b3b),
     ),
@@ -116,10 +93,6 @@ const journeyChapters = <JourneyChapter>[
     difficulty: DifficultyTier.medium,
     size: 8,
     palette: JourneyPalette(
-      lightBackground: Color(0xffc9ebe4),
-      lightSurface: Color(0xffedf4e9),
-      darkBackground: Color(0xff183637),
-      darkSurface: Color(0xff294748),
       primary: Color(0xff247f82),
       secondary: Color(0xff879e91),
     ),
@@ -133,10 +106,6 @@ const journeyChapters = <JourneyChapter>[
     difficulty: DifficultyTier.hard,
     size: 8,
     palette: JourneyPalette(
-      lightBackground: Color(0xfff2d1b0),
-      lightSurface: Color(0xffffead6),
-      darkBackground: Color(0xff2c2022),
-      darkSurface: Color(0xff443033),
       primary: Color(0xff8d3e31),
       secondary: Color(0xffdb7a37),
     ),
@@ -150,10 +119,6 @@ const journeyChapters = <JourneyChapter>[
     difficulty: DifficultyTier.hard,
     size: 9,
     palette: JourneyPalette(
-      lightBackground: Color(0xffddd9a8),
-      lightSurface: Color(0xfff2ead1),
-      darkBackground: Color(0xff29251c),
-      darkSurface: Color(0xff403a2b),
       primary: Color(0xff5b4c2a),
       secondary: Color(0xff91a934),
     ),
@@ -168,10 +133,6 @@ const journeyChapters = <JourneyChapter>[
     difficulty: DifficultyTier.expert,
     size: 9,
     palette: JourneyPalette(
-      lightBackground: Color(0xffddd8ec),
-      lightSurface: Color(0xfff2eff8),
-      darkBackground: Color(0xff17182c),
-      darkSurface: Color(0xff272844),
       primary: Color(0xff514d82),
       secondary: Color(0xff9ca9c7),
     ),
@@ -185,10 +146,6 @@ const journeyChapters = <JourneyChapter>[
     difficulty: DifficultyTier.expert,
     size: 10,
     palette: JourneyPalette(
-      lightBackground: Color(0xffe4e7f5),
-      lightSurface: Color(0xfffffbeb),
-      darkBackground: Color(0xff151d38),
-      darkSurface: Color(0xff253052),
       primary: Color(0xff244a98),
       secondary: Color(0xffbd8b2d),
     ),

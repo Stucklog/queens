@@ -27,7 +27,7 @@ void main() {
     );
   });
 
-  testWidgets('6x6 narrow light board with large text and focus', (
+  testWidgets('6x6 narrow midnight board with large text and focus', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(390, 720);
@@ -40,7 +40,7 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: RegaliaTheme.light(),
+        theme: RegaliaTheme.midnight(),
         home: MediaQuery(
           data: const MediaQueryData(textScaler: TextScaler.linear(1.5)),
           child: Scaffold(
@@ -64,11 +64,11 @@ void main() {
     );
     await expectLater(
       find.byKey(const ValueKey('golden')),
-      matchesGoldenFile('goldens/board_6_light_narrow.png'),
+      matchesGoldenFile('goldens/board_6_midnight_narrow.png'),
     );
   });
 
-  testWidgets('10x10 wide dark completed board', (tester) async {
+  testWidgets('10x10 wide midnight completed board', (tester) async {
     tester.view.physicalSize = const Size(1200, 800);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
@@ -83,9 +83,7 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: RegaliaTheme.light(),
-        darkTheme: RegaliaTheme.dark(),
-        themeMode: ThemeMode.dark,
+        theme: RegaliaTheme.midnight(),
         home: Scaffold(
           body: Center(
             child: RepaintBoundary(
@@ -106,11 +104,11 @@ void main() {
     );
     await expectLater(
       find.byKey(const ValueKey('golden')),
-      matchesGoldenFile('goldens/board_10_dark_complete.png'),
+      matchesGoldenFile('goldens/board_10_midnight_complete.png'),
     );
   });
 
-  testWidgets('clean completion presentation in narrow light layout', (
+  testWidgets('clean completion presentation in narrow midnight layout', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(390, 720);
@@ -121,7 +119,7 @@ void main() {
       ..elapsedSeconds = 83;
     await tester.pumpWidget(
       MaterialApp(
-        theme: RegaliaTheme.light(),
+        theme: RegaliaTheme.midnight(),
         home: Scaffold(
           body: RepaintBoundary(
             key: const ValueKey('completion-golden'),
@@ -138,11 +136,11 @@ void main() {
     );
     await expectLater(
       find.byKey(const ValueKey('completion-golden')),
-      matchesGoldenFile('goldens/completion_clean_light_narrow.png'),
+      matchesGoldenFile('goldens/completion_clean_midnight_narrow.png'),
     );
   });
 
-  testWidgets('assisted completion presentation in wide dark layout', (
+  testWidgets('assisted completion presentation in wide midnight layout', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(900, 600);
@@ -159,9 +157,7 @@ void main() {
     );
     await tester.pumpWidget(
       MaterialApp(
-        theme: RegaliaTheme.light(),
-        darkTheme: RegaliaTheme.dark(),
-        themeMode: ThemeMode.dark,
+        theme: RegaliaTheme.midnight(),
         home: Scaffold(
           body: RepaintBoundary(
             key: const ValueKey('completion-golden'),
@@ -178,7 +174,7 @@ void main() {
     );
     await expectLater(
       find.byKey(const ValueKey('completion-golden')),
-      matchesGoldenFile('goldens/completion_assisted_dark_wide.png'),
+      matchesGoldenFile('goldens/completion_assisted_midnight_wide.png'),
     );
   });
 }

@@ -12,6 +12,16 @@ import 'screens/tutorial_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: RegaliaTheme.midnightBlue,
+      systemNavigationBarDividerColor: RegaliaTheme.midnightBlue,
+      systemNavigationBarIconBrightness: Brightness.light,
+    ),
+  );
   runApp(const RegaliaBootstrap());
 }
 
@@ -58,9 +68,8 @@ class RegaliaApp extends StatelessWidget {
         (context, _) => MaterialApp(
           title: appName,
           debugShowCheckedModeBanner: false,
-          theme: RegaliaTheme.light(),
-          darkTheme: RegaliaTheme.dark(),
-          themeMode: controller.settings.themeMode,
+          theme: RegaliaTheme.midnight(),
+          themeMode: ThemeMode.dark,
           builder: (context, child) {
             final media = MediaQuery.of(context);
             final portraitWidth =

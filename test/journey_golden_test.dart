@@ -36,18 +36,17 @@ void main() {
     )..addFont(Future<ByteData>.value(ByteData.sublistView(iconBytes)))).load();
   });
 
-  testWidgets('early Asterfall Vale route in light theme', (tester) async {
+  testWidgets('early Asterfall Vale route in midnight theme', (tester) async {
     final controller = await _controllerAt(tester, completed: 0);
     await _goldenMap(
       tester,
       controller: controller,
       size: const Size(390, 844),
-      mode: ThemeMode.light,
-      file: 'goldens/journey_clovermead_light.png',
+      file: 'goldens/journey_clovermead_midnight.png',
     );
   });
 
-  testWidgets('Brasswake Arsenal panorama in portrait dark theme', (
+  testWidgets('Brasswake Arsenal panorama in portrait midnight theme', (
     tester,
   ) async {
     final controller = await _controllerAt(tester, completed: 80);
@@ -55,41 +54,39 @@ void main() {
       tester,
       controller: controller,
       size: const Size(430, 840),
-      mode: ThemeMode.dark,
-      file: 'goldens/journey_underkeep_dark.png',
+      file: 'goldens/journey_underkeep_midnight.png',
     );
   });
 
-  testWidgets('Empyrean Citadel route in narrow dark theme', (tester) async {
+  testWidgets('Empyrean Citadel route in narrow midnight theme', (
+    tester,
+  ) async {
     final controller = await _controllerAt(tester, completed: 100);
     await _goldenMap(
       tester,
       controller: controller,
       size: const Size(390, 844),
-      mode: ThemeMode.dark,
-      file: 'goldens/journey_crownspire_dark.png',
+      file: 'goldens/journey_crownspire_midnight.png',
     );
   });
 
-  testWidgets('opening story scene in light theme', (tester) async {
+  testWidgets('opening story scene in midnight theme', (tester) async {
     final controller = await _controllerAt(tester, completed: 0);
     await _goldenStory(
       tester,
       controller: controller,
       scene: StorySceneScreen.opening(controller: controller),
-      mode: ThemeMode.light,
-      file: 'goldens/story_opening_light.png',
+      file: 'goldens/story_opening_midnight.png',
     );
   });
 
-  testWidgets('finale story scene in dark theme', (tester) async {
+  testWidgets('finale story scene in midnight theme', (tester) async {
     final controller = await _controllerAt(tester, completed: 120);
     await _goldenStory(
       tester,
       controller: controller,
       scene: StorySceneScreen.finale(controller: controller),
-      mode: ThemeMode.dark,
-      file: 'goldens/story_finale_dark.png',
+      file: 'goldens/story_finale_midnight.png',
     );
   });
 }
@@ -123,7 +120,6 @@ Future<void> _goldenMap(
   WidgetTester tester, {
   required AppController controller,
   required Size size,
-  required ThemeMode mode,
   required String file,
 }) async {
   tester.view.physicalSize = size;
@@ -132,9 +128,7 @@ Future<void> _goldenMap(
   addTearDown(tester.view.resetDevicePixelRatio);
   await tester.pumpWidget(
     MaterialApp(
-      theme: RegaliaTheme.light(),
-      darkTheme: RegaliaTheme.dark(),
-      themeMode: mode,
+      theme: RegaliaTheme.midnight(),
       home: RepaintBoundary(
         key: const ValueKey('journey-golden'),
         child: JourneyScreen(controller: controller),
@@ -157,7 +151,6 @@ Future<void> _goldenStory(
   WidgetTester tester, {
   required AppController controller,
   required Widget scene,
-  required ThemeMode mode,
   required String file,
 }) async {
   tester.view.physicalSize = const Size(430, 840);
@@ -166,9 +159,7 @@ Future<void> _goldenStory(
   addTearDown(tester.view.resetDevicePixelRatio);
   await tester.pumpWidget(
     MaterialApp(
-      theme: RegaliaTheme.light(),
-      darkTheme: RegaliaTheme.dark(),
-      themeMode: mode,
+      theme: RegaliaTheme.midnight(),
       home: RepaintBoundary(key: const ValueKey('story-golden'), child: scene),
     ),
   );

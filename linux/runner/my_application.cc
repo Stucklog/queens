@@ -17,8 +17,23 @@ G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
 // Implements GApplication::activate.
 static void my_application_activate(GApplication* application) {
   MyApplication* self = MY_APPLICATION(application);
+  GtkSettings* settings = gtk_settings_get_default();
+  if (settings != nullptr) {
+    g_object_set(settings, "gtk-application-prefer-dark-theme", TRUE, nullptr);
+  }
+
   GtkWindow* window =
       GTK_WINDOW(gtk_application_window_new(GTK_APPLICATION(application)));
+
+  GtkCssProvider* chrome_style = gtk_css_provider_new();
+  gtk_css_provider_load_from_data(
+      chrome_style,
+      "window, headerbar { background-color: #151D3B; color: #FFF3DC; }",
+      -1, nullptr);
+  gtk_style_context_add_provider_for_screen(
+      gtk_window_get_screen(window), GTK_STYLE_PROVIDER(chrome_style),
+      GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  g_object_unref(chrome_style);
 
   // Use a header bar when running in GNOME as this is the common style used
   // by applications and is the setup most users will be using (e.g. Ubuntu
