@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../core/models.dart';
 import 'crown_mark.dart';
+import 'pixel_ui.dart';
 
 class CompletionDialog extends StatelessWidget {
   const CompletionDialog({
@@ -22,8 +23,9 @@ class CompletionDialog extends StatelessWidget {
   final String? nextLabel;
 
   @override
-  Widget build(BuildContext context) => AlertDialog(
-    icon: const SizedBox(height: 64, child: Center(child: CrownMark(size: 64))),
+  Widget build(BuildContext context) => PixelDialog(
+    semanticLabel: board.assisted ? 'Board complete' : 'A clean coronation',
+    icon: const CrownMark(size: 64),
     title: Text(board.assisted ? 'Board complete' : 'A clean coronation'),
     content: Text(
       board.assisted

@@ -9,6 +9,8 @@ class RegaliaTheme {
   static const midnightSurfaceHigh = Color(0xff303c60);
   static const ivory = Color(0xfffff3dc);
   static const gold = Color(0xffd6af53);
+  static const ink = Color(0xff080d20);
+  static const danger = Color(0xfff06b6b);
 
   static ThemeData midnight([JourneyPalette? palette]) =>
       _theme(secondary: palette?.secondary ?? gold);
@@ -52,36 +54,125 @@ class RegaliaTheme {
       brightness: Brightness.dark,
       colorScheme: scheme,
       scaffoldBackgroundColor: midnightBlue,
+      canvasColor: midnightBlue,
       cardTheme: CardThemeData(
         color: midnightSurface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: scheme.outlineVariant, width: 2),
+          side: BorderSide(color: scheme.outline, width: 2),
         ),
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: midnightSurface,
+        elevation: 0,
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: scheme.outline, width: 3),
+          side: BorderSide(color: secondary, width: 3),
         ),
+        titleTextStyle: _type(ThemeData.dark().textTheme, ivory).headlineSmall,
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        scrolledUnderElevation: 0,
         foregroundColor: ivory,
+        centerTitle: false,
+        toolbarHeight: 68,
+        titleTextStyle: _type(ThemeData.dark().textTheme, ivory).titleLarge,
       ),
-      fontFamily: 'RegaliaSans',
+      fontFamily: 'RegaliaPixel',
       textTheme: _type(ThemeData.dark().textTheme, ivory),
-      focusColor: secondary.withValues(alpha: .35),
+      focusColor: ivory.withValues(alpha: .28),
+      hoverColor: secondary.withValues(alpha: .14),
+      highlightColor: secondary.withValues(alpha: .18),
       splashFactory: NoSplash.splashFactory,
-      filledButtonTheme: const FilledButtonThemeData(
-        style: ButtonStyle(
-          shape: WidgetStatePropertyAll(RoundedRectangleBorder()),
+      dividerTheme: DividerThemeData(
+        color: scheme.outlineVariant,
+        thickness: 2,
+        space: 2,
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: _buttonStyle(
+          foreground: scheme.onSecondary,
+          background: secondary,
+          border: ink,
         ),
       ),
-      outlinedButtonTheme: const OutlinedButtonThemeData(
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: _buttonStyle(
+          foreground: ivory,
+          background: midnightSurface,
+          border: scheme.outline,
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: _buttonStyle(
+          foreground: secondary,
+          background: Colors.transparent,
+          border: Colors.transparent,
+        ),
+      ),
+      iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
-          shape: WidgetStatePropertyAll(RoundedRectangleBorder()),
+          minimumSize: const WidgetStatePropertyAll(Size.square(48)),
+          iconSize: const WidgetStatePropertyAll(24),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (states) =>
+                states.contains(WidgetState.disabled)
+                    ? scheme.outlineVariant
+                    : ivory,
+          ),
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (states) =>
+                states.contains(WidgetState.hovered) ||
+                        states.contains(WidgetState.focused)
+                    ? secondaryContainer
+                    : Colors.transparent,
+          ),
+          shape: const WidgetStatePropertyAll(RoundedRectangleBorder()),
+        ),
+      ),
+      listTileTheme: ListTileThemeData(
+        iconColor: secondary,
+        textColor: ivory,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: scheme.outlineVariant, width: 2),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: ink,
+        contentTextStyle: _type(ThemeData.dark().textTheme, ivory).bodyMedium,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: secondary, width: 3),
+        ),
+        behavior: SnackBarBehavior.floating,
+      ),
+      tooltipTheme: TooltipThemeData(
+        decoration: BoxDecoration(
+          color: ink,
+          border: Border.all(color: secondary, width: 2),
+        ),
+        textStyle: _type(ThemeData.dark().textTheme, ivory).labelMedium,
+        waitDuration: const Duration(milliseconds: 500),
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: secondary,
+        linearTrackColor: midnightSurfaceHigh,
+        circularTrackColor: midnightSurfaceHigh,
+        linearMinHeight: 10,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: midnightSurfaceLow,
+        border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(color: scheme.outline, width: 2),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(color: secondary, width: 3),
         ),
       ),
       pageTransitionsTheme: const PageTransitionsTheme(
@@ -104,37 +195,122 @@ class RegaliaTheme {
     return darkContrast >= lightContrast ? midnightBlue : ivory;
   }
 
+  static ButtonStyle _buttonStyle({
+    required Color foreground,
+    required Color background,
+    required Color border,
+  }) => ButtonStyle(
+    minimumSize: const WidgetStatePropertyAll(Size(48, 48)),
+    padding: const WidgetStatePropertyAll(
+      EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+    ),
+    foregroundColor: WidgetStateProperty.resolveWith(
+      (states) =>
+          states.contains(WidgetState.disabled)
+              ? foreground.withValues(alpha: .38)
+              : foreground,
+    ),
+    backgroundColor: WidgetStateProperty.resolveWith(
+      (states) =>
+          states.contains(WidgetState.disabled)
+              ? background.withValues(alpha: .22)
+              : states.contains(WidgetState.pressed)
+              ? Color.lerp(background, ink, .22)
+              : background,
+    ),
+    side: WidgetStatePropertyAll(BorderSide(color: border, width: 2)),
+    shape: const WidgetStatePropertyAll(RoundedRectangleBorder()),
+    elevation: const WidgetStatePropertyAll(0),
+    textStyle: const WidgetStatePropertyAll(
+      TextStyle(
+        fontFamily: 'RegaliaPixel',
+        fontSize: 16,
+        fontWeight: FontWeight.w700,
+        letterSpacing: .3,
+      ),
+    ),
+  );
+
   static TextTheme _type(TextTheme base, Color color) => base
-      .apply(fontFamily: 'RegaliaSans', bodyColor: color, displayColor: color)
+      .apply(fontFamily: 'RegaliaPixel', bodyColor: color, displayColor: color)
       .copyWith(
         displayLarge: base.displayLarge?.copyWith(
-          fontFamily: 'RegaliaDisplay',
+          fontFamily: 'RegaliaPixel',
           fontWeight: FontWeight.w700,
+          height: .95,
+          letterSpacing: -.5,
           color: color,
         ),
         displayMedium: base.displayMedium?.copyWith(
-          fontFamily: 'RegaliaDisplay',
+          fontFamily: 'RegaliaPixel',
           fontWeight: FontWeight.w700,
+          height: 1,
           color: color,
         ),
         displaySmall: base.displaySmall?.copyWith(
-          fontFamily: 'RegaliaDisplay',
+          fontFamily: 'RegaliaPixel',
           fontWeight: FontWeight.w700,
+          height: 1,
           color: color,
         ),
         headlineLarge: base.headlineLarge?.copyWith(
-          fontFamily: 'RegaliaDisplay',
+          fontFamily: 'RegaliaPixel',
           fontWeight: FontWeight.w700,
+          height: 1.05,
           color: color,
         ),
         headlineMedium: base.headlineMedium?.copyWith(
-          fontFamily: 'RegaliaDisplay',
+          fontFamily: 'RegaliaPixel',
           fontWeight: FontWeight.w700,
+          height: 1.05,
           color: color,
         ),
         headlineSmall: base.headlineSmall?.copyWith(
-          fontFamily: 'RegaliaDisplay',
+          fontFamily: 'RegaliaPixel',
           fontWeight: FontWeight.w700,
+          height: 1.08,
+          color: color,
+        ),
+        titleLarge: base.titleLarge?.copyWith(
+          fontFamily: 'RegaliaPixel',
+          fontWeight: FontWeight.w700,
+          height: 1.1,
+          letterSpacing: .2,
+          color: color,
+        ),
+        titleMedium: base.titleMedium?.copyWith(
+          fontFamily: 'RegaliaPixel',
+          fontWeight: FontWeight.w700,
+          height: 1.15,
+          letterSpacing: .2,
+          color: color,
+        ),
+        bodyLarge: base.bodyLarge?.copyWith(
+          fontFamily: 'RegaliaPixel',
+          fontSize: 17,
+          height: 1.3,
+          letterSpacing: .15,
+          color: color,
+        ),
+        bodyMedium: base.bodyMedium?.copyWith(
+          fontFamily: 'RegaliaPixel',
+          fontSize: 15,
+          height: 1.3,
+          letterSpacing: .15,
+          color: color,
+        ),
+        bodySmall: base.bodySmall?.copyWith(
+          fontFamily: 'RegaliaPixel',
+          fontSize: 13,
+          height: 1.28,
+          letterSpacing: .2,
+          color: color,
+        ),
+        labelLarge: base.labelLarge?.copyWith(
+          fontFamily: 'RegaliaPixel',
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          letterSpacing: .3,
           color: color,
         ),
       );

@@ -34,15 +34,59 @@
   <title>Queen’s Regalia</title>
   <link rel="manifest" href="manifest.json">
   <style>
+    @font-face {
+      font-family: "Regalia Pixel";
+      src: url("assets/assets/fonts/PixelifySans-Variable.ttf") format("truetype");
+      font-weight: 400 700;
+      font-display: swap;
+    }
+
     html,
     body {
+      min-height: 100%;
       margin: 0;
       background: #151D3B;
       color-scheme: only dark;
     }
+
+    #regalia-loader {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-content: center;
+      gap: 16px;
+      color: #FFF3DC;
+      font-family: "Regalia Pixel", monospace;
+      font-size: 18px;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    #regalia-loader img {
+      width: 96px;
+      height: 96px;
+      margin: auto;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    #regalia-loader span {
+      border: 2px solid #D6AF53;
+      box-shadow: 4px 4px 0 #080D20;
+      padding: 8px 12px;
+    }
   </style>
 </head>
 <body>
+  <div id="regalia-loader" role="status" aria-label="Opening Queen’s Regalia">
+    <img src="icons/Icon-192.png" alt="" />
+    <span>OPENING REGALIA…</span>
+  </div>
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      document.getElementById('regalia-loader')?.remove();
+    });
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

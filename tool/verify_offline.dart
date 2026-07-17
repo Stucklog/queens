@@ -87,7 +87,8 @@ Future<void> main(List<String> arguments) async {
           'main.dart.js',
           'assets/assets/puzzles/catalog.json',
           'assets/assets/puzzles/tutorial.json',
-          'assets/assets/fonts/Roboto-Regular.ttf',
+          'assets/assets/fonts/PixelifySans-Variable.ttf',
+          'assets/assets/fonts/PixelifySans_LICENSE.txt',
           'icons/Icon-512.png',
         ]) {
           if (!source.contains(asset)) {

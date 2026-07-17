@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/theme.dart';
 import 'package:regalia/widgets/crown_mark.dart';
-import 'package:regalia/widgets/pixel_art.dart';
+import 'package:regalia/widgets/pixel_ui.dart';
 
 void main() {
   testWidgets('midnight crown identity remains balanced at production sizes', (
@@ -43,15 +43,15 @@ void main() {
               _row(
                 background: const Color(0xff20294b),
                 children: const [
-                  PixelStatusIcon(
-                    glyph: PixelStatusGlyph.crown,
+                  PixelIcon(
+                    PixelGlyph.crown,
                     color: Color(0xffd6af53),
-                    size: 18,
+                    size: 16,
                   ),
-                  PixelStatusIcon(
-                    glyph: PixelStatusGlyph.crown,
+                  PixelIcon(
+                    PixelGlyph.crown,
                     color: Color(0xffd6af53),
-                    size: 28,
+                    size: 32,
                   ),
                   CrownMark(size: 24, color: Color(0xff6fc6ca)),
                   CrownMark(size: 30, color: Color(0xffff766f)),

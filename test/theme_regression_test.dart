@@ -5,6 +5,7 @@ import 'package:regalia/app/journey.dart';
 import 'package:regalia/main.dart';
 import 'package:regalia/screens/journey_screen.dart';
 import 'package:regalia/screens/settings_screen.dart';
+import 'package:regalia/widgets/pixel_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -53,8 +54,8 @@ void main() {
       expect(find.text('Show timer'), findsOneWidget);
       expect(
         tester
-            .widget<SwitchListTile>(
-              find.widgetWithText(SwitchListTile, 'Show timer'),
+            .widget<PixelToggleTile>(
+              find.widgetWithText(PixelToggleTile, 'Show timer'),
             )
             .value,
         isFalse,

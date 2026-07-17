@@ -5,6 +5,7 @@ import '../app/journey.dart';
 import '../app/theme.dart';
 import '../widgets/crown_mark.dart';
 import '../widgets/pixel_art.dart';
+import '../widgets/pixel_ui.dart';
 
 class StorySceneScreen extends StatelessWidget {
   const StorySceneScreen({
@@ -125,10 +126,11 @@ class StorySceneScreen extends StatelessWidget {
                           FilledButton.icon(
                             key: ValueKey('story-continue-$beatId'),
                             onPressed: () => _continue(context),
-                            icon: PixelStatusIcon(
-                              glyph: PixelStatusGlyph.arrow,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              size: 18,
+                            icon: PixelIcon(
+                              PixelGlyph.arrowRight,
+                              color: Theme.of(context).colorScheme.onSecondary,
+                              size: 24,
+                              excludeFromSemantics: true,
                             ),
                             label: Text(actionLabel),
                           ),

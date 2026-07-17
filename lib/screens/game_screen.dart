@@ -7,6 +7,7 @@ import '../app/journey.dart';
 import '../app/theme.dart';
 import '../core/models.dart';
 import '../widgets/completion_dialog.dart';
+import '../widgets/pixel_ui.dart';
 import '../widgets/regalia_board.dart';
 import 'rules_screen.dart';
 
@@ -34,7 +35,7 @@ class _GameScreenState extends State<GameScreen> {
     debugLabel: 'board keyboard focus',
   );
   Cell _selected = const Cell(0, 0);
-  Set<Cell> _highlighted = {};
+  Map<Cell, BoardCue> _cues = {};
   Set<Cell> _conflicts = {};
 
   @override
@@ -84,6 +85,7 @@ class _GameScreenState extends State<GameScreen> {
                 onKeyEvent: _onKey,
                 child: Scaffold(
                   appBar: AppBar(
+                    leading: const PixelBackButton(),
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -112,10 +114,10 @@ class _GameScreenState extends State<GameScreen> {
                             ),
                           ),
                         ),
-                      IconButton(
+                      PixelIconButton(
                         tooltip: 'Rules',
                         onPressed: _openRules,
-                        icon: const Icon(Icons.menu_book_outlined),
+                        glyph: PixelGlyph.book,
                       ),
                     ],
                   ),
@@ -133,7 +135,7 @@ class _GameScreenState extends State<GameScreen> {
                             board: board,
                             automaticExclusions: automatic,
                             conflicts: {...directConflictCells, ..._conflicts},
-                            highlighted: _highlighted,
+                            cues: _cues,
                             selected: _selected,
                             onCellPressed: _pressCell,
                             onCellExcluded: _excludeCell,
@@ -166,7 +168,7 @@ class _GameScreenState extends State<GameScreen> {
                                 children: [
                                   Expanded(child: Center(child: boardWidget)),
                                   const SizedBox(width: 36),
-                                  SizedBox(width: 240, child: controls),
+                                  SizedBox(width: 276, child: controls),
                                 ],
                               ),
                             ),
@@ -195,7 +197,7 @@ class _GameScreenState extends State<GameScreen> {
   void _pressCell(Cell cell) {
     setState(() {
       _selected = cell;
-      _highlighted = {};
+      _cues = {};
       _conflicts = {};
     });
     final outcome = widget.controller.cycle(widget.puzzle, cell);
@@ -210,7 +212,7 @@ class _GameScreenState extends State<GameScreen> {
     }
     setState(() {
       _selected = cell;
-      _highlighted = {};
+      _cues = {};
       _conflicts = {};
     });
     widget.controller.setCell(widget.puzzle, cell, ManualCellState.cross);
@@ -218,7 +220,7 @@ class _GameScreenState extends State<GameScreen> {
 
   void _setSelected(ManualCellState state) {
     setState(() {
-      _highlighted = {};
+      _cues = {};
       _conflicts = {};
     });
     final outcome = widget.controller.setCell(widget.puzzle, _selected, state);
@@ -281,7 +283,9 @@ class _GameScreenState extends State<GameScreen> {
   void _check() {
     final result = widget.controller.checkProgress(widget.puzzle);
     setState(() {
-      _highlighted = result.inconsistentMarks;
+      _cues = {
+        for (final cell in result.inconsistentMarks) cell: BoardCue.checkError,
+      };
       _conflicts = {
         for (final conflict in result.conflicts) ...[
           conflict.first,
@@ -292,7 +296,7 @@ class _GameScreenState extends State<GameScreen> {
     _message(
       result.isValid ? 'Still regal' : 'A contradiction',
       result.message,
-      result.isValid ? Icons.check_circle_outline : Icons.error_outline,
+      result.isValid ? PixelGlyph.check : PixelGlyph.error,
     );
   }
 
@@ -302,30 +306,41 @@ class _GameScreenState extends State<GameScreen> {
       _message(
         'No hint available',
         'Try clearing a mark and checking the board again.',
-        Icons.lightbulb_outline,
+        PixelGlyph.hint,
       );
       return;
     }
     setState(() {
-      _highlighted = {
-        ...deduction.sources,
-        ...deduction.eliminated,
-        if (deduction.placement != null) deduction.placement!,
+      _cues = {
+        for (final cell in deduction.sources) cell: BoardCue.hintSource,
+        for (final cell in deduction.eliminated) cell: BoardCue.hintElimination,
+        if (deduction.placement != null)
+          deduction.placement!: BoardCue.hintPlacement,
       };
       _conflicts = {};
     });
-    _message('A gentle nudge', deduction.explanation, Icons.lightbulb_outline);
+    _message('A gentle nudge', deduction.explanation, PixelGlyph.hint);
   }
 
-  void _message(String title, String message, IconData icon) {
+  void _message(String title, String message, PixelGlyph icon) {
+    final colors = Theme.of(context).colorScheme;
+    final accent = icon == PixelGlyph.error ? colors.error : colors.secondary;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: accent, width: 3),
+          ),
           content: Row(
             children: [
-              Icon(icon, color: Theme.of(context).colorScheme.inversePrimary),
+              PixelIcon(
+                icon,
+                color: accent,
+                size: 24,
+                excludeFromSemantics: true,
+              ),
               const SizedBox(width: 12),
               Expanded(child: Text('$title — $message')),
             ],
@@ -339,7 +354,8 @@ class _GameScreenState extends State<GameScreen> {
     final reset = await showDialog<bool>(
       context: context,
       builder:
-          (context) => AlertDialog(
+          (context) => PixelDialog(
+            semanticLabel: 'Reset this attempt?',
             title: const Text('Reset this attempt?'),
             content: const Text(
               'All marks and elapsed time on this board will be cleared.',
@@ -360,7 +376,7 @@ class _GameScreenState extends State<GameScreen> {
       widget.controller.reset(widget.puzzle);
       widget.controller.startTimer(widget.puzzle.id);
       setState(() {
-        _highlighted = {};
+        _cues = {};
         _conflicts = {};
       });
     } else if (mounted) {
@@ -430,33 +446,44 @@ class _Controls extends StatelessWidget {
         alignment: WrapAlignment.center,
         spacing: 4,
         children: [
-          IconButton.filledTonal(
+          PixelIconButton(
             tooltip: 'Undo (Ctrl+Z)',
             onPressed: onUndo,
-            icon: const Icon(Icons.undo_rounded),
+            glyph: PixelGlyph.undo,
+            style: _toolStyle(context),
           ),
-          IconButton.filledTonal(
+          PixelIconButton(
             tooltip: 'Redo (Ctrl+Y)',
             onPressed: onRedo,
-            icon: const Icon(Icons.redo_rounded),
+            glyph: PixelGlyph.redo,
+            style: _toolStyle(context),
           ),
-          IconButton.filledTonal(
+          PixelIconButton(
             tooltip: 'Reset',
             onPressed: onReset,
-            icon: const Icon(Icons.restart_alt_rounded),
+            glyph: PixelGlyph.reset,
+            style: _toolStyle(context),
           ),
         ],
       ),
       const SizedBox(height: 16),
       OutlinedButton.icon(
         onPressed: onCheck,
-        icon: const Icon(Icons.fact_check_outlined),
+        icon: const PixelIcon(
+          PixelGlyph.checklist,
+          size: 24,
+          excludeFromSemantics: true,
+        ),
         label: const Text('Check progress'),
       ),
       const SizedBox(height: 8),
       FilledButton.tonalIcon(
         onPressed: onHint,
-        icon: const Icon(Icons.lightbulb_outline),
+        icon: const PixelIcon(
+          PixelGlyph.hint,
+          size: 24,
+          excludeFromSemantics: true,
+        ),
         label: const Text('Hint'),
       ),
       if (board.assisted) ...[
@@ -477,5 +504,14 @@ class _Controls extends StatelessWidget {
         style: Theme.of(context).textTheme.bodySmall,
       ),
     ],
+  );
+
+  static ButtonStyle _toolStyle(BuildContext context) => ButtonStyle(
+    backgroundColor: WidgetStatePropertyAll(
+      Theme.of(context).colorScheme.surfaceContainerHighest,
+    ),
+    side: WidgetStatePropertyAll(
+      BorderSide(color: Theme.of(context).colorScheme.outline, width: 2),
+    ),
   );
 }

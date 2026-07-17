@@ -1,8 +1,6 @@
 @Tags(['golden'])
 library;
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,24 +14,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   setUpAll(() async {
-    await (FontLoader('RegaliaSans')
-      ..addFont(rootBundle.load('assets/fonts/Roboto-Regular.ttf'))).load();
-    await (FontLoader('RegaliaDisplay')..addFont(
-      rootBundle.load('assets/fonts/RobotoCondensed-Bold.ttf'),
+    await (FontLoader('RegaliaPixel')..addFont(
+      rootBundle.load('assets/fonts/PixelifySans-Variable.ttf'),
     )).load();
-    var directory = File(Platform.resolvedExecutable).parent;
-    late File materialIcons;
-    do {
-      materialIcons = File(
-        '${directory.path}/bin/cache/artifacts/material_fonts/MaterialIcons-Regular.otf',
-      );
-      directory = directory.parent;
-    } while (!materialIcons.existsSync() &&
-        directory.parent.path != directory.path);
-    final iconBytes = await materialIcons.readAsBytes();
-    await (FontLoader(
-      'MaterialIcons',
-    )..addFont(Future<ByteData>.value(ByteData.sublistView(iconBytes)))).load();
   });
 
   testWidgets('early Asterfall Vale route in midnight theme', (tester) async {

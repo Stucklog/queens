@@ -48,15 +48,23 @@ Future<void> main() async {
   _requireSymmetry(master, crownIconMasterPath);
 
   for (final entry in crownIconOutputs.entries) {
-    final icon = _resizeSymmetrically(
+    var icon = _resizeSymmetrically(
       master,
       entry.value,
       maskable: entry.key.contains('Icon-maskable-'),
     );
+    if (entry.key.startsWith('ios/')) {
+      icon = icon.convert(numChannels: 3);
+      _requireSymmetry(icon, '${entry.value} px iOS icon');
+    }
     await File(entry.key).writeAsBytes(image.encodePng(icon), flush: true);
   }
 
-  final windowsIcon = _resizeSymmetrically(master, 256);
+  final windowsSizes = [16, 24, 32, 48, 64, 128, 256];
+  final windowsIcon = _resizeSymmetrically(master, windowsSizes.first);
+  for (final size in windowsSizes.skip(1)) {
+    windowsIcon.addFrame(_resizeSymmetrically(master, size));
+  }
   await File(
     windowsCrownIconPath,
   ).writeAsBytes(image.encodeIco(windowsIcon), flush: true);
@@ -72,13 +80,24 @@ image.Image _resizeSymmetrically(
   int size, {
   bool maskable = false,
 }) {
-  var contentSize = maskable ? (size * .82).round() : size;
+  var contentSize = maskable ? (size * .74).round() : size;
   if (contentSize.isEven != size.isEven) contentSize--;
-  final resizedContent = image.copyResize(
+  final pixelGridSize = switch (contentSize) {
+    <= 64 => 32,
+    <= 192 => 64,
+    _ => 128,
+  };
+  final pixelGrid = image.copyResize(
     master,
+    width: pixelGridSize,
+    height: pixelGridSize,
+    interpolation: image.Interpolation.average,
+  );
+  final resizedContent = image.copyResize(
+    pixelGrid,
     width: contentSize,
     height: contentSize,
-    interpolation: image.Interpolation.average,
+    interpolation: image.Interpolation.nearest,
   );
   final resized =
       maskable

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/crown_mark.dart';
+import '../widgets/pixel_ui.dart';
 
 class RulesScreen extends StatelessWidget {
   const RulesScreen({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('How to play')),
+    appBar: AppBar(
+      leading: const PixelBackButton(),
+      title: const Text('How to play'),
+    ),
     body: ListView(
       padding: const EdgeInsets.fromLTRB(24, 12, 24, 48),
       children: [
@@ -20,31 +24,31 @@ class RulesScreen extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         const _Rule(
-          icon: Icons.table_rows_rounded,
+          icon: PixelGlyph.row,
           title: 'One per row',
           body: 'Every row holds exactly one crown.',
         ),
         const _Rule(
-          icon: Icons.view_column_rounded,
+          icon: PixelGlyph.column,
           title: 'One per column',
           body: 'Every column holds exactly one crown.',
         ),
         const _Rule(
-          icon: Icons.palette_outlined,
+          icon: PixelGlyph.region,
           title: 'One per region',
-          body: 'Each colored, outlined region holds exactly one crown.',
+          body: 'Each patterned, outlined region holds exactly one crown.',
         ),
         const _Rule(
-          icon: Icons.open_with_rounded,
+          icon: PixelGlyph.spacing,
           title: 'Crowns need space',
           body:
               'Crowns cannot touch, even at a corner. Diagonal alignment farther apart is allowed.',
         ),
         const _Rule(
-          icon: Icons.touch_app_outlined,
+          icon: PixelGlyph.tap,
           title: 'Mark your thinking',
           body:
-              'Tap a cell to cycle empty → X → crown → empty, or drag across cells to mark them X. Soft dots are automatic exclusions and do not count as assistance.',
+              'Tap a cell to cycle empty > X > crown > empty, or drag across cells to mark them X. Pixel sparks are automatic exclusions and do not count as assistance.',
         ),
       ],
     ),
@@ -53,20 +57,35 @@ class RulesScreen extends StatelessWidget {
 
 class _Rule extends StatelessWidget {
   const _Rule({required this.icon, required this.title, required this.body});
-  final IconData icon;
+  final PixelGlyph icon;
   final String title;
   final String body;
 
   @override
-  Widget build(BuildContext context) => Card(
-    margin: const EdgeInsets.only(bottom: 12),
-    child: ListTile(
-      contentPadding: const EdgeInsets.all(16),
-      leading: Icon(icon, color: Theme.of(context).colorScheme.secondary),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
-      subtitle: Padding(
-        padding: const EdgeInsets.only(top: 6),
-        child: Text(body),
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: 16, right: 4),
+    child: PixelPanel(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          PixelIcon(
+            icon,
+            color: Theme.of(context).colorScheme.secondary,
+            size: 32,
+            excludeFromSemantics: true,
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: 6),
+                Text(body),
+              ],
+            ),
+          ),
+        ],
       ),
     ),
   );

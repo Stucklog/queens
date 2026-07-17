@@ -11,6 +11,7 @@ import '../app/theme.dart';
 import '../core/models.dart';
 import '../widgets/crown_mark.dart';
 import '../widgets/pixel_art.dart';
+import '../widgets/pixel_ui.dart';
 import 'challenge_screen.dart';
 import 'game_screen.dart';
 import 'rules_screen.dart';
@@ -274,7 +275,8 @@ class _JourneyScreenState extends State<JourneyScreen> {
                   ],
                 ),
                 actions: [
-                  IconButton(
+                  PixelIconButton(
+                    glyph: PixelGlyph.book,
                     tooltip: 'How to play',
                     onPressed:
                         () => Navigator.push(
@@ -283,15 +285,15 @@ class _JourneyScreenState extends State<JourneyScreen> {
                             builder: (_) => const RulesScreen(),
                           ),
                         ),
-                    icon: const Icon(Icons.menu_book_outlined),
                   ),
-                  IconButton(
+                  PixelIconButton(
                     key: const ValueKey('buy-me-a-coffee'),
+                    glyph: PixelGlyph.cup,
                     tooltip: 'Support Queen’s Regalia',
                     onPressed: _openSupportPage,
-                    icon: const Icon(Icons.local_cafe_outlined),
                   ),
-                  IconButton(
+                  PixelIconButton(
+                    glyph: PixelGlyph.gear,
                     tooltip: 'Settings',
                     onPressed:
                         () => Navigator.push(
@@ -303,7 +305,6 @@ class _JourneyScreenState extends State<JourneyScreen> {
                                 ),
                           ),
                         ),
-                    icon: const Icon(Icons.settings_outlined),
                   ),
                 ],
               ),
@@ -369,42 +370,48 @@ class _JourneyScreenState extends State<JourneyScreen> {
                       right: 16,
                       bottom: 16,
                       child: SafeArea(
-                        child: Material(
+                        child: PixelPanel(
+                          padding: EdgeInsets.zero,
                           color: Theme.of(context).colorScheme.inverseSurface,
-                          child: InkWell(
-                            onTap: () {
-                              if (!(_movementSkip?.isCompleted ?? true)) {
-                                _movementSkip!.complete();
-                              }
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 18,
-                                vertical: 12,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  PixelKnightSprite(
-                                    frame: _walkFrame,
-                                    width: 24,
-                                    height: 36,
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: Text(
-                                      'Crossing the realm… tap to skip',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color:
-                                            Theme.of(
-                                              context,
-                                            ).colorScheme.onInverseSurface,
+                          borderColor:
+                              Theme.of(context).colorScheme.onInverseSurface,
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                if (!(_movementSkip?.isCompleted ?? true)) {
+                                  _movementSkip!.complete();
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 18,
+                                  vertical: 12,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    PixelKnightSprite(
+                                      frame: _walkFrame,
+                                      width: 24,
+                                      height: 36,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text(
+                                        'Crossing the realm… tap to skip',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color:
+                                              Theme.of(
+                                                context,
+                                              ).colorScheme.onInverseSurface,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -520,10 +527,11 @@ class _JourneyHeader extends StatelessWidget {
                   FilledButton.icon(
                     key: const ValueKey('continue-journey'),
                     onPressed: onContinue,
-                    icon: PixelStatusIcon(
-                      glyph: PixelStatusGlyph.arrow,
+                    icon: PixelIcon(
+                      PixelGlyph.arrowRight,
                       color: Theme.of(context).colorScheme.onPrimary,
-                      size: 18,
+                      size: 16,
+                      excludeFromSemantics: true,
                     ),
                     label: Text(label),
                   ),
@@ -531,10 +539,11 @@ class _JourneyHeader extends StatelessWidget {
                   OutlinedButton.icon(
                     key: const ValueKey('open-challenge-mode'),
                     onPressed: onChallenge,
-                    icon: PixelStatusIcon(
-                      glyph: PixelStatusGlyph.star,
+                    icon: PixelIcon(
+                      PixelGlyph.star,
                       color: Theme.of(context).colorScheme.secondary,
-                      size: 18,
+                      size: 16,
+                      excludeFromSemantics: true,
                     ),
                     label: Text(
                       controller.hasChallenge
@@ -663,16 +672,16 @@ class _RouteSection extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    PixelStatusIcon(
-                                      glyph:
-                                          reached
-                                              ? PixelStatusGlyph.arrow
-                                              : PixelStatusGlyph.lock,
+                                    PixelIcon(
+                                      reached
+                                          ? PixelGlyph.arrowRight
+                                          : PixelGlyph.lock,
                                       color:
                                           Theme.of(
                                             context,
                                           ).colorScheme.onSurface,
-                                      size: 26,
+                                      size: 24,
+                                      excludeFromSemantics: true,
                                     ),
                                   ],
                                 ),
@@ -770,13 +779,13 @@ class _PuzzleNode extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final glyph =
         active
-            ? PixelStatusGlyph.dots
+            ? PixelGlyph.ellipsis
             : current
-            ? PixelStatusGlyph.arrow
+            ? PixelGlyph.arrowRight
             : switch (record.status) {
-              CompletionStatus.cleanSolved => PixelStatusGlyph.crown,
-              CompletionStatus.assistedSolved => PixelStatusGlyph.star,
-              _ => PixelStatusGlyph.lock,
+              CompletionStatus.cleanSolved => PixelGlyph.crown,
+              CompletionStatus.assistedSolved => PixelGlyph.star,
+              _ => PixelGlyph.lock,
             };
     final fill =
         current
@@ -826,7 +835,12 @@ class _PuzzleNode extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    PixelStatusIcon(glyph: glyph, color: foreground, size: 18),
+                    PixelIcon(
+                      glyph,
+                      color: foreground,
+                      size: 16,
+                      excludeFromSemantics: true,
+                    ),
                     Text(
                       '${puzzle.order}',
                       style: TextStyle(
@@ -915,13 +929,11 @@ class _FinalLandmark extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  PixelStatusIcon(
-                    glyph:
-                        reached
-                            ? PixelStatusGlyph.crown
-                            : PixelStatusGlyph.lock,
+                  PixelIcon(
+                    reached ? PixelGlyph.crown : PixelGlyph.lock,
                     color: Theme.of(context).colorScheme.onSurface,
-                    size: 25,
+                    size: 24,
+                    excludeFromSemantics: true,
                   ),
                   const SizedBox(width: 10),
                   Flexible(

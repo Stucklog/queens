@@ -8,6 +8,8 @@ import 'app/theme.dart';
 import 'screens/journey_screen.dart';
 import 'screens/story_scene_screen.dart';
 import 'screens/tutorial_screen.dart';
+import 'widgets/crown_mark.dart';
+import 'widgets/pixel_ui.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -118,8 +120,25 @@ class RegaliaApp extends StatelessWidget {
 class _LoadingScreen extends StatelessWidget {
   const _LoadingScreen();
   @override
-  Widget build(BuildContext context) =>
-      const Scaffold(body: Center(child: CircularProgressIndicator()));
+  Widget build(BuildContext context) => const Scaffold(
+    body: Center(
+      child: SizedBox(
+        width: 244,
+        child: PixelPanel(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CrownMark(size: 64),
+              SizedBox(height: 16),
+              Text('FORGING THE REALMS', textAlign: TextAlign.center),
+              SizedBox(height: 16),
+              PixelProgressBar(semanticLabel: 'Opening Queen’s Regalia'),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 class _StartupError extends StatelessWidget {
@@ -130,15 +149,26 @@ class _StartupError extends StatelessWidget {
     body: Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.error_outline, size: 48),
-            const SizedBox(height: 16),
-            const Text('$appName could not open its bundled puzzle catalog.'),
-            const SizedBox(height: 8),
-            Text('$error', textAlign: TextAlign.center),
-          ],
+        child: PixelPanel(
+          borderColor: Theme.of(context).colorScheme.error,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              PixelIcon(
+                PixelGlyph.error,
+                size: 32,
+                color: Theme.of(context).colorScheme.error,
+                semanticLabel: 'Error',
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                '$appName could not open its bundled puzzle catalog.',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text('$error', textAlign: TextAlign.center),
+            ],
+          ),
         ),
       ),
     ),

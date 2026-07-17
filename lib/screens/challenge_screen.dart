@@ -7,6 +7,7 @@ import '../app/theme.dart';
 import '../core/models.dart';
 import '../widgets/crown_mark.dart';
 import '../widgets/pixel_art.dart';
+import '../widgets/pixel_ui.dart';
 import 'game_screen.dart';
 
 class ChallengeScreen extends StatefulWidget {
@@ -90,7 +91,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     final replace = await showDialog<bool>(
       context: context,
       builder:
-          (context) => AlertDialog(
+          (context) => PixelDialog(
+            semanticLabel: 'Begin a new challenge?',
             title: const Text('Begin a new challenge?'),
             content: const Text(
               'The current challenge board and run statistics will be replaced.',
@@ -114,7 +116,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     final end = await showDialog<bool>(
       context: context,
       builder:
-          (context) => AlertDialog(
+          (context) => PixelDialog(
+            semanticLabel: 'End this challenge?',
             title: const Text('End this challenge?'),
             content: const Text(
               'The generated board and statistics for this run will be cleared.',
@@ -158,6 +161,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
         builder:
             (context) => Scaffold(
               appBar: AppBar(
+                leading: const PixelBackButton(),
                 title: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -223,7 +227,7 @@ class _ChallengeSetup extends StatelessWidget {
       ),
       if (controller.isStartingChallenge) ...[
         const SizedBox(height: 22),
-        const LinearProgressIndicator(),
+        const PixelProgressBar(semanticLabel: 'Forging the first board'),
         const SizedBox(height: 10),
         const Text('Forging the first board…', textAlign: TextAlign.center),
       ],
@@ -270,13 +274,14 @@ class _ModeButton extends StatelessWidget {
     ),
     child: Row(
       children: [
-        PixelStatusIcon(
-          glyph:
-              mode == ChallengeMode.mixed
-                  ? PixelStatusGlyph.star
-                  : PixelStatusGlyph.crown,
+        PixelIcon(
+          switch (mode) {
+            ChallengeMode.mixed => PixelGlyph.star,
+            _ => PixelGlyph.crown,
+          },
           color: Theme.of(context).colorScheme.secondary,
-          size: 28,
+          size: 32,
+          excludeFromSemantics: true,
         ),
         const SizedBox(width: 14),
         Expanded(
@@ -289,10 +294,11 @@ class _ModeButton extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        PixelStatusIcon(
-          glyph: PixelStatusGlyph.arrow,
+        PixelIcon(
+          PixelGlyph.arrowRight,
           color: Theme.of(context).colorScheme.onSurface,
-          size: 20,
+          size: 24,
+          excludeFromSemantics: true,
         ),
       ],
     ),
@@ -401,10 +407,11 @@ class _ChallengeRun extends StatelessWidget {
                               controller.isPreparingChallenge)
                       ? null
                       : onPlay,
-              icon: PixelStatusIcon(
-                glyph: PixelStatusGlyph.arrow,
-                color: Theme.of(context).colorScheme.onPrimary,
-                size: 18,
+              icon: PixelIcon(
+                PixelGlyph.arrowRight,
+                color: Theme.of(context).colorScheme.onSecondary,
+                size: 24,
+                excludeFromSemantics: true,
               ),
               label: Text(
                 session.currentCompleted
@@ -421,20 +428,21 @@ class _ChallengeRun extends StatelessWidget {
       ),
       const SizedBox(height: 18),
       if (controller.isStartingChallenge) ...[
-        const LinearProgressIndicator(),
+        const PixelProgressBar(semanticLabel: 'Forging the new challenge run'),
         const SizedBox(height: 10),
         const Text('Forging the new run without interrupting this one…'),
         const SizedBox(height: 18),
       ],
       Row(
         children: [
-          PixelStatusIcon(
-            glyph:
-                session.queuedPuzzle != null
-                    ? PixelStatusGlyph.crown
-                    : PixelStatusGlyph.dots,
+          PixelIcon(
+            switch (session.queuedPuzzle) {
+              null => PixelGlyph.ellipsis,
+              _ => PixelGlyph.crown,
+            },
             color: Theme.of(context).colorScheme.secondary,
-            size: 22,
+            size: 24,
+            excludeFromSemantics: true,
           ),
           const SizedBox(width: 10),
           Expanded(

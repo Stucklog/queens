@@ -8,8 +8,6 @@ enum PixelSceneKind { panorama, opening, chapter, finale }
 
 enum PixelArtPlacement { story, route, banner }
 
-enum PixelStatusGlyph { lock, crown, star, arrow, dots }
-
 class PixelLandscape extends StatelessWidget {
   const PixelLandscape({
     super.key,
@@ -74,7 +72,7 @@ class PixelLandscape extends StatelessWidget {
           _assetPath,
           fit: BoxFit.cover,
           alignment: _alignment,
-          filterQuality: FilterQuality.medium,
+          filterQuality: FilterQuality.none,
           gaplessPlayback: true,
           excludeFromSemantics: true,
           frameBuilder: (context, child, imageFrame, wasLoaded) {
@@ -2206,107 +2204,6 @@ class _PixelQueenPainter extends CustomPainter {
   @override
   bool shouldRepaint(_PixelQueenPainter oldDelegate) =>
       oldDelegate.frame != frame;
-}
-
-class PixelStatusIcon extends StatelessWidget {
-  const PixelStatusIcon({
-    super.key,
-    required this.glyph,
-    required this.color,
-    this.size = 20,
-  });
-  final PixelStatusGlyph glyph;
-  final Color color;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) => SizedBox.square(
-    dimension: size,
-    child: CustomPaint(painter: _PixelStatusPainter(glyph, color)),
-  );
-}
-
-class _PixelStatusPainter extends CustomPainter {
-  const _PixelStatusPainter(this.glyph, this.color);
-  final PixelStatusGlyph glyph;
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final p = _SpriteCanvas(canvas, size, 16, 16);
-    final shade = Color.lerp(color, Colors.black, .28)!;
-    final light = Color.lerp(color, Colors.white, .28)!;
-    switch (glyph) {
-      case PixelStatusGlyph.lock:
-        p.rect(3, 7, 10, 8, shade);
-        p.rect(4, 7, 8, 7, color);
-        p.rect(5, 3, 2, 5, color);
-        p.rect(10, 3, 2, 5, shade);
-        p.rect(6, 2, 5, 2, color);
-        p.rect(7, 9, 3, 3, light);
-        p.rect(8, 11, 1, 2, shade);
-      case PixelStatusGlyph.crown:
-        p.polygon(const [
-          Offset(2, 13),
-          Offset(2, 6),
-          Offset(4, 10),
-          Offset(5, 4),
-          Offset(7, 10),
-          Offset(8, 2),
-          Offset(9, 10),
-          Offset(11, 4),
-          Offset(12, 10),
-          Offset(14, 6),
-          Offset(14, 13),
-        ], shade);
-        p.polygon(const [
-          Offset(3, 12),
-          Offset(3, 8),
-          Offset(4.5, 10.5),
-          Offset(5.3, 6.5),
-          Offset(7.2, 11),
-          Offset(8, 5),
-          Offset(8.8, 11),
-          Offset(10.7, 6.5),
-          Offset(11.5, 10.5),
-          Offset(13, 8),
-          Offset(13, 12),
-        ], color);
-        p.rect(2, 11, 12, 4, shade);
-        p.rect(3, 11, 10, 3, color);
-        p.rect(4, 11, 8, 1, light);
-        p.rect(4, 14, 8, 1, shade);
-      case PixelStatusGlyph.star:
-        p.rect(7, 1, 3, 14, shade);
-        p.rect(1, 7, 14, 3, shade);
-        p.rect(4, 4, 8, 8, color);
-        p.rect(6, 2, 4, 12, color);
-        p.rect(2, 6, 12, 4, color);
-        p.rect(6, 5, 3, 3, light);
-      case PixelStatusGlyph.arrow:
-        p.rect(2, 5, 7, 6, shade);
-        p.rect(7, 3, 3, 10, shade);
-        p.rect(10, 5, 3, 6, shade);
-        p.rect(3, 6, 7, 4, color);
-        p.rect(8, 4, 3, 8, color);
-        p.rect(11, 6, 3, 4, color);
-        p.rect(4, 6, 5, 1, light);
-      case PixelStatusGlyph.dots:
-        p.rect(1, 6, 4, 4, shade);
-        p.rect(6, 6, 4, 4, shade);
-        p.rect(11, 6, 4, 4, shade);
-        p.rect(2, 6, 3, 3, color);
-        p.rect(7, 6, 3, 3, color);
-        p.rect(12, 6, 3, 3, color);
-        p.rect(2, 6, 2, 1, light);
-        p.rect(7, 6, 2, 1, light);
-        p.rect(12, 6, 2, 1, light);
-    }
-  }
-
-  @override
-  bool shouldRepaint(_PixelStatusPainter oldDelegate) =>
-      oldDelegate.glyph != glyph || oldDelegate.color != color;
 }
 
 class _PixelCanvas {

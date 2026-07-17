@@ -17,10 +17,8 @@ void main() {
   late PuzzleCatalog catalog;
 
   setUpAll(() async {
-    await (FontLoader('RegaliaSans')
-      ..addFont(rootBundle.load('assets/fonts/Roboto-Regular.ttf'))).load();
-    await (FontLoader('RegaliaDisplay')..addFont(
-      rootBundle.load('assets/fonts/RobotoCondensed-Bold.ttf'),
+    await (FontLoader('RegaliaPixel')..addFont(
+      rootBundle.load('assets/fonts/PixelifySans-Variable.ttf'),
     )).load();
     catalog = PuzzleCatalog.fromJsonString(
       File('assets/puzzles/catalog.json').readAsStringSync(),
@@ -105,6 +103,59 @@ void main() {
     await expectLater(
       find.byKey(const ValueKey('golden')),
       matchesGoldenFile('goldens/board_10_midnight_complete.png'),
+    );
+  });
+
+  testWidgets('6x6 pixel board state atlas', (tester) async {
+    tester.view.physicalSize = const Size(520, 520);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final puzzle = catalog.puzzles.firstWhere((entry) => entry.size == 6);
+    final board =
+        BoardState(puzzleId: puzzle.id, size: puzzle.size)
+          ..set(const Cell(0, 0), ManualCellState.crown, recordUndo: false)
+          ..set(const Cell(5, 5), ManualCellState.crown, recordUndo: false)
+          ..set(const Cell(4, 4), ManualCellState.cross, recordUndo: false);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: RegaliaTheme.midnight(),
+        home: Scaffold(
+          body: Center(
+            child: RepaintBoundary(
+              key: const ValueKey('pixel-state-atlas'),
+              child: SizedBox.square(
+                dimension: 444,
+                child: RegaliaBoard(
+                  puzzle: puzzle,
+                  board: board,
+                  automaticExclusions: {
+                    const Cell(0, 5),
+                    const Cell(3, 3),
+                    const Cell(5, 0),
+                  },
+                  selected: const Cell(2, 3),
+                  conflicts: {const Cell(5, 5)},
+                  cues: {
+                    const Cell(1, 1): BoardCue.hintSource,
+                    const Cell(1, 4): BoardCue.hintElimination,
+                    const Cell(4, 1): BoardCue.hintPlacement,
+                    // A progress-check cue belongs on the mark being checked.
+                    const Cell(4, 4): BoardCue.checkError,
+                  },
+                  onCellPressed: (_) {},
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await expectLater(
+      find.byKey(const ValueKey('pixel-state-atlas')),
+      matchesGoldenFile('goldens/board_pixel_state_atlas.png'),
     );
   });
 

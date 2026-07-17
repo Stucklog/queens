@@ -27,13 +27,22 @@ void main() {
   }
 
   final windowsBytes = File(icons.windowsCrownIconPath).readAsBytesSync();
-  final windowsIcon = image.decodeIco(windowsBytes);
-  if (windowsIcon == null ||
-      windowsIcon.width != 256 ||
-      windowsIcon.height != 256) {
-    throw StateError('The Windows crown icon must decode at 256×256.');
+  final windowsDecoder = image.IcoDecoder()..startDecode(windowsBytes);
+  const expectedWindowsSizes = [16, 24, 32, 48, 64, 128, 256];
+  if (windowsDecoder.numFrames() != expectedWindowsSizes.length) {
+    throw StateError('The Windows crown icon must contain seven sizes.');
   }
-  _requireSymmetry(windowsIcon, icons.windowsCrownIconPath);
+  for (var index = 0; index < expectedWindowsSizes.length; index++) {
+    final frame = windowsDecoder.decodeFrame(index);
+    final expected = expectedWindowsSizes[index];
+    if (frame == null || frame.width != expected || frame.height != expected) {
+      throw StateError(
+        'Windows crown frame $index has the wrong dimensions; '
+        'expected $expected×$expected.',
+      );
+    }
+    _requireSymmetry(frame, '${icons.windowsCrownIconPath} frame $expected');
+  }
 
   stdout.writeln(
     'Verified the crown master, ${icons.crownIconOutputs.length} PNG icons, '

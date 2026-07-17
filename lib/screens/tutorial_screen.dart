@@ -6,6 +6,7 @@ import '../app/app_controller.dart';
 import '../app/branding.dart';
 import '../core/models.dart';
 import '../widgets/crown_mark.dart';
+import '../widgets/pixel_ui.dart';
 import '../widgets/regalia_board.dart';
 
 class TutorialScreen extends StatefulWidget {
@@ -69,7 +70,13 @@ class _TutorialScreenState extends State<TutorialScreen> {
                           index == _page
                               ? Theme.of(context).colorScheme.secondary
                               : Theme.of(context).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color:
+                            Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainerLowest,
+                        width: 2,
+                      ),
                     ),
                   ),
                 const Spacer(),
@@ -99,23 +106,29 @@ class _TutorialScreenState extends State<TutorialScreen> {
           constraints: BoxConstraints(
             minHeight: math.max(0, constraints.maxHeight - 56),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const CrownMark(size: 88),
-              const SizedBox(height: 24),
-              Text(
-                'Welcome to $appName',
-                style: Theme.of(context).textTheme.displaySmall,
-                textAlign: TextAlign.center,
+          child: Center(
+            child: PixelPanel(
+              borderColor: Theme.of(context).colorScheme.secondary,
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CrownMark(size: 88),
+                  const SizedBox(height: 24),
+                  Text(
+                    'Welcome to $appName',
+                    style: Theme.of(context).textTheme.displaySmall,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    'A quiet logic journey. No accounts, no ads, and every puzzle is available offline.',
+                    style: Theme.of(context).textTheme.titleMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
-              const SizedBox(height: 14),
-              Text(
-                'A quiet logic journey. No accounts, no ads, and every puzzle is available offline.',
-                style: Theme.of(context).textTheme.titleMedium,
-                textAlign: TextAlign.center,
-              ),
-            ],
+            ),
           ),
         ),
       );
@@ -139,19 +152,19 @@ class _TutorialScreenState extends State<TutorialScreen> {
                 ),
                 const SizedBox(height: 24),
                 const _TutorialRule(
-                  icon: Icons.table_rows,
+                  icon: PixelGlyph.row,
                   text: 'Exactly one crown in every row',
                 ),
                 const _TutorialRule(
-                  icon: Icons.view_column,
+                  icon: PixelGlyph.column,
                   text: 'Exactly one crown in every column',
                 ),
                 const _TutorialRule(
-                  icon: Icons.grid_view_rounded,
-                  text: 'Exactly one crown in every colored region',
+                  icon: PixelGlyph.region,
+                  text: 'Exactly one crown in every patterned region',
                 ),
                 const _TutorialRule(
-                  icon: Icons.open_with_rounded,
+                  icon: PixelGlyph.spacing,
                   text: 'Crowns may not touch, including diagonally',
                 ),
               ],
@@ -200,7 +213,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
 
   String get _practicePrompt {
     if (_board.cells.contains(ManualCellState.crown)) {
-      return 'Crown placed — the soft dots show its automatic exclusions.';
+      return 'Crown placed — pixel sparks show its automatic exclusions.';
     }
     if (_board.cells.contains(ManualCellState.cross)) {
       return 'Good. Tap that X again to turn it into a crown.';
@@ -211,18 +224,26 @@ class _TutorialScreenState extends State<TutorialScreen> {
 
 class _TutorialRule extends StatelessWidget {
   const _TutorialRule({required this.icon, required this.text});
-  final IconData icon;
+  final PixelGlyph icon;
   final String text;
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 9),
-    child: Row(
-      children: [
-        Icon(icon, color: Theme.of(context).colorScheme.secondary),
-        const SizedBox(width: 16),
-        Expanded(child: Text(text)),
-      ],
+    padding: const EdgeInsets.only(bottom: 12, right: 4),
+    child: PixelPanel(
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        children: [
+          PixelIcon(
+            icon,
+            color: Theme.of(context).colorScheme.secondary,
+            size: 24,
+            excludeFromSemantics: true,
+          ),
+          const SizedBox(width: 16),
+          Expanded(child: Text(text)),
+        ],
+      ),
     ),
   );
 }
