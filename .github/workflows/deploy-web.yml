@@ -38,7 +38,7 @@ jobs:
         run: flutter test --exclude-tags=golden
 
       - name: Build release PWA
-        run: flutter build web --release --base-href "/queens/"
+        run: flutter build web --release --base-href "/"
 
       - name: Verify offline release
         run: dart run tool/verify_offline.dart --web-build build/web
