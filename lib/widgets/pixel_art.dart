@@ -1,12 +1,25 @@
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../app/journey.dart';
 
 enum PixelSceneKind { panorama, opening, chapter, finale }
 
 enum PixelArtPlacement { story, route, banner }
+
+enum KnightAnimation {
+  walk,
+  bounce,
+  attack,
+  defend,
+  damage,
+  special,
+  surprised,
+  dance,
+}
 
 class PixelLandscape extends StatelessWidget {
   const PixelLandscape({
@@ -162,7 +175,8 @@ class _PixelStorySceneState extends State<PixelStoryScene>
                       Align(
                         alignment: const Alignment(-.48, .62),
                         child: PixelKnightSprite(
-                          frame: frame,
+                          animation: KnightAnimation.walk,
+                          loop: true,
                           width: 92,
                           height: 138,
                         ),
@@ -171,7 +185,8 @@ class _PixelStorySceneState extends State<PixelStoryScene>
                       Align(
                         alignment: const Alignment(-.42, .65),
                         child: PixelKnightSprite(
-                          frame: frame,
+                          animation: KnightAnimation.dance,
+                          loop: true,
                           width: 82,
                           height: 123,
                         ),
@@ -191,7 +206,8 @@ class _PixelStorySceneState extends State<PixelStoryScene>
                           .7,
                         ),
                         child: PixelKnightSprite(
-                          frame: frame,
+                          animation: KnightAnimation.walk,
+                          loop: true,
                           width: 72,
                           height: 108,
                         ),
@@ -1578,52 +1594,321 @@ class PixelLandscapePainter extends CustomPainter {
       oldDelegate.frame != frame;
 }
 
-class PixelKnightSprite extends StatelessWidget {
+class PixelKnightSprite extends StatefulWidget {
   const PixelKnightSprite({
     super.key,
-    this.frame = 0,
+    this.animation = KnightAnimation.bounce,
+    this.frame,
+    this.loop = false,
+    this.restartToken = 0,
+    this.onCompleted,
     this.width = 48,
     this.height = 72,
   });
 
-  final int frame;
+  final KnightAnimation animation;
+  final int? frame;
+  final bool loop;
+  final int restartToken;
+  final VoidCallback? onCompleted;
   final double width;
   final double height;
 
-  @override
-  Widget build(BuildContext context) {
-    final bob = frame == 1 || frame == 4 ? height / 72 : 0.0;
-    final sway = switch (frame % 4) {
-      1 => -.008,
-      3 => .008,
-      _ => 0.0,
-    };
-
-    return Transform.translate(
-      offset: Offset(0, bob),
-      child: Transform.rotate(
-        angle: sway,
-        alignment: Alignment.bottomCenter,
-        child: SizedBox(
-          width: width,
-          height: height,
-          child: Image.asset(
-            'assets/art/knight.png',
-            fit: BoxFit.fill,
-            filterQuality: FilterQuality.none,
-            excludeFromSemantics: true,
-            frameBuilder: (context, child, imageFrame, wasLoaded) {
-              if (wasLoaded || imageFrame != null) return child;
-              return CustomPaint(painter: _PixelKnightPainter(frame: frame));
-            },
-            errorBuilder:
-                (context, error, stackTrace) =>
-                    CustomPaint(painter: _PixelKnightPainter(frame: frame)),
-          ),
-        ),
-      ),
-    );
+  /// Decodes the shared atlas before a sprite-heavy scene is presented.
+  static Future<void> preload() async {
+    await _KnightAtlas.image;
   }
+
+  @override
+  State<PixelKnightSprite> createState() => _PixelKnightSpriteState();
+}
+
+class _PixelKnightSpriteState extends State<PixelKnightSprite>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(vsync: this)
+    ..addStatusListener(_handleStatus);
+
+  bool _reduceMotion = false;
+  bool _tickerEnabled = true;
+  bool _completionDelivered = false;
+
+  _KnightAnimationSpec get _spec => _knightAnimationSpecs[widget.animation]!;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final reduceMotion =
+        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final tickerEnabled = TickerMode.of(context);
+    final changed =
+        reduceMotion != _reduceMotion || tickerEnabled != _tickerEnabled;
+    _reduceMotion = reduceMotion;
+    _tickerEnabled = tickerEnabled;
+    if (changed || _controller.duration == null) {
+      _syncAnimation(restart: _controller.duration == null);
+    }
+  }
+
+  @override
+  void didUpdateWidget(PixelKnightSprite oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final restart =
+        oldWidget.animation != widget.animation ||
+        oldWidget.restartToken != widget.restartToken ||
+        oldWidget.frame != widget.frame ||
+        oldWidget.loop != widget.loop;
+    _syncAnimation(restart: restart);
+  }
+
+  void _syncAnimation({required bool restart}) {
+    _controller.duration = _spec.duration;
+    if (restart) {
+      _completionDelivered = false;
+      _controller.stop();
+      _controller.value = 0;
+    }
+
+    if (widget.frame != null) {
+      _controller.stop();
+      return;
+    }
+    if (_reduceMotion) {
+      _controller.stop();
+      return;
+    }
+    if (!_tickerEnabled) {
+      _controller.stop(canceled: false);
+      return;
+    }
+    if (_controller.isAnimating) return;
+    if (widget.loop) {
+      _controller.repeat(period: _spec.duration);
+    } else if (_controller.value < 1) {
+      _controller.forward();
+    }
+  }
+
+  void _handleStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed && !widget.loop) {
+      _deliverCompletion();
+    }
+  }
+
+  void _deliverCompletion() {
+    if (_completionDelivered) return;
+    _completionDelivered = true;
+    widget.onCompleted?.call();
+  }
+
+  int get _frame {
+    final override = widget.frame;
+    if (override != null) return override % _spec.frameCount;
+    if (_reduceMotion) return _spec.restFrame;
+    final scaled = (_controller.value * _spec.frameCount).floor();
+    return scaled.clamp(0, _spec.frameCount - 1);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => ExcludeSemantics(
+    child: SizedBox(
+      width: widget.width,
+      height: widget.height,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, _) {
+          final frame = _frame;
+          final cachedImage = _KnightAtlas.currentImage;
+          if (cachedImage != null) {
+            return CustomPaint(
+              painter: _KnightAtlasPainter(
+                image: cachedImage,
+                row: _spec.row,
+                column: _spec.firstColumn + frame,
+              ),
+            );
+          }
+          return FutureBuilder<ui.Image>(
+            future: _KnightAtlas.image,
+            builder: (context, snapshot) {
+              final image = snapshot.data;
+              if (image == null) {
+                return CustomPaint(painter: _PixelKnightPainter(frame: frame));
+              }
+              return CustomPaint(
+                painter: _KnightAtlasPainter(
+                  image: image,
+                  row: _spec.row,
+                  column: _spec.firstColumn + frame,
+                ),
+              );
+            },
+          );
+        },
+      ),
+    ),
+  );
+}
+
+class _KnightAnimationSpec {
+  const _KnightAnimationSpec({
+    required this.row,
+    required this.firstColumn,
+    required this.frameDuration,
+    this.restFrame = 0,
+  });
+
+  final int row;
+  final int firstColumn;
+  final Duration frameDuration;
+  final int restFrame;
+
+  int get frameCount => 4;
+  Duration get duration => frameDuration * frameCount;
+}
+
+const _knightAnimationSpecs = <KnightAnimation, _KnightAnimationSpec>{
+  KnightAnimation.walk: _KnightAnimationSpec(
+    row: 0,
+    firstColumn: 0,
+    frameDuration: Duration(milliseconds: 145),
+  ),
+  KnightAnimation.bounce: _KnightAnimationSpec(
+    row: 0,
+    firstColumn: 4,
+    frameDuration: Duration(milliseconds: 190),
+  ),
+  KnightAnimation.attack: _KnightAnimationSpec(
+    row: 1,
+    firstColumn: 0,
+    frameDuration: Duration(milliseconds: 125),
+    restFrame: 2,
+  ),
+  KnightAnimation.defend: _KnightAnimationSpec(
+    row: 1,
+    firstColumn: 4,
+    frameDuration: Duration(milliseconds: 170),
+    restFrame: 1,
+  ),
+  KnightAnimation.damage: _KnightAnimationSpec(
+    row: 2,
+    firstColumn: 0,
+    frameDuration: Duration(milliseconds: 155),
+    restFrame: 3,
+  ),
+  KnightAnimation.special: _KnightAnimationSpec(
+    row: 2,
+    firstColumn: 4,
+    frameDuration: Duration(milliseconds: 180),
+    restFrame: 2,
+  ),
+  KnightAnimation.surprised: _KnightAnimationSpec(
+    row: 3,
+    firstColumn: 0,
+    frameDuration: Duration(milliseconds: 185),
+    restFrame: 2,
+  ),
+  KnightAnimation.dance: _KnightAnimationSpec(
+    row: 3,
+    firstColumn: 4,
+    frameDuration: Duration(milliseconds: 165),
+    restFrame: 1,
+  ),
+};
+
+abstract final class _KnightAtlas {
+  static const _assetPath = 'assets/art/knight_animations.png';
+  static Future<ui.Image>? _cachedImage;
+  static ui.Image? currentImage;
+
+  static Future<ui.Image> get image => _cachedImage ??= _load();
+
+  static Future<ui.Image> _load() async {
+    final data = await rootBundle.load(_assetPath);
+    final bytes = data.buffer.asUint8List(
+      data.offsetInBytes,
+      data.lengthInBytes,
+    );
+    final codec = await ui.instantiateImageCodec(bytes);
+    try {
+      final image = (await codec.getNextFrame()).image;
+      currentImage = image;
+      return image;
+    } finally {
+      codec.dispose();
+    }
+  }
+}
+
+class _KnightAtlasPainter extends CustomPainter {
+  const _KnightAtlasPainter({
+    required this.image,
+    required this.row,
+    required this.column,
+  });
+
+  static const _xBoundaries = <double>[
+    0,
+    240,
+    490,
+    685,
+    900,
+    1110,
+    1310,
+    1520,
+    1774,
+  ];
+  static const _anchors = <double>[130, 350, 575, 790, 1000, 1200, 1405, 1620];
+  static const _yBoundaries = <double>[0, 220, 415, 605, 887];
+  static const _baselines = <double>[190, 390, 580, 780];
+  static const _referenceHeight = 200.0;
+  static const _targetBaseline = .88;
+
+  final ui.Image image;
+  final int row;
+  final int column;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final left = _xBoundaries[column];
+    final right = _xBoundaries[column + 1];
+    final top = _yBoundaries[row];
+    final bottom = _yBoundaries[row + 1];
+    final anchor = _anchors[column];
+    final baseline = _baselines[row];
+    final scale = size.height / _referenceHeight;
+    final destinationAnchor = (size.width / 2).roundToDouble();
+    final destinationBaseline = (size.height * _targetBaseline).roundToDouble();
+    final source = Rect.fromLTRB(left, top, right, bottom);
+    final destination = Rect.fromLTRB(
+      destinationAnchor - (anchor - left) * scale,
+      destinationBaseline - (baseline - top) * scale,
+      destinationAnchor + (right - anchor) * scale,
+      destinationBaseline + (bottom - baseline) * scale,
+    );
+    canvas.save();
+    canvas.clipRect(Offset.zero & size);
+    canvas.drawImageRect(
+      image,
+      source,
+      destination,
+      Paint()
+        ..isAntiAlias = false
+        ..filterQuality = FilterQuality.none,
+    );
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(_KnightAtlasPainter oldDelegate) =>
+      oldDelegate.image != image ||
+      oldDelegate.row != row ||
+      oldDelegate.column != column;
 }
 
 class _PixelKnightPainter extends CustomPainter {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,11 +11,13 @@ import 'screens/journey_screen.dart';
 import 'screens/story_scene_screen.dart';
 import 'screens/tutorial_screen.dart';
 import 'widgets/crown_mark.dart';
+import 'widgets/pixel_art.dart';
 import 'widgets/pixel_ui.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  PixelKnightSprite.preload().ignore();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,

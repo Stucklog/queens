@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../core/models.dart';
-import 'crown_mark.dart';
+import 'pixel_art.dart';
 import 'pixel_ui.dart';
 
 class CompletionDialog extends StatelessWidget {
@@ -25,7 +25,16 @@ class CompletionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) => PixelDialog(
     semanticLabel: board.assisted ? 'Board complete' : 'A clean coronation',
-    icon: const CrownMark(size: 64),
+    icon: const SizedBox(
+      width: 156,
+      height: 104,
+      child: PixelKnightSprite(
+        key: ValueKey('completion-knight'),
+        animation: KnightAnimation.special,
+        width: 156,
+        height: 104,
+      ),
+    ),
     title: Text(board.assisted ? 'Board complete' : 'A clean coronation'),
     content: Text(
       board.assisted

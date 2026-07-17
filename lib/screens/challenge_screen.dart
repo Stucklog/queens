@@ -347,7 +347,11 @@ class _ChallengeRun extends StatelessWidget {
               ),
               const Align(
                 alignment: Alignment(-.58, .72),
-                child: PixelKnightSprite(width: 72, height: 108),
+                child: PixelKnightSprite(
+                  animation: KnightAnimation.bounce,
+                  width: 72,
+                  height: 108,
+                ),
               ),
             ],
           ),

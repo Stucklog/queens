@@ -10,8 +10,9 @@ import 'package:regalia/app/theme.dart';
 import 'package:regalia/core/exact_solver.dart';
 import 'package:regalia/core/models.dart';
 import 'package:regalia/core/rule_engine.dart';
-import 'package:regalia/widgets/regalia_board.dart';
 import 'package:regalia/widgets/completion_dialog.dart';
+import 'package:regalia/widgets/pixel_art.dart';
+import 'package:regalia/widgets/regalia_board.dart';
 
 void main() {
   late PuzzleCatalog catalog;
@@ -20,6 +21,7 @@ void main() {
     await (FontLoader('RegaliaPixel')..addFont(
       rootBundle.load('assets/fonts/PixelifySans-Variable.ttf'),
     )).load();
+    await PixelKnightSprite.preload();
     catalog = PuzzleCatalog.fromJsonString(
       File('assets/puzzles/catalog.json').readAsStringSync(),
     );
@@ -185,6 +187,7 @@ void main() {
         ),
       ),
     );
+    await _loadKnightAsset(tester);
     await expectLater(
       find.byKey(const ValueKey('completion-golden')),
       matchesGoldenFile('goldens/completion_clean_midnight_narrow.png'),
@@ -223,9 +226,17 @@ void main() {
         ),
       ),
     );
+    await _loadKnightAsset(tester);
     await expectLater(
       find.byKey(const ValueKey('completion-golden')),
       matchesGoldenFile('goldens/completion_assisted_midnight_wide.png'),
     );
   });
+}
+
+Future<void> _loadKnightAsset(WidgetTester tester) async {
+  await tester.pump();
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 800));
+  await tester.pump();
 }

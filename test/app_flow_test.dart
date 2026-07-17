@@ -19,22 +19,22 @@ void main() {
     expect(find.text('Welcome to Queen’s Regalia'), findsOneWidget);
 
     await tester.tap(find.text('Skip'));
-    await tester.pumpAndSettle();
+    await _pumpFrames(tester);
     expect(find.text('The Night of Crownfall'), findsOneWidget);
 
     await tester.tap(find.text('Take up the Regalia'));
-    await tester.pumpAndSettle();
+    await _pumpFrames(tester);
     expect(find.text('Asterfall Vale'), findsWidgets);
     expect(find.text('Press onward'), findsOneWidget);
 
     await tester.tap(find.text('Press onward'));
-    await tester.pumpAndSettle();
+    await _pumpFrames(tester);
     expect(find.byKey(const ValueKey('puzzle-node-120')), findsOneWidget);
 
     final firstNode = find.byKey(const ValueKey('puzzle-node-1'));
     await tester.ensureVisible(firstNode);
     await tester.tap(firstNode);
-    await tester.pumpAndSettle();
+    await _pumpFrames(tester);
     final puzzle = controller.catalog!.puzzles.first;
     expect(
       find.text('${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'),
@@ -83,7 +83,7 @@ void main() {
     final secondNode = find.byKey(const ValueKey('puzzle-node-2'));
     await tester.ensureVisible(secondNode);
     await tester.tap(secondNode);
-    await tester.pumpAndSettle();
+    await _pumpFrames(tester);
     final second = controller.catalog!.puzzles[1];
     expect(find.text('Puzzle ${second.order} of 120'), findsOneWidget);
 
@@ -99,4 +99,10 @@ void main() {
     expect(restored.hasSeenStoryBeat('opening'), isTrue);
     restored.dispose();
   });
+}
+
+Future<void> _pumpFrames(WidgetTester tester) async {
+  for (var frame = 0; frame < 8; frame++) {
+    await tester.pump(const Duration(milliseconds: 100));
+  }
 }

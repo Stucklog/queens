@@ -10,6 +10,7 @@ import 'package:regalia/app/theme.dart';
 import 'package:regalia/core/models.dart';
 import 'package:regalia/screens/journey_screen.dart';
 import 'package:regalia/screens/story_scene_screen.dart';
+import 'package:regalia/widgets/pixel_art.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -17,6 +18,7 @@ void main() {
     await (FontLoader('RegaliaPixel')..addFont(
       rootBundle.load('assets/fonts/PixelifySans-Variable.ttf'),
     )).load();
+    await PixelKnightSprite.preload();
   });
 
   testWidgets('early Asterfall Vale route in midnight theme', (tester) async {

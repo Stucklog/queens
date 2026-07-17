@@ -71,6 +71,10 @@ Future<void> main(List<String> arguments) async {
   if (!pubspec.contains('assets/puzzles/tutorial.json')) {
     failures.add('tutorial is not declared as a bundled Flutter asset');
   }
+  if (!pubspec.contains('assets/art/') ||
+      !File('assets/art/knight_animations.png').existsSync()) {
+    failures.add('knight animation atlas is not bundled as an app asset');
+  }
 
   final buildIndex = arguments.indexOf('--web-build');
   if (buildIndex >= 0) {
@@ -89,6 +93,7 @@ Future<void> main(List<String> arguments) async {
           'assets/assets/puzzles/tutorial.json',
           'assets/assets/fonts/PixelifySans-Variable.ttf',
           'assets/assets/fonts/PixelifySans_LICENSE.txt',
+          'assets/assets/art/knight_animations.png',
           'icons/Icon-512.png',
         ]) {
           if (!source.contains(asset)) {

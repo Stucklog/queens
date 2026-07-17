@@ -7,6 +7,7 @@ import '../app/journey.dart';
 import '../app/theme.dart';
 import '../core/models.dart';
 import '../widgets/completion_dialog.dart';
+import '../widgets/pixel_art.dart';
 import '../widgets/pixel_ui.dart';
 import '../widgets/regalia_board.dart';
 import 'rules_screen.dart';
@@ -37,6 +38,9 @@ class _GameScreenState extends State<GameScreen> {
   Cell _selected = const Cell(0, 0);
   Map<Cell, BoardCue> _cues = {};
   Set<Cell> _conflicts = {};
+  KnightAnimation _knightAnimation = KnightAnimation.bounce;
+  int _knightRestartToken = 0;
+  bool _exclusionDragReacted = false;
 
   @override
   void initState() {
@@ -58,6 +62,8 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     final puzzle = widget.puzzle;
     final board = widget.controller.boardFor(puzzle);
+    final activeKnightAnimation = _knightAnimation;
+    final activeKnightRestartToken = _knightRestartToken;
     final automatic =
         widget.controller.settings.showAutomaticExclusions
             ? widget.controller.ruleEngine.automaticExclusions(puzzle, board)
@@ -120,6 +126,23 @@ class _GameScreenState extends State<GameScreen> {
                         glyph: PixelGlyph.book,
                       ),
                     ],
+                    bottom: PreferredSize(
+                      preferredSize: const Size.fromHeight(74),
+                      child: RepaintBoundary(
+                        key: const ValueKey('puzzle-knight-companion-surface'),
+                        child: _KnightCompanionBar(
+                          key: const ValueKey('puzzle-knight-companion'),
+                          animation: activeKnightAnimation,
+                          restartToken: activeKnightRestartToken,
+                          line: _knightLine(activeKnightAnimation),
+                          onCompleted:
+                              () => _completeKnightReaction(
+                                activeKnightAnimation,
+                                activeKnightRestartToken,
+                              ),
+                        ),
+                      ),
+                    ),
                   ),
                   body: SafeArea(
                     child: LayoutBuilder(
@@ -139,22 +162,14 @@ class _GameScreenState extends State<GameScreen> {
                             selected: _selected,
                             onCellPressed: _pressCell,
                             onCellExcluded: _excludeCell,
-                            onExclusionDragStarted:
-                                () => widget.controller.beginCellBatch(puzzle),
-                            onExclusionDragEnded:
-                                () => widget.controller.endCellBatch(puzzle),
+                            onExclusionDragStarted: _beginExclusionDrag,
+                            onExclusionDragEnded: _endExclusionDrag,
                           ),
                         );
                         final controls = _Controls(
                           board: board,
-                          onUndo:
-                              board.undoStack.isEmpty
-                                  ? null
-                                  : () => widget.controller.undo(puzzle),
-                          onRedo:
-                              board.redoStack.isEmpty
-                                  ? null
-                                  : () => widget.controller.redo(puzzle),
+                          onUndo: board.undoStack.isEmpty ? null : _undo,
+                          onRedo: board.redoStack.isEmpty ? null : _redo,
                           onReset: _confirmReset,
                           onCheck: _check,
                           onHint: _hint,
@@ -195,12 +210,15 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _pressCell(Cell cell) {
+    final board = widget.controller.boardFor(widget.puzzle);
+    final before = board.at(cell);
     setState(() {
       _selected = cell;
       _cues = {};
       _conflicts = {};
     });
     final outcome = widget.controller.cycle(widget.puzzle, cell);
+    _reactToMutation(cell, before, board.at(cell), outcome);
     if (outcome != null) _showCompletion(outcome);
   }
 
@@ -216,14 +234,21 @@ class _GameScreenState extends State<GameScreen> {
       _conflicts = {};
     });
     widget.controller.setCell(widget.puzzle, cell, ManualCellState.cross);
+    if (!_exclusionDragReacted) {
+      _exclusionDragReacted = true;
+      _playKnightAnimation(KnightAnimation.defend);
+    }
   }
 
   void _setSelected(ManualCellState state) {
+    final board = widget.controller.boardFor(widget.puzzle);
+    final before = board.at(_selected);
     setState(() {
       _cues = {};
       _conflicts = {};
     });
     final outcome = widget.controller.setCell(widget.puzzle, _selected, state);
+    _reactToMutation(_selected, before, board.at(_selected), outcome);
     if (outcome != null) _showCompletion(outcome);
   }
 
@@ -235,11 +260,11 @@ class _GameScreenState extends State<GameScreen> {
         HardwareKeyboard.instance.isMetaPressed) {
       if (key == LogicalKeyboardKey.keyZ &&
           HardwareKeyboard.instance.isShiftPressed) {
-        widget.controller.redo(widget.puzzle);
+        _redo();
       } else if (key == LogicalKeyboardKey.keyZ) {
-        widget.controller.undo(widget.puzzle);
+        _undo();
       } else if (key == LogicalKeyboardKey.keyY) {
-        widget.controller.redo(widget.puzzle);
+        _redo();
       }
       return;
     }
@@ -293,6 +318,9 @@ class _GameScreenState extends State<GameScreen> {
         ],
       };
     });
+    _playKnightAnimation(
+      result.isValid ? KnightAnimation.dance : KnightAnimation.damage,
+    );
     _message(
       result.isValid ? 'Still regal' : 'A contradiction',
       result.message,
@@ -302,6 +330,7 @@ class _GameScreenState extends State<GameScreen> {
 
   void _hint() {
     final deduction = widget.controller.hint(widget.puzzle);
+    _playKnightAnimation(KnightAnimation.surprised);
     if (deduction == null) {
       _message(
         'No hint available',
@@ -379,6 +408,7 @@ class _GameScreenState extends State<GameScreen> {
         _cues = {};
         _conflicts = {};
       });
+      _playKnightAnimation(KnightAnimation.surprised);
     } else if (mounted) {
       widget.controller.startTimer(widget.puzzle.id);
     }
@@ -412,6 +442,13 @@ class _GameScreenState extends State<GameScreen> {
     if (action == 'replay') {
       widget.controller.reset(widget.puzzle);
       widget.controller.startTimer(widget.puzzle.id);
+      setState(() {
+        _selected = const Cell(0, 0);
+        _cues = {};
+        _conflicts = {};
+        _knightAnimation = KnightAnimation.bounce;
+        _knightRestartToken++;
+      });
     } else if (action == 'next') {
       widget.controller.stopTimer();
       if (!mounted) return;
@@ -419,6 +456,217 @@ class _GameScreenState extends State<GameScreen> {
         context,
       ).pop(outcome.isChallenge || outcome.advancedJourney ? outcome : null);
     }
+  }
+
+  void _beginExclusionDrag() {
+    _exclusionDragReacted = false;
+    widget.controller.beginCellBatch(widget.puzzle);
+  }
+
+  void _endExclusionDrag() {
+    _exclusionDragReacted = false;
+    widget.controller.endCellBatch(widget.puzzle);
+  }
+
+  void _undo() {
+    final board = widget.controller.boardFor(widget.puzzle);
+    if (board.undoStack.isEmpty) return;
+    widget.controller.undo(widget.puzzle);
+    setState(() {
+      _cues = {};
+      _conflicts = {};
+    });
+    _playKnightAnimation(KnightAnimation.surprised);
+  }
+
+  void _redo() {
+    final board = widget.controller.boardFor(widget.puzzle);
+    if (board.redoStack.isEmpty) return;
+    final before = List<ManualCellState>.of(board.cells);
+    widget.controller.redo(widget.puzzle);
+    setState(() {
+      _cues = {};
+      _conflicts = {};
+    });
+    final changedCells = <Cell>[
+      for (var index = 0; index < board.cells.length; index++)
+        if (before[index] != board.cells[index])
+          Cell.fromIndex(index, board.size),
+    ];
+    if (changedCells.isEmpty) return;
+    final crowned = changedCells.where(
+      (cell) => board.at(cell) == ManualCellState.crown,
+    );
+    if (crowned.isNotEmpty) {
+      final conflicts = widget.controller.ruleEngine.directConflicts(
+        widget.puzzle,
+        board,
+      );
+      final damagesKnight = conflicts.any(
+        (conflict) =>
+            crowned.contains(conflict.first) ||
+            crowned.contains(conflict.second),
+      );
+      _playKnightAnimation(
+        damagesKnight ? KnightAnimation.damage : KnightAnimation.attack,
+      );
+    } else if (changedCells.any(
+      (cell) => board.at(cell) == ManualCellState.cross,
+    )) {
+      _playKnightAnimation(KnightAnimation.defend);
+    } else {
+      _playKnightAnimation(KnightAnimation.surprised);
+    }
+  }
+
+  void _reactToMutation(
+    Cell cell,
+    ManualCellState before,
+    ManualCellState after,
+    PuzzleCompletionOutcome? outcome,
+  ) {
+    if (before == after) return;
+    if (outcome != null) {
+      _playKnightAnimation(KnightAnimation.special);
+      return;
+    }
+    switch (after) {
+      case ManualCellState.cross:
+        _playKnightAnimation(KnightAnimation.defend);
+        return;
+      case ManualCellState.empty:
+        _playKnightAnimation(KnightAnimation.surprised);
+        return;
+      case ManualCellState.crown:
+        final conflicts = widget.controller.ruleEngine.directConflicts(
+          widget.puzzle,
+          widget.controller.boardFor(widget.puzzle),
+        );
+        final damagesKnight = conflicts.any(
+          (conflict) => conflict.first == cell || conflict.second == cell,
+        );
+        _playKnightAnimation(
+          damagesKnight ? KnightAnimation.damage : KnightAnimation.attack,
+        );
+        return;
+    }
+  }
+
+  void _playKnightAnimation(KnightAnimation animation) {
+    if (!mounted) return;
+    setState(() {
+      _knightAnimation = animation;
+      _knightRestartToken++;
+    });
+  }
+
+  void _completeKnightReaction(KnightAnimation animation, int restartToken) {
+    if (!mounted ||
+        animation != _knightAnimation ||
+        restartToken != _knightRestartToken ||
+        animation == KnightAnimation.bounce) {
+      return;
+    }
+    _playKnightAnimation(
+      animation == KnightAnimation.special
+          ? KnightAnimation.dance
+          : KnightAnimation.bounce,
+    );
+  }
+
+  String _knightLine(KnightAnimation animation) => switch (animation) {
+    KnightAnimation.walk => 'The crown-bearer presses onward.',
+    KnightAnimation.bounce => 'Ready for your next command.',
+    KnightAnimation.attack => 'A crown claims its ground.',
+    KnightAnimation.defend => 'That square is guarded.',
+    KnightAnimation.damage => 'The ranks clash. Rethink the line.',
+    KnightAnimation.special => 'The final sigil ignites!',
+    KnightAnimation.surprised => 'A new path reveals itself.',
+    KnightAnimation.dance => 'The formation still holds!',
+  };
+}
+
+class _KnightCompanionBar extends StatelessWidget {
+  const _KnightCompanionBar({
+    super.key,
+    required this.animation,
+    required this.restartToken,
+    required this.line,
+    required this.onCompleted,
+  });
+
+  final KnightAnimation animation;
+  final int restartToken;
+  final String line;
+  final VoidCallback onCompleted;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Semantics(
+      container: true,
+      excludeSemantics: true,
+      liveRegion: true,
+      label: 'Knight companion. $line',
+      child: Container(
+        height: 66,
+        margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          color: colors.surfaceContainerHigh,
+          border: Border.all(color: colors.secondary, width: 2),
+          boxShadow: const [
+            BoxShadow(color: Color(0x77080d20), offset: Offset(4, 4)),
+          ],
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 96,
+              child: Center(
+                child: PixelKnightSprite(
+                  key: const ValueKey('puzzle-knight-sprite'),
+                  animation: animation,
+                  loop: animation == KnightAnimation.bounce,
+                  restartToken: restartToken,
+                  onCompleted: onCompleted,
+                  width: 92,
+                  height: 57,
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'CROWN-BEARER',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: colors.secondary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Flexible(
+                    child: Text(
+                      line,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(height: 1.05),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

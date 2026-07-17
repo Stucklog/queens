@@ -117,7 +117,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
             chapterForOrder(outcome.puzzle.order).id ==
                 chapterForOrder(target.round()).id;
         setState(() {
-          _walkFrame = step.isEven ? 0 : 1;
+          _walkFrame = (step - 1) % 4;
           _displayedMarkerPosition =
               sameChapter
                   ? outcome.puzzle.order +
@@ -335,6 +335,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
                                     controller: widget.controller,
                                     chapter: chapter,
                                     markerPosition: _displayedMarkerPosition,
+                                    moving: _moving,
                                     walkFrame: _walkFrame,
                                     markerKey:
                                         _displayedMarkerPosition != null &&
@@ -392,6 +393,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     PixelKnightSprite(
+                                      animation: KnightAnimation.walk,
                                       frame: _walkFrame,
                                       width: 24,
                                       height: 36,
@@ -566,6 +568,7 @@ class _RouteSection extends StatelessWidget {
     required this.controller,
     required this.chapter,
     required this.markerPosition,
+    required this.moving,
     required this.walkFrame,
     required this.markerKey,
     required this.onOpen,
@@ -575,6 +578,7 @@ class _RouteSection extends StatelessWidget {
   final AppController controller;
   final JourneyChapter chapter;
   final double? markerPosition;
+  final bool moving;
   final int walkFrame;
   final GlobalKey? markerKey;
   final ValueChanged<PuzzleDefinition> onOpen;
@@ -725,7 +729,11 @@ class _RouteSection extends StatelessWidget {
                               label:
                                   'Crown bearer at puzzle ${markerPosition!.round()}',
                               child: PixelKnightSprite(
-                                frame: walkFrame,
+                                animation:
+                                    moving
+                                        ? KnightAnimation.walk
+                                        : KnightAnimation.bounce,
+                                frame: moving ? walkFrame : null,
                                 width: 44,
                                 height: 66,
                               ),
@@ -907,7 +915,11 @@ class _FinalLandmark extends StatelessWidget {
               const Positioned(
                 left: 64,
                 bottom: 25,
-                child: PixelKnightSprite(width: 50, height: 75),
+                child: PixelKnightSprite(
+                  animation: KnightAnimation.dance,
+                  width: 50,
+                  height: 75,
+                ),
               ),
               const Positioned(
                 right: 64,
