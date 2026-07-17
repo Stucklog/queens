@@ -74,6 +74,17 @@ void main() {
       file: 'goldens/story_finale_midnight.png',
     );
   });
+
+  testWidgets('chapter story scene in midnight theme', (tester) async {
+    final controller = await _controllerAt(tester, completed: 45);
+    final chapter = journeyChapters[3];
+    await _goldenStory(
+      tester,
+      controller: controller,
+      scene: StorySceneScreen.chapter(controller: controller, chapter: chapter),
+      file: 'goldens/story_chapter_midnight.png',
+    );
+  });
 }
 
 Future<AppController> _controllerAt(
@@ -154,6 +165,9 @@ Future<void> _goldenStory(
   );
   await tester.pump(const Duration(seconds: 1));
   await tester.pump();
+  expect(find.byType(PixelStoryKnightSprite), findsOneWidget);
+  expect(find.byKey(const ValueKey('story-knight-artwork')), findsOneWidget);
+  expect(find.byType(PixelKnightSprite), findsNothing);
   await expectLater(
     find.byKey(const ValueKey('story-golden')),
     matchesGoldenFile(file),

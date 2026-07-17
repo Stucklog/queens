@@ -174,9 +174,9 @@ class _PixelStorySceneState extends State<PixelStoryScene>
                     if (widget.kind == PixelSceneKind.opening) ...[
                       Align(
                         alignment: const Alignment(-.48, .62),
-                        child: PixelKnightSprite(
+                        child: _storyKnight(
+                          frame: frame,
                           animation: KnightAnimation.walk,
-                          loop: true,
                           width: 92,
                           height: 138,
                         ),
@@ -184,9 +184,9 @@ class _PixelStorySceneState extends State<PixelStoryScene>
                     ] else if (widget.kind == PixelSceneKind.finale) ...[
                       Align(
                         alignment: const Alignment(-.42, .65),
-                        child: PixelKnightSprite(
+                        child: _storyKnight(
+                          frame: frame,
                           animation: KnightAnimation.dance,
-                          loop: true,
                           width: 82,
                           height: 123,
                         ),
@@ -205,9 +205,9 @@ class _PixelStorySceneState extends State<PixelStoryScene>
                           -.58 + (frame.isEven ? 0 : .025),
                           .7,
                         ),
-                        child: PixelKnightSprite(
+                        child: _storyKnight(
+                          frame: frame,
                           animation: KnightAnimation.walk,
-                          loop: true,
                           width: 72,
                           height: 108,
                         ),
@@ -220,6 +220,28 @@ class _PixelStorySceneState extends State<PixelStoryScene>
           },
         ),
       ),
+    );
+  }
+
+  Widget _storyKnight({
+    required int frame,
+    required KnightAnimation animation,
+    required double width,
+    required double height,
+  }) {
+    if (widget.placement == PixelArtPlacement.story) {
+      return PixelStoryKnightSprite(
+        key: const ValueKey('story-knight-sprite'),
+        frame: frame,
+        width: width,
+        height: height,
+      );
+    }
+    return PixelKnightSprite(
+      animation: animation,
+      loop: true,
+      width: width,
+      height: height,
     );
   }
 }
@@ -1592,6 +1614,58 @@ class PixelLandscapePainter extends CustomPainter {
       oldDelegate.brightness != brightness ||
       oldDelegate.sceneKind != sceneKind ||
       oldDelegate.frame != frame;
+}
+
+class PixelStoryKnightSprite extends StatelessWidget {
+  const PixelStoryKnightSprite({
+    super.key,
+    this.frame = 0,
+    this.width = 48,
+    this.height = 72,
+  });
+
+  static const assetPath = 'assets/art/knight.png';
+
+  final int frame;
+  final double width;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    final bob = frame == 1 || frame == 4 ? height / 72 : 0.0;
+    final sway = switch (frame % 4) {
+      1 => -.008,
+      3 => .008,
+      _ => 0.0,
+    };
+
+    return Transform.translate(
+      offset: Offset(0, bob),
+      child: Transform.rotate(
+        angle: sway,
+        alignment: Alignment.bottomCenter,
+        child: SizedBox(
+          width: width,
+          height: height,
+          child: Image.asset(
+            assetPath,
+            key: const ValueKey('story-knight-artwork'),
+            fit: BoxFit.contain,
+            filterQuality: FilterQuality.none,
+            gaplessPlayback: true,
+            excludeFromSemantics: true,
+            frameBuilder: (context, child, imageFrame, wasLoaded) {
+              if (wasLoaded || imageFrame != null) return child;
+              return CustomPaint(painter: _PixelKnightPainter(frame: frame));
+            },
+            errorBuilder:
+                (context, error, stackTrace) =>
+                    CustomPaint(painter: _PixelKnightPainter(frame: frame)),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class PixelKnightSprite extends StatefulWidget {

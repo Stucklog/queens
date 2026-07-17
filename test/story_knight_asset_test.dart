@@ -1,0 +1,61 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:regalia/app/journey.dart';
+import 'package:regalia/app/theme.dart';
+import 'package:regalia/widgets/pixel_art.dart';
+
+void main() {
+  setUpAll(PixelKnightSprite.preload);
+
+  testWidgets('cinematic stories use the original high-resolution knight', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: RegaliaTheme.midnight(),
+        home: SizedBox(
+          width: 430,
+          height: 600,
+          child: PixelStoryScene(
+            chapter: journeyChapters.first,
+            kind: PixelSceneKind.finale,
+            semanticLabel: 'Finale artwork',
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.byType(PixelStoryKnightSprite), findsOneWidget);
+    expect(find.byType(PixelKnightSprite), findsNothing);
+    final artwork = tester.widget<Image>(
+      find.byKey(const ValueKey('story-knight-artwork')),
+    );
+    expect(artwork.image, isA<AssetImage>());
+    expect(
+      (artwork.image as AssetImage).assetName,
+      PixelStoryKnightSprite.assetPath,
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: RegaliaTheme.midnight(),
+        home: SizedBox(
+          width: 430,
+          height: 190,
+          child: PixelStoryScene(
+            chapter: journeyChapters.first,
+            kind: PixelSceneKind.panorama,
+            placement: PixelArtPlacement.banner,
+            semanticLabel: 'Challenge artwork',
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.byType(PixelStoryKnightSprite), findsNothing);
+    expect(find.byType(PixelKnightSprite), findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+}
