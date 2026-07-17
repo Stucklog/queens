@@ -114,9 +114,7 @@ class RegaliaBoard extends StatelessWidget {
                       child: InkWell(
                         key: ValueKey('cell-${cell.row}-${cell.column}'),
                         onTap: () => onCellPressed(cell),
-                        focusColor: boardColors.primary.withValues(
-                          alpha: .18,
-                        ),
+                        focusColor: boardColors.primary.withValues(alpha: .18),
                         hoverColor: boardColors.onSurface.withValues(
                           alpha: .06,
                         ),
