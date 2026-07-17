@@ -335,4 +335,57 @@ void main() {
       migrated.dispose();
     },
   );
+
+  test('unlocking the map opens every puzzle and persists', () async {
+    SharedPreferences.setMockInitialValues({'regalia.tutorialComplete': true});
+    final controller = AppController();
+    await controller.initialize();
+    final lastPuzzle = controller.catalog!.puzzles.last;
+
+    expect(controller.canOpenPuzzle(lastPuzzle), isFalse);
+    expect(controller.records, isEmpty);
+
+    await controller.unlockEntireMap();
+
+    expect(controller.fullMapUnlocked, isTrue);
+    expect(controller.canOpenPuzzle(lastPuzzle), isTrue);
+    expect(controller.records, isEmpty);
+    controller.dispose();
+
+    final restored = AppController();
+    await restored.initialize();
+    expect(restored.fullMapUnlocked, isTrue);
+    expect(restored.canOpenPuzzle(restored.catalog!.puzzles.last), isTrue);
+    restored.dispose();
+  });
+
+  test('complete reset clears all local game state', () async {
+    SharedPreferences.setMockInitialValues({'regalia.tutorialComplete': true});
+    final controller = AppController();
+    await controller.initialize();
+    final firstPuzzle = controller.catalog!.puzzles.first;
+    controller.openPuzzle(firstPuzzle);
+    controller.cycle(firstPuzzle, const Cell(0, 0));
+    controller.updateSettings(
+      controller.settings.copyWith(showTimer: false, reducedMotion: true),
+    );
+    await controller.markStoryBeatSeen('opening');
+    await controller.unlockEntireMap();
+
+    await controller.resetGame();
+
+    expect(controller.gameGeneration, 1);
+    expect(controller.tutorialComplete, isFalse);
+    expect(controller.fullMapUnlocked, isFalse);
+    expect(controller.settings.showTimer, isTrue);
+    expect(controller.settings.reducedMotion, isFalse);
+    expect(controller.boards, isEmpty);
+    expect(controller.records, isEmpty);
+    expect(controller.seenStoryBeatIds, isEmpty);
+    expect(controller.lastPuzzleId, isNull);
+    expect(controller.canOpenPuzzle(controller.catalog!.puzzles[1]), isFalse);
+    final preferences = await SharedPreferences.getInstance();
+    expect(preferences.getKeys(), isEmpty);
+    controller.dispose();
+  });
 }

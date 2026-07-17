@@ -69,6 +69,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   final Map<String, CompletionRecord> records = {};
   final Set<String> seenStoryBeatIds = {};
   ChallengeSession? challengeSession;
+  bool fullMapUnlocked = false;
   bool isStartingChallenge = false;
   bool isPreparingChallenge = false;
   Object? challengeGenerationError;
@@ -82,6 +83,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   List<PuzzleDiversitySignature> _challengeDiversityHistory = const [];
   bool _challengePreparationAllowed = true;
   int _challengeStartEpoch = 0;
+  int gameGeneration = 0;
   bool _disposed = false;
 
   bool get isReady => catalog != null;
@@ -112,6 +114,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     _restoreChallengeGenerationState();
     tutorialComplete =
         _preferences.getBool('regalia.tutorialComplete') ?? false;
+    fullMapUnlocked = _preferences.getBool('regalia.fullMapUnlocked') ?? false;
     if (_preferences.getInt('regalia.journeySchemaVersion') !=
         journeySchemaVersion) {
       // Version one changes a freely selectable collection into a strict
@@ -520,7 +523,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   bool get isJourneyComplete => journeyProgress.isJourneyComplete;
 
   bool canOpenPuzzle(PuzzleDefinition puzzle) =>
-      journeyProgress.canOpen(puzzle, recordFor(puzzle.id));
+      fullMapUnlocked || journeyProgress.canOpen(puzzle, recordFor(puzzle.id));
 
   bool hasSeenStoryBeat(String id) => seenStoryBeatIds.contains(id);
 
@@ -752,6 +755,42 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     notifyListeners();
   }
 
+  Future<void> unlockEntireMap() async {
+    if (fullMapUnlocked) return;
+    fullMapUnlocked = true;
+    notifyListeners();
+    await _save();
+  }
+
+  Future<void> resetGame() async {
+    // Invalidate generated work before clearing its in-memory session so an
+    // old result cannot restore data after preferences have been erased.
+    _challengeStartEpoch++;
+    _timer?.cancel();
+    _timer = null;
+    _activePuzzleId = null;
+    challengeSession = null;
+    isStartingChallenge = false;
+    isPreparingChallenge = false;
+    challengeGenerationError = null;
+    _challengeRetrySalts.clear();
+    _challengeDiversityHistory = const [];
+
+    // Let already-queued snapshots finish first, then erase them together.
+    await _saveChain;
+    await _preferences.clear();
+
+    settings = const AppSettings();
+    boards.clear();
+    records.clear();
+    seenStoryBeatIds.clear();
+    tutorialComplete = false;
+    fullMapUnlocked = false;
+    lastPuzzleId = null;
+    gameGeneration++;
+    notifyListeners();
+  }
+
   Future<void> finishTutorial() async {
     tutorialComplete = true;
     notifyListeners();
@@ -792,6 +831,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
           'regalia.seenStoryBeats',
           seenStoryBeatIds.toList()..sort(),
         ),
+        _preferences.setBool('regalia.fullMapUnlocked', fullMapUnlocked),
         if (challengeJson == null)
           _preferences.remove('regalia.challengeSession')
         else

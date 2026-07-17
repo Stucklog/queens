@@ -587,7 +587,9 @@ class _RouteSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final progress = controller.journeyProgress;
-    final reached = progress.completedCount >= chapter.startOrder - 1;
+    final reached =
+        controller.fullMapUnlocked ||
+        progress.completedCount >= chapter.startOrder - 1;
     final puzzles =
         controller.catalog!.puzzles
             .where((puzzle) => chapter.contains(puzzle.order))
@@ -767,6 +769,12 @@ class _PuzzleNode extends StatelessWidget {
     final canOpen = controller.canOpenPuzzle(puzzle);
     final current = controller.frontierPuzzle?.id == puzzle.id;
     final active = controller.hasActiveBoard(puzzle);
+    final available =
+        canOpen &&
+        !current &&
+        !active &&
+        record.status != CompletionStatus.cleanSolved &&
+        record.status != CompletionStatus.assistedSolved;
     final status =
         current && active
             ? 'current, in progress'
@@ -774,6 +782,8 @@ class _PuzzleNode extends StatelessWidget {
             ? 'current'
             : active
             ? 'in-progress replay'
+            : available
+            ? 'available'
             : switch (record.status) {
               CompletionStatus.cleanSolved => 'clean',
               CompletionStatus.assistedSolved => 'assisted',
@@ -790,6 +800,8 @@ class _PuzzleNode extends StatelessWidget {
             ? PixelGlyph.ellipsis
             : current
             ? PixelGlyph.arrowRight
+            : available
+            ? PixelGlyph.arrowRight
             : switch (record.status) {
               CompletionStatus.cleanSolved => PixelGlyph.crown,
               CompletionStatus.assistedSolved => PixelGlyph.star,
@@ -799,6 +811,8 @@ class _PuzzleNode extends StatelessWidget {
         current
             ? colors.primary
             : active
+            ? colors.surfaceContainerHigh
+            : available
             ? colors.surfaceContainerHigh
             : record.status == CompletionStatus.cleanSolved
             ? colors.secondary

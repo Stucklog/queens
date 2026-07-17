@@ -72,6 +72,7 @@ class RegaliaApp extends StatelessWidget {
     animation: controller,
     builder:
         (context, _) => MaterialApp(
+          key: ValueKey(controller.gameGeneration),
           title: appName,
           debugShowCheckedModeBanner: false,
           theme: RegaliaTheme.midnight(),
