@@ -245,7 +245,10 @@ void main() {
   testWidgets(
     'all opponent reaction frames face the knight and stay in bounds',
     (tester) async {
-      tester.view.physicalSize = const Size(1000, 2200);
+      // Keep every reaction large enough for art review. The previous 4 x 6
+      // overview reduced each 192 px source frame to roughly 50 px, which hid
+      // clipped anatomy and small fragments at cell boundaries.
+      tester.view.physicalSize = const Size(1800, 6600);
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
@@ -261,14 +264,14 @@ void main() {
                 color: const Color(0xff091329),
                 child: Column(
                   children: [
-                    for (var row = 0; row < 6; row++)
+                    for (var row = 0; row < 8; row++)
                       Expanded(
                         child: Row(
                           children: [
-                            for (var column = 0; column < 4; column++)
+                            for (var column = 0; column < 3; column++)
                               Expanded(
                                 child: _OpponentReactionCard(
-                                  encounter: allOpponents[row * 4 + column],
+                                  encounter: allOpponents[row * 3 + column],
                                 ),
                               ),
                           ],
@@ -288,7 +291,7 @@ void main() {
         matchesGoldenFile('goldens/combat_all_opponent_reactions.png'),
       );
     },
-    timeout: const Timeout(Duration(minutes: 2)),
+    timeout: const Timeout(Duration(minutes: 3)),
   );
 }
 
@@ -338,12 +341,15 @@ class _OpponentReactionCard extends StatelessWidget {
                   for (var frame = 0; frame < 4; frame++)
                     ColoredBox(
                       color: const Color(0xff1e2948),
-                      child: PixelEnemySprite(
-                        encounter: encounter,
-                        stimulus: move,
-                        frame: frame,
-                        width: 50,
-                        height: 50,
+                      child: LayoutBuilder(
+                        builder:
+                            (context, constraints) => PixelEnemySprite(
+                              encounter: encounter,
+                              stimulus: move,
+                              frame: frame,
+                              width: constraints.maxWidth,
+                              height: constraints.maxHeight,
+                            ),
                       ),
                     ),
               ],

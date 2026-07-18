@@ -36,6 +36,7 @@ void main() {
       final atlas = _decode(asset);
       expect(atlas.width, 768, reason: asset);
       expect(atlas.height, 1152, reason: asset);
+      _expectCleanPixelArtAlpha(atlas, reason: asset);
       _expectAnimatedAtlas(atlas, columns: 4, rows: 6, reason: asset);
       _expectTransparentCellGutters(
         atlas,
@@ -46,6 +47,32 @@ void main() {
       );
     }
   });
+}
+
+void _expectCleanPixelArtAlpha(image_lib.Image atlas, {String? reason}) {
+  var partialAlpha = 0;
+  var chromaPixels = 0;
+  for (final pixel in atlas) {
+    final alpha = pixel.a.toInt();
+    if (alpha != 0 && alpha != 255) partialAlpha++;
+    if (alpha == 0) continue;
+    final red = pixel.r.toInt();
+    final green = pixel.g.toInt();
+    final blue = pixel.b.toInt();
+    final looksLikeMagentaKey = red > 230 && green < 50 && blue > 230;
+    final looksLikeGreenKey = red < 50 && green > 230 && blue < 50;
+    if (looksLikeMagentaKey || looksLikeGreenKey) chromaPixels++;
+  }
+  expect(
+    partialAlpha,
+    0,
+    reason: '${reason ?? 'atlas'} contains soft-alpha fringe pixels',
+  );
+  expect(
+    chromaPixels,
+    0,
+    reason: '${reason ?? 'atlas'} retains chroma-key pixels',
+  );
 }
 
 image_lib.Image _decode(String path) {

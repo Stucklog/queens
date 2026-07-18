@@ -100,7 +100,14 @@ six rows. Rows, in order, are idle, stagger, strike, press, exposed, and defeat.
 The four columns are successive animation frames. Opponents face left toward
 the knight in every directional pose, and every cell retains at least eight
 transparent pixels on every edge so animation frames cannot bleed into
-adjacent cells. Every origin boss and in-chapter enemy has its own
+adjacent cells. That gutter must surround the complete authored silhouette; it
+must not be manufactured by shrinking a frame whose feet, limbs, wings, weapon,
+or effects were already cropped. Attack and follow-through energy travels left
+toward the knight (with trailing motion allowed on the right), anatomy and gear
+remain stable through all four frames, and detached pixels are reserved for an
+intentional, readable impact or defeat effect rather than source-sheet debris.
+Review the final 192 px cells as well as their 74 px in-game render before
+accepting an atlas. Every origin boss and in-chapter enemy has its own
 production atlas under `assets/art/combat/opponents/`.
 
 The knight's eight production finisher tracks live in
