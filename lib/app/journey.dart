@@ -38,6 +38,7 @@ class CombatEncounter {
     required this.name,
     required this.puzzleId,
     required this.spriteFamily,
+    required this.spriteAsset,
     required this.spectacleLevel,
     required this.isBoss,
     required this.skippable,
@@ -48,6 +49,9 @@ class CombatEncounter {
   final String name;
   final String puzzleId;
   final EnemySpriteFamily spriteFamily;
+
+  /// A 4-column by 6-row transparent pixel-art reaction atlas.
+  final String spriteAsset;
 
   /// One for regular encounters and 1–8 for increasingly climactic bosses.
   final int spectacleLevel;
@@ -64,6 +68,7 @@ class ChapterEnemy extends CombatEncounter {
     required super.name,
     required super.puzzleId,
     required super.spriteFamily,
+    required super.spriteAsset,
     required super.rewardLabel,
   }) : super(spectacleLevel: 1, isBoss: false, skippable: true);
 
@@ -77,6 +82,7 @@ class ChapterEnemy extends CombatEncounter {
       name: json['name']! as String,
       puzzleId: puzzleId,
       spriteFamily: EnemySpriteFamily.parse(json['spriteFamily']! as String),
+      spriteAsset: json['spriteAsset']! as String,
       rewardLabel: json['rewardLabel']! as String,
     );
   }
@@ -88,6 +94,7 @@ class ChapterBoss extends CombatEncounter {
     required super.name,
     required super.puzzleId,
     required super.spriteFamily,
+    required super.spriteAsset,
     required super.spectacleLevel,
     required this.size,
     required this.targetDifficulty,
@@ -116,6 +123,7 @@ class ChapterBoss extends CombatEncounter {
       name: json['name']! as String,
       puzzleId: puzzleId,
       spriteFamily: EnemySpriteFamily.parse(json['spriteFamily']! as String),
+      spriteAsset: json['spriteAsset']! as String,
       spectacleLevel: (json['spectacleLevel']! as num).toInt(),
       size: (json['size']! as num).toInt(),
       targetDifficulty: DifficultyTierLabel.parse(
@@ -230,6 +238,7 @@ const journeyChapters = <JourneyChapter>[
       name: 'Starfall Stag',
       puzzleId: 'regalia:puzzle/origin/boss/starfall-stag',
       spriteFamily: EnemySpriteFamily.antlered,
+      spriteAsset: 'assets/art/combat/opponents/starfall-stag.png',
       spectacleLevel: 1,
       size: 7,
       targetDifficulty: DifficultyTier.easy,
@@ -258,6 +267,7 @@ const journeyChapters = <JourneyChapter>[
       name: 'Elderroot Wyrm',
       puzzleId: 'regalia:puzzle/origin/boss/elderroot-wyrm',
       spriteFamily: EnemySpriteFamily.rootbound,
+      spriteAsset: 'assets/art/combat/opponents/elderroot-wyrm.png',
       spectacleLevel: 2,
       size: 7,
       targetDifficulty: DifficultyTier.medium,
@@ -287,6 +297,7 @@ const journeyChapters = <JourneyChapter>[
       name: 'Tempest Roc',
       puzzleId: 'regalia:puzzle/origin/boss/tempest-roc',
       spriteFamily: EnemySpriteFamily.winged,
+      spriteAsset: 'assets/art/combat/opponents/tempest-roc.png',
       spectacleLevel: 3,
       size: 8,
       targetDifficulty: DifficultyTier.medium,
@@ -316,6 +327,7 @@ const journeyChapters = <JourneyChapter>[
       name: 'Abyssal Bellkeeper',
       puzzleId: 'regalia:puzzle/origin/boss/abyssal-bellkeeper',
       spriteFamily: EnemySpriteFamily.abyssal,
+      spriteAsset: 'assets/art/combat/opponents/abyssal-bellkeeper.png',
       spectacleLevel: 4,
       size: 8,
       targetDifficulty: DifficultyTier.hard,
@@ -344,6 +356,7 @@ const journeyChapters = <JourneyChapter>[
       name: 'Cindermaw Behemoth',
       puzzleId: 'regalia:puzzle/origin/boss/cindermaw-behemoth',
       spriteFamily: EnemySpriteFamily.volcanic,
+      spriteAsset: 'assets/art/combat/opponents/cindermaw-behemoth.png',
       spectacleLevel: 5,
       size: 9,
       targetDifficulty: DifficultyTier.hard,
@@ -372,6 +385,7 @@ const journeyChapters = <JourneyChapter>[
       name: 'Gilded War Colossus',
       puzzleId: 'regalia:puzzle/origin/boss/gilded-war-colossus',
       spriteFamily: EnemySpriteFamily.clockwork,
+      spriteAsset: 'assets/art/combat/opponents/gilded-war-colossus.png',
       spectacleLevel: 6,
       size: 9,
       targetDifficulty: DifficultyTier.expert,
@@ -401,6 +415,7 @@ const journeyChapters = <JourneyChapter>[
       name: 'The Sevenfold Wraith',
       puzzleId: 'regalia:puzzle/origin/boss/sevenfold-wraith',
       spriteFamily: EnemySpriteFamily.spectral,
+      spriteAsset: 'assets/art/combat/opponents/sevenfold-wraith.png',
       spectacleLevel: 7,
       size: 10,
       targetDifficulty: DifficultyTier.expert,
@@ -429,6 +444,7 @@ const journeyChapters = <JourneyChapter>[
       name: 'The Hollow Star',
       puzzleId: 'regalia:puzzle/origin/boss/hollow-star',
       spriteFamily: EnemySpriteFamily.cosmic,
+      spriteAsset: 'assets/art/combat/opponents/hollow-star.png',
       spectacleLevel: 8,
       size: 12,
       targetDifficulty: DifficultyTier.expert,

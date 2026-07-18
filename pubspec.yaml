@@ -58,6 +58,8 @@ flutter:
   assets:
     - assets/art/
     - assets/art/backgrounds/
+    - assets/art/combat/
+    - assets/art/combat/opponents/
     - assets/content/
     - assets/content/arcs/origin/
     - assets/fonts/PixelifySans_LICENSE.txt

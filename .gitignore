@@ -46,3 +46,6 @@ app.*.map.json
 
 # Retired local v1 generator prototype; the shared Dart generator replaces it.
 /puzzle_generator/
+
+# Local generated-art intermediates; only normalized production assets ship.
+/tmp/

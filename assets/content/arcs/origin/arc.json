@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/origin",
-  "contentVersion": 3,
+  "contentVersion": 4,
   "title": "Queen’s Regalia: Origin Story",
   "mapId": "regalia:map/origin/pilgrimage",
   "puzzleCatalogAsset": "assets/puzzles/catalog.json",
@@ -28,6 +28,7 @@
         "name": "Starfall Stag",
         "puzzleId": "regalia:puzzle/origin/boss/starfall-stag",
         "spriteFamily": "antlered",
+        "spriteAsset": "assets/art/combat/opponents/starfall-stag.png",
         "spectacleLevel": 1,
         "size": 7,
         "targetDifficulty": "easy",
@@ -39,6 +40,7 @@
           "name": "Vale Thornling",
           "puzzleId": "regalia:puzzle/origin/easy-004",
           "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/combat/opponents/vale-thornling.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         },
         {
@@ -46,6 +48,7 @@
           "name": "Star-Touched Hart",
           "puzzleId": "regalia:puzzle/origin/easy-012",
           "spriteFamily": "antlered",
+          "spriteAsset": "assets/art/combat/opponents/star-touched-hart.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         }
       ],
@@ -70,6 +73,7 @@
         "name": "Elderroot Wyrm",
         "puzzleId": "regalia:puzzle/origin/boss/elderroot-wyrm",
         "spriteFamily": "rootbound",
+        "spriteAsset": "assets/art/combat/opponents/elderroot-wyrm.png",
         "spectacleLevel": 2,
         "size": 7,
         "targetDifficulty": "medium",
@@ -81,6 +85,7 @@
           "name": "Briar Imp",
           "puzzleId": "regalia:puzzle/origin/easy-023",
           "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/combat/opponents/briar-imp.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         },
         {
@@ -88,6 +93,7 @@
           "name": "Lantern Moth",
           "puzzleId": "regalia:puzzle/origin/easy-027",
           "spriteFamily": "winged",
+          "spriteAsset": "assets/art/combat/opponents/lantern-moth.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         }
       ],
@@ -112,6 +118,7 @@
         "name": "Tempest Roc",
         "puzzleId": "regalia:puzzle/origin/boss/tempest-roc",
         "spriteFamily": "winged",
+        "spriteAsset": "assets/art/combat/opponents/tempest-roc.png",
         "spectacleLevel": 3,
         "size": 8,
         "targetDifficulty": "medium",
@@ -123,6 +130,7 @@
           "name": "Gale Harrier",
           "puzzleId": "regalia:puzzle/origin/medium-004",
           "spriteFamily": "winged",
+          "spriteAsset": "assets/art/combat/opponents/gale-harrier.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         },
         {
@@ -130,6 +138,7 @@
           "name": "Skyglass Wisp",
           "puzzleId": "regalia:puzzle/origin/medium-007",
           "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/combat/opponents/skyglass-wisp.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         }
       ],
@@ -154,6 +163,7 @@
         "name": "Abyssal Bellkeeper",
         "puzzleId": "regalia:puzzle/origin/boss/abyssal-bellkeeper",
         "spriteFamily": "abyssal",
+        "spriteAsset": "assets/art/combat/opponents/abyssal-bellkeeper.png",
         "spectacleLevel": 4,
         "size": 8,
         "targetDifficulty": "hard",
@@ -165,6 +175,7 @@
           "name": "Coral Husk",
           "puzzleId": "regalia:puzzle/origin/medium-015",
           "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/combat/opponents/coral-husk.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         },
         {
@@ -172,6 +183,7 @@
           "name": "Drowned Acolyte",
           "puzzleId": "regalia:puzzle/origin/medium-023",
           "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/combat/opponents/drowned-acolyte.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         }
       ],
@@ -196,6 +208,7 @@
         "name": "Cindermaw Behemoth",
         "puzzleId": "regalia:puzzle/origin/boss/cindermaw-behemoth",
         "spriteFamily": "volcanic",
+        "spriteAsset": "assets/art/combat/opponents/cindermaw-behemoth.png",
         "spectacleLevel": 5,
         "size": 9,
         "targetDifficulty": "hard",
@@ -207,6 +220,7 @@
           "name": "Cinderling",
           "puzzleId": "regalia:puzzle/origin/hard-006",
           "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/combat/opponents/cinderling.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         },
         {
@@ -214,6 +228,7 @@
           "name": "Basalt Brute",
           "puzzleId": "regalia:puzzle/origin/hard-013",
           "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/combat/opponents/basalt-brute.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         }
       ],
@@ -238,6 +253,7 @@
         "name": "Gilded War Colossus",
         "puzzleId": "regalia:puzzle/origin/boss/gilded-war-colossus",
         "spriteFamily": "clockwork",
+        "spriteAsset": "assets/art/combat/opponents/gilded-war-colossus.png",
         "spectacleLevel": 6,
         "size": 9,
         "targetDifficulty": "expert",
@@ -249,6 +265,7 @@
           "name": "Brass Sentry",
           "puzzleId": "regalia:puzzle/origin/hard-024",
           "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/combat/opponents/brass-sentry.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         },
         {
@@ -256,6 +273,7 @@
           "name": "Gear Goblin",
           "puzzleId": "regalia:puzzle/origin/hard-027",
           "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/combat/opponents/gear-goblin.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         }
       ],
@@ -280,6 +298,7 @@
         "name": "The Sevenfold Wraith",
         "puzzleId": "regalia:puzzle/origin/boss/sevenfold-wraith",
         "spriteFamily": "spectral",
+        "spriteAsset": "assets/art/combat/opponents/sevenfold-wraith.png",
         "spectacleLevel": 7,
         "size": 10,
         "targetDifficulty": "expert",
@@ -291,6 +310,7 @@
           "name": "Pale Shade",
           "puzzleId": "regalia:puzzle/origin/expert-004",
           "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/combat/opponents/pale-shade.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         },
         {
@@ -298,6 +318,7 @@
           "name": "Moonbone Hound",
           "puzzleId": "regalia:puzzle/origin/expert-007",
           "spriteFamily": "antlered",
+          "spriteAsset": "assets/art/combat/opponents/moonbone-hound.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         }
       ],
@@ -322,6 +343,7 @@
         "name": "The Hollow Star",
         "puzzleId": "regalia:puzzle/origin/boss/hollow-star",
         "spriteFamily": "cosmic",
+        "spriteAsset": "assets/art/combat/opponents/hollow-star.png",
         "spectacleLevel": 8,
         "size": 12,
         "targetDifficulty": "expert",
@@ -333,6 +355,7 @@
           "name": "Starbound Sentinel",
           "puzzleId": "regalia:puzzle/origin/expert-016",
           "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/combat/opponents/starbound-sentinel.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         },
         {
@@ -340,6 +363,7 @@
           "name": "Eclipse Drake",
           "puzzleId": "regalia:puzzle/origin/expert-023",
           "spriteFamily": "winged",
+          "spriteAsset": "assets/art/combat/opponents/eclipse-drake.png",
           "rewardLabel": "Presentation only · route progress unchanged"
         }
       ],

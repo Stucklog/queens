@@ -19,7 +19,7 @@ void main() {
   testWidgets('all knight motions retain one coherent character design', (
     tester,
   ) async {
-    tester.view.physicalSize = const Size(720, 250);
+    tester.view.physicalSize = const Size(720, 480);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
@@ -63,10 +63,10 @@ void main() {
     );
   });
 
-  testWidgets('all 28 active knight frames remain anchored and isolated', (
+  testWidgets('all active knight frames remain anchored and isolated', (
     tester,
   ) async {
-    tester.view.physicalSize = const Size(520, 675);
+    tester.view.physicalSize = const Size(780, 1085);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
@@ -83,13 +83,13 @@ void main() {
                 padding: const EdgeInsets.all(8),
                 child: GridView.count(
                   physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 4,
+                  crossAxisCount: 6,
                   childAspectRatio: 1.6,
                   crossAxisSpacing: 4,
                   mainAxisSpacing: 4,
                   children: [
                     for (final animation in KnightAnimation.values)
-                      for (var frame = 0; frame < 4; frame++)
+                      for (var frame = 0; frame < animation.frameCount; frame++)
                         DecoratedBox(
                           decoration: BoxDecoration(
                             color: const Color(0xff293756),
@@ -146,9 +146,17 @@ class _MotionTile extends StatelessWidget {
         SizedBox(
           width: 62,
           child: Text(
-            animation.name.toUpperCase(),
+            animation.name
+                .replaceAllMapped(
+                  RegExp(r'([a-z])([A-Z])'),
+                  (match) => '${match[1]} ${match[2]}',
+                )
+                .toUpperCase(),
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.labelSmall,
+            maxLines: 2,
+            style: Theme.of(
+              context,
+            ).textTheme.labelSmall?.copyWith(fontSize: 8, height: 1),
           ),
         ),
       ],
@@ -164,6 +172,14 @@ class _MotionTile extends StatelessWidget {
         KnightAnimation.damage => 2,
         KnightAnimation.special => 2,
         KnightAnimation.surprised => 1,
+        KnightAnimation.twinSigil ||
+        KnightAnimation.cinderfall ||
+        KnightAnimation.brassJudgment ||
+        KnightAnimation.moonlitSever ||
+        KnightAnimation.regaliaNova => 4,
+        KnightAnimation.crownSlash ||
+        KnightAnimation.skybreak ||
+        KnightAnimation.tidalAegis => 3,
       };
 }
 

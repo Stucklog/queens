@@ -18,6 +18,57 @@ enum KnightAnimation {
   damage,
   special,
   surprised,
+  crownSlash,
+  twinSigil,
+  skybreak,
+  tidalAegis,
+  cinderfall,
+  brassJudgment,
+  moonlitSever,
+  regaliaNova,
+}
+
+/// The chapter-specific finishing move used when an encounter puzzle is solved.
+KnightAnimation finisherForSpectacle(int spectacleLevel) =>
+    switch (spectacleLevel.clamp(1, 8)) {
+      1 => KnightAnimation.crownSlash,
+      2 => KnightAnimation.twinSigil,
+      3 => KnightAnimation.skybreak,
+      4 => KnightAnimation.tidalAegis,
+      5 => KnightAnimation.cinderfall,
+      6 => KnightAnimation.brassJudgment,
+      7 => KnightAnimation.moonlitSever,
+      _ => KnightAnimation.regaliaNova,
+    };
+
+extension KnightAnimationPresentation on KnightAnimation {
+  bool get isCombatFinisher => switch (this) {
+    KnightAnimation.crownSlash ||
+    KnightAnimation.twinSigil ||
+    KnightAnimation.skybreak ||
+    KnightAnimation.tidalAegis ||
+    KnightAnimation.cinderfall ||
+    KnightAnimation.brassJudgment ||
+    KnightAnimation.moonlitSever ||
+    KnightAnimation.regaliaNova => true,
+    _ => false,
+  };
+
+  bool get isCompletionMove =>
+      this == KnightAnimation.special || isCombatFinisher;
+
+  Duration get presentationDuration => _knightAnimationSpecs[this]!.duration;
+
+  /// The point at which a finisher connects and the opponent begins to fall.
+  double get impactFraction => _knightAnimationSpecs[this]!.impactFraction;
+
+  /// A short hold on the final pose before the completion dialog replaces it.
+  Duration get postRoll =>
+      isCombatFinisher
+          ? Duration(milliseconds: 85 + (_knightAnimationSpecs[this]!.row * 14))
+          : const Duration(milliseconds: 70);
+
+  int get frameCount => _knightAnimationSpecs[this]!.frameCount;
 }
 
 class PixelLandscape extends StatelessWidget {
@@ -1681,7 +1732,7 @@ class PixelKnightSprite extends StatefulWidget {
 
   /// Decodes the shared atlas before a sprite-heavy scene is presented.
   static Future<void> preload() async {
-    await _KnightAtlas.image;
+    await Future.wait([_KnightAtlas.image, _KnightFinisherAtlas.image]);
   }
 
   @override
@@ -1788,37 +1839,53 @@ class _PixelKnightSpriteState extends State<PixelKnightSprite>
         animation: _controller,
         builder: (context, _) {
           final frame = _frame;
-          final cachedImage = _KnightAtlas.currentImage;
+          final usesFinisherAtlas = _spec.atlas == _KnightAtlasKind.finisher;
+          final cachedImage =
+              usesFinisherAtlas
+                  ? _KnightFinisherAtlas.currentImage
+                  : _KnightAtlas.currentImage;
           if (cachedImage != null) {
-            return CustomPaint(
-              painter: _KnightAtlasPainter(
-                image: cachedImage,
-                row: _spec.row,
-                column: _spec.firstColumn + frame,
-              ),
-            );
+            return _paintAtlasFrame(cachedImage, frame);
           }
           return FutureBuilder<ui.Image>(
-            future: _KnightAtlas.image,
+            future:
+                usesFinisherAtlas
+                    ? _KnightFinisherAtlas.image
+                    : _KnightAtlas.image,
             builder: (context, snapshot) {
               final image = snapshot.data;
               if (image == null) {
                 return CustomPaint(painter: _PixelKnightPainter(frame: frame));
               }
-              return CustomPaint(
-                painter: _KnightAtlasPainter(
-                  image: image,
-                  row: _spec.row,
-                  column: _spec.firstColumn + frame,
-                ),
-              );
+              return _paintAtlasFrame(image, frame);
             },
           );
         },
       ),
     ),
   );
+
+  Widget _paintAtlasFrame(ui.Image image, int frame) {
+    if (_spec.atlas == _KnightAtlasKind.finisher) {
+      return CustomPaint(
+        painter: _KnightFinisherAtlasPainter(
+          image: image,
+          row: _spec.row,
+          column: frame,
+        ),
+      );
+    }
+    return CustomPaint(
+      painter: _KnightAtlasPainter(
+        image: image,
+        row: _spec.row,
+        column: _spec.firstColumn + frame,
+      ),
+    );
+  }
 }
+
+enum _KnightAtlasKind { legacy, finisher }
 
 class _KnightAnimationSpec {
   const _KnightAnimationSpec({
@@ -1826,14 +1893,19 @@ class _KnightAnimationSpec {
     required this.firstColumn,
     required this.frameDuration,
     this.restFrame = 0,
+    this.frameCount = 4,
+    this.impactFraction = .56,
+    this.atlas = _KnightAtlasKind.legacy,
   });
 
   final int row;
   final int firstColumn;
   final Duration frameDuration;
   final int restFrame;
+  final int frameCount;
+  final double impactFraction;
+  final _KnightAtlasKind atlas;
 
-  int get frameCount => 4;
   Duration get duration => frameDuration * frameCount;
 }
 
@@ -1878,10 +1950,106 @@ const _knightAnimationSpecs = <KnightAnimation, _KnightAnimationSpec>{
     frameDuration: Duration(milliseconds: 185),
     restFrame: 2,
   ),
+  KnightAnimation.crownSlash: _KnightAnimationSpec(
+    row: 0,
+    firstColumn: 0,
+    frameDuration: Duration(milliseconds: 130),
+    frameCount: 6,
+    restFrame: 3,
+    impactFraction: .48,
+    atlas: _KnightAtlasKind.finisher,
+  ),
+  KnightAnimation.twinSigil: _KnightAnimationSpec(
+    row: 1,
+    firstColumn: 0,
+    frameDuration: Duration(milliseconds: 140),
+    frameCount: 6,
+    restFrame: 4,
+    impactFraction: .5,
+    atlas: _KnightAtlasKind.finisher,
+  ),
+  KnightAnimation.skybreak: _KnightAnimationSpec(
+    row: 2,
+    firstColumn: 0,
+    frameDuration: Duration(milliseconds: 150),
+    frameCount: 6,
+    restFrame: 3,
+    impactFraction: .52,
+    atlas: _KnightAtlasKind.finisher,
+  ),
+  KnightAnimation.tidalAegis: _KnightAnimationSpec(
+    row: 3,
+    firstColumn: 0,
+    frameDuration: Duration(milliseconds: 160),
+    frameCount: 6,
+    restFrame: 3,
+    impactFraction: .54,
+    atlas: _KnightAtlasKind.finisher,
+  ),
+  KnightAnimation.cinderfall: _KnightAnimationSpec(
+    row: 4,
+    firstColumn: 0,
+    frameDuration: Duration(milliseconds: 170),
+    frameCount: 6,
+    restFrame: 4,
+    impactFraction: .56,
+    atlas: _KnightAtlasKind.finisher,
+  ),
+  KnightAnimation.brassJudgment: _KnightAnimationSpec(
+    row: 5,
+    firstColumn: 0,
+    frameDuration: Duration(milliseconds: 180),
+    frameCount: 6,
+    restFrame: 4,
+    impactFraction: .58,
+    atlas: _KnightAtlasKind.finisher,
+  ),
+  KnightAnimation.moonlitSever: _KnightAnimationSpec(
+    row: 6,
+    firstColumn: 0,
+    frameDuration: Duration(milliseconds: 195),
+    frameCount: 6,
+    restFrame: 4,
+    impactFraction: .6,
+    atlas: _KnightAtlasKind.finisher,
+  ),
+  KnightAnimation.regaliaNova: _KnightAnimationSpec(
+    row: 7,
+    firstColumn: 0,
+    frameDuration: Duration(milliseconds: 220),
+    frameCount: 6,
+    restFrame: 4,
+    impactFraction: .65,
+    atlas: _KnightAtlasKind.finisher,
+  ),
 };
 
 abstract final class _KnightAtlas {
   static const _assetPath = 'assets/art/knight_animations.png';
+  static Future<ui.Image>? _cachedImage;
+  static ui.Image? currentImage;
+
+  static Future<ui.Image> get image => _cachedImage ??= _load();
+
+  static Future<ui.Image> _load() async {
+    final data = await rootBundle.load(_assetPath);
+    final bytes = data.buffer.asUint8List(
+      data.offsetInBytes,
+      data.lengthInBytes,
+    );
+    final codec = await ui.instantiateImageCodec(bytes);
+    try {
+      final image = (await codec.getNextFrame()).image;
+      currentImage = image;
+      return image;
+    } finally {
+      codec.dispose();
+    }
+  }
+}
+
+abstract final class _KnightFinisherAtlas {
+  static const _assetPath = 'assets/art/combat/knight_finishers.png';
   static Future<ui.Image>? _cachedImage;
   static ui.Image? currentImage;
 
@@ -1965,6 +2133,55 @@ class _KnightAtlasPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_KnightAtlasPainter oldDelegate) =>
+      oldDelegate.image != image ||
+      oldDelegate.row != row ||
+      oldDelegate.column != column;
+}
+
+class _KnightFinisherAtlasPainter extends CustomPainter {
+  const _KnightFinisherAtlasPainter({
+    required this.image,
+    required this.row,
+    required this.column,
+  });
+
+  static const _columns = 6;
+  static const _rows = 8;
+
+  final ui.Image image;
+  final int row;
+  final int column;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final cellWidth = image.width / _columns;
+    final cellHeight = image.height / _rows;
+    final source = Rect.fromLTWH(
+      column * cellWidth,
+      row * cellHeight,
+      cellWidth,
+      cellHeight,
+    );
+    final fitted = applyBoxFit(BoxFit.contain, source.size, size);
+    final destination = Alignment.bottomCenter.inscribe(
+      fitted.destination,
+      Offset.zero & size,
+    );
+    canvas.save();
+    canvas.clipRect(Offset.zero & size);
+    canvas.drawImageRect(
+      image,
+      source,
+      destination,
+      Paint()
+        ..isAntiAlias = false
+        ..filterQuality = FilterQuality.none,
+    );
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(_KnightFinisherAtlasPainter oldDelegate) =>
       oldDelegate.image != image ||
       oldDelegate.row != row ||
       oldDelegate.column != column;

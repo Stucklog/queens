@@ -190,6 +190,7 @@ class StoryArc {
           unlockTarget.arcName != arc.localName ||
           !ids.add(boss.id) ||
           boss.name.trim().isEmpty ||
+          !_isCombatSpriteAsset(boss.spriteAsset) ||
           boss.spectacleLevel != chapterIndex + 1 ||
           boss.unlockTargetId != expectedUnlockTarget ||
           boss.targetDifficulty != expectedDifficulty ||
@@ -216,6 +217,7 @@ class StoryArc {
             !encounterPuzzleIds.add(encounter.puzzleId) ||
             encounter.name.trim().isEmpty ||
             encounter.rewardLabel.trim().isEmpty ||
+            !_isCombatSpriteAsset(encounter.spriteAsset) ||
             !encounter.skippable ||
             encounter.isBoss ||
             encounter.spectacleLevel != 1 ||
@@ -229,6 +231,11 @@ class StoryArc {
     }
   }
 }
+
+bool _isCombatSpriteAsset(String path) =>
+    path.startsWith('assets/art/combat/opponents/') &&
+    path.endsWith('.png') &&
+    !path.contains('..');
 
 class ArcPackageDescriptor {
   const ArcPackageDescriptor({

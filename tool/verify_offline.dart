@@ -65,6 +65,19 @@ Future<void> main(List<String> arguments) async {
   }
   final icons = manifest['icons'] as List<Object?>? ?? const [];
   if (icons.length < 4) failures.add('web manifest is missing PWA icons');
+  final originArcFile = File('assets/content/arcs/origin/arc.json');
+  final originArc =
+      jsonDecode(await originArcFile.readAsString()) as Map<String, Object?>;
+  final combatAssets = <String>{};
+  for (final chapterValue in originArc['chapters']! as List<Object?>) {
+    final chapter = chapterValue! as Map<String, Object?>;
+    final boss = chapter['boss']! as Map<String, Object?>;
+    combatAssets.add(boss['spriteAsset']! as String);
+    for (final encounterValue in chapter['encounters']! as List<Object?>) {
+      final encounter = encounterValue! as Map<String, Object?>;
+      combatAssets.add(encounter['spriteAsset']! as String);
+    }
+  }
   if (!pubspec.contains('assets/puzzles/catalog.json')) {
     failures.add('catalog is not declared as a bundled Flutter asset');
   }
@@ -73,12 +86,22 @@ Future<void> main(List<String> arguments) async {
   }
   if (!pubspec.contains('assets/content/') ||
       !File('assets/content/manifest.json').existsSync() ||
-      !File('assets/content/arcs/origin/arc.json').existsSync()) {
+      !originArcFile.existsSync()) {
     failures.add('content manifest or origin arc metadata is not bundled');
   }
   if (!pubspec.contains('assets/art/') ||
       !File('assets/art/knight_animations.png').existsSync()) {
     failures.add('knight animation atlas is not bundled as an app asset');
+  }
+  if (!pubspec.contains('assets/art/combat/') ||
+      !pubspec.contains('assets/art/combat/opponents/') ||
+      !File('assets/art/combat/knight_finishers.png').existsSync()) {
+    failures.add('combat animation atlases are not bundled as app assets');
+  }
+  for (final asset in combatAssets) {
+    if (!File(asset).existsSync()) {
+      failures.add('combat sprite atlas is missing: $asset');
+    }
   }
 
   final buildIndex = arguments.indexOf('--web-build');
@@ -92,7 +115,7 @@ Future<void> main(List<String> arguments) async {
         failures.add('${root.path} has no generated service worker');
       } else {
         final source = await worker.readAsString();
-        for (final asset in const [
+        for (final asset in [
           'main.dart.js',
           'assets/assets/content/manifest.json',
           'assets/assets/content/arcs/origin/arc.json',
@@ -101,6 +124,8 @@ Future<void> main(List<String> arguments) async {
           'assets/assets/fonts/PixelifySans-Variable.ttf',
           'assets/assets/fonts/PixelifySans_LICENSE.txt',
           'assets/assets/art/knight_animations.png',
+          'assets/assets/art/combat/knight_finishers.png',
+          ...combatAssets.map((asset) => 'assets/$asset'),
           'icons/Icon-512.png',
         ]) {
           if (!source.contains(asset)) {

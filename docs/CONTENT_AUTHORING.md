@@ -87,22 +87,33 @@ human-difficulty validation.
 ## Combat presentation and art status
 
 Combat encounters are chapter metadata, not progression nodes. Every `boss`
-declares a `spriteFamily` and a `spectacleLevel`; levels must increase exactly
-from 1 through the chapter count, leaving the final boss with the strongest
-finish. Each optional `encounters` entry declares a namespaced `enemy` ID,
-display name, an existing non-boss `puzzleId`, a `spriteFamily`, and a
-`rewardLabel`. Optional encounters are presentation-only, can be left from the
-puzzle header, grant no durable reward, and never change frontier or unlock
-calculation.
+declares a `spriteFamily`, a `spriteAsset`, and a `spectacleLevel`; levels must
+increase exactly from 1 through the chapter count, leaving the final boss with
+the strongest finish. Each optional `encounters` entry declares a namespaced
+`enemy` ID, display name, an existing non-boss `puzzleId`, a `spriteFamily`, a
+`spriteAsset`, and a `rewardLabel`. Optional encounters are
+presentation-only, can be left from the puzzle header, grant no durable reward,
+and never change frontier or unlock calculation.
 
-The eight enemy silhouette families and their attack, brace, stagger, exposed,
-and defeat reactions are production-ready code-native pixel art in
-`lib/widgets/combat_presentation.dart`. Boss scale/crowns, stable per-enemy
-variants, and eight escalating special-effect tiers are covered by animation
-and golden tests. The knight atlas and principal story/background images remain
-production raster assets. There is no placeholder combat art required for this
-implementation; a later hand-authored raster replacement would be an optional
-art-direction change, not a missing shipping asset.
+Combat `spriteAsset` files are transparent PNG atlases with four columns and
+six rows. Rows, in order, are idle, stagger, strike, press, exposed, and defeat.
+The four columns are successive animation frames, and opponents face left
+toward the knight. Every origin boss and optional enemy has its own production
+atlas under `assets/art/combat/opponents/`.
+
+The knight's eight production finisher tracks live in
+`assets/art/combat/knight_finishers.png`: six columns and eight rows, ordered
+Crown Slash, Twin Sigil, Skybreak, Tidal Aegis, Cinderfall, Brass Judgment,
+Moonlit Sever, and Regalia Nova. Regular encounters use Crown Slash; chapter
+bosses use their numbered row, reserving Regalia Nova for the final boss.
+
+The code-painted enemy silhouettes in `lib/widgets/combat_presentation.dart`
+are error fallbacks only. They are placeholder art and must not appear when a
+declared production atlas is packaged correctly. No placeholder asset remains
+to be replaced for this combat-presentation backlog; the fallback stays solely
+so a corrupt package does not leave an empty header. Atlas dimensions, frame
+occupancy, reaction differences, synchronization, reduced motion, and rendered
+composition are covered by animation and golden tests.
 
 ## Entitlements and availability
 

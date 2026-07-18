@@ -7,15 +7,17 @@ import 'pixel_art.dart';
 
 enum EnemyReaction { idle, staggered, striking, pressing, exposed, defeated }
 
-EnemyReaction enemyReactionFor(KnightAnimation animation) =>
-    switch (animation) {
-      KnightAnimation.walk || KnightAnimation.bounce => EnemyReaction.idle,
-      KnightAnimation.attack => EnemyReaction.staggered,
-      KnightAnimation.defend => EnemyReaction.striking,
-      KnightAnimation.damage => EnemyReaction.pressing,
-      KnightAnimation.surprised => EnemyReaction.exposed,
-      KnightAnimation.special => EnemyReaction.defeated,
-    };
+EnemyReaction enemyReactionFor(KnightAnimation animation) {
+  if (animation.isCompletionMove) return EnemyReaction.defeated;
+  return switch (animation) {
+    KnightAnimation.walk || KnightAnimation.bounce => EnemyReaction.idle,
+    KnightAnimation.attack => EnemyReaction.staggered,
+    KnightAnimation.defend => EnemyReaction.striking,
+    KnightAnimation.damage => EnemyReaction.pressing,
+    KnightAnimation.surprised => EnemyReaction.exposed,
+    _ => EnemyReaction.defeated,
+  };
+}
 
 extension on EnemyReaction {
   String get label => switch (this) {
@@ -82,7 +84,8 @@ class CombatPresentationBar extends StatelessWidget {
               if (activeEncounter != null)
                 CombatSpecialEffects(
                   key: const ValueKey('combat-special-effects'),
-                  active: animation == KnightAnimation.special,
+                  active: animation.isCombatFinisher,
+                  duration: animation.presentationDuration,
                   level: activeEncounter.spectacleLevel,
                   restartToken: restartToken,
                   color: colors.secondary,
@@ -270,6 +273,7 @@ class PixelEnemySprite extends StatefulWidget {
     super.key,
     required this.encounter,
     required this.stimulus,
+    this.frame,
     this.restartToken = 0,
     this.width = 72,
     this.height = 76,
@@ -277,6 +281,7 @@ class PixelEnemySprite extends StatefulWidget {
 
   final CombatEncounter encounter;
   final KnightAnimation stimulus;
+  final int? frame;
   final int restartToken;
   final double width;
   final double height;
@@ -289,14 +294,21 @@ class _PixelEnemySpriteState extends State<PixelEnemySprite>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(vsync: this);
   bool _reduceMotion = false;
+  bool _tickerEnabled = true;
 
   EnemyReaction get _reaction => enemyReactionFor(widget.stimulus);
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _reduceMotion = MediaQuery.maybeOf(context)?.disableAnimations ?? false;
-    _restart();
+    final reduceMotion =
+        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final tickerEnabled = TickerMode.of(context);
+    final changed =
+        reduceMotion != _reduceMotion || tickerEnabled != _tickerEnabled;
+    _reduceMotion = reduceMotion;
+    _tickerEnabled = tickerEnabled;
+    if (changed || _controller.duration == null) _restart();
   }
 
   @override
@@ -304,6 +316,7 @@ class _PixelEnemySpriteState extends State<PixelEnemySprite>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.stimulus != widget.stimulus ||
         oldWidget.restartToken != widget.restartToken ||
+        oldWidget.frame != widget.frame ||
         oldWidget.encounter.id != widget.encounter.id) {
       _restart();
     }
@@ -312,15 +325,34 @@ class _PixelEnemySpriteState extends State<PixelEnemySprite>
   void _restart() {
     _controller
       ..stop()
-      ..duration = _durationFor(widget.stimulus)
+      ..duration = widget.stimulus.presentationDuration
       ..value = 0;
-    if (_reduceMotion) {
-      _controller.value = _reaction == EnemyReaction.defeated ? 1 : .64;
-    } else if (_reaction == EnemyReaction.idle) {
-      _controller.repeat(reverse: true);
-    } else {
-      _controller.forward();
+    if (widget.frame != null || _reduceMotion || !_tickerEnabled) return;
+    if (_reaction == EnemyReaction.idle) {
+      _controller.repeat(period: widget.stimulus.presentationDuration);
+      return;
     }
+    _controller.forward();
+  }
+
+  int get _frame {
+    final override = widget.frame;
+    if (override != null) return override % _enemyAtlasColumns;
+    if (_reduceMotion) {
+      return _reaction == EnemyReaction.defeated
+          ? 3
+          : (_reaction.index == 0 ? 0 : 2);
+    }
+    var progress = _controller.value;
+    if (_reaction == EnemyReaction.defeated) {
+      final impact = widget.stimulus.impactFraction;
+      if (progress < impact) return 0;
+      progress = ((progress - impact) / (1 - impact)).clamp(0, 1);
+    }
+    return (progress * _enemyAtlasColumns).floor().clamp(
+      0,
+      _enemyAtlasColumns - 1,
+    );
   }
 
   @override
@@ -337,96 +369,109 @@ class _PixelEnemySpriteState extends State<PixelEnemySprite>
       child: AnimatedBuilder(
         animation: _controller,
         builder: (context, child) {
-          final pose = _enemyPose(_reaction, _controller.value);
-          return Opacity(
-            opacity: pose.opacity,
-            child: Transform.translate(
-              offset: pose.offset,
-              child: Transform.rotate(
-                angle: pose.rotation,
-                alignment: Alignment.bottomCenter,
-                child: Transform.scale(
-                  scale: pose.scale,
-                  alignment: Alignment.bottomCenter,
-                  child: CustomPaint(
-                    painter: _PixelEnemyPainter(
-                      family: widget.encounter.spriteFamily,
-                      boss: widget.encounter.isBoss,
-                      variant: _stableVariant(widget.encounter.id),
-                      flash: pose.flash,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
+          final frame = _frame;
+          return _paintAtlasFrame(frame);
         },
       ),
     ),
   );
+
+  Widget _paintAtlasFrame(int frame) {
+    final side = math.min(widget.width, widget.height);
+    final sheetWidth = side * _enemyAtlasColumns;
+    final sheetHeight = side * _enemyAtlasRows;
+    final fallback = _EnemyFallbackSheetPainter(
+      family: widget.encounter.spriteFamily,
+      boss: widget.encounter.isBoss,
+      variant: _stableVariant(widget.encounter.id),
+      row: _reaction.index,
+      column: frame,
+      cellSide: side,
+    );
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: SizedBox.square(
+        dimension: side,
+        child: ClipRect(
+          child: Stack(
+            clipBehavior: Clip.hardEdge,
+            children: [
+              Positioned(
+                left: -frame * side,
+                top: -_reaction.index * side,
+                width: sheetWidth,
+                height: sheetHeight,
+                child: Image.asset(
+                  widget.encounter.spriteAsset,
+                  key: ValueKey(widget.encounter.spriteAsset),
+                  width: sheetWidth,
+                  height: sheetHeight,
+                  fit: BoxFit.fill,
+                  filterQuality: FilterQuality.none,
+                  gaplessPlayback: true,
+                  excludeFromSemantics: true,
+                  frameBuilder: (context, child, imageFrame, wasLoaded) {
+                    if (wasLoaded || imageFrame != null) return child;
+                    return CustomPaint(painter: fallback);
+                  },
+                  errorBuilder:
+                      (context, error, stackTrace) =>
+                          CustomPaint(painter: fallback),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-Duration _durationFor(KnightAnimation animation) => switch (animation) {
-  KnightAnimation.walk => const Duration(milliseconds: 580),
-  KnightAnimation.bounce => const Duration(milliseconds: 760),
-  KnightAnimation.attack => const Duration(milliseconds: 500),
-  KnightAnimation.defend => const Duration(milliseconds: 680),
-  KnightAnimation.damage => const Duration(milliseconds: 620),
-  KnightAnimation.special => const Duration(milliseconds: 720),
-  KnightAnimation.surprised => const Duration(milliseconds: 740),
-};
+const _enemyAtlasColumns = 4;
+const _enemyAtlasRows = 6;
+
+class _EnemyFallbackSheetPainter extends CustomPainter {
+  const _EnemyFallbackSheetPainter({
+    required this.family,
+    required this.boss,
+    required this.variant,
+    required this.row,
+    required this.column,
+    required this.cellSide,
+  });
+
+  final EnemySpriteFamily family;
+  final bool boss;
+  final int variant;
+  final int row;
+  final int column;
+  final double cellSide;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.save();
+    canvas.translate(column * cellSide, row * cellSide);
+    _PixelEnemyPainter(
+      family: family,
+      boss: boss,
+      variant: variant,
+      flash: 0,
+    ).paint(canvas, Size.square(cellSide));
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(_EnemyFallbackSheetPainter oldDelegate) =>
+      oldDelegate.family != family ||
+      oldDelegate.boss != boss ||
+      oldDelegate.variant != variant ||
+      oldDelegate.row != row ||
+      oldDelegate.column != column ||
+      oldDelegate.cellSide != cellSide;
+}
 
 int _stableVariant(String id) =>
     id.codeUnits.fold<int>(0, (value, unit) => (value + unit) % 5);
-
-class _EnemyPose {
-  const _EnemyPose({
-    this.offset = Offset.zero,
-    this.rotation = 0,
-    this.scale = 1,
-    this.opacity = 1,
-    this.flash = 0,
-  });
-
-  final Offset offset;
-  final double rotation;
-  final double scale;
-  final double opacity;
-  final double flash;
-}
-
-_EnemyPose _enemyPose(EnemyReaction reaction, double t) {
-  final pulse = math.sin(t * math.pi);
-  return switch (reaction) {
-    EnemyReaction.idle => _EnemyPose(offset: Offset(0, -2 * pulse)),
-    EnemyReaction.staggered => _EnemyPose(
-      offset: Offset(13 * pulse, -3 * pulse),
-      rotation: .16 * pulse,
-      flash: pulse,
-    ),
-    EnemyReaction.striking => _EnemyPose(
-      offset: Offset(-11 * pulse, -2 * pulse),
-      rotation: -.1 * pulse,
-      scale: 1 + .06 * pulse,
-    ),
-    EnemyReaction.pressing => _EnemyPose(
-      offset: Offset(-6 * t, -3 * pulse),
-      scale: 1 + .08 * pulse,
-    ),
-    EnemyReaction.exposed => _EnemyPose(
-      offset: Offset(0, -9 * pulse),
-      rotation: -.08 * pulse,
-      flash: pulse * .35,
-    ),
-    EnemyReaction.defeated => _EnemyPose(
-      offset: Offset(16 * t, 54 * math.pow(t, 2).toDouble()),
-      rotation: math.pi * .48 * t,
-      scale: 1 + .12 * math.sin(t * math.pi),
-      opacity: (1 - ((t - .72) / .28).clamp(0, 1)).toDouble(),
-      flash: math.sin(math.min(1, t * 2) * math.pi),
-    ),
-  };
-}
 
 class _EnemyPalette {
   const _EnemyPalette(this.dark, this.mid, this.light, this.accent);
@@ -760,12 +805,14 @@ class CombatSpecialEffects extends StatefulWidget {
   const CombatSpecialEffects({
     super.key,
     required this.active,
+    required this.duration,
     required this.level,
     required this.restartToken,
     required this.color,
   });
 
   final bool active;
+  final Duration duration;
   final int level;
   final int restartToken;
   final Color color;
@@ -776,10 +823,7 @@ class CombatSpecialEffects extends StatefulWidget {
 
 class _CombatSpecialEffectsState extends State<CombatSpecialEffects>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 720),
-  );
+  late final AnimationController _controller = AnimationController(vsync: this);
 
   @override
   void didChangeDependencies() {
@@ -792,14 +836,17 @@ class _CombatSpecialEffectsState extends State<CombatSpecialEffects>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.active != widget.active ||
         oldWidget.restartToken != widget.restartToken ||
+        oldWidget.duration != widget.duration ||
         oldWidget.level != widget.level) {
       _restart();
     }
   }
 
   void _restart() {
-    _controller.stop();
-    _controller.value = 0;
+    _controller
+      ..stop()
+      ..duration = widget.duration
+      ..value = 0;
     if (!widget.active) return;
     if (MediaQuery.maybeOf(context)?.disableAnimations ?? false) {
       _controller.value = .78;

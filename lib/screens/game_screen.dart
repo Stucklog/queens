@@ -620,7 +620,17 @@ class _GameScreenState extends State<GameScreen> {
 
   void _beginCompletionSequence(PuzzleCompletionOutcome outcome) {
     _pendingCompletion = outcome;
-    _playKnightAnimation(KnightAnimation.special);
+    final encounter =
+        _encounterSkipped
+            ? null
+            : widget.controller
+                .arcForPuzzle(widget.puzzle)
+                ?.encounterForPuzzle(widget.puzzle);
+    _playKnightAnimation(
+      encounter == null
+          ? KnightAnimation.special
+          : finisherForSpectacle(encounter.spectacleLevel),
+    );
     if (MediaQuery.maybeOf(context)?.disableAnimations ?? false) {
       final token = _knightRestartToken;
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -632,23 +642,15 @@ class _GameScreenState extends State<GameScreen> {
   Future<void> _finishCompletionSequence(int restartToken) async {
     if (!mounted ||
         restartToken != _knightRestartToken ||
-        _knightAnimation != KnightAnimation.special) {
+        !_knightAnimation.isCompletionMove) {
       return;
     }
     final outcome = _pendingCompletion;
     if (outcome == null) return;
-    final encounter =
-        _encounterSkipped
-            ? null
-            : widget.controller
-                .arcForPuzzle(widget.puzzle)
-                ?.encounterForPuzzle(widget.puzzle);
     final settleDuration =
         MediaQuery.maybeOf(context)?.disableAnimations ?? false
             ? Duration.zero
-            : Duration(
-              milliseconds: 70 + (encounter?.spectacleLevel ?? 0) * 18,
-            );
+            : _knightAnimation.postRoll;
     if (settleDuration > Duration.zero) {
       await Future<void>.delayed(settleDuration);
     }
@@ -668,7 +670,7 @@ class _GameScreenState extends State<GameScreen> {
         animation == KnightAnimation.bounce) {
       return;
     }
-    if (animation == KnightAnimation.special && _pendingCompletion != null) {
+    if (animation.isCompletionMove && _pendingCompletion != null) {
       unawaited(_finishCompletionSequence(restartToken));
       return;
     }
@@ -683,6 +685,14 @@ class _GameScreenState extends State<GameScreen> {
     KnightAnimation.damage => 'The ranks clash. Rethink the line.',
     KnightAnimation.special => 'The final sigil ignites!',
     KnightAnimation.surprised => 'A new path reveals itself.',
+    KnightAnimation.crownSlash => 'Crown Slash breaks the guard!',
+    KnightAnimation.twinSigil => 'Twin Sigil cuts through!',
+    KnightAnimation.skybreak => 'Skybreak calls down the gale!',
+    KnightAnimation.tidalAegis => 'Tidal Aegis surges forward!',
+    KnightAnimation.cinderfall => 'Cinderfall shakes the arena!',
+    KnightAnimation.brassJudgment => 'Brass Judgment rings out!',
+    KnightAnimation.moonlitSever => 'Moonlit Sever parts the veil!',
+    KnightAnimation.regaliaNova => 'Regalia Nova crowns the final blow!',
   };
 }
 
