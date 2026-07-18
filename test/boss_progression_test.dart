@@ -45,7 +45,26 @@ void main() {
       expect(puzzle.size, boss.size);
       expect(puzzle.tier, boss.targetDifficulty);
       expect(ContentId.isValid(boss.id, kind: 'boss'), isTrue);
+      expect(boss.spectacleLevel, index + 1);
+      expect(boss.skippable, isFalse);
+      expect(chapter.encounters, hasLength(2));
+      expect(
+        chapter.encounters.every(
+          (encounter) =>
+              encounter.skippable &&
+              !encounter.isBoss &&
+              encounter.puzzleId != boss.puzzleId &&
+              chapter.contains(arc.catalog.byId(encounter.puzzleId).order),
+        ),
+        isTrue,
+      );
     }
+    expect(
+      arc.chapters
+          .expand((chapter) => chapter.encounters)
+          .map((enemy) => enemy.id),
+      hasLength(16),
+    );
   });
 
   test(

@@ -16,19 +16,88 @@ class JourneyPalette {
   Color get surface => regaliaMidnightSurface;
 }
 
-class ChapterBoss {
-  const ChapterBoss({
+enum EnemySpriteFamily {
+  antlered,
+  rootbound,
+  winged,
+  abyssal,
+  volcanic,
+  clockwork,
+  spectral,
+  cosmic;
+
+  static EnemySpriteFamily parse(String value) => values.firstWhere(
+    (family) => family.name == value,
+    orElse: () => throw FormatException('Unknown enemy sprite family $value'),
+  );
+}
+
+class CombatEncounter {
+  const CombatEncounter({
     required this.id,
     required this.name,
     required this.puzzleId,
-    required this.size,
-    required this.targetDifficulty,
-    required this.unlockTargetId,
+    required this.spriteFamily,
+    required this.spectacleLevel,
+    required this.isBoss,
+    required this.skippable,
+    required this.rewardLabel,
   });
 
   final String id;
   final String name;
   final String puzzleId;
+  final EnemySpriteFamily spriteFamily;
+
+  /// One for regular encounters and 1–8 for increasingly climactic bosses.
+  final int spectacleLevel;
+  final bool isBoss;
+
+  /// Optional enemies can be dismissed without changing puzzle progression.
+  final bool skippable;
+  final String rewardLabel;
+}
+
+class ChapterEnemy extends CombatEncounter {
+  const ChapterEnemy({
+    required super.id,
+    required super.name,
+    required super.puzzleId,
+    required super.spriteFamily,
+    required super.rewardLabel,
+  }) : super(spectacleLevel: 1, isBoss: false, skippable: true);
+
+  factory ChapterEnemy.fromJson(Map<String, Object?> json) {
+    final id = json['id']! as String;
+    final puzzleId = json['puzzleId']! as String;
+    ContentId.parse(id, expectedKind: 'enemy');
+    ContentId.parse(puzzleId, expectedKind: 'puzzle');
+    return ChapterEnemy(
+      id: id,
+      name: json['name']! as String,
+      puzzleId: puzzleId,
+      spriteFamily: EnemySpriteFamily.parse(json['spriteFamily']! as String),
+      rewardLabel: json['rewardLabel']! as String,
+    );
+  }
+}
+
+class ChapterBoss extends CombatEncounter {
+  const ChapterBoss({
+    required super.id,
+    required super.name,
+    required super.puzzleId,
+    required super.spriteFamily,
+    required super.spectacleLevel,
+    required this.size,
+    required this.targetDifficulty,
+    required this.unlockTargetId,
+  }) : super(
+         isBoss: true,
+         skippable: false,
+         rewardLabel: 'Opens the road ahead',
+       );
+
   final int size;
   final DifficultyTier targetDifficulty;
 
@@ -46,6 +115,8 @@ class ChapterBoss {
       id: id,
       name: json['name']! as String,
       puzzleId: puzzleId,
+      spriteFamily: EnemySpriteFamily.parse(json['spriteFamily']! as String),
+      spectacleLevel: (json['spectacleLevel']! as num).toInt(),
       size: (json['size']! as num).toInt(),
       targetDifficulty: DifficultyTierLabel.parse(
         json['targetDifficulty']! as String,
@@ -70,6 +141,7 @@ class JourneyChapter {
     required this.difficulty,
     required this.size,
     required this.boss,
+    this.encounters = const [],
     required this.palette,
   });
 
@@ -86,6 +158,7 @@ class JourneyChapter {
   final DifficultyTier difficulty;
   final int size;
   final ChapterBoss boss;
+  final List<ChapterEnemy> encounters;
   final JourneyPalette palette;
 
   String get storyBeatId => sceneId;
@@ -121,6 +194,12 @@ class JourneyChapter {
       difficulty: DifficultyTierLabel.parse(json['difficulty']! as String),
       size: (json['size']! as num).toInt(),
       boss: ChapterBoss.fromJson(json['boss']! as Map<String, Object?>),
+      encounters: List.unmodifiable(
+        (json['encounters'] as List<Object?>? ?? const []).map(
+          (encounter) =>
+              ChapterEnemy.fromJson(encounter! as Map<String, Object?>),
+        ),
+      ),
       palette: JourneyPalette(
         primary: color('primaryColor'),
         secondary: color('secondaryColor'),
@@ -150,6 +229,8 @@ const journeyChapters = <JourneyChapter>[
       id: 'regalia:boss/origin/starfall-stag',
       name: 'Starfall Stag',
       puzzleId: 'regalia:puzzle/origin/boss/starfall-stag',
+      spriteFamily: EnemySpriteFamily.antlered,
+      spectacleLevel: 1,
       size: 7,
       targetDifficulty: DifficultyTier.easy,
       unlockTargetId: 'regalia:chapter/origin/whisperwood',
@@ -176,6 +257,8 @@ const journeyChapters = <JourneyChapter>[
       id: 'regalia:boss/origin/elderroot-wyrm',
       name: 'Elderroot Wyrm',
       puzzleId: 'regalia:puzzle/origin/boss/elderroot-wyrm',
+      spriteFamily: EnemySpriteFamily.rootbound,
+      spectacleLevel: 2,
       size: 7,
       targetDifficulty: DifficultyTier.medium,
       unlockTargetId: 'regalia:chapter/origin/windmill-heights',
@@ -203,6 +286,8 @@ const journeyChapters = <JourneyChapter>[
       id: 'regalia:boss/origin/tempest-roc',
       name: 'Tempest Roc',
       puzzleId: 'regalia:puzzle/origin/boss/tempest-roc',
+      spriteFamily: EnemySpriteFamily.winged,
+      spectacleLevel: 3,
       size: 8,
       targetDifficulty: DifficultyTier.medium,
       unlockTargetId: 'regalia:chapter/origin/sunken-cloister',
@@ -230,6 +315,8 @@ const journeyChapters = <JourneyChapter>[
       id: 'regalia:boss/origin/abyssal-bellkeeper',
       name: 'Abyssal Bellkeeper',
       puzzleId: 'regalia:puzzle/origin/boss/abyssal-bellkeeper',
+      spriteFamily: EnemySpriteFamily.abyssal,
+      spectacleLevel: 4,
       size: 8,
       targetDifficulty: DifficultyTier.hard,
       unlockTargetId: 'regalia:chapter/origin/emberbell-caverns',
@@ -256,6 +343,8 @@ const journeyChapters = <JourneyChapter>[
       id: 'regalia:boss/origin/cindermaw-behemoth',
       name: 'Cindermaw Behemoth',
       puzzleId: 'regalia:puzzle/origin/boss/cindermaw-behemoth',
+      spriteFamily: EnemySpriteFamily.volcanic,
+      spectacleLevel: 5,
       size: 9,
       targetDifficulty: DifficultyTier.hard,
       unlockTargetId: 'regalia:chapter/origin/goblin-underkeep',
@@ -282,6 +371,8 @@ const journeyChapters = <JourneyChapter>[
       id: 'regalia:boss/origin/gilded-war-colossus',
       name: 'Gilded War Colossus',
       puzzleId: 'regalia:puzzle/origin/boss/gilded-war-colossus',
+      spriteFamily: EnemySpriteFamily.clockwork,
+      spectacleLevel: 6,
       size: 9,
       targetDifficulty: DifficultyTier.expert,
       unlockTargetId: 'regalia:chapter/origin/moonlit-catacombs',
@@ -309,6 +400,8 @@ const journeyChapters = <JourneyChapter>[
       id: 'regalia:boss/origin/sevenfold-wraith',
       name: 'The Sevenfold Wraith',
       puzzleId: 'regalia:puzzle/origin/boss/sevenfold-wraith',
+      spriteFamily: EnemySpriteFamily.spectral,
+      spectacleLevel: 7,
       size: 10,
       targetDifficulty: DifficultyTier.expert,
       unlockTargetId: 'regalia:chapter/origin/crownspire',
@@ -335,6 +428,8 @@ const journeyChapters = <JourneyChapter>[
       id: 'regalia:boss/origin/hollow-star',
       name: 'The Hollow Star',
       puzzleId: 'regalia:puzzle/origin/boss/hollow-star',
+      spriteFamily: EnemySpriteFamily.cosmic,
+      spectacleLevel: 8,
       size: 12,
       targetDifficulty: DifficultyTier.expert,
       unlockTargetId: ContentIds.originFinaleUnlock,

@@ -184,7 +184,10 @@ void main() {
     expect(semanticsWithLabel('Puzzle 2, assisted.'), findsOneWidget);
     expect(semanticsWithLabel('Puzzle 3, current.'), findsOneWidget);
     expect(
-      semanticsWithLabel('Puzzle 4, locked. Complete puzzle 3 first.'),
+      semanticsWithLabel(
+        'Puzzle 4 with optional Vale Thornling encounter, locked. '
+        'Complete puzzle 3 first.',
+      ),
       findsOneWidget,
     );
     expect(semanticsWithLabel('Crown bearer at puzzle 3'), findsOneWidget);

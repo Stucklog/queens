@@ -51,7 +51,7 @@ void main() {
     await tester.ensureVisible(find.text('Check progress'));
     await tester.tap(find.text('Check progress'));
     await tester.pump();
-    expect(currentAnimation(), KnightAnimation.dance);
+    expect(currentAnimation(), KnightAnimation.defend);
 
     await tester.tap(find.text('Hint'));
     await tester.pump();
@@ -65,6 +65,10 @@ void main() {
     await _tapCell(tester, finalCrown);
     await _tapCell(tester, finalCrown);
     expect(currentAnimation(), KnightAnimation.special);
+    expect(find.byKey(const ValueKey('completion-knight')), findsNothing);
+    await tester.pump(const Duration(milliseconds: 800));
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('completion-knight')), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox.shrink());
@@ -159,6 +163,9 @@ void main() {
     await tester.pump();
     await _tapCell(tester, solution.last);
     await _tapCell(tester, solution.last);
+    await tester.pump(const Duration(milliseconds: 800));
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pumpAndSettle();
     expect(find.text('Replay'), findsOneWidget);
     expect(
       tester
@@ -171,6 +178,7 @@ void main() {
 
     await tester.tap(find.text('Replay'));
     await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
     expect(find.text('Replay'), findsNothing);
     expect(
       tester

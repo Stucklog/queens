@@ -63,7 +63,7 @@ void main() {
     );
   });
 
-  testWidgets('all 32 knight frames remain anchored and isolated', (
+  testWidgets('all 28 active knight frames remain anchored and isolated', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(520, 675);
@@ -164,7 +164,6 @@ class _MotionTile extends StatelessWidget {
         KnightAnimation.damage => 2,
         KnightAnimation.special => 2,
         KnightAnimation.surprised => 1,
-        KnightAnimation.dance => 2,
       };
 }
 

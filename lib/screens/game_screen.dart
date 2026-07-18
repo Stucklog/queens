@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -6,6 +8,7 @@ import '../app/journey.dart';
 import '../app/theme.dart';
 import '../core/models.dart';
 import '../widgets/completion_dialog.dart';
+import '../widgets/combat_presentation.dart';
 import '../widgets/pixel_art.dart';
 import '../widgets/pixel_ui.dart';
 import '../widgets/regalia_board.dart';
@@ -40,6 +43,8 @@ class _GameScreenState extends State<GameScreen> {
   KnightAnimation _knightAnimation = KnightAnimation.bounce;
   int _knightRestartToken = 0;
   bool _exclusionDragReacted = false;
+  bool _encounterSkipped = false;
+  PuzzleCompletionOutcome? _pendingCompletion;
 
   @override
   void initState() {
@@ -87,6 +92,11 @@ class _GameScreenState extends State<GameScreen> {
             ? widget.controller.arcForPuzzle(puzzle)
             : null;
     final boss = storyArc?.bossForPuzzle(puzzle);
+    final declaredEncounter = storyArc?.encounterForPuzzle(puzzle);
+    final encounter =
+        _encounterSkipped && declaredEncounter?.skippable == true
+            ? null
+            : declaredEncounter;
     final themed = RegaliaTheme.forChapter(visualChapter);
     return Theme(
       data: themed,
@@ -106,6 +116,9 @@ class _GameScreenState extends State<GameScreen> {
                       children: [
                         Text(
                           boss?.name ??
+                              (declaredEncounter?.isBoss == false
+                                  ? declaredEncounter!.name
+                                  : null) ??
                               '${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
@@ -114,6 +127,8 @@ class _GameScreenState extends State<GameScreen> {
                               ? 'Just Puzzle! ${widget.challengeNumber ?? puzzle.order}'
                               : boss != null
                               ? 'Chapter boss · ${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'
+                              : declaredEncounter != null
+                              ? 'Optional encounter · ${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'
                               : 'Puzzle ${puzzle.order} of ${storyArc!.catalog.puzzles.length}',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
@@ -139,15 +154,22 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                     ],
                     bottom: PreferredSize(
-                      preferredSize: const Size.fromHeight(74),
+                      preferredSize: Size.fromHeight(
+                        encounter == null ? 74 : 94,
+                      ),
                       child: RepaintBoundary(
                         key: const ValueKey('puzzle-knight-companion-surface'),
-                        child: _KnightCompanionBar(
+                        child: CombatPresentationBar(
                           key: const ValueKey('puzzle-knight-companion'),
                           animation: activeKnightAnimation,
                           restartToken: activeKnightRestartToken,
-                          line: _knightLine(activeKnightAnimation),
-                          onCompleted:
+                          knightLine: _knightLine(activeKnightAnimation),
+                          encounter: encounter,
+                          onSkipEncounter:
+                              encounter?.skippable == true
+                                  ? _skipEncounter
+                                  : null,
+                          onKnightCompleted:
                               () => _completeKnightReaction(
                                 activeKnightAnimation,
                                 activeKnightRestartToken,
@@ -157,66 +179,72 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                   ),
                   body: SafeArea(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final wide = constraints.maxWidth >= 850;
-                        final boardWidget = ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: wide ? 650 : 620,
-                            maxHeight: wide ? 650 : 620,
-                          ),
-                          child: RegaliaBoard(
-                            puzzle: puzzle,
+                    child: AbsorbPointer(
+                      absorbing: _pendingCompletion != null,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final wide = constraints.maxWidth >= 850;
+                          final boardWidget = ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxWidth: wide ? 650 : 620,
+                              maxHeight: wide ? 650 : 620,
+                            ),
+                            child: RegaliaBoard(
+                              puzzle: puzzle,
+                              board: board,
+                              automaticExclusions: automatic,
+                              conflicts: {
+                                ...directConflictCells,
+                                ..._conflicts,
+                              },
+                              cues: _cues,
+                              selected: _selected,
+                              onCellPressed: _pressCell,
+                              onCellDragged: _dragCell,
+                              onExclusionDragStarted: _beginExclusionDrag,
+                              onExclusionDragEnded: _endExclusionDrag,
+                            ),
+                          );
+                          final controls = _Controls(
                             board: board,
-                            automaticExclusions: automatic,
-                            conflicts: {...directConflictCells, ..._conflicts},
-                            cues: _cues,
-                            selected: _selected,
-                            onCellPressed: _pressCell,
-                            onCellDragged: _dragCell,
-                            onExclusionDragStarted: _beginExclusionDrag,
-                            onExclusionDragEnded: _endExclusionDrag,
-                          ),
-                        );
-                        final controls = _Controls(
-                          board: board,
-                          onUndo: board.undoStack.isEmpty ? null : _undo,
-                          onRedo: board.redoStack.isEmpty ? null : _redo,
-                          onReset: _confirmReset,
-                          onCheck: _check,
-                          onHint: _hint,
-                        );
-                        if (wide) {
-                          return Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(24),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                            onUndo: board.undoStack.isEmpty ? null : _undo,
+                            onRedo: board.redoStack.isEmpty ? null : _redo,
+                            onReset: _confirmReset,
+                            onCheck: _check,
+                            onHint: _hint,
+                          );
+                          if (wide) {
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(24),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(child: Center(child: boardWidget)),
+                                    const SizedBox(width: 36),
+                                    SizedBox(width: 276, child: controls),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                          return ClipRect(
+                            key: const ValueKey('puzzle-scroll-safe-area'),
+                            child: SingleChildScrollView(
+                              key: const ValueKey('puzzle-scroll-view'),
+                              physics: const ClampingScrollPhysics(),
+                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
+                              child: Column(
                                 children: [
-                                  Expanded(child: Center(child: boardWidget)),
-                                  const SizedBox(width: 36),
-                                  SizedBox(width: 276, child: controls),
+                                  boardWidget,
+                                  const SizedBox(height: 18),
+                                  controls,
                                 ],
                               ),
                             ),
                           );
-                        }
-                        return ClipRect(
-                          key: const ValueKey('puzzle-scroll-safe-area'),
-                          child: SingleChildScrollView(
-                            key: const ValueKey('puzzle-scroll-view'),
-                            physics: const ClampingScrollPhysics(),
-                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
-                            child: Column(
-                              children: [
-                                boardWidget,
-                                const SizedBox(height: 18),
-                                controls,
-                              ],
-                            ),
-                          ),
-                        );
-                      },
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -236,7 +264,6 @@ class _GameScreenState extends State<GameScreen> {
     });
     final outcome = widget.controller.cycle(widget.puzzle, cell);
     _reactToMutation(cell, before, board.at(cell), outcome);
-    if (outcome != null) _showCompletion(outcome);
   }
 
   void _dragCell(Cell cell, ManualCellState targetState) {
@@ -270,7 +297,6 @@ class _GameScreenState extends State<GameScreen> {
     });
     final outcome = widget.controller.setCell(widget.puzzle, _selected, state);
     _reactToMutation(_selected, before, board.at(_selected), outcome);
-    if (outcome != null) _showCompletion(outcome);
   }
 
   void _onKey(KeyEvent event) {
@@ -340,7 +366,7 @@ class _GameScreenState extends State<GameScreen> {
       };
     });
     _playKnightAnimation(
-      result.isValid ? KnightAnimation.dance : KnightAnimation.damage,
+      result.isValid ? KnightAnimation.defend : KnightAnimation.damage,
     );
     _message(
       result.isValid ? 'Still regal' : 'A contradiction',
@@ -467,6 +493,8 @@ class _GameScreenState extends State<GameScreen> {
         _selected = const Cell(0, 0);
         _cues = {};
         _conflicts = {};
+        _encounterSkipped = false;
+        _pendingCompletion = null;
         _knightAnimation = KnightAnimation.bounce;
         _knightRestartToken++;
       });
@@ -548,7 +576,7 @@ class _GameScreenState extends State<GameScreen> {
   ) {
     if (before == after) return;
     if (outcome != null) {
-      _playKnightAnimation(KnightAnimation.special);
+      _beginCompletionSequence(outcome);
       return;
     }
     switch (after) {
@@ -581,6 +609,58 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
+  void _skipEncounter() {
+    if (_pendingCompletion != null) return;
+    setState(() {
+      _encounterSkipped = true;
+      _knightAnimation = KnightAnimation.bounce;
+      _knightRestartToken++;
+    });
+  }
+
+  void _beginCompletionSequence(PuzzleCompletionOutcome outcome) {
+    _pendingCompletion = outcome;
+    _playKnightAnimation(KnightAnimation.special);
+    if (MediaQuery.maybeOf(context)?.disableAnimations ?? false) {
+      final token = _knightRestartToken;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        unawaited(_finishCompletionSequence(token));
+      });
+    }
+  }
+
+  Future<void> _finishCompletionSequence(int restartToken) async {
+    if (!mounted ||
+        restartToken != _knightRestartToken ||
+        _knightAnimation != KnightAnimation.special) {
+      return;
+    }
+    final outcome = _pendingCompletion;
+    if (outcome == null) return;
+    final encounter =
+        _encounterSkipped
+            ? null
+            : widget.controller
+                .arcForPuzzle(widget.puzzle)
+                ?.encounterForPuzzle(widget.puzzle);
+    final settleDuration =
+        MediaQuery.maybeOf(context)?.disableAnimations ?? false
+            ? Duration.zero
+            : Duration(
+              milliseconds: 70 + (encounter?.spectacleLevel ?? 0) * 18,
+            );
+    if (settleDuration > Duration.zero) {
+      await Future<void>.delayed(settleDuration);
+    }
+    if (!mounted ||
+        restartToken != _knightRestartToken ||
+        _pendingCompletion != outcome) {
+      return;
+    }
+    setState(() => _pendingCompletion = null);
+    await _showCompletion(outcome);
+  }
+
   void _completeKnightReaction(KnightAnimation animation, int restartToken) {
     if (!mounted ||
         animation != _knightAnimation ||
@@ -588,11 +668,11 @@ class _GameScreenState extends State<GameScreen> {
         animation == KnightAnimation.bounce) {
       return;
     }
-    _playKnightAnimation(
-      animation == KnightAnimation.special
-          ? KnightAnimation.dance
-          : KnightAnimation.bounce,
-    );
+    if (animation == KnightAnimation.special && _pendingCompletion != null) {
+      unawaited(_finishCompletionSequence(restartToken));
+      return;
+    }
+    _playKnightAnimation(KnightAnimation.bounce);
   }
 
   String _knightLine(KnightAnimation animation) => switch (animation) {
@@ -603,92 +683,7 @@ class _GameScreenState extends State<GameScreen> {
     KnightAnimation.damage => 'The ranks clash. Rethink the line.',
     KnightAnimation.special => 'The final sigil ignites!',
     KnightAnimation.surprised => 'A new path reveals itself.',
-    KnightAnimation.dance => 'The formation still holds!',
   };
-}
-
-class _KnightCompanionBar extends StatelessWidget {
-  const _KnightCompanionBar({
-    super.key,
-    required this.animation,
-    required this.restartToken,
-    required this.line,
-    required this.onCompleted,
-  });
-
-  final KnightAnimation animation;
-  final int restartToken;
-  final String line;
-  final VoidCallback onCompleted;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    return Semantics(
-      container: true,
-      excludeSemantics: true,
-      liveRegion: true,
-      label: 'Knight companion. $line',
-      child: Container(
-        height: 66,
-        margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: BoxDecoration(
-          color: colors.surfaceContainerHigh,
-          border: Border.all(color: colors.secondary, width: 2),
-          boxShadow: const [
-            BoxShadow(color: Color(0x77080d20), offset: Offset(4, 4)),
-          ],
-        ),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 96,
-              child: Center(
-                child: PixelKnightSprite(
-                  key: const ValueKey('puzzle-knight-sprite'),
-                  animation: animation,
-                  loop: animation == KnightAnimation.bounce,
-                  restartToken: restartToken,
-                  onCompleted: onCompleted,
-                  width: 92,
-                  height: 57,
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'CROWN-BEARER',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: colors.secondary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Flexible(
-                    child: Text(
-                      line,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(height: 1.05),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 class _Controls extends StatelessWidget {

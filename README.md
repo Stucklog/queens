@@ -4,6 +4,11 @@ Queen’s Regalia is an original, offline Flutter implementation of the one-crow
 
 The bundled **Queen’s Regalia: Origin Story** arc contains 120 deterministic, uniquely solvable puzzles plus a separate guided tutorial. They form a linear prestige pixel-art pilgrimage across eight realms: each clean or assisted solve advances the Regalia’s unnamed bearer from Asterfall Vale toward the Empyrean Citadel. Completed puzzles remain replayable, while future route nodes stay visible and locked. Journey scenery, storyboard backgrounds, and principal character art are bundled as optimized production assets, with procedural art retained as an offline-safe fallback.
 
+Puzzle actions also drive a synchronized combat stage: chapter bosses react to
+the knight’s existing moves and fall to increasingly elaborate chapter-ending
+specials, while selected in-chapter puzzles can show presentation-only enemies
+that may be left without affecting route progress or rewards.
+
 “Just Puzzle!” is a separate endless run of puzzles generated and verified entirely on the device. Players can choose Easy, Medium, Hard, Expert, or a rotating Mixed run; the next board is prepared while the current one is played. Its boards, marks, elapsed time, assistance, and run statistics resume after relaunch without changing any story frontier.
 
 After the tutorial, the home screen lists every available story arc in a single metadata-driven column and keeps “Just Puzzle!” and master settings at the top level. Selecting an arc opens its own opening scene when needed and then that arc’s map. The GitHub Pages/web edition is explicitly the complete origin arc plus “Just Puzzle!”. Paid-platform builds use the same package manifest with a separate entitlement policy for future optional arcs. Missing, corrupt, unentitled, or edition-excluded optional packages do not prevent the origin arc or puzzle-only mode from loading.

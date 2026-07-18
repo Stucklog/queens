@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/origin",
-  "contentVersion": 2,
+  "contentVersion": 3,
   "title": "Queen’s Regalia: Origin Story",
   "mapId": "regalia:map/origin/pilgrimage",
   "puzzleCatalogAsset": "assets/puzzles/catalog.json",
@@ -27,10 +27,28 @@
         "id": "regalia:boss/origin/starfall-stag",
         "name": "Starfall Stag",
         "puzzleId": "regalia:puzzle/origin/boss/starfall-stag",
+        "spriteFamily": "antlered",
+        "spectacleLevel": 1,
         "size": 7,
         "targetDifficulty": "easy",
         "unlocks": "regalia:chapter/origin/whisperwood"
       },
+      "encounters": [
+        {
+          "id": "regalia:enemy/origin/vale-thornling",
+          "name": "Vale Thornling",
+          "puzzleId": "regalia:puzzle/origin/easy-004",
+          "spriteFamily": "rootbound",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        },
+        {
+          "id": "regalia:enemy/origin/star-touched-hart",
+          "name": "Star-Touched Hart",
+          "puzzleId": "regalia:puzzle/origin/easy-012",
+          "spriteFamily": "antlered",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        }
+      ],
       "primaryColor": "#527663",
       "secondaryColor": "#5d9ab5"
     },
@@ -51,10 +69,28 @@
         "id": "regalia:boss/origin/elderroot-wyrm",
         "name": "Elderroot Wyrm",
         "puzzleId": "regalia:puzzle/origin/boss/elderroot-wyrm",
+        "spriteFamily": "rootbound",
+        "spectacleLevel": 2,
         "size": 7,
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/origin/windmill-heights"
       },
+      "encounters": [
+        {
+          "id": "regalia:enemy/origin/briar-imp",
+          "name": "Briar Imp",
+          "puzzleId": "regalia:puzzle/origin/easy-023",
+          "spriteFamily": "rootbound",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        },
+        {
+          "id": "regalia:enemy/origin/lantern-moth",
+          "name": "Lantern Moth",
+          "puzzleId": "regalia:puzzle/origin/easy-027",
+          "spriteFamily": "winged",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        }
+      ],
       "primaryColor": "#365f50",
       "secondaryColor": "#704d78"
     },
@@ -75,10 +111,28 @@
         "id": "regalia:boss/origin/tempest-roc",
         "name": "Tempest Roc",
         "puzzleId": "regalia:puzzle/origin/boss/tempest-roc",
+        "spriteFamily": "winged",
+        "spectacleLevel": 3,
         "size": 8,
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/origin/sunken-cloister"
       },
+      "encounters": [
+        {
+          "id": "regalia:enemy/origin/gale-harrier",
+          "name": "Gale Harrier",
+          "puzzleId": "regalia:puzzle/origin/medium-004",
+          "spriteFamily": "winged",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        },
+        {
+          "id": "regalia:enemy/origin/skyglass-wisp",
+          "name": "Skyglass Wisp",
+          "puzzleId": "regalia:puzzle/origin/medium-007",
+          "spriteFamily": "cosmic",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        }
+      ],
       "primaryColor": "#536d88",
       "secondaryColor": "#a75b3b"
     },
@@ -99,10 +153,28 @@
         "id": "regalia:boss/origin/abyssal-bellkeeper",
         "name": "Abyssal Bellkeeper",
         "puzzleId": "regalia:puzzle/origin/boss/abyssal-bellkeeper",
+        "spriteFamily": "abyssal",
+        "spectacleLevel": 4,
         "size": 8,
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/origin/emberbell-caverns"
       },
+      "encounters": [
+        {
+          "id": "regalia:enemy/origin/coral-husk",
+          "name": "Coral Husk",
+          "puzzleId": "regalia:puzzle/origin/medium-015",
+          "spriteFamily": "abyssal",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        },
+        {
+          "id": "regalia:enemy/origin/drowned-acolyte",
+          "name": "Drowned Acolyte",
+          "puzzleId": "regalia:puzzle/origin/medium-023",
+          "spriteFamily": "spectral",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        }
+      ],
       "primaryColor": "#247f82",
       "secondaryColor": "#879e91"
     },
@@ -123,10 +195,28 @@
         "id": "regalia:boss/origin/cindermaw-behemoth",
         "name": "Cindermaw Behemoth",
         "puzzleId": "regalia:puzzle/origin/boss/cindermaw-behemoth",
+        "spriteFamily": "volcanic",
+        "spectacleLevel": 5,
         "size": 9,
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/origin/goblin-underkeep"
       },
+      "encounters": [
+        {
+          "id": "regalia:enemy/origin/cinderling",
+          "name": "Cinderling",
+          "puzzleId": "regalia:puzzle/origin/hard-006",
+          "spriteFamily": "volcanic",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        },
+        {
+          "id": "regalia:enemy/origin/basalt-brute",
+          "name": "Basalt Brute",
+          "puzzleId": "regalia:puzzle/origin/hard-013",
+          "spriteFamily": "volcanic",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        }
+      ],
       "primaryColor": "#8d3e31",
       "secondaryColor": "#db7a37"
     },
@@ -147,10 +237,28 @@
         "id": "regalia:boss/origin/gilded-war-colossus",
         "name": "Gilded War Colossus",
         "puzzleId": "regalia:puzzle/origin/boss/gilded-war-colossus",
+        "spriteFamily": "clockwork",
+        "spectacleLevel": 6,
         "size": 9,
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/origin/moonlit-catacombs"
       },
+      "encounters": [
+        {
+          "id": "regalia:enemy/origin/brass-sentry",
+          "name": "Brass Sentry",
+          "puzzleId": "regalia:puzzle/origin/hard-024",
+          "spriteFamily": "clockwork",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        },
+        {
+          "id": "regalia:enemy/origin/gear-goblin",
+          "name": "Gear Goblin",
+          "puzzleId": "regalia:puzzle/origin/hard-027",
+          "spriteFamily": "clockwork",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        }
+      ],
       "primaryColor": "#5b4c2a",
       "secondaryColor": "#91a934"
     },
@@ -171,10 +279,28 @@
         "id": "regalia:boss/origin/sevenfold-wraith",
         "name": "The Sevenfold Wraith",
         "puzzleId": "regalia:puzzle/origin/boss/sevenfold-wraith",
+        "spriteFamily": "spectral",
+        "spectacleLevel": 7,
         "size": 10,
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/origin/crownspire"
       },
+      "encounters": [
+        {
+          "id": "regalia:enemy/origin/pale-shade",
+          "name": "Pale Shade",
+          "puzzleId": "regalia:puzzle/origin/expert-004",
+          "spriteFamily": "spectral",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        },
+        {
+          "id": "regalia:enemy/origin/moonbone-hound",
+          "name": "Moonbone Hound",
+          "puzzleId": "regalia:puzzle/origin/expert-007",
+          "spriteFamily": "antlered",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        }
+      ],
       "primaryColor": "#514d82",
       "secondaryColor": "#9ca9c7"
     },
@@ -195,10 +321,28 @@
         "id": "regalia:boss/origin/hollow-star",
         "name": "The Hollow Star",
         "puzzleId": "regalia:puzzle/origin/boss/hollow-star",
+        "spriteFamily": "cosmic",
+        "spectacleLevel": 8,
         "size": 12,
         "targetDifficulty": "expert",
         "unlocks": "regalia:unlock/origin/finale"
       },
+      "encounters": [
+        {
+          "id": "regalia:enemy/origin/starbound-sentinel",
+          "name": "Starbound Sentinel",
+          "puzzleId": "regalia:puzzle/origin/expert-016",
+          "spriteFamily": "clockwork",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        },
+        {
+          "id": "regalia:enemy/origin/eclipse-drake",
+          "name": "Eclipse Drake",
+          "puzzleId": "regalia:puzzle/origin/expert-023",
+          "spriteFamily": "winged",
+          "rewardLabel": "Presentation only · route progress unchanged"
+        }
+      ],
       "primaryColor": "#244a98",
       "secondaryColor": "#bd8b2d"
     }

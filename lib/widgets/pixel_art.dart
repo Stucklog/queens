@@ -18,7 +18,6 @@ enum KnightAnimation {
   damage,
   special,
   surprised,
-  dance,
 }
 
 class PixelLandscape extends StatelessWidget {
@@ -178,7 +177,7 @@ class _PixelStorySceneState extends State<PixelStoryScene>
                         alignment: const Alignment(-.42, .65),
                         child: _storyKnight(
                           frame: frame,
-                          animation: KnightAnimation.dance,
+                          animation: KnightAnimation.bounce,
                           width: 82,
                           height: 123,
                         ),
@@ -1878,12 +1877,6 @@ const _knightAnimationSpecs = <KnightAnimation, _KnightAnimationSpec>{
     firstColumn: 0,
     frameDuration: Duration(milliseconds: 185),
     restFrame: 2,
-  ),
-  KnightAnimation.dance: _KnightAnimationSpec(
-    row: 3,
-    firstColumn: 4,
-    frameDuration: Duration(milliseconds: 165),
-    restFrame: 1,
   ),
 };
 

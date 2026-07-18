@@ -70,7 +70,10 @@ void main() {
     await tester.tap(lastCell);
     await tester.pump();
     await tester.tap(lastCell);
-    await tester.pump(const Duration(milliseconds: 250));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 800));
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pumpAndSettle();
 
     expect(find.text('Next puzzle'), findsOneWidget);
     expect(controller.challengeSession?.completedCount, 1);

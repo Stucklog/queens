@@ -84,6 +84,26 @@ these eight slots, or `generate` for the complete story-ordered catalog. Both
 paths include the 12×12 finale in exact-solver, region-quality, uniqueness, and
 human-difficulty validation.
 
+## Combat presentation and art status
+
+Combat encounters are chapter metadata, not progression nodes. Every `boss`
+declares a `spriteFamily` and a `spectacleLevel`; levels must increase exactly
+from 1 through the chapter count, leaving the final boss with the strongest
+finish. Each optional `encounters` entry declares a namespaced `enemy` ID,
+display name, an existing non-boss `puzzleId`, a `spriteFamily`, and a
+`rewardLabel`. Optional encounters are presentation-only, can be left from the
+puzzle header, grant no durable reward, and never change frontier or unlock
+calculation.
+
+The eight enemy silhouette families and their attack, brace, stagger, exposed,
+and defeat reactions are production-ready code-native pixel art in
+`lib/widgets/combat_presentation.dart`. Boss scale/crowns, stable per-enemy
+variants, and eight escalating special-effect tiers are covered by animation
+and golden tests. The knight atlas and principal story/background images remain
+production raster assets. There is no placeholder combat art required for this
+implementation; a later hand-authored raster replacement would be an optional
+art-direction change, not a missing shipping asset.
+
 ## Entitlements and availability
 
 `ContentEntitlementPolicy` is the storefront-neutral boundary. Web policy admits

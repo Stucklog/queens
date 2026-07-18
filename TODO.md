@@ -41,30 +41,30 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Confirm the 12×12 board is supported by generation, rendering, input, validation, and completion flows.
   - Give the final boss an appropriately climactic encounter and completion sequence.
 
-- [ ] **P2 — Add optional enemy encounters within chapters.**
+- [x] **P2 — Add optional enemy encounters within chapters.**
   - Give each chapter a small set of enemy sprites that can appear during selected puzzles.
   - Keep these encounters optional so they do not block the main chapter path.
   - Establish which puzzles trigger each encounter and how encounters affect presentation or rewards.
 
 ## Combat animation and boss presentation
 
-- [ ] **P1 — Remove the knight’s dance animation everywhere.**
+- [x] **P1 — Remove the knight’s dance animation everywhere.**
   - Do not play the dance animation when a puzzle is completed.
   - Remove or replace any other gameplay, scene, or UI trigger that can play the dance animation.
   - Confirm completion sequences transition to the intended victory or special-attack animation instead.
   - Remove stale references and update animation tests or golden assets as needed.
 
-- [ ] **P1 — Create boss sprites and boss-puzzle combat sequences.**
+- [x] **P1 — Create boss sprites and boss-puzzle combat sequences.**
   - Show the knight fighting the boss during the boss puzzle.
   - Animate the boss responding appropriately to the knight’s existing attack, defence, and other move animations.
   - When the puzzle is solved, have the boss fall or be defeated during the knight’s final special attack.
 
-- [ ] **P1 — Add enemy response animations for regular encounters.**
+- [x] **P1 — Add enemy response animations for regular encounters.**
   - Reuse the knight’s existing attack/defence/etc. moves as timing and style references.
   - Add readable enemy reactions to each relevant knight move.
   - End each encounter with the enemy falling on the final special attack when the puzzle is solved.
 
-- [ ] **P1 — Make chapter-ending special moves progressively more impressive.**
+- [x] **P1 — Make chapter-ending special moves progressively more impressive.**
   - Ensure the knight finishes off each chapter boss after its puzzle is completed.
   - Increase the spectacle, effects, or animation complexity as the chapter number increases.
   - Reserve the strongest version for the final boss.
@@ -157,7 +157,7 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 ## Verification checklist
 
 - [ ] Play through every chapter from a fresh start and confirm the boss puzzle appears at the correct point.
-- [ ] Confirm all boss and optional enemy animations finish cleanly without desynchronizing from puzzle completion.
+- [x] Confirm all boss and optional enemy animations finish cleanly without desynchronizing from puzzle completion.
 - [ ] Confirm story scenes display the intended text without clipping, overflow, or unreadable pacing.
 - [ ] Confirm the final map tile and all updated art pass visual regression checks.
 - [ ] Run the full test suite and perform a release build after the above work is complete.

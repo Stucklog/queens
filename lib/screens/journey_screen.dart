@@ -794,6 +794,7 @@ class _PuzzleNode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final boss = arc.bossForPuzzle(puzzle);
+    final encounter = arc.encounterForPuzzle(puzzle);
     final record = controller.recordFor(puzzle.id);
     final canOpen = controller.canOpenPuzzle(puzzle);
     final current = controller.frontierPuzzleFor(arc)?.id == puzzle.id;
@@ -820,7 +821,11 @@ class _PuzzleNode extends StatelessWidget {
             };
     final prerequisite = math.max(1, puzzle.order - 1);
     final nodeName =
-        boss == null ? 'Puzzle ${puzzle.order}' : '${boss.name} chapter boss';
+        boss != null
+            ? '${boss.name} chapter boss'
+            : encounter != null
+            ? 'Puzzle ${puzzle.order} with optional ${encounter.name} encounter'
+            : 'Puzzle ${puzzle.order}';
     final explanation =
         canOpen
             ? '$nodeName, $status.'
@@ -829,6 +834,10 @@ class _PuzzleNode extends StatelessWidget {
     final glyph =
         boss != null && !active && record.status == CompletionStatus.newPuzzle
             ? PixelGlyph.star
+            : encounter != null &&
+                !active &&
+                record.status == CompletionStatus.newPuzzle
+            ? PixelGlyph.challenge
             : active
             ? PixelGlyph.ellipsis
             : current
@@ -968,7 +977,8 @@ class _FinalLandmark extends StatelessWidget {
                 left: 64,
                 bottom: 25,
                 child: PixelKnightSprite(
-                  animation: KnightAnimation.dance,
+                  animation: KnightAnimation.bounce,
+                  loop: true,
                   width: 50,
                   height: 75,
                 ),

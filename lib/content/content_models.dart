@@ -101,6 +101,16 @@ class StoryArc {
     return null;
   }
 
+  CombatEncounter? encounterForPuzzle(PuzzleDefinition puzzle) {
+    for (final chapter in chapters) {
+      if (chapter.boss.puzzleId == puzzle.id) return chapter.boss;
+      for (final encounter in chapter.encounters) {
+        if (encounter.puzzleId == puzzle.id) return encounter;
+      }
+    }
+    return null;
+  }
+
   void _validate() {
     final arc = ContentId.parse(id, expectedKind: 'arc');
     final map = ContentId.parse(mapId, expectedKind: 'map');
@@ -180,12 +190,41 @@ class StoryArc {
           unlockTarget.arcName != arc.localName ||
           !ids.add(boss.id) ||
           boss.name.trim().isEmpty ||
+          boss.spectacleLevel != chapterIndex + 1 ||
           boss.unlockTargetId != expectedUnlockTarget ||
           boss.targetDifficulty != expectedDifficulty ||
           boss.puzzleId != puzzle.id ||
           boss.size != puzzle.size ||
           boss.targetDifficulty != puzzle.tier) {
         throw FormatException('Invalid boss ${boss.id} for ${chapter.id}');
+      }
+
+      final encounterPuzzleIds = <String>{};
+      for (final encounter in chapter.encounters) {
+        final encounterId = ContentId.parse(
+          encounter.id,
+          expectedKind: 'enemy',
+        );
+        final encounterPuzzleId = ContentId.parse(
+          encounter.puzzleId,
+          expectedKind: 'puzzle',
+        );
+        final encounterPuzzle = catalog.byId(encounter.puzzleId);
+        if (encounterId.arcName != arc.localName ||
+            encounterPuzzleId.arcName != arc.localName ||
+            !ids.add(encounter.id) ||
+            !encounterPuzzleIds.add(encounter.puzzleId) ||
+            encounter.name.trim().isEmpty ||
+            encounter.rewardLabel.trim().isEmpty ||
+            !encounter.skippable ||
+            encounter.isBoss ||
+            encounter.spectacleLevel != 1 ||
+            !chapter.contains(encounterPuzzle.order) ||
+            encounter.puzzleId == boss.puzzleId) {
+          throw FormatException(
+            'Invalid optional encounter ${encounter.id} for ${chapter.id}',
+          );
+        }
       }
     }
   }

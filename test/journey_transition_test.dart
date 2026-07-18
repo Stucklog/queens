@@ -141,7 +141,8 @@ Future<void> _solveOpenPuzzle(
   await tester.tap(lastCell);
   await tester.pump();
   await tester.tap(lastCell);
-  await tester.pump(const Duration(milliseconds: 250));
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 400));
 }
 
 class _TimerlessController extends AppController {
