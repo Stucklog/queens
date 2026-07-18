@@ -92,10 +92,10 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
       context: context,
       builder:
           (context) => PixelDialog(
-            semanticLabel: 'Begin a new challenge?',
-            title: const Text('Begin a new challenge?'),
+            semanticLabel: 'Begin a new Just Puzzle! run?',
+            title: const Text('Begin a new Just Puzzle! run?'),
             content: const Text(
-              'The current challenge board and run statistics will be replaced.',
+              'The current board and Just Puzzle! run statistics will be replaced.',
             ),
             actions: [
               TextButton(
@@ -117,8 +117,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
       context: context,
       builder:
           (context) => PixelDialog(
-            semanticLabel: 'End this challenge?',
-            title: const Text('End this challenge?'),
+            semanticLabel: 'End this Just Puzzle! run?',
+            title: const Text('End this Just Puzzle! run?'),
             content: const Text(
               'The generated board and statistics for this run will be cleared.',
             ),
@@ -150,8 +150,9 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     final session = widget.controller.challengeSession;
     final chapter =
         session == null
-            ? journeyChapters.first
-            : challengeChapterFor(
+            ? widget.controller.originArc?.chapters.first ??
+                journeyChapters.first
+            : widget.controller.challengeVisualChapter(
               session.currentPuzzle.tier,
               session.currentNumber,
             );
@@ -167,7 +168,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                   children: [
                     CrownMark(size: 24),
                     SizedBox(width: 8),
-                    Text('CHALLENGE'),
+                    Text('JUST PUZZLE!'),
                   ],
                 ),
               ),
@@ -207,7 +208,8 @@ class _ChallengeSetup extends StatelessWidget {
       SizedBox(
         height: 190,
         child: PixelStoryScene(
-          chapter: journeyChapters.first,
+          chapter:
+              controller.originArc?.chapters.first ?? journeyChapters.first,
           kind: PixelSceneKind.panorama,
           placement: PixelArtPlacement.banner,
           semanticLabel:
@@ -393,7 +395,7 @@ class _ChallengeRun extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Challenge ${session.currentNumber}',
+              'Just Puzzle! ${session.currentNumber}',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 4),
@@ -419,12 +421,12 @@ class _ChallengeRun extends StatelessWidget {
               ),
               label: Text(
                 session.currentCompleted
-                    ? 'Next challenge'
+                    ? 'Next puzzle'
                     : session.board.cells.every(
                       (cell) => cell == ManualCellState.empty,
                     )
-                    ? 'Play challenge'
-                    : 'Continue challenge',
+                    ? 'Play puzzle'
+                    : 'Continue puzzle',
               ),
             ),
           ],
@@ -432,7 +434,7 @@ class _ChallengeRun extends StatelessWidget {
       ),
       const SizedBox(height: 18),
       if (controller.isStartingChallenge) ...[
-        const PixelProgressBar(semanticLabel: 'Forging the new challenge run'),
+        const PixelProgressBar(semanticLabel: 'Forging the new puzzle run'),
         const SizedBox(height: 10),
         const Text('Forging the new run without interrupting this one…'),
         const SizedBox(height: 18),

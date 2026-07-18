@@ -58,6 +58,8 @@ flutter:
   assets:
     - assets/art/
     - assets/art/backgrounds/
+    - assets/content/
+    - assets/content/arcs/origin/
     - assets/fonts/PixelifySans_LICENSE.txt
     - assets/puzzles/catalog.json
     - assets/puzzles/tutorial.json

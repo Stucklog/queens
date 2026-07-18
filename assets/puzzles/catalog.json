@@ -3,7 +3,7 @@
   "scoringModel": "human-v3",
   "puzzles": [
     {
-      "id": "regalia-easy-001",
+      "id": "regalia:puzzle/origin/easy-001",
       "order": 1,
       "size": 6,
       "tier": "easy",
@@ -63,7 +63,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-002",
+      "id": "regalia:puzzle/origin/easy-002",
       "order": 2,
       "size": 6,
       "tier": "easy",
@@ -123,7 +123,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-003",
+      "id": "regalia:puzzle/origin/easy-003",
       "order": 3,
       "size": 6,
       "tier": "easy",
@@ -183,7 +183,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-004",
+      "id": "regalia:puzzle/origin/easy-004",
       "order": 4,
       "size": 6,
       "tier": "easy",
@@ -243,7 +243,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-005",
+      "id": "regalia:puzzle/origin/easy-005",
       "order": 5,
       "size": 6,
       "tier": "easy",
@@ -303,7 +303,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-006",
+      "id": "regalia:puzzle/origin/easy-006",
       "order": 6,
       "size": 6,
       "tier": "easy",
@@ -363,7 +363,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-007",
+      "id": "regalia:puzzle/origin/easy-007",
       "order": 7,
       "size": 6,
       "tier": "easy",
@@ -423,7 +423,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-008",
+      "id": "regalia:puzzle/origin/easy-008",
       "order": 8,
       "size": 6,
       "tier": "easy",
@@ -483,7 +483,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-009",
+      "id": "regalia:puzzle/origin/easy-009",
       "order": 9,
       "size": 6,
       "tier": "easy",
@@ -543,7 +543,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-010",
+      "id": "regalia:puzzle/origin/easy-010",
       "order": 10,
       "size": 6,
       "tier": "easy",
@@ -603,7 +603,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-011",
+      "id": "regalia:puzzle/origin/easy-011",
       "order": 11,
       "size": 6,
       "tier": "easy",
@@ -663,7 +663,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-012",
+      "id": "regalia:puzzle/origin/easy-012",
       "order": 12,
       "size": 6,
       "tier": "easy",
@@ -723,7 +723,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-013",
+      "id": "regalia:puzzle/origin/easy-013",
       "order": 13,
       "size": 6,
       "tier": "easy",
@@ -783,7 +783,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-014",
+      "id": "regalia:puzzle/origin/easy-014",
       "order": 14,
       "size": 6,
       "tier": "easy",
@@ -843,7 +843,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-015",
+      "id": "regalia:puzzle/origin/easy-015",
       "order": 15,
       "size": 6,
       "tier": "easy",
@@ -903,7 +903,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-016",
+      "id": "regalia:puzzle/origin/easy-016",
       "order": 16,
       "size": 6,
       "tier": "easy",
@@ -963,7 +963,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-017",
+      "id": "regalia:puzzle/origin/easy-017",
       "order": 17,
       "size": 6,
       "tier": "easy",
@@ -1023,7 +1023,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-018",
+      "id": "regalia:puzzle/origin/easy-018",
       "order": 18,
       "size": 6,
       "tier": "easy",
@@ -1083,7 +1083,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-019",
+      "id": "regalia:puzzle/origin/easy-019",
       "order": 19,
       "size": 6,
       "tier": "easy",
@@ -1143,7 +1143,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-020",
+      "id": "regalia:puzzle/origin/easy-020",
       "order": 20,
       "size": 6,
       "tier": "easy",
@@ -1203,7 +1203,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-021",
+      "id": "regalia:puzzle/origin/easy-021",
       "order": 21,
       "size": 7,
       "tier": "easy",
@@ -1278,7 +1278,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-022",
+      "id": "regalia:puzzle/origin/easy-022",
       "order": 22,
       "size": 7,
       "tier": "easy",
@@ -1353,7 +1353,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-023",
+      "id": "regalia:puzzle/origin/easy-023",
       "order": 23,
       "size": 7,
       "tier": "easy",
@@ -1428,7 +1428,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-024",
+      "id": "regalia:puzzle/origin/easy-024",
       "order": 24,
       "size": 7,
       "tier": "easy",
@@ -1503,7 +1503,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-025",
+      "id": "regalia:puzzle/origin/easy-025",
       "order": 25,
       "size": 7,
       "tier": "easy",
@@ -1578,7 +1578,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-026",
+      "id": "regalia:puzzle/origin/easy-026",
       "order": 26,
       "size": 7,
       "tier": "easy",
@@ -1653,7 +1653,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-027",
+      "id": "regalia:puzzle/origin/easy-027",
       "order": 27,
       "size": 7,
       "tier": "easy",
@@ -1728,7 +1728,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-028",
+      "id": "regalia:puzzle/origin/easy-028",
       "order": 28,
       "size": 7,
       "tier": "easy",
@@ -1803,7 +1803,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-029",
+      "id": "regalia:puzzle/origin/easy-029",
       "order": 29,
       "size": 7,
       "tier": "easy",
@@ -1878,7 +1878,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-easy-030",
+      "id": "regalia:puzzle/origin/easy-030",
       "order": 30,
       "size": 7,
       "tier": "easy",
@@ -1953,7 +1953,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-001",
+      "id": "regalia:puzzle/origin/medium-001",
       "order": 31,
       "size": 7,
       "tier": "medium",
@@ -2028,7 +2028,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-002",
+      "id": "regalia:puzzle/origin/medium-002",
       "order": 32,
       "size": 7,
       "tier": "medium",
@@ -2103,7 +2103,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-003",
+      "id": "regalia:puzzle/origin/medium-003",
       "order": 33,
       "size": 7,
       "tier": "medium",
@@ -2178,7 +2178,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-004",
+      "id": "regalia:puzzle/origin/medium-004",
       "order": 34,
       "size": 7,
       "tier": "medium",
@@ -2253,7 +2253,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-005",
+      "id": "regalia:puzzle/origin/medium-005",
       "order": 35,
       "size": 7,
       "tier": "medium",
@@ -2328,7 +2328,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-006",
+      "id": "regalia:puzzle/origin/medium-006",
       "order": 36,
       "size": 7,
       "tier": "medium",
@@ -2403,7 +2403,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-007",
+      "id": "regalia:puzzle/origin/medium-007",
       "order": 37,
       "size": 7,
       "tier": "medium",
@@ -2478,7 +2478,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-008",
+      "id": "regalia:puzzle/origin/medium-008",
       "order": 38,
       "size": 7,
       "tier": "medium",
@@ -2553,7 +2553,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-009",
+      "id": "regalia:puzzle/origin/medium-009",
       "order": 39,
       "size": 7,
       "tier": "medium",
@@ -2628,7 +2628,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-010",
+      "id": "regalia:puzzle/origin/medium-010",
       "order": 40,
       "size": 7,
       "tier": "medium",
@@ -2703,7 +2703,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-011",
+      "id": "regalia:puzzle/origin/medium-011",
       "order": 41,
       "size": 8,
       "tier": "medium",
@@ -2795,7 +2795,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-012",
+      "id": "regalia:puzzle/origin/medium-012",
       "order": 42,
       "size": 8,
       "tier": "medium",
@@ -2887,7 +2887,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-013",
+      "id": "regalia:puzzle/origin/medium-013",
       "order": 43,
       "size": 8,
       "tier": "medium",
@@ -2979,7 +2979,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-014",
+      "id": "regalia:puzzle/origin/medium-014",
       "order": 44,
       "size": 8,
       "tier": "medium",
@@ -3071,7 +3071,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-015",
+      "id": "regalia:puzzle/origin/medium-015",
       "order": 45,
       "size": 8,
       "tier": "medium",
@@ -3163,7 +3163,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-016",
+      "id": "regalia:puzzle/origin/medium-016",
       "order": 46,
       "size": 8,
       "tier": "medium",
@@ -3255,7 +3255,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-017",
+      "id": "regalia:puzzle/origin/medium-017",
       "order": 47,
       "size": 8,
       "tier": "medium",
@@ -3347,7 +3347,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-018",
+      "id": "regalia:puzzle/origin/medium-018",
       "order": 48,
       "size": 8,
       "tier": "medium",
@@ -3439,7 +3439,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-019",
+      "id": "regalia:puzzle/origin/medium-019",
       "order": 49,
       "size": 8,
       "tier": "medium",
@@ -3531,7 +3531,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-020",
+      "id": "regalia:puzzle/origin/medium-020",
       "order": 50,
       "size": 8,
       "tier": "medium",
@@ -3623,7 +3623,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-021",
+      "id": "regalia:puzzle/origin/medium-021",
       "order": 51,
       "size": 8,
       "tier": "medium",
@@ -3715,7 +3715,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-022",
+      "id": "regalia:puzzle/origin/medium-022",
       "order": 52,
       "size": 8,
       "tier": "medium",
@@ -3807,7 +3807,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-023",
+      "id": "regalia:puzzle/origin/medium-023",
       "order": 53,
       "size": 8,
       "tier": "medium",
@@ -3899,7 +3899,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-024",
+      "id": "regalia:puzzle/origin/medium-024",
       "order": 54,
       "size": 8,
       "tier": "medium",
@@ -3991,7 +3991,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-025",
+      "id": "regalia:puzzle/origin/medium-025",
       "order": 55,
       "size": 8,
       "tier": "medium",
@@ -4083,7 +4083,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-026",
+      "id": "regalia:puzzle/origin/medium-026",
       "order": 56,
       "size": 8,
       "tier": "medium",
@@ -4175,7 +4175,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-027",
+      "id": "regalia:puzzle/origin/medium-027",
       "order": 57,
       "size": 8,
       "tier": "medium",
@@ -4267,7 +4267,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-028",
+      "id": "regalia:puzzle/origin/medium-028",
       "order": 58,
       "size": 8,
       "tier": "medium",
@@ -4359,7 +4359,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-029",
+      "id": "regalia:puzzle/origin/medium-029",
       "order": 59,
       "size": 8,
       "tier": "medium",
@@ -4451,7 +4451,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-medium-030",
+      "id": "regalia:puzzle/origin/medium-030",
       "order": 60,
       "size": 8,
       "tier": "medium",
@@ -4543,7 +4543,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-001",
+      "id": "regalia:puzzle/origin/hard-001",
       "order": 61,
       "size": 8,
       "tier": "hard",
@@ -4635,7 +4635,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-002",
+      "id": "regalia:puzzle/origin/hard-002",
       "order": 62,
       "size": 8,
       "tier": "hard",
@@ -4727,7 +4727,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-003",
+      "id": "regalia:puzzle/origin/hard-003",
       "order": 63,
       "size": 8,
       "tier": "hard",
@@ -4819,7 +4819,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-004",
+      "id": "regalia:puzzle/origin/hard-004",
       "order": 64,
       "size": 8,
       "tier": "hard",
@@ -4911,7 +4911,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-005",
+      "id": "regalia:puzzle/origin/hard-005",
       "order": 65,
       "size": 8,
       "tier": "hard",
@@ -5003,7 +5003,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-006",
+      "id": "regalia:puzzle/origin/hard-006",
       "order": 66,
       "size": 8,
       "tier": "hard",
@@ -5095,7 +5095,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-007",
+      "id": "regalia:puzzle/origin/hard-007",
       "order": 67,
       "size": 8,
       "tier": "hard",
@@ -5187,7 +5187,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-008",
+      "id": "regalia:puzzle/origin/hard-008",
       "order": 68,
       "size": 8,
       "tier": "hard",
@@ -5279,7 +5279,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-009",
+      "id": "regalia:puzzle/origin/hard-009",
       "order": 69,
       "size": 8,
       "tier": "hard",
@@ -5371,7 +5371,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-010",
+      "id": "regalia:puzzle/origin/hard-010",
       "order": 70,
       "size": 8,
       "tier": "hard",
@@ -5463,7 +5463,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-011",
+      "id": "regalia:puzzle/origin/hard-011",
       "order": 71,
       "size": 8,
       "tier": "hard",
@@ -5555,7 +5555,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-012",
+      "id": "regalia:puzzle/origin/hard-012",
       "order": 72,
       "size": 8,
       "tier": "hard",
@@ -5647,7 +5647,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-013",
+      "id": "regalia:puzzle/origin/hard-013",
       "order": 73,
       "size": 8,
       "tier": "hard",
@@ -5739,7 +5739,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-014",
+      "id": "regalia:puzzle/origin/hard-014",
       "order": 74,
       "size": 8,
       "tier": "hard",
@@ -5831,7 +5831,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-015",
+      "id": "regalia:puzzle/origin/hard-015",
       "order": 75,
       "size": 8,
       "tier": "hard",
@@ -5923,7 +5923,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-016",
+      "id": "regalia:puzzle/origin/hard-016",
       "order": 76,
       "size": 8,
       "tier": "hard",
@@ -6015,7 +6015,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-017",
+      "id": "regalia:puzzle/origin/hard-017",
       "order": 77,
       "size": 8,
       "tier": "hard",
@@ -6107,7 +6107,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-018",
+      "id": "regalia:puzzle/origin/hard-018",
       "order": 78,
       "size": 8,
       "tier": "hard",
@@ -6199,7 +6199,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-019",
+      "id": "regalia:puzzle/origin/hard-019",
       "order": 79,
       "size": 8,
       "tier": "hard",
@@ -6291,7 +6291,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-020",
+      "id": "regalia:puzzle/origin/hard-020",
       "order": 80,
       "size": 8,
       "tier": "hard",
@@ -6383,7 +6383,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-021",
+      "id": "regalia:puzzle/origin/hard-021",
       "order": 81,
       "size": 9,
       "tier": "hard",
@@ -6494,7 +6494,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-022",
+      "id": "regalia:puzzle/origin/hard-022",
       "order": 82,
       "size": 9,
       "tier": "hard",
@@ -6605,7 +6605,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-023",
+      "id": "regalia:puzzle/origin/hard-023",
       "order": 83,
       "size": 9,
       "tier": "hard",
@@ -6716,7 +6716,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-024",
+      "id": "regalia:puzzle/origin/hard-024",
       "order": 84,
       "size": 9,
       "tier": "hard",
@@ -6827,7 +6827,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-025",
+      "id": "regalia:puzzle/origin/hard-025",
       "order": 85,
       "size": 9,
       "tier": "hard",
@@ -6938,7 +6938,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-026",
+      "id": "regalia:puzzle/origin/hard-026",
       "order": 86,
       "size": 9,
       "tier": "hard",
@@ -7049,7 +7049,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-027",
+      "id": "regalia:puzzle/origin/hard-027",
       "order": 87,
       "size": 9,
       "tier": "hard",
@@ -7160,7 +7160,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-028",
+      "id": "regalia:puzzle/origin/hard-028",
       "order": 88,
       "size": 9,
       "tier": "hard",
@@ -7271,7 +7271,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-029",
+      "id": "regalia:puzzle/origin/hard-029",
       "order": 89,
       "size": 9,
       "tier": "hard",
@@ -7382,7 +7382,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-hard-030",
+      "id": "regalia:puzzle/origin/hard-030",
       "order": 90,
       "size": 9,
       "tier": "hard",
@@ -7493,7 +7493,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-001",
+      "id": "regalia:puzzle/origin/expert-001",
       "order": 91,
       "size": 9,
       "tier": "expert",
@@ -7604,7 +7604,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-002",
+      "id": "regalia:puzzle/origin/expert-002",
       "order": 92,
       "size": 9,
       "tier": "expert",
@@ -7715,7 +7715,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-003",
+      "id": "regalia:puzzle/origin/expert-003",
       "order": 93,
       "size": 9,
       "tier": "expert",
@@ -7826,7 +7826,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-004",
+      "id": "regalia:puzzle/origin/expert-004",
       "order": 94,
       "size": 9,
       "tier": "expert",
@@ -7937,7 +7937,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-005",
+      "id": "regalia:puzzle/origin/expert-005",
       "order": 95,
       "size": 9,
       "tier": "expert",
@@ -8048,7 +8048,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-006",
+      "id": "regalia:puzzle/origin/expert-006",
       "order": 96,
       "size": 9,
       "tier": "expert",
@@ -8159,7 +8159,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-007",
+      "id": "regalia:puzzle/origin/expert-007",
       "order": 97,
       "size": 9,
       "tier": "expert",
@@ -8270,7 +8270,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-008",
+      "id": "regalia:puzzle/origin/expert-008",
       "order": 98,
       "size": 9,
       "tier": "expert",
@@ -8381,7 +8381,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-009",
+      "id": "regalia:puzzle/origin/expert-009",
       "order": 99,
       "size": 9,
       "tier": "expert",
@@ -8492,7 +8492,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-010",
+      "id": "regalia:puzzle/origin/expert-010",
       "order": 100,
       "size": 9,
       "tier": "expert",
@@ -8603,7 +8603,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-011",
+      "id": "regalia:puzzle/origin/expert-011",
       "order": 101,
       "size": 10,
       "tier": "expert",
@@ -8735,7 +8735,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-012",
+      "id": "regalia:puzzle/origin/expert-012",
       "order": 102,
       "size": 10,
       "tier": "expert",
@@ -8867,7 +8867,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-013",
+      "id": "regalia:puzzle/origin/expert-013",
       "order": 103,
       "size": 10,
       "tier": "expert",
@@ -8999,7 +8999,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-014",
+      "id": "regalia:puzzle/origin/expert-014",
       "order": 104,
       "size": 10,
       "tier": "expert",
@@ -9131,7 +9131,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-015",
+      "id": "regalia:puzzle/origin/expert-015",
       "order": 105,
       "size": 10,
       "tier": "expert",
@@ -9263,7 +9263,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-016",
+      "id": "regalia:puzzle/origin/expert-016",
       "order": 106,
       "size": 10,
       "tier": "expert",
@@ -9395,7 +9395,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-017",
+      "id": "regalia:puzzle/origin/expert-017",
       "order": 107,
       "size": 10,
       "tier": "expert",
@@ -9527,7 +9527,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-018",
+      "id": "regalia:puzzle/origin/expert-018",
       "order": 108,
       "size": 10,
       "tier": "expert",
@@ -9659,7 +9659,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-019",
+      "id": "regalia:puzzle/origin/expert-019",
       "order": 109,
       "size": 10,
       "tier": "expert",
@@ -9791,7 +9791,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-020",
+      "id": "regalia:puzzle/origin/expert-020",
       "order": 110,
       "size": 10,
       "tier": "expert",
@@ -9923,7 +9923,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-021",
+      "id": "regalia:puzzle/origin/expert-021",
       "order": 111,
       "size": 10,
       "tier": "expert",
@@ -10055,7 +10055,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-022",
+      "id": "regalia:puzzle/origin/expert-022",
       "order": 112,
       "size": 10,
       "tier": "expert",
@@ -10187,7 +10187,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-023",
+      "id": "regalia:puzzle/origin/expert-023",
       "order": 113,
       "size": 10,
       "tier": "expert",
@@ -10319,7 +10319,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-024",
+      "id": "regalia:puzzle/origin/expert-024",
       "order": 114,
       "size": 10,
       "tier": "expert",
@@ -10451,7 +10451,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-025",
+      "id": "regalia:puzzle/origin/expert-025",
       "order": 115,
       "size": 10,
       "tier": "expert",
@@ -10583,7 +10583,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-026",
+      "id": "regalia:puzzle/origin/expert-026",
       "order": 116,
       "size": 10,
       "tier": "expert",
@@ -10715,7 +10715,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-027",
+      "id": "regalia:puzzle/origin/expert-027",
       "order": 117,
       "size": 10,
       "tier": "expert",
@@ -10847,7 +10847,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-028",
+      "id": "regalia:puzzle/origin/expert-028",
       "order": 118,
       "size": 10,
       "tier": "expert",
@@ -10979,7 +10979,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-029",
+      "id": "regalia:puzzle/origin/expert-029",
       "order": 119,
       "size": 10,
       "tier": "expert",
@@ -11111,7 +11111,7 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia-expert-030",
+      "id": "regalia:puzzle/origin/expert-030",
       "order": 120,
       "size": 10,
       "tier": "expert",

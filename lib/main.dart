@@ -5,10 +5,8 @@ import 'package:flutter/services.dart';
 
 import 'app/app_controller.dart';
 import 'app/branding.dart';
-import 'app/journey.dart';
 import 'app/theme.dart';
-import 'screens/journey_screen.dart';
-import 'screens/story_scene_screen.dart';
+import 'screens/home_screen.dart';
 import 'screens/tutorial_screen.dart';
 import 'widgets/crown_mark.dart';
 import 'widgets/pixel_art.dart';
@@ -113,11 +111,10 @@ class RegaliaApp extends StatelessWidget {
                   ? _StartupError(error: startupError!)
                   : !controller.isReady
                   ? const _LoadingScreen()
-                  : !controller.tutorialComplete
+                  : controller.tutorialPuzzle != null &&
+                      !controller.tutorialComplete
                   ? TutorialScreen(controller: controller)
-                  : !controller.hasSeenStoryBeat(StoryBeatIds.opening)
-                  ? StorySceneScreen.opening(controller: controller)
-                  : JourneyScreen(controller: controller),
+                  : HomeScreen(controller: controller),
         ),
   );
 }
@@ -167,7 +164,7 @@ class _StartupError extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               const Text(
-                '$appName could not open its bundled puzzle catalog.',
+                '$appName could not open its bundled content manifest.',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),

@@ -249,7 +249,7 @@ class PuzzleGenerator {
           }
           final number = (tierNumbers[request.tier] ?? 0) + 1;
           final id =
-              'regalia-${request.tier.name}-${number.toString().padLeft(3, '0')}';
+              'regalia:puzzle/origin/${request.tier.name}-${number.toString().padLeft(3, '0')}';
           final definition = PuzzleDefinition(
             id: id,
             order: sequence,
@@ -517,7 +517,7 @@ class PuzzleGenerator {
 
       final flat = regions.expand((row) => row).toList();
       final definition = PuzzleDefinition(
-        id: 'challenge-candidate',
+        id: 'regalia:puzzle/system/challenge-candidate',
         order: 0,
         size: size,
         tier: tier,
@@ -748,7 +748,7 @@ class PuzzleGenerator {
     for (var round = 0; round < size * size * 3; round++) {
       final flat = grid.expand((row) => row).toList();
       final puzzle = PuzzleDefinition(
-        id: 'candidate',
+        id: 'regalia:puzzle/system/generation-candidate',
         order: 0,
         size: size,
         tier: DifficultyTier.easy,
@@ -858,7 +858,7 @@ class PuzzleGenerator {
         grid[cell.row][cell.column] = target;
         final flat = grid.expand((row) => row).toList();
         final definition = PuzzleDefinition(
-          id: 'variant',
+          id: 'regalia:puzzle/system/generation-variant',
           order: 0,
           size: size,
           tier: DifficultyTier.easy,

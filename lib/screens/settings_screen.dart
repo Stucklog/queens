@@ -2,82 +2,78 @@ import 'package:flutter/material.dart';
 
 import '../app/app_controller.dart';
 import '../app/branding.dart';
+import '../content/content_models.dart';
 import '../widgets/pixel_ui.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key, required this.controller});
   final AppController controller;
 
-  Future<void> _unlockEntireMap(BuildContext context) async {
-    final unlock = await showDialog<bool>(
+  Future<void> _resetEntireGame(BuildContext context) async {
+    final continueToFinalWarning = await showDialog<bool>(
       context: context,
       builder:
           (context) => PixelDialog(
-            semanticLabel: 'Unlock the entire map?',
-            icon: PixelIcon(
-              PixelGlyph.lock,
-              color: Theme.of(context).colorScheme.secondary,
-              size: 32,
-              excludeFromSemantics: true,
-            ),
-            title: const Text('Unlock the entire map?'),
-            content: const Text(
-              'All 120 puzzles and every chapter landmark will become '
-              'available immediately. This can’t be reversed without '
-              'completely resetting the game.',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text('Keep progression'),
-              ),
-              FilledButton(
-                key: const ValueKey('confirm-unlock-map'),
-                onPressed: () => Navigator.pop(context, true),
-                child: const Text('Unlock map'),
-              ),
-            ],
-          ),
-    );
-    if (unlock != true || !context.mounted) return;
-    await controller.unlockEntireMap();
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(const SnackBar(content: Text('Entire map unlocked.')));
-  }
-
-  Future<void> _resetGame(BuildContext context) async {
-    final reset = await showDialog<bool>(
-      context: context,
-      builder:
-          (context) => PixelDialog(
-            semanticLabel: 'Completely reset the game?',
+            semanticLabel: 'Reset all game data?',
             icon: PixelIcon(
               PixelGlyph.error,
               color: Theme.of(context).colorScheme.error,
               size: 32,
               excludeFromSemantics: true,
             ),
-            title: const Text('Completely reset the game?'),
+            title: const Text('Reset all game data?'),
             content: const Text(
-              'This permanently deletes all progress, records, settings, '
-              'story history, and challenge data, then reloads the game from '
-              'the beginning. This can’t be undone.',
+              'This affects every story arc and all master settings. You will '
+              'receive one final warning before anything is deleted.',
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel'),
+                child: const Text('Keep my data'),
               ),
               FilledButton(
-                key: const ValueKey('confirm-reset-game'),
+                key: const ValueKey('confirm-reset-game-first'),
                 style: FilledButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.error,
                   foregroundColor: Theme.of(context).colorScheme.onError,
                 ),
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text('Reset game'),
+                child: const Text('Continue'),
+              ),
+            ],
+          ),
+    );
+    if (continueToFinalWarning != true || !context.mounted) return;
+    final reset = await showDialog<bool>(
+      context: context,
+      builder:
+          (context) => PixelDialog(
+            semanticLabel: 'Final warning: erase everything?',
+            icon: PixelIcon(
+              PixelGlyph.error,
+              color: Theme.of(context).colorScheme.error,
+              size: 32,
+              excludeFromSemantics: true,
+            ),
+            title: const Text('Final warning: erase everything?'),
+            content: const Text(
+              'This permanently deletes progress and story history for every '
+              'arc, all records and unlocks, Just Puzzle! data, tutorial '
+              'progress, and master settings. This can’t be undone.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Keep my data'),
+              ),
+              FilledButton(
+                key: const ValueKey('confirm-reset-game-final'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  foregroundColor: Theme.of(context).colorScheme.onError,
+                ),
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('Erase everything'),
               ),
             ],
           ),
@@ -93,7 +89,7 @@ class SettingsScreen extends StatelessWidget {
       return Scaffold(
         appBar: AppBar(
           leading: const PixelBackButton(),
-          title: const Text('Settings'),
+          title: const Text('Master settings'),
         ),
         body: ListView(
           padding: const EdgeInsets.all(16),
@@ -134,7 +130,41 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            Text('Game data', style: Theme.of(context).textTheme.titleLarge),
+            Text('Story arcs', style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 12),
+            for (final arc in controller.availableStoryArcs)
+              _SettingPanel(
+                child: ListTile(
+                  key: ValueKey('story-arc-settings-${arc.id}'),
+                  title: Text(arc.title),
+                  subtitle: Text(
+                    controller.isMapUnlocked(arc.id)
+                        ? 'Arc map unlocked · manage progress'
+                        : 'Manage this arc’s progress and map',
+                  ),
+                  trailing: PixelIcon(
+                    PixelGlyph.arrowRight,
+                    color: Theme.of(context).colorScheme.secondary,
+                    size: 24,
+                    excludeFromSemantics: true,
+                  ),
+                  onTap:
+                      () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder:
+                              (_) => StoryArcSettingsScreen(
+                                controller: controller,
+                                arc: arc,
+                              ),
+                        ),
+                      ),
+                ),
+              ),
+            const SizedBox(height: 8),
+            Text(
+              'All game data',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             const SizedBox(height: 12),
             _SettingPanel(
               child: Padding(
@@ -142,53 +172,8 @@ class SettingsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Text(
-                      'Map access',
-                      style: TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                    const SizedBox(height: 6),
                     Text(
-                      controller.fullMapUnlocked
-                          ? 'All puzzles and chapter landmarks are available.'
-                          : 'Open every puzzle and chapter landmark without '
-                              'finishing the journey in order.',
-                    ),
-                    const SizedBox(height: 12),
-                    OutlinedButton.icon(
-                      key: const ValueKey('unlock-entire-map'),
-                      onPressed:
-                          controller.fullMapUnlocked
-                              ? null
-                              : () => _unlockEntireMap(context),
-                      icon: PixelIcon(
-                        controller.fullMapUnlocked
-                            ? PixelGlyph.check
-                            : PixelGlyph.lock,
-                        color:
-                            controller.fullMapUnlocked
-                                ? Theme.of(context).disabledColor
-                                : Theme.of(context).colorScheme.secondary,
-                        size: 16,
-                        excludeFromSemantics: true,
-                      ),
-                      label: Text(
-                        controller.fullMapUnlocked
-                            ? 'Entire map unlocked'
-                            : 'Unlock entire map',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            _SettingPanel(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      'Reset game',
+                      'Full game reset',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.error,
                         fontWeight: FontWeight.w700,
@@ -196,7 +181,8 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     const Text(
-                      'Erase everything stored by the game and start again.',
+                      'Erase every arc, puzzle-only run, unlock, and master '
+                      'preference. This action requires two confirmations.',
                     ),
                     const SizedBox(height: 12),
                     FilledButton.icon(
@@ -205,7 +191,7 @@ class SettingsScreen extends StatelessWidget {
                         backgroundColor: Theme.of(context).colorScheme.error,
                         foregroundColor: Theme.of(context).colorScheme.onError,
                       ),
-                      onPressed: () => _resetGame(context),
+                      onPressed: () => _resetEntireGame(context),
                       icon: const PixelIcon(
                         PixelGlyph.reset,
                         size: 16,
@@ -251,6 +237,197 @@ class SettingsScreen extends StatelessWidget {
         ),
       );
     },
+  );
+}
+
+class StoryArcSettingsScreen extends StatelessWidget {
+  const StoryArcSettingsScreen({
+    super.key,
+    required this.controller,
+    required this.arc,
+  });
+
+  final AppController controller;
+  final StoryArc arc;
+
+  Future<void> _unlockEntireMap(BuildContext context) async {
+    final unlock = await showDialog<bool>(
+      context: context,
+      builder:
+          (context) => PixelDialog(
+            semanticLabel: 'Unlock ${arc.title} map?',
+            icon: PixelIcon(
+              PixelGlyph.lock,
+              color: Theme.of(context).colorScheme.secondary,
+              size: 32,
+              excludeFromSemantics: true,
+            ),
+            title: Text('Unlock ${arc.title} map?'),
+            content: Text(
+              'Every puzzle and chapter landmark in ${arc.title} will become '
+              'available immediately. Other story arcs are not affected.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Keep progression'),
+              ),
+              FilledButton(
+                key: ValueKey('confirm-unlock-map-${arc.id}'),
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('Unlock this arc'),
+              ),
+            ],
+          ),
+    );
+    if (unlock != true || !context.mounted) return;
+    await controller.unlockEntireMap(arc.id);
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text('${arc.title} map unlocked.')));
+  }
+
+  Future<void> _resetArc(BuildContext context) async {
+    final reset = await showDialog<bool>(
+      context: context,
+      builder:
+          (context) => PixelDialog(
+            semanticLabel: 'Reset ${arc.title}?',
+            icon: PixelIcon(
+              PixelGlyph.error,
+              color: Theme.of(context).colorScheme.error,
+              size: 32,
+              excludeFromSemantics: true,
+            ),
+            title: Text('Reset ${arc.title}?'),
+            content: Text(
+              'This deletes puzzle progress, records, story history, and '
+              'unlocks for ${arc.title} only. Master settings, Just Puzzle!, '
+              'the tutorial, and all other story arcs are preserved.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Keep arc progress'),
+              ),
+              FilledButton(
+                key: ValueKey('confirm-reset-arc-${arc.id}'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  foregroundColor: Theme.of(context).colorScheme.onError,
+                ),
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('Reset this arc'),
+              ),
+            ],
+          ),
+    );
+    if (reset == true) await controller.resetStoryArc(arc.id);
+  }
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: controller,
+    builder:
+        (context, _) => Scaffold(
+          appBar: AppBar(
+            leading: const PixelBackButton(),
+            title: Text('${arc.title} settings'),
+          ),
+          body: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              Text(
+                'Arc progress',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 12),
+              _SettingPanel(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text(
+                        'Map access',
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        controller.isMapUnlocked(arc.id)
+                            ? 'Every puzzle and chapter landmark in this arc is available.'
+                            : 'Open this arc’s puzzles and landmarks without '
+                                'finishing them in order.',
+                      ),
+                      const SizedBox(height: 12),
+                      OutlinedButton.icon(
+                        key: ValueKey('unlock-entire-map-${arc.id}'),
+                        onPressed:
+                            controller.isMapUnlocked(arc.id)
+                                ? null
+                                : () => _unlockEntireMap(context),
+                        icon: PixelIcon(
+                          controller.isMapUnlocked(arc.id)
+                              ? PixelGlyph.check
+                              : PixelGlyph.lock,
+                          color:
+                              controller.isMapUnlocked(arc.id)
+                                  ? Theme.of(context).disabledColor
+                                  : Theme.of(context).colorScheme.secondary,
+                          size: 16,
+                          excludeFromSemantics: true,
+                        ),
+                        label: Text(
+                          controller.isMapUnlocked(arc.id)
+                              ? 'This arc’s map is unlocked'
+                              : 'Unlock this arc’s map',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              _SettingPanel(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Reset ${arc.title}',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      const Text(
+                        'Start this story arc again without changing anything else.',
+                      ),
+                      const SizedBox(height: 12),
+                      FilledButton.icon(
+                        key: ValueKey('reset-story-arc-${arc.id}'),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onError,
+                        ),
+                        onPressed: () => _resetArc(context),
+                        icon: const PixelIcon(
+                          PixelGlyph.reset,
+                          size: 16,
+                          excludeFromSemantics: true,
+                        ),
+                        label: const Text('Reset this story arc'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
   );
 }
 

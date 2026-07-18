@@ -190,7 +190,7 @@ void main() {
     });
 
     test('guided tutorial is valid, unique, and separate from the 120', () {
-      expect(tutorial.id, 'guided-tutorial');
+      expect(tutorial.id, 'regalia:puzzle/system/guided-tutorial');
       expect(
         catalog.puzzles.map((puzzle) => puzzle.id),
         isNot(contains(tutorial.id)),

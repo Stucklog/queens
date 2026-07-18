@@ -29,34 +29,23 @@ class PixelLandscape extends StatelessWidget {
     this.sceneKind = PixelSceneKind.panorama,
     this.placement = PixelArtPlacement.story,
     this.frame = 0,
+    this.assetPath,
   });
-
-  static const _chapterAssets = <String, String>{
-    'clovermead': 'assets/art/backgrounds/chapter_clovermead.webp',
-    'whisperwood': 'assets/art/backgrounds/chapter_whisperwood.webp',
-    'windmill-heights': 'assets/art/backgrounds/chapter_windmill_heights.webp',
-    'sunken-cloister': 'assets/art/backgrounds/chapter_sunken_cloister.webp',
-    'emberbell-caverns':
-        'assets/art/backgrounds/chapter_emberbell_caverns.webp',
-    'goblin-underkeep': 'assets/art/backgrounds/chapter_goblin_underkeep.webp',
-    'moonlit-catacombs':
-        'assets/art/backgrounds/chapter_moonlit_catacombs.webp',
-    'crownspire': 'assets/art/backgrounds/chapter_crownspire.webp',
-  };
 
   final JourneyChapter chapter;
   final Brightness brightness;
   final PixelSceneKind sceneKind;
   final PixelArtPlacement placement;
   final int frame;
+  final String? assetPath;
 
-  String get _assetPath => switch (sceneKind) {
-    PixelSceneKind.opening => 'assets/art/backgrounds/story_opening.webp',
-    PixelSceneKind.finale => 'assets/art/backgrounds/story_finale.webp',
-    _ =>
-      _chapterAssets[chapter.id] ??
-          'assets/art/backgrounds/chapter_${chapter.id.replaceAll('-', '_')}.webp',
-  };
+  String get _assetPath =>
+      assetPath ??
+      switch (sceneKind) {
+        PixelSceneKind.opening => 'assets/art/backgrounds/story_opening.webp',
+        PixelSceneKind.finale => 'assets/art/backgrounds/story_finale.webp',
+        _ => chapter.artAsset,
+      };
 
   Alignment get _alignment {
     if (sceneKind == PixelSceneKind.finale &&
@@ -106,12 +95,14 @@ class PixelStoryScene extends StatefulWidget {
     required this.kind,
     required this.semanticLabel,
     this.placement = PixelArtPlacement.story,
+    this.assetPath,
   });
 
   final JourneyChapter chapter;
   final PixelSceneKind kind;
   final String semanticLabel;
   final PixelArtPlacement placement;
+  final String? assetPath;
 
   @override
   State<PixelStoryScene> createState() => _PixelStorySceneState();
@@ -170,6 +161,7 @@ class _PixelStorySceneState extends State<PixelStoryScene>
                       sceneKind: widget.kind,
                       placement: widget.placement,
                       frame: frame,
+                      assetPath: widget.assetPath,
                     ),
                     if (widget.kind == PixelSceneKind.opening) ...[
                       Align(
@@ -261,7 +253,7 @@ class PixelLandscapePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final index = journeyChapters.indexOf(chapter).clamp(0, 7);
+    final index = chapter.visualIndex.clamp(0, 7);
     final dark = brightness == Brightness.dark;
     final ink = dark ? const Color(0xffefe8d5) : const Color(0xff25231f);
     final grid = math.max(1.0, (size.shortestSide / 180).floorToDouble());

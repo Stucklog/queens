@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../app/app_controller.dart';
-import '../app/challenge.dart';
 import '../app/journey.dart';
 import '../app/theme.dart';
 import '../core/models.dart';
@@ -76,8 +75,17 @@ class _GameScreenState extends State<GameScreen> {
     };
     final visualChapter =
         widget.playMode == PuzzlePlayMode.challenge
-            ? challengeChapterFor(puzzle.tier, widget.challengeNumber ?? 1)
-            : chapterForOrder(puzzle.order);
+            ? widget.controller.challengeVisualChapter(
+              puzzle.tier,
+              widget.challengeNumber ?? 1,
+            )
+            : widget.controller
+                .arcForPuzzle(puzzle)!
+                .chapterForOrder(puzzle.order);
+    final storyArc =
+        widget.playMode == PuzzlePlayMode.journey
+            ? widget.controller.arcForPuzzle(puzzle)
+            : null;
     final themed = RegaliaTheme.forChapter(visualChapter);
     return Theme(
       data: themed,
@@ -101,8 +109,8 @@ class _GameScreenState extends State<GameScreen> {
                         ),
                         Text(
                           widget.playMode == PuzzlePlayMode.challenge
-                              ? 'Challenge ${widget.challengeNumber ?? puzzle.order}'
-                              : 'Puzzle ${puzzle.order} of 120',
+                              ? 'Just Puzzle! ${widget.challengeNumber ?? puzzle.order}'
+                              : 'Puzzle ${puzzle.order} of ${storyArc!.catalog.puzzles.length}',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -442,7 +450,7 @@ class _GameScreenState extends State<GameScreen> {
             board: board,
             advancesJourney: outcome.advancedJourney,
             isJourneyComplete: outcome.isJourneyComplete,
-            nextLabel: outcome.isChallenge ? 'Next challenge' : null,
+            nextLabel: outcome.isChallenge ? 'Next puzzle' : null,
             onReplay: () => Navigator.pop(context, 'replay'),
             onNext: () => Navigator.pop(context, 'next'),
           ),

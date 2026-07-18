@@ -55,7 +55,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 950));
     expect(find.byType(GameScreen), findsOneWidget);
-    expect(find.text('Challenge 1'), findsOneWidget);
+    expect(find.text('Just Puzzle! 1'), findsOneWidget);
     expect(find.text('Hint'), findsOneWidget);
 
     final first = controller.challengeSession!.currentPuzzle;
@@ -72,22 +72,22 @@ void main() {
     await tester.tap(lastCell);
     await tester.pump(const Duration(milliseconds: 250));
 
-    expect(find.text('Next challenge'), findsOneWidget);
+    expect(find.text('Next puzzle'), findsOneWidget);
     expect(controller.challengeSession?.completedCount, 1);
     expect(controller.frontierPuzzle?.order, 1);
 
-    await tester.tap(find.text('Next challenge'));
+    await tester.tap(find.text('Next puzzle'));
     for (
       var frame = 0;
       frame < 40 &&
-          (find.text('Challenge 2').evaluate().isEmpty ||
+          (find.text('Just Puzzle! 2').evaluate().isEmpty ||
               find.byType(GameScreen).evaluate().length != 1);
       frame++
     ) {
       await tester.pump(const Duration(milliseconds: 50));
     }
     expect(find.byType(GameScreen), findsOneWidget);
-    expect(find.text('Challenge 2'), findsOneWidget);
+    expect(find.text('Just Puzzle! 2'), findsOneWidget);
     expect(controller.challengeSession?.currentNumber, 2);
     expect(controller.frontierPuzzle?.order, 1);
     expect(controller.records, isEmpty);

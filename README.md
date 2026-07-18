@@ -2,11 +2,15 @@
 
 Queen’s Regalia is an original, offline Flutter implementation of the one-crown-per-row, column, and region logic puzzle. Crowns may not touch, including diagonally; diagonal alignment at a distance is legal.
 
-The app contains 120 deterministic, uniquely solvable puzzles plus a separate guided tutorial. They form a linear prestige pixel-art pilgrimage across eight realms: each clean or assisted solve advances the Dawn Regalia’s unnamed bearer from Asterfall Vale toward the Empyrean Citadel. Completed puzzles remain replayable, while future route nodes stay visible and locked. Journey scenery, storyboard backgrounds, and principal character art are bundled as optimized production assets, with procedural art retained as an offline-safe fallback.
+The bundled **Queen’s Regalia: Origin Story** arc contains 120 deterministic, uniquely solvable puzzles plus a separate guided tutorial. They form a linear prestige pixel-art pilgrimage across eight realms: each clean or assisted solve advances the Regalia’s unnamed bearer from Asterfall Vale toward the Empyrean Citadel. Completed puzzles remain replayable, while future route nodes stay visible and locked. Journey scenery, storyboard backgrounds, and principal character art are bundled as optimized production assets, with procedural art retained as an offline-safe fallback.
 
-Challenge Mode is a separate endless run of puzzles generated and verified entirely on the device. Players can choose Easy, Medium, Hard, Expert, or a rotating Mixed run; the next board is prepared while the current one is played. Challenge boards, marks, elapsed time, assistance, and run statistics resume after relaunch without changing the story frontier.
+“Just Puzzle!” is a separate endless run of puzzles generated and verified entirely on the device. Players can choose Easy, Medium, Hard, Expert, or a rotating Mixed run; the next board is prepared while the current one is played. Its boards, marks, elapsed time, assistance, and run statistics resume after relaunch without changing any story frontier.
 
-It has no backend, accounts, analytics, ads, or runtime network services. Story progress, challenge runs, story beats, and preferences stay in platform-local storage. Journey schema version 1 performs a one-time reset of puzzle attempts and completions while preserving settings and tutorial completion.
+After the tutorial, the home screen lists every available story arc in a single metadata-driven column and keeps “Just Puzzle!” and master settings at the top level. Selecting an arc opens its own opening scene when needed and then that arc’s map. The GitHub Pages/web edition is explicitly the complete origin arc plus “Just Puzzle!”. Paid-platform builds use the same package manifest with a separate entitlement policy for future optional arcs. Missing, corrupt, unentitled, or edition-excluded optional packages do not prevent the origin arc or puzzle-only mode from loading.
+
+It has no backend, accounts, analytics, ads, or runtime network services. Story progress, puzzle-only runs, story scenes, and preferences stay in platform-local storage. Legacy origin and puzzle-only saves are migrated to namespaced IDs without resetting valid progress.
+
+See [Content authoring and releases](docs/CONTENT_AUTHORING.md) for the ID contract, package format, entitlement integration, validation, and release checklist.
 
 ## Run the app
 
@@ -24,7 +28,7 @@ The app and command-line tooling share the pure-Dart core in `lib/core`.
 ```sh
 dart run tool/generate_puzzles.dart report
 dart run tool/generate_puzzles.dart validate
-dart run tool/generate_puzzles.dart inspect regalia-easy-001
+dart run tool/generate_puzzles.dart inspect regalia:puzzle/origin/easy-001
 dart run tool/generate_puzzles.dart generate --seed 20260714
 ```
 

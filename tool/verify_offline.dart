@@ -71,6 +71,11 @@ Future<void> main(List<String> arguments) async {
   if (!pubspec.contains('assets/puzzles/tutorial.json')) {
     failures.add('tutorial is not declared as a bundled Flutter asset');
   }
+  if (!pubspec.contains('assets/content/') ||
+      !File('assets/content/manifest.json').existsSync() ||
+      !File('assets/content/arcs/origin/arc.json').existsSync()) {
+    failures.add('content manifest or origin arc metadata is not bundled');
+  }
   if (!pubspec.contains('assets/art/') ||
       !File('assets/art/knight_animations.png').existsSync()) {
     failures.add('knight animation atlas is not bundled as an app asset');
@@ -89,6 +94,8 @@ Future<void> main(List<String> arguments) async {
         final source = await worker.readAsString();
         for (final asset in const [
           'main.dart.js',
+          'assets/assets/content/manifest.json',
+          'assets/assets/content/arcs/origin/arc.json',
           'assets/assets/puzzles/catalog.json',
           'assets/assets/puzzles/tutorial.json',
           'assets/assets/fonts/PixelifySans-Variable.ttf',

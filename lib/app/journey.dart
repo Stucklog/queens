@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../content/content_ids.dart';
 import '../core/models.dart';
 
 const regaliaMidnight = Color(0xff151d3b);
@@ -18,6 +19,11 @@ class JourneyPalette {
 class JourneyChapter {
   const JourneyChapter({
     required this.id,
+    required this.mapId,
+    required this.sceneId,
+    required this.artKey,
+    required this.artAsset,
+    required this.visualIndex,
     required this.title,
     required this.caption,
     required this.startOrder,
@@ -28,6 +34,11 @@ class JourneyChapter {
   });
 
   final String id;
+  final String mapId;
+  final String sceneId;
+  final String artKey;
+  final String artAsset;
+  final int visualIndex;
   final String title;
   final String caption;
   final int startOrder;
@@ -36,14 +47,56 @@ class JourneyChapter {
   final int size;
   final JourneyPalette palette;
 
-  String get storyBeatId => 'chapter.$id';
+  String get storyBeatId => sceneId;
 
   bool contains(int order) => order >= startOrder && order <= endOrder;
+
+  factory JourneyChapter.fromJson(Map<String, Object?> json) {
+    Color color(String key) {
+      final value = json[key]! as String;
+      if (!RegExp(r'^#[0-9a-fA-F]{6}$').hasMatch(value)) {
+        throw FormatException('Invalid $key color $value');
+      }
+      return Color(int.parse('ff${value.substring(1)}', radix: 16));
+    }
+
+    final id = json['id']! as String;
+    final mapId = json['mapId']! as String;
+    final sceneId = json['sceneId']! as String;
+    ContentId.parse(id, expectedKind: 'chapter');
+    ContentId.parse(mapId, expectedKind: 'map');
+    ContentId.parse(sceneId, expectedKind: 'scene');
+    return JourneyChapter(
+      id: id,
+      mapId: mapId,
+      sceneId: sceneId,
+      artKey: json['artKey']! as String,
+      artAsset: json['artAsset']! as String,
+      visualIndex: (json['visualIndex']! as num).toInt(),
+      title: json['title']! as String,
+      caption: json['caption']! as String,
+      startOrder: (json['startOrder']! as num).toInt(),
+      endOrder: (json['endOrder']! as num).toInt(),
+      difficulty: DifficultyTierLabel.parse(json['difficulty']! as String),
+      size: (json['size']! as num).toInt(),
+      palette: JourneyPalette(
+        primary: color('primaryColor'),
+        secondary: color('secondaryColor'),
+      ),
+    );
+  }
 }
 
+/// Offline visual fallback for Just Puzzle and compatibility helpers in tests.
+/// The story UI uses the chapters loaded from the active [StoryArc].
 const journeyChapters = <JourneyChapter>[
   JourneyChapter(
-    id: 'clovermead',
+    id: 'regalia:chapter/origin/clovermead',
+    mapId: ContentIds.originMap,
+    sceneId: 'regalia:scene/origin/clovermead',
+    artKey: 'clovermead',
+    artAsset: 'assets/art/backgrounds/chapter_clovermead.webp',
+    visualIndex: 0,
     title: 'Asterfall Vale',
     caption:
         'Where heaven struck the earth, the fallen Regalia chooses its bearer.',
@@ -57,7 +110,12 @@ const journeyChapters = <JourneyChapter>[
     ),
   ),
   JourneyChapter(
-    id: 'whisperwood',
+    id: 'regalia:chapter/origin/whisperwood',
+    mapId: ContentIds.originMap,
+    sceneId: 'regalia:scene/origin/whisperwood',
+    artKey: 'whisperwood',
+    artAsset: 'assets/art/backgrounds/chapter_whisperwood.webp',
+    visualIndex: 1,
     title: 'Myrrhveil Wilds',
     caption: 'Ancient roots part for the crown—and wake what sleeps below.',
     startOrder: 21,
@@ -70,7 +128,12 @@ const journeyChapters = <JourneyChapter>[
     ),
   ),
   JourneyChapter(
-    id: 'windmill-heights',
+    id: 'regalia:chapter/origin/windmill-heights',
+    mapId: ContentIds.originMap,
+    sceneId: 'regalia:scene/origin/windmill-heights',
+    artKey: 'windmill-heights',
+    artAsset: 'assets/art/backgrounds/chapter_windmill_heights.webp',
+    visualIndex: 2,
     title: 'Skyglass Reach',
     caption:
         'Ancient wind arches awaken, carrying the bearer beyond the storm.',
@@ -84,7 +147,12 @@ const journeyChapters = <JourneyChapter>[
     ),
   ),
   JourneyChapter(
-    id: 'sunken-cloister',
+    id: 'regalia:chapter/origin/sunken-cloister',
+    mapId: ContentIds.originMap,
+    sceneId: 'regalia:scene/origin/sunken-cloister',
+    artKey: 'sunken-cloister',
+    artAsset: 'assets/art/backgrounds/chapter_sunken_cloister.webp',
+    visualIndex: 3,
     title: 'Nacre Basilica',
     caption:
         'Beneath the drowned bells, a forgotten covenant opens the deep road.',
@@ -98,7 +166,12 @@ const journeyChapters = <JourneyChapter>[
     ),
   ),
   JourneyChapter(
-    id: 'emberbell-caverns',
+    id: 'regalia:chapter/origin/emberbell-caverns',
+    mapId: ContentIds.originMap,
+    sceneId: 'regalia:scene/origin/emberbell-caverns',
+    artKey: 'emberbell-caverns',
+    artAsset: 'assets/art/backgrounds/chapter_emberbell_caverns.webp',
+    visualIndex: 4,
     title: 'Pyreheart Caldera',
     caption: 'At the world’s molten heart, living crystal answers the crown.',
     startOrder: 61,
@@ -111,7 +184,12 @@ const journeyChapters = <JourneyChapter>[
     ),
   ),
   JourneyChapter(
-    id: 'goblin-underkeep',
+    id: 'regalia:chapter/origin/goblin-underkeep',
+    mapId: ContentIds.originMap,
+    sceneId: 'regalia:scene/origin/goblin-underkeep',
+    artKey: 'goblin-underkeep',
+    artAsset: 'assets/art/backgrounds/chapter_goblin_underkeep.webp',
+    visualIndex: 5,
     title: 'Brasswake Arsenal',
     caption: 'The old empire’s last war-engine wakes to bar the ascent.',
     startOrder: 81,
@@ -124,7 +202,12 @@ const journeyChapters = <JourneyChapter>[
     ),
   ),
   JourneyChapter(
-    id: 'moonlit-catacombs',
+    id: 'regalia:chapter/origin/moonlit-catacombs',
+    mapId: ContentIds.originMap,
+    sceneId: 'regalia:scene/origin/moonlit-catacombs',
+    artKey: 'moonlit-catacombs',
+    artAsset: 'assets/art/backgrounds/chapter_moonlit_catacombs.webp',
+    visualIndex: 6,
     title: 'Pale Moon Necropolis',
     caption:
         'Seven fallen queens rise beneath the pale moon to judge the bearer.',
@@ -138,7 +221,12 @@ const journeyChapters = <JourneyChapter>[
     ),
   ),
   JourneyChapter(
-    id: 'crownspire',
+    id: 'regalia:chapter/origin/crownspire',
+    mapId: ContentIds.originMap,
+    sceneId: 'regalia:scene/origin/crownspire',
+    artKey: 'crownspire',
+    artAsset: 'assets/art/backgrounds/chapter_crownspire.webp',
+    visualIndex: 7,
     title: 'Empyrean Citadel',
     caption: 'Above the clouds, the vacant throne waits beneath a dying sun.',
     startOrder: 101,
@@ -233,6 +321,6 @@ class PuzzleCompletionOutcome {
 }
 
 abstract final class StoryBeatIds {
-  static const opening = 'opening';
-  static const finale = 'finale';
+  static const opening = ContentIds.originOpeningScene;
+  static const finale = ContentIds.originFinaleScene;
 }

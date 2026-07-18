@@ -1,21 +1,21 @@
 [
   {
-    "id": "regalia-easy-001",
+    "id": "regalia:puzzle/origin/easy-001",
     "expectedTier": "easy",
     "ratingNote": "Direct exclusions and singles remain teachable to a first-time player."
   },
   {
-    "id": "regalia-medium-001",
+    "id": "regalia:puzzle/origin/medium-001",
     "expectedTier": "medium",
     "ratingNote": "Requires a locked unit intersection but no Hall-set reasoning."
   },
   {
-    "id": "regalia-hard-001",
+    "id": "regalia:puzzle/origin/hard-001",
     "expectedTier": "hard",
     "ratingNote": "Requires an explainable pair or triple candidate set."
   },
   {
-    "id": "regalia-expert-001",
+    "id": "regalia:puzzle/origin/expert-001",
     "expectedTier": "expert",
     "ratingNote": "Requires a bounded one-step contradiction and no deeper guess."
   }

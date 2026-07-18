@@ -11,6 +11,10 @@ import '../core/generator.dart';
 import '../core/human_solver.dart';
 import '../core/models.dart';
 import '../core/rule_engine.dart';
+import '../content/content_ids.dart';
+import '../content/content_models.dart';
+import '../content/content_repository.dart';
+import '../content/entitlements.dart';
 import 'challenge.dart';
 import 'journey.dart';
 
@@ -54,22 +58,32 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     this.ruleEngine = const RuleEngine(),
     this.humanSolver = const HumanSolver(),
     this.challengePuzzleFactory = generateChallengePuzzle,
-  });
+    ContentAssetReader? contentAssetReader,
+    ContentEntitlementPolicy? contentPolicy,
+    this.contentManifestAsset = 'assets/content/manifest.json',
+  }) : _contentAssetReader = contentAssetReader ?? rootBundle.loadString,
+       contentPolicy = contentPolicy ?? ContentEntitlementPolicy.current();
 
   final RuleEngine ruleEngine;
   final HumanSolver humanSolver;
   final ChallengePuzzleFactory challengePuzzleFactory;
+  final ContentAssetReader _contentAssetReader;
+  final ContentEntitlementPolicy contentPolicy;
+  final String contentManifestAsset;
   static const journeySchemaVersion = 1;
+  static const saveMigrationVersion = 1;
   late final SharedPreferences _preferences;
-  late final String _catalogFingerprint;
+  String? _catalogFingerprint;
+  final Map<String, String> _arcCatalogFingerprints = {};
+  ContentRegistry? content;
   PuzzleCatalog? catalog;
   PuzzleDefinition? tutorialPuzzle;
   AppSettings settings = const AppSettings();
   final Map<String, BoardState> boards = {};
   final Map<String, CompletionRecord> records = {};
   final Set<String> seenStoryBeatIds = {};
+  final Set<String> unlockedContentIds = {};
   ChallengeSession? challengeSession;
-  bool fullMapUnlocked = false;
   bool isStartingChallenge = false;
   bool isPreparingChallenge = false;
   Object? challengeGenerationError;
@@ -86,73 +100,97 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   int gameGeneration = 0;
   bool _disposed = false;
 
-  bool get isReady => catalog != null;
+  bool get isReady => content != null;
+
+  StoryArc? get originArc => content?.arc(ContentIds.originArc);
+  Iterable<StoryArc> get availableStoryArcs =>
+      content?.availableArcs ?? const <StoryArc>[];
+  bool get hasOriginStory => originArc != null;
+  bool get justPuzzleAvailable => content?.justPuzzleAvailable ?? false;
+  bool get fullMapUnlocked => isMapUnlocked(ContentIds.originArc);
+
+  ArcAvailability availabilityForArc(String arcId) =>
+      content?.availabilityFor(arcId) ??
+      const ArcAvailability(status: ContentAvailabilityStatus.notPackaged);
 
   Future<void> initialize() async {
     WidgetsBinding.instance.addObserver(this);
     final lifecycleState = WidgetsBinding.instance.lifecycleState;
     _challengePreparationAllowed =
         lifecycleState == null || lifecycleState == AppLifecycleState.resumed;
-    final source = await rootBundle.loadString('assets/puzzles/catalog.json');
-    final tutorialSource = await rootBundle.loadString(
-      'assets/puzzles/tutorial.json',
-    );
-    catalog = PuzzleCatalog.fromJsonString(source);
-    _catalogFingerprint =
-        '${catalog!.schemaVersion}:${catalog!.puzzles.map((puzzle) => puzzle.contentHash).join(',')}';
-    tutorialPuzzle = PuzzleDefinition.fromJson(
-      jsonDecode(tutorialSource) as Map<String, Object?>,
-    );
+    content = await ContentRepository(
+      readAsset: _contentAssetReader,
+    ).load(manifestAsset: contentManifestAsset, policy: contentPolicy);
+    catalog = originArc?.catalog;
+    for (final arc in availableStoryArcs) {
+      _arcCatalogFingerprints[arc.id] = _fingerprintFor(arc);
+    }
+    _catalogFingerprint = _arcCatalogFingerprints[ContentIds.originArc];
+    try {
+      final tutorialSource = await _contentAssetReader(
+        'assets/puzzles/tutorial.json',
+      );
+      tutorialPuzzle = PuzzleDefinition.fromJson(
+        jsonDecode(tutorialSource) as Map<String, Object?>,
+      );
+    } on Object catch (error) {
+      // The tutorial is system content, not a prerequisite for either an arc
+      // or Just Puzzle. A damaged optional asset must not brick the app.
+      debugPrint('Tutorial content is unavailable: $error');
+    }
     _preferences = await SharedPreferences.getInstance();
+    await _migrateLegacySave();
     settings =
-        _decode('regalia.settings', AppSettings.fromJson) ??
-        const AppSettings();
+        _decode(SaveIds.settings, AppSettings.fromJson) ?? const AppSettings();
     challengeSession = _decode(
-      'regalia.challengeSession',
+      SaveIds.justPuzzleSession,
       ChallengeSession.fromJson,
     );
     _restoreChallengeGenerationState();
-    tutorialComplete =
-        _preferences.getBool('regalia.tutorialComplete') ?? false;
-    fullMapUnlocked = _preferences.getBool('regalia.fullMapUnlocked') ?? false;
+    tutorialComplete = _preferences.getBool(SaveIds.tutorialComplete) ?? false;
+    unlockedContentIds.addAll(
+      _preferences.getStringList(SaveIds.unlockedContentIds) ?? const [],
+    );
     if (_preferences.getInt('regalia.journeySchemaVersion') !=
         journeySchemaVersion) {
       // Version one changes a freely selectable collection into a strict
-      // journey. Old attempt data cannot establish a trustworthy frontier, so
-      // it is cleared once while settings and tutorial completion survive.
-      await Future.wait([
-        _preferences.remove('regalia.boards'),
-        _preferences.remove('regalia.records'),
-        _preferences.remove('regalia.lastPuzzle'),
-        _preferences.remove('regalia.seenStoryBeats'),
-        _preferences.setInt(
-          'regalia.journeySchemaVersion',
-          journeySchemaVersion,
-        ),
-      ]);
+      // journey. This compatibility guard remains for pre-v1 saves; the
+      // namespacing migration itself deliberately preserves v1 progress.
+      await _clearOriginProgress();
+      await _preferences.setInt(
+        'regalia.journeySchemaVersion',
+        journeySchemaVersion,
+      );
     }
-    if (_preferences.getString('regalia.catalogFingerprint') !=
-        _catalogFingerprint) {
+    final legacyFingerprint = _preferences.getString(
+      'regalia.catalogFingerprint',
+    );
+    if (_catalogFingerprint != null &&
+        legacyFingerprint != null &&
+        legacyFingerprint != _catalogFingerprint) {
+      await _clearOriginProgress();
+      await _preferences.remove('regalia.catalogFingerprint');
+    }
+    if (_catalogFingerprint != null &&
+        _preferences.getString(SaveIds.originCatalogFingerprint) !=
+            _catalogFingerprint) {
       // Puzzle IDs stay stable between curated releases. Discard attempt data
       // when their underlying boards change so marks and completions cannot be
       // applied to a different puzzle.
-      await Future.wait([
-        _preferences.remove('regalia.boards'),
-        _preferences.remove('regalia.records'),
-        _preferences.remove('regalia.lastPuzzle'),
-        _preferences.setString(
-          'regalia.catalogFingerprint',
-          _catalogFingerprint,
-        ),
-      ]);
+      await _clearOriginProgress(keepSeenScenes: true);
+      await _preferences.setString(
+        SaveIds.originCatalogFingerprint,
+        _catalogFingerprint!,
+      );
     }
     final puzzleSizes = {
-      for (final puzzle in catalog!.puzzles) puzzle.id: puzzle.size,
+      for (final puzzle in catalog?.puzzles ?? const <PuzzleDefinition>[])
+        puzzle.id: puzzle.size,
     };
-    final storedLastPuzzleId = _preferences.getString('regalia.lastPuzzle');
+    final storedLastPuzzleId = _preferences.getString(SaveIds.originLastPuzzle);
     lastPuzzleId =
         puzzleSizes.containsKey(storedLastPuzzleId) ? storedLastPuzzleId : null;
-    final boardPayload = _preferences.getString('regalia.boards');
+    final boardPayload = _preferences.getString(SaveIds.originBoards);
     if (boardPayload != null) {
       try {
         final entries = jsonDecode(boardPayload) as Map<String, Object?>;
@@ -173,7 +211,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         debugPrint('Ignoring invalid saved boards: $error');
       }
     }
-    final recordPayload = _preferences.getString('regalia.records');
+    final recordPayload = _preferences.getString(SaveIds.originRecords);
     if (recordPayload != null) {
       try {
         final entries = jsonDecode(recordPayload) as Map<String, Object?>;
@@ -194,8 +232,12 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         debugPrint('Ignoring invalid completion records: $error');
       }
     }
-    final seenPayload = _preferences.getStringList('regalia.seenStoryBeats');
+    final seenPayload = _preferences.getStringList(SaveIds.originSeenScenes);
     if (seenPayload != null) seenStoryBeatIds.addAll(seenPayload);
+    for (final arc in availableStoryArcs) {
+      if (arc.id == ContentIds.originArc) continue;
+      await _restoreArcProgress(arc);
+    }
     notifyListeners();
     if (challengeSession != null &&
         challengeSession!.preparedPuzzles.length < _challengePreparedTarget) {
@@ -206,10 +248,281 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   int get _challengePreparedTarget =>
       kIsWeb ? 1 : ChallengeSession.preparedCapacity;
 
-  void _restoreChallengeGenerationState() {
-    final historyPayload = _preferences.getString(
-      'regalia.challengeDiversityHistory',
+  String _fingerprintFor(StoryArc arc) =>
+      '${arc.id}:${arc.contentVersion}:${arc.catalog.schemaVersion}:${arc.catalog.puzzles.map((puzzle) => '${puzzle.id}:${puzzle.contentHash}').join(',')}';
+
+  Future<void> _restoreArcProgress(StoryArc arc) async {
+    final fingerprint = _arcCatalogFingerprints[arc.id]!;
+    final fingerprintKey = SaveIds.forArc(arc.id, 'catalog-fingerprint');
+    if (_preferences.getString(fingerprintKey) != fingerprint) {
+      await _clearArcProgress(arc.id);
+      await _preferences.setString(fingerprintKey, fingerprint);
+    }
+    final puzzleSizes = {
+      for (final puzzle in arc.catalog.puzzles) puzzle.id: puzzle.size,
+    };
+    final boardPayload = _preferences.getString(
+      SaveIds.forArc(arc.id, 'boards'),
     );
+    if (boardPayload != null) {
+      try {
+        final entries = jsonDecode(boardPayload) as Map<String, Object?>;
+        for (final entry in entries.entries) {
+          try {
+            final board = BoardState.fromJson(
+              entry.value! as Map<String, Object?>,
+            );
+            if (board.puzzleId == entry.key &&
+                puzzleSizes[entry.key] == board.size) {
+              boards[entry.key] = board;
+            }
+          } on Object catch (error) {
+            debugPrint('Ignoring invalid saved board ${entry.key}: $error');
+          }
+        }
+      } on Object catch (error) {
+        debugPrint('Ignoring invalid saved boards for ${arc.id}: $error');
+      }
+    }
+    final recordPayload = _preferences.getString(
+      SaveIds.forArc(arc.id, 'records'),
+    );
+    if (recordPayload != null) {
+      try {
+        final entries = jsonDecode(recordPayload) as Map<String, Object?>;
+        for (final entry in entries.entries) {
+          try {
+            if (puzzleSizes.containsKey(entry.key)) {
+              records[entry.key] = CompletionRecord.fromJson(
+                entry.value! as Map<String, Object?>,
+              );
+            }
+          } on Object catch (error) {
+            debugPrint(
+              'Ignoring invalid completion record ${entry.key}: $error',
+            );
+          }
+        }
+      } on Object catch (error) {
+        debugPrint('Ignoring invalid completion records for ${arc.id}: $error');
+      }
+    }
+    final seenPayload = _preferences.getStringList(
+      SaveIds.forArc(arc.id, 'seen-scenes'),
+    );
+    if (seenPayload != null) {
+      seenStoryBeatIds.addAll(
+        seenPayload.where(
+          (id) => ContentId.belongsToArc(id, arc.id, kind: 'scene'),
+        ),
+      );
+    }
+    final storedLastPuzzleId = _preferences.getString(
+      SaveIds.forArc(arc.id, 'last-puzzle'),
+    );
+    if (puzzleSizes.containsKey(storedLastPuzzleId)) {
+      lastPuzzleId = storedLastPuzzleId;
+    }
+  }
+
+  Future<void> _migrateLegacySave() async {
+    if ((_preferences.getInt(SaveIds.migrationVersion) ?? 0) >=
+        saveMigrationVersion) {
+      return;
+    }
+
+    Future<void> copyString(String legacy, String current) async {
+      final value = _preferences.getString(legacy);
+      if (value != null && !_preferences.containsKey(current)) {
+        await _preferences.setString(current, value);
+      }
+    }
+
+    Future<void> copyBool(String legacy, String current) async {
+      final value = _preferences.getBool(legacy);
+      if (value != null && !_preferences.containsKey(current)) {
+        await _preferences.setBool(current, value);
+      }
+    }
+
+    await copyString('regalia.settings', SaveIds.settings);
+    await copyBool('regalia.tutorialComplete', SaveIds.tutorialComplete);
+    final legacyFullMapUnlocked =
+        _preferences.getBool('regalia.fullMapUnlocked') ??
+        _preferences.getBool(SaveIds.originFullMap) ??
+        false;
+    if (legacyFullMapUnlocked &&
+        !_preferences.containsKey(SaveIds.unlockedContentIds)) {
+      await _preferences.setStringList(SaveIds.unlockedContentIds, [
+        ContentIds.originFullMapUnlock,
+      ]);
+    }
+
+    final legacyBoards = _preferences.getString('regalia.boards');
+    if (legacyBoards != null &&
+        !_preferences.containsKey(SaveIds.originBoards)) {
+      try {
+        final raw = jsonDecode(legacyBoards) as Map<String, Object?>;
+        final migrated = <String, Object?>{};
+        for (final entry in raw.entries) {
+          final id = ContentIds.migratePuzzleId(entry.key);
+          final board = Map<String, Object?>.from(
+            entry.value! as Map<String, Object?>,
+          )..['puzzleId'] = id;
+          migrated[id] = board;
+        }
+        await _preferences.setString(
+          SaveIds.originBoards,
+          jsonEncode(migrated),
+        );
+      } on Object catch (error) {
+        debugPrint('Ignoring invalid legacy boards during migration: $error');
+      }
+    }
+
+    final legacyRecords = _preferences.getString('regalia.records');
+    if (legacyRecords != null &&
+        !_preferences.containsKey(SaveIds.originRecords)) {
+      try {
+        final raw = jsonDecode(legacyRecords) as Map<String, Object?>;
+        await _preferences.setString(
+          SaveIds.originRecords,
+          jsonEncode({
+            for (final entry in raw.entries)
+              ContentIds.migratePuzzleId(entry.key): entry.value,
+          }),
+        );
+      } on Object catch (error) {
+        debugPrint('Ignoring invalid legacy records during migration: $error');
+      }
+    }
+
+    final legacyLastPuzzle = _preferences.getString('regalia.lastPuzzle');
+    if (legacyLastPuzzle != null &&
+        !_preferences.containsKey(SaveIds.originLastPuzzle)) {
+      await _preferences.setString(
+        SaveIds.originLastPuzzle,
+        ContentIds.migratePuzzleId(legacyLastPuzzle),
+      );
+    }
+
+    final legacyScenes = _preferences.getStringList('regalia.seenStoryBeats');
+    if (legacyScenes != null &&
+        !_preferences.containsKey(SaveIds.originSeenScenes)) {
+      await _preferences.setStringList(
+        SaveIds.originSeenScenes,
+        legacyScenes.map(ContentIds.originScene).toSet().toList()..sort(),
+      );
+    }
+
+    final legacyChallenge = _preferences.getString('regalia.challengeSession');
+    if (legacyChallenge != null &&
+        !_preferences.containsKey(SaveIds.justPuzzleSession)) {
+      try {
+        final raw = jsonDecode(legacyChallenge);
+        await _preferences.setString(
+          SaveIds.justPuzzleSession,
+          jsonEncode(_migrateEmbeddedPuzzleIds(raw)),
+        );
+      } on Object catch (error) {
+        debugPrint('Ignoring invalid legacy Just Puzzle run: $error');
+      }
+    }
+    await copyString(
+      'regalia.challengeDiversityHistory',
+      SaveIds.justPuzzleDiversity,
+    );
+    final legacyRetries = _preferences.getString('regalia.challengeRetrySalts');
+    if (legacyRetries != null &&
+        !_preferences.containsKey(SaveIds.justPuzzleRetries)) {
+      try {
+        final raw = jsonDecode(legacyRetries) as Map<String, Object?>;
+        await _preferences.setString(
+          SaveIds.justPuzzleRetries,
+          jsonEncode({
+            for (final entry in raw.entries)
+              ContentIds.migratePuzzleId(entry.key): entry.value,
+          }),
+        );
+      } on Object catch (error) {
+        debugPrint('Ignoring invalid legacy retry state: $error');
+      }
+    }
+
+    if (_catalogFingerprint != null) {
+      await _preferences.setString(
+        SaveIds.originCatalogFingerprint,
+        _catalogFingerprint!,
+      );
+    }
+    await _preferences.setInt(
+      'regalia.journeySchemaVersion',
+      journeySchemaVersion,
+    );
+    await _preferences.setInt(SaveIds.migrationVersion, saveMigrationVersion);
+
+    // Legacy data is removed only after every namespaced value has been
+    // committed. The journey schema marker remains as a compatibility guard.
+    await Future.wait([
+      for (final key in const [
+        'regalia.settings',
+        'regalia.tutorialComplete',
+        'regalia.fullMapUnlocked',
+        SaveIds.originFullMap,
+        'regalia.boards',
+        'regalia.records',
+        'regalia.lastPuzzle',
+        'regalia.seenStoryBeats',
+        'regalia.challengeSession',
+        'regalia.challengeDiversityHistory',
+        'regalia.challengeRetrySalts',
+        'regalia.catalogFingerprint',
+      ])
+        _preferences.remove(key),
+    ]);
+  }
+
+  Object? _migrateEmbeddedPuzzleIds(Object? value) {
+    if (value is List<Object?>) {
+      return value.map(_migrateEmbeddedPuzzleIds).toList();
+    }
+    if (value is Map<String, Object?>) {
+      return {
+        for (final entry in value.entries)
+          entry.key:
+              (entry.key == 'id' || entry.key == 'puzzleId') &&
+                      entry.value is String
+                  ? ContentIds.migratePuzzleId(entry.value! as String)
+                  : _migrateEmbeddedPuzzleIds(entry.value),
+      };
+    }
+    return value;
+  }
+
+  Future<void> _clearOriginProgress({bool keepSeenScenes = false}) async {
+    await Future.wait([
+      _preferences.remove(SaveIds.originBoards),
+      _preferences.remove(SaveIds.originRecords),
+      _preferences.remove(SaveIds.originLastPuzzle),
+      if (!keepSeenScenes) _preferences.remove(SaveIds.originSeenScenes),
+    ]);
+  }
+
+  Future<void> _clearArcProgress(
+    String arcId, {
+    bool keepSeenScenes = false,
+  }) async {
+    await Future.wait([
+      _preferences.remove(SaveIds.forArc(arcId, 'boards')),
+      _preferences.remove(SaveIds.forArc(arcId, 'records')),
+      _preferences.remove(SaveIds.forArc(arcId, 'last-puzzle')),
+      if (!keepSeenScenes)
+        _preferences.remove(SaveIds.forArc(arcId, 'seen-scenes')),
+    ]);
+  }
+
+  void _restoreChallengeGenerationState() {
+    final historyPayload = _preferences.getString(SaveIds.justPuzzleDiversity);
     if (historyPayload != null) {
       try {
         final raw = jsonDecode(historyPayload);
@@ -238,7 +551,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
       _rememberChallengeSignature(signature);
     }
 
-    final retryPayload = _preferences.getString('regalia.challengeRetrySalts');
+    final retryPayload = _preferences.getString(SaveIds.justPuzzleRetries);
     if (retryPayload != null) {
       try {
         final raw = jsonDecode(retryPayload);
@@ -291,8 +604,15 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
 
   bool get hasChallenge => challengeSession != null;
 
+  JourneyChapter challengeVisualChapter(DifficultyTier tier, int number) =>
+      challengeChapterFor(
+        tier,
+        number,
+        chapters: originArc?.chapters ?? journeyChapters,
+      );
+
   Future<bool> startChallenge(ChallengeMode mode, {int? seed}) async {
-    if (isStartingChallenge) return false;
+    if (!justPuzzleAvailable || isStartingChallenge) return false;
     final startEpoch = ++_challengeStartEpoch;
     isStartingChallenge = true;
     challengeGenerationError = null;
@@ -433,7 +753,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     final session = challengeSession;
     return ChallengeGenerationContext(
       storyPuzzles: [
-        for (final puzzle in catalog!.puzzles)
+        for (final puzzle in catalog?.puzzles ?? const <PuzzleDefinition>[])
           if (puzzle.size == spec.size) puzzle,
       ],
       recentPuzzles: [
@@ -518,21 +838,72 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     hasActiveBoard: hasActiveBoard,
   );
 
+  JourneyProgress journeyProgressFor(StoryArc arc) => JourneyProgress.derive(
+    catalog: arc.catalog,
+    recordFor: recordFor,
+    hasActiveBoard: hasActiveBoard,
+  );
+
   PuzzleDefinition? get frontierPuzzle => journeyProgress.frontierPuzzle;
+
+  PuzzleDefinition? frontierPuzzleFor(StoryArc arc) =>
+      journeyProgressFor(arc).frontierPuzzle;
 
   bool get isJourneyComplete => journeyProgress.isJourneyComplete;
 
-  bool canOpenPuzzle(PuzzleDefinition puzzle) =>
-      fullMapUnlocked || journeyProgress.canOpen(puzzle, recordFor(puzzle.id));
+  StoryArc? arcForPuzzle(PuzzleDefinition puzzle) {
+    for (final arc in availableStoryArcs) {
+      if (ContentId.belongsToArc(puzzle.id, arc.id, kind: 'puzzle')) return arc;
+    }
+    return null;
+  }
 
-  bool hasSeenStoryBeat(String id) => seenStoryBeatIds.contains(id);
+  StoryArc? arcForChapter(JourneyChapter chapter) {
+    for (final arc in availableStoryArcs) {
+      if (ContentId.belongsToArc(chapter.id, arc.id, kind: 'chapter')) {
+        return arc;
+      }
+    }
+    return null;
+  }
+
+  StoryArc? arcForScene(String sceneId) {
+    for (final arc in availableStoryArcs) {
+      if (ContentId.belongsToArc(sceneId, arc.id, kind: 'scene')) return arc;
+    }
+    return null;
+  }
+
+  bool canOpenPuzzle(PuzzleDefinition puzzle) {
+    final arc = arcForPuzzle(puzzle);
+    return arc != null &&
+        (isMapUnlocked(arc.id) ||
+            journeyProgressFor(arc).canOpen(puzzle, recordFor(puzzle.id)));
+  }
+
+  JourneyChapter chapterForPuzzleOrder(int order) =>
+      originArc!.chapterForOrder(order);
+
+  bool hasSeenStoryBeat(String id) =>
+      seenStoryBeatIds.contains(ContentIds.originScene(id));
 
   Future<void> markStoryBeatSeen(String id) async {
-    if (!seenStoryBeatIds.add(id)) return;
+    final sceneId = ContentIds.originScene(id);
+    if (!seenStoryBeatIds.add(sceneId)) return;
     notifyListeners();
+    final arc = arcForScene(sceneId);
     await _preferences.setStringList(
-      'regalia.seenStoryBeats',
-      seenStoryBeatIds.toList()..sort(),
+      arc == null
+          ? SaveIds.originSeenScenes
+          : SaveIds.forArc(arc.id, 'seen-scenes'),
+      (seenStoryBeatIds
+          .where(
+            (candidate) =>
+                arc == null ||
+                ContentId.belongsToArc(candidate, arc.id, kind: 'scene'),
+          )
+          .toList()
+        ..sort()),
     );
   }
 
@@ -542,8 +913,12 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
           : recordFor(puzzle.id).status;
 
   PuzzleDefinition recommendedPuzzle() {
-    final puzzles = catalog!.puzzles;
-    final frontier = frontierPuzzle;
+    return recommendedPuzzleFor(originArc!);
+  }
+
+  PuzzleDefinition recommendedPuzzleFor(StoryArc arc) {
+    final puzzles = arc.catalog.puzzles;
+    final frontier = frontierPuzzleFor(arc);
     if (frontier != null) return frontier;
     return puzzles.firstWhere(
       (puzzle) =>
@@ -646,14 +1021,16 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         isChallenge: true,
       );
     }
-    final wasFrontier = frontierPuzzle?.id == puzzle.id;
+    final arc = arcForPuzzle(puzzle);
+    if (arc == null) return null;
+    final wasFrontier = frontierPuzzleFor(arc)?.id == puzzle.id;
     records[puzzle.id] = recordFor(
       puzzle.id,
     ).complete(assisted: board.assisted, seconds: board.elapsedSeconds);
     stopTimer();
-    final next = frontierPuzzle;
-    final currentChapter = chapterForOrder(puzzle.order);
-    final nextChapter = next == null ? null : chapterForOrder(next.order);
+    final next = frontierPuzzleFor(arc);
+    final currentChapter = arc.chapterForOrder(puzzle.order);
+    final nextChapter = next == null ? null : arc.chapterForOrder(next.order);
     return PuzzleCompletionOutcome(
       puzzle: puzzle,
       advancedJourney: wasFrontier,
@@ -755,11 +1132,44 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     notifyListeners();
   }
 
-  Future<void> unlockEntireMap() async {
-    if (fullMapUnlocked) return;
-    fullMapUnlocked = true;
+  bool isMapUnlocked(String arcId) {
+    final arc = content?.arc(arcId);
+    return arc != null && unlockedContentIds.contains(arc.unlockIds.fullMap);
+  }
+
+  Future<void> unlockEntireMap(String arcId) async {
+    final arc = content?.arc(arcId);
+    if (arc == null) throw ArgumentError.value(arcId, 'arcId');
+    if (isMapUnlocked(arcId)) return;
+    unlockedContentIds.add(arc.unlockIds.fullMap);
     notifyListeners();
     await _save();
+  }
+
+  Future<void> resetStoryArc(String arcId) async {
+    final arc = content?.arc(arcId);
+    if (arc == null) throw ArgumentError.value(arcId, 'arcId');
+
+    bool belongs(String id, String kind) =>
+        ContentId.belongsToArc(id, arcId, kind: kind);
+    if (_activePuzzleId != null && belongs(_activePuzzleId!, 'puzzle')) {
+      stopTimer();
+    }
+    boards.removeWhere((id, _) => belongs(id, 'puzzle'));
+    records.removeWhere((id, _) => belongs(id, 'puzzle'));
+    seenStoryBeatIds.removeWhere((id) => belongs(id, 'scene'));
+    unlockedContentIds.removeWhere((id) => belongs(id, 'unlock'));
+    if (lastPuzzleId != null && belongs(lastPuzzleId!, 'puzzle')) {
+      lastPuzzleId = null;
+    }
+    notifyListeners();
+    await _save();
+    await Future.wait([
+      _preferences.remove(SaveIds.forArc(arcId, 'boards')),
+      _preferences.remove(SaveIds.forArc(arcId, 'records')),
+      _preferences.remove(SaveIds.forArc(arcId, 'last-puzzle')),
+      _preferences.remove(SaveIds.forArc(arcId, 'seen-scenes')),
+    ]);
   }
 
   Future<void> resetGame() async {
@@ -785,7 +1195,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     records.clear();
     seenStoryBeatIds.clear();
     tutorialComplete = false;
-    fullMapUnlocked = false;
+    unlockedContentIds.clear();
     lastPuzzleId = null;
     gameGeneration++;
     notifyListeners();
@@ -794,17 +1204,11 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   Future<void> finishTutorial() async {
     tutorialComplete = true;
     notifyListeners();
-    await _preferences.setBool('regalia.tutorialComplete', true);
+    await _preferences.setBool(SaveIds.tutorialComplete, true);
   }
 
   Future<void> _save() {
     final settingsJson = jsonEncode(settings.toJson());
-    final boardsJson = jsonEncode(
-      boards.map((key, value) => MapEntry(key, value.toJson())),
-    );
-    final recordsJson = jsonEncode(
-      records.map((key, value) => MapEntry(key, value.toJson())),
-    );
     final latestPuzzle = lastPuzzleId;
     final challengeJson =
         challengeSession == null
@@ -814,38 +1218,69 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
       for (final signature in _challengeDiversityHistory) signature.toJson(),
     ]);
     final challengeRetryJson = jsonEncode(_challengeRetrySalts);
+    final arcSnapshots = {
+      for (final arc in availableStoryArcs)
+        arc.id: (
+          boards: jsonEncode({
+            for (final entry in boards.entries)
+              if (ContentId.belongsToArc(entry.key, arc.id, kind: 'puzzle'))
+                entry.key: entry.value.toJson(),
+          }),
+          records: jsonEncode({
+            for (final entry in records.entries)
+              if (ContentId.belongsToArc(entry.key, arc.id, kind: 'puzzle'))
+                entry.key: entry.value.toJson(),
+          }),
+          scenes:
+              (seenStoryBeatIds
+                  .where(
+                    (id) => ContentId.belongsToArc(id, arc.id, kind: 'scene'),
+                  )
+                  .toList()
+                ..sort()),
+        ),
+    };
     _saveChain = _saveChain.then(
       (_) => Future.wait([
-        _preferences.setString('regalia.settings', settingsJson),
-        _preferences.setString(
-          'regalia.catalogFingerprint',
-          _catalogFingerprint,
-        ),
-        _preferences.setString('regalia.boards', boardsJson),
-        _preferences.setString('regalia.records', recordsJson),
-        _preferences.setInt(
-          'regalia.journeySchemaVersion',
-          journeySchemaVersion,
-        ),
+        _preferences.setString(SaveIds.settings, settingsJson),
+        for (final arc in availableStoryArcs) ...[
+          _preferences.setString(
+            SaveIds.forArc(arc.id, 'catalog-fingerprint'),
+            _arcCatalogFingerprints[arc.id]!,
+          ),
+          _preferences.setString(
+            SaveIds.forArc(arc.id, 'boards'),
+            arcSnapshots[arc.id]!.boards,
+          ),
+          _preferences.setString(
+            SaveIds.forArc(arc.id, 'records'),
+            arcSnapshots[arc.id]!.records,
+          ),
+          _preferences.setStringList(
+            SaveIds.forArc(arc.id, 'seen-scenes'),
+            arcSnapshots[arc.id]!.scenes,
+          ),
+        ],
         _preferences.setStringList(
-          'regalia.seenStoryBeats',
-          seenStoryBeatIds.toList()..sort(),
+          SaveIds.unlockedContentIds,
+          unlockedContentIds.toList()..sort(),
         ),
-        _preferences.setBool('regalia.fullMapUnlocked', fullMapUnlocked),
         if (challengeJson == null)
-          _preferences.remove('regalia.challengeSession')
+          _preferences.remove(SaveIds.justPuzzleSession)
         else
-          _preferences.setString('regalia.challengeSession', challengeJson),
+          _preferences.setString(SaveIds.justPuzzleSession, challengeJson),
         _preferences.setString(
-          'regalia.challengeDiversityHistory',
+          SaveIds.justPuzzleDiversity,
           challengeDiversityJson,
         ),
-        _preferences.setString(
-          'regalia.challengeRetrySalts',
-          challengeRetryJson,
-        ),
+        _preferences.setString(SaveIds.justPuzzleRetries, challengeRetryJson),
         if (latestPuzzle != null)
-          _preferences.setString('regalia.lastPuzzle', latestPuzzle),
+          for (final arc in availableStoryArcs)
+            if (ContentId.belongsToArc(latestPuzzle, arc.id, kind: 'puzzle'))
+              _preferences.setString(
+                SaveIds.forArc(arc.id, 'last-puzzle'),
+                latestPuzzle,
+              ),
       ]),
     );
     return _saveChain;

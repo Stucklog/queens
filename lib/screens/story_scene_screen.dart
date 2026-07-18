@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../app/app_controller.dart';
 import '../app/journey.dart';
 import '../app/theme.dart';
+import '../content/content_models.dart';
 import '../widgets/crown_mark.dart';
 import '../widgets/pixel_art.dart';
 import '../widgets/pixel_ui.dart';
@@ -17,55 +18,70 @@ class StorySceneScreen extends StatelessWidget {
     required this.semanticLabel,
     required this.actionLabel,
     required this.sceneKind,
+    this.artAsset,
     this.chapter,
     this.popOnContinue = true,
   });
 
   factory StorySceneScreen.opening({
     required AppController controller,
+    StoryArc? arc,
     bool popOnContinue = false,
-  }) => StorySceneScreen(
-    controller: controller,
-    beatId: StoryBeatIds.opening,
-    title: 'The Night of Crownfall',
-    caption:
-        'When the Hollow Star steals the dawn, the Queen’s Regalia falls into the hands of an unknown knight.',
-    semanticLabel:
-        'A lone knight holds the fallen Regalia beside a star-scarred crater as the Hollow Star eclipses the distant Empyrean Citadel.',
-    actionLabel: 'Take up the Regalia',
-    sceneKind: PixelSceneKind.opening,
-    chapter: journeyChapters.first,
-    popOnContinue: popOnContinue,
-  );
+  }) {
+    final selectedArc = arc ?? controller.originArc!;
+    return StorySceneScreen.fromContent(
+      controller: controller,
+      scene: selectedArc.openingScene,
+      chapter: selectedArc.chapters.first,
+      popOnContinue: popOnContinue,
+    );
+  }
 
   factory StorySceneScreen.chapter({
     required AppController controller,
     required JourneyChapter chapter,
-  }) => StorySceneScreen(
-    controller: controller,
-    beatId: chapter.storyBeatId,
-    title: chapter.title,
-    caption: chapter.caption,
-    semanticLabel:
-        'The Regalia bearer enters ${chapter.title} beneath the advancing Hollow Star.',
-    actionLabel: 'Press onward',
-    sceneKind: PixelSceneKind.chapter,
-    chapter: chapter,
-  );
+    StoryArc? arc,
+  }) {
+    final selectedArc = arc ?? controller.arcForChapter(chapter)!;
+    return StorySceneScreen.fromContent(
+      controller: controller,
+      scene: selectedArc.sceneById(chapter.sceneId),
+      chapter: chapter,
+    );
+  }
 
   factory StorySceneScreen.finale({
     required AppController controller,
+    StoryArc? arc,
+  }) {
+    final selectedArc = arc ?? controller.originArc!;
+    return StorySceneScreen.fromContent(
+      controller: controller,
+      scene: selectedArc.finaleScene,
+      chapter: selectedArc.chapters.last,
+    );
+  }
+
+  factory StorySceneScreen.fromContent({
+    required AppController controller,
+    required StorySceneContent scene,
+    JourneyChapter? chapter,
+    bool popOnContinue = true,
   }) => StorySceneScreen(
     controller: controller,
-    beatId: StoryBeatIds.finale,
-    title: 'The Dawn Returns',
-    caption:
-        'The Regalia crowns its queen, the Hollow Star breaks, and morning returns to every realm.',
-    semanticLabel:
-        'At sunrise in the Empyrean Citadel, the Queen wears the restored Regalia beside the returning knight as the Hollow Star shatters above the awakened city.',
-    actionLabel: 'Return to the realms',
-    sceneKind: PixelSceneKind.finale,
-    chapter: journeyChapters.last,
+    beatId: scene.id,
+    title: scene.title,
+    caption: scene.caption,
+    semanticLabel: scene.semanticLabel,
+    actionLabel: scene.actionLabel,
+    sceneKind: switch (scene.role) {
+      StorySceneRole.opening => PixelSceneKind.opening,
+      StorySceneRole.chapter => PixelSceneKind.chapter,
+      StorySceneRole.finale => PixelSceneKind.finale,
+    },
+    artAsset: scene.artAsset,
+    chapter: chapter,
+    popOnContinue: popOnContinue,
   );
 
   final AppController controller;
@@ -75,12 +91,16 @@ class StorySceneScreen extends StatelessWidget {
   final String semanticLabel;
   final String actionLabel;
   final PixelSceneKind sceneKind;
+  final String? artAsset;
   final JourneyChapter? chapter;
   final bool popOnContinue;
 
   @override
   Widget build(BuildContext context) {
-    final selectedChapter = chapter ?? journeyChapters.first;
+    final selectedChapter =
+        chapter ??
+        controller.originArc?.chapters.first ??
+        journeyChapters.first;
     final themed = RegaliaTheme.forChapter(selectedChapter);
     return Theme(
       data: themed,
@@ -100,6 +120,7 @@ class StorySceneScreen extends StatelessWidget {
                               chapter: selectedChapter,
                               kind: sceneKind,
                               semanticLabel: semanticLabel,
+                              assetPath: artAsset,
                             ),
                           ),
                           const SizedBox(height: 22),

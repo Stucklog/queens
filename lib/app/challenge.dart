@@ -1,5 +1,6 @@
 import '../core/models.dart';
 import '../core/generator.dart';
+import '../content/content_ids.dart';
 import 'journey.dart';
 
 enum ChallengeMode { easy, medium, hard, expert, mixed }
@@ -47,8 +48,7 @@ class ChallengeGenerationSpec {
   int get generationSeed =>
       (sessionSeed + number * 104729 + tier.index * 15485863) & 0x7fffffff;
 
-  String get puzzleId =>
-      'challenge-${sessionSeed.toRadixString(16)}-${number.toString().padLeft(5, '0')}';
+  String get puzzleId => ContentIds.justPuzzle(sessionSeed, number);
 
   Map<String, Object> toJson() => {
     'sessionSeed': sessionSeed,
@@ -87,12 +87,16 @@ ChallengeGenerationSpec challengeSpec({
   );
 }
 
-JourneyChapter challengeChapterFor(DifficultyTier tier, int number) {
+JourneyChapter challengeChapterFor(
+  DifficultyTier tier,
+  int number, {
+  List<JourneyChapter> chapters = journeyChapters,
+}) {
   final pair = switch (tier) {
-    DifficultyTier.easy => journeyChapters.sublist(0, 2),
-    DifficultyTier.medium => journeyChapters.sublist(2, 4),
-    DifficultyTier.hard => journeyChapters.sublist(4, 6),
-    DifficultyTier.expert => journeyChapters.sublist(6, 8),
+    DifficultyTier.easy => chapters.sublist(0, 2),
+    DifficultyTier.medium => chapters.sublist(2, 4),
+    DifficultyTier.hard => chapters.sublist(4, 6),
+    DifficultyTier.expert => chapters.sublist(6, 8),
   };
   return pair[(number - 1) % pair.length];
 }

@@ -10,7 +10,7 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## Gameplay and progression
 
-- [ ] **P1 — Future-proof the app for additional story arcs and platform-specific content.**
+- [x] **P1 — Future-proof the app for additional story arcs and platform-specific content.**
   - Treat the current story as the self-contained origin arc, with story content organized so future arcs can be added as separate modules.
   - Keep chapter, map, puzzle, scene, unlock, and save-data identifiers namespaced or otherwise extensible so new arcs do not conflict with existing progress.
   - Make story-arc metadata and content loading data-driven rather than hard-coded to a single campaign.

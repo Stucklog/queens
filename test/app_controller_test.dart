@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
+import 'package:regalia/app/challenge.dart';
 import 'package:regalia/app/journey.dart';
+import 'package:regalia/content/content_ids.dart';
 import 'package:regalia/core/exact_solver.dart';
 import 'package:regalia/core/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +32,49 @@ void main() {
     expect(restored.settings.showTimer, isFalse);
     expect(restored.recordFor(puzzle.id).status, CompletionStatus.inProgress);
     restored.dispose();
+  });
+
+  test('legacy origin progress migrates to namespaced save IDs', () async {
+    final legacyBoard = BoardState(puzzleId: 'regalia-easy-001', size: 6)
+      ..set(const Cell(0, 0), ManualCellState.cross, recordUndo: false);
+    SharedPreferences.setMockInitialValues({
+      'regalia.tutorialComplete': true,
+      'regalia.journeySchemaVersion': 1,
+      'regalia.boards': jsonEncode({'regalia-easy-001': legacyBoard.toJson()}),
+      'regalia.records': jsonEncode({
+        'regalia-easy-001':
+            const CompletionRecord(
+              status: CompletionStatus.inProgress,
+              attemptCount: 2,
+            ).toJson(),
+      }),
+      'regalia.lastPuzzle': 'regalia-easy-001',
+      'regalia.seenStoryBeats': ['opening', 'chapter.clovermead'],
+    });
+
+    final controller = AppController();
+    await controller.initialize();
+    addTearDown(controller.dispose);
+    final puzzle = controller.catalog!.puzzles.first;
+
+    expect(puzzle.id, 'regalia:puzzle/origin/easy-001');
+    expect(
+      controller.boardFor(puzzle).at(const Cell(0, 0)),
+      ManualCellState.cross,
+    );
+    expect(controller.recordFor(puzzle.id).attemptCount, 2);
+    expect(controller.lastPuzzleId, puzzle.id);
+    expect(controller.hasSeenStoryBeat('opening'), isTrue);
+    expect(controller.hasSeenStoryBeat('chapter.clovermead'), isTrue);
+
+    final preferences = await SharedPreferences.getInstance();
+    expect(preferences.containsKey(SaveIds.originBoards), isTrue);
+    expect(preferences.containsKey(SaveIds.originRecords), isTrue);
+    expect(preferences.containsKey('regalia.boards'), isFalse);
+    expect(
+      preferences.getInt(SaveIds.migrationVersion),
+      AppController.saveMigrationVersion,
+    );
   });
 
   test('hints never mutate marks and assistance survives undo', () async {
@@ -345,7 +392,7 @@ void main() {
     expect(controller.canOpenPuzzle(lastPuzzle), isFalse);
     expect(controller.records, isEmpty);
 
-    await controller.unlockEntireMap();
+    await controller.unlockEntireMap(ContentIds.originArc);
 
     expect(controller.fullMapUnlocked, isTrue);
     expect(controller.canOpenPuzzle(lastPuzzle), isTrue);
@@ -356,6 +403,42 @@ void main() {
     await restored.initialize();
     expect(restored.fullMapUnlocked, isTrue);
     expect(restored.canOpenPuzzle(restored.catalog!.puzzles.last), isTrue);
+    restored.dispose();
+  });
+
+  test('resetting one story arc preserves master state', () async {
+    SharedPreferences.setMockInitialValues({'regalia.tutorialComplete': true});
+    final controller = AppController();
+    await controller.initialize();
+    final puzzle = controller.catalog!.puzzles.first;
+    _attachJustPuzzleSession(controller);
+    controller.updateSettings(controller.settings.copyWith(showTimer: false));
+    await controller.markStoryBeatSeen(StoryBeatIds.opening);
+    controller.openPuzzle(puzzle);
+    controller.cycle(puzzle, const Cell(0, 0));
+    await controller.unlockEntireMap(ContentIds.originArc);
+
+    await controller.resetStoryArc(ContentIds.originArc);
+
+    expect(controller.boards, isEmpty);
+    expect(controller.records, isEmpty);
+    expect(controller.seenStoryBeatIds, isEmpty);
+    expect(controller.lastPuzzleId, isNull);
+    expect(controller.fullMapUnlocked, isFalse);
+    expect(controller.settings.showTimer, isFalse);
+    expect(controller.tutorialComplete, isTrue);
+    expect(controller.challengeSession?.completedCount, 2);
+    controller.dispose();
+
+    final restored = AppController();
+    await restored.initialize();
+    expect(restored.boards, isEmpty);
+    expect(restored.records, isEmpty);
+    expect(restored.seenStoryBeatIds, isEmpty);
+    expect(restored.fullMapUnlocked, isFalse);
+    expect(restored.settings.showTimer, isFalse);
+    expect(restored.tutorialComplete, isTrue);
+    expect(restored.challengeSession?.completedCount, 2);
     restored.dispose();
   });
 
@@ -370,7 +453,7 @@ void main() {
       controller.settings.copyWith(showTimer: false, reducedMotion: true),
     );
     await controller.markStoryBeatSeen('opening');
-    await controller.unlockEntireMap();
+    await controller.unlockEntireMap(ContentIds.originArc);
 
     await controller.resetGame();
 
@@ -388,4 +471,36 @@ void main() {
     expect(preferences.getKeys(), isEmpty);
     controller.dispose();
   });
+}
+
+void _attachJustPuzzleSession(AppController controller) {
+  final spec = challengeSpec(
+    mode: ChallengeMode.easy,
+    sessionSeed: 41,
+    number: 1,
+  );
+  final source = controller.catalog!.puzzles.firstWhere(
+    (candidate) => candidate.tier == spec.tier && candidate.size == spec.size,
+  );
+  final puzzle = PuzzleDefinition(
+    id: spec.puzzleId,
+    order: spec.number,
+    size: source.size,
+    tier: source.tier,
+    regions: source.regions,
+    schemaVersion: source.schemaVersion,
+    contentHash: source.contentHash,
+    difficultyScore: source.difficultyScore,
+    scoringModel: source.scoringModel,
+  );
+  controller.challengeSession = ChallengeSession(
+    seed: spec.sessionSeed,
+    mode: ChallengeMode.easy,
+    currentNumber: 1,
+    currentPuzzle: puzzle,
+    board: BoardState(puzzleId: puzzle.id, size: puzzle.size),
+    completedCount: 2,
+    cleanCount: 2,
+    assistedCount: 0,
+  );
 }

@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/app/journey.dart';
 import 'package:regalia/main.dart';
-import 'package:regalia/screens/journey_screen.dart';
+import 'package:regalia/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -57,7 +57,7 @@ void main() {
     await tester.pumpWidget(RegaliaApp(controller: controller));
     await tester.pump(const Duration(milliseconds: 500));
 
-    final size = tester.getSize(find.byType(JourneyScreen));
+    final size = tester.getSize(find.byType(HomeScreen));
     expect(size.width, closeTo(434, .1));
     expect(size.height, 700);
     expect(size.width, lessThan(size.height));

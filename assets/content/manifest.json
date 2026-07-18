@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "features": [
+    "regalia:feature/just-puzzle"
+  ],
+  "arcs": [
+    {
+      "arcId": "regalia:arc/origin",
+      "metadataAsset": "assets/content/arcs/origin/arc.json",
+      "entitlementId": "regalia:entitlement/base/origin",
+      "channels": ["web", "paidPlatform"]
+    }
+  ]
+}

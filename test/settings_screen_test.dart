@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/app/theme.dart';
+import 'package:regalia/content/content_ids.dart';
+import 'package:regalia/core/models.dart';
 import 'package:regalia/main.dart';
 import 'package:regalia/screens/settings_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,33 +22,51 @@ void main() {
       ),
     );
 
+    expect(find.byKey(const ValueKey('unlock-entire-map')), findsNothing);
+    final arcSettings = find.byKey(
+      const ValueKey('story-arc-settings-regalia:arc/origin'),
+    );
     await tester.scrollUntilVisible(
-      find.byKey(const ValueKey('unlock-entire-map')),
+      arcSettings,
       300,
       scrollable: _settingsScroll(),
     );
-    await tester.tap(find.byKey(const ValueKey('unlock-entire-map')));
+    await tester.tap(arcSettings);
+    await tester.pumpAndSettle();
+
+    final unlockMap = find.byKey(
+      const ValueKey('unlock-entire-map-regalia:arc/origin'),
+    );
+    await tester.tap(unlockMap);
     await tester.pump();
 
-    expect(find.text('Unlock the entire map?'), findsOneWidget);
-    expect(find.textContaining('can’t be reversed'), findsOneWidget);
+    expect(
+      find.text('Unlock Queen’s Regalia: Origin Story map?'),
+      findsOneWidget,
+    );
+    expect(
+      find.textContaining('Other story arcs are not affected'),
+      findsOneWidget,
+    );
     expect(controller.fullMapUnlocked, isFalse);
 
-    await tester.tap(find.byKey(const ValueKey('confirm-unlock-map')));
+    await tester.tap(
+      find.byKey(const ValueKey('confirm-unlock-map-regalia:arc/origin')),
+    );
     await tester.pump();
     await tester.runAsync(controller.flushPersistence);
     await tester.pump();
 
     expect(controller.fullMapUnlocked, isTrue);
-    expect(find.text('Entire map unlocked'), findsOneWidget);
+    expect(find.text('This arc’s map is unlocked'), findsOneWidget);
   });
 
-  testWidgets('complete reset requires destructive-action confirmation', (
+  testWidgets('complete reset requires two destructive-action warnings', (
     tester,
   ) async {
     final controller = await _controller(tester);
     controller.updateSettings(controller.settings.copyWith(showTimer: false));
-    await controller.unlockEntireMap();
+    await controller.unlockEntireMap(ContentIds.originArc);
     await tester.pumpWidget(
       MaterialApp(
         theme: RegaliaTheme.midnight(),
@@ -63,10 +83,18 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('reset-entire-game')));
     await tester.pump();
 
-    expect(find.text('Completely reset the game?'), findsOneWidget);
-    expect(find.textContaining('can’t be undone'), findsOneWidget);
+    expect(find.text('Reset all game data?'), findsOneWidget);
+    expect(find.textContaining('one final warning'), findsOneWidget);
+    expect(controller.gameGeneration, 0);
 
-    await tester.tap(find.byKey(const ValueKey('confirm-reset-game')));
+    await tester.tap(find.byKey(const ValueKey('confirm-reset-game-first')));
+    await tester.pump();
+
+    expect(find.text('Final warning: erase everything?'), findsOneWidget);
+    expect(find.textContaining('can’t be undone'), findsOneWidget);
+    expect(controller.gameGeneration, 0);
+
+    await tester.tap(find.byKey(const ValueKey('confirm-reset-game-final')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
@@ -75,13 +103,71 @@ void main() {
     expect(controller.settings.showTimer, isTrue);
   });
 
+  testWidgets('story arc reset preserves master and puzzle-only data', (
+    tester,
+  ) async {
+    final controller = await _controller(tester);
+    controller.updateSettings(controller.settings.copyWith(showTimer: false));
+    final puzzle = controller.catalog!.puzzles.first;
+    controller.openPuzzle(puzzle);
+    controller.cycle(puzzle, const Cell(0, 0));
+    await controller.unlockEntireMap(ContentIds.originArc);
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: RegaliaTheme.midnight(),
+        home: SettingsScreen(controller: controller),
+      ),
+    );
+
+    final arcSettings = find.byKey(
+      const ValueKey('story-arc-settings-regalia:arc/origin'),
+    );
+    await tester.scrollUntilVisible(
+      arcSettings,
+      300,
+      scrollable: _settingsScroll(),
+    );
+    await tester.tap(arcSettings);
+    await tester.pumpAndSettle();
+
+    final resetArc = find.byKey(
+      const ValueKey('reset-story-arc-regalia:arc/origin'),
+    );
+    await tester.scrollUntilVisible(
+      resetArc,
+      300,
+      scrollable: find.byType(Scrollable),
+    );
+    await tester.tap(resetArc);
+    await tester.pump();
+
+    expect(find.text('Reset Queen’s Regalia: Origin Story?'), findsOneWidget);
+    expect(
+      find.textContaining('all other story arcs are preserved'),
+      findsOneWidget,
+    );
+    await tester.tap(
+      find.byKey(const ValueKey('confirm-reset-arc-regalia:arc/origin')),
+    );
+    await tester.pump();
+    await tester.runAsync(controller.flushPersistence);
+
+    expect(controller.boards, isEmpty);
+    expect(controller.records, isEmpty);
+    expect(controller.seenStoryBeatIds, isEmpty);
+    expect(controller.fullMapUnlocked, isFalse);
+    expect(controller.settings.showTimer, isFalse);
+    expect(controller.tutorialComplete, isTrue);
+    expect(controller.challengeSession, isNull);
+  });
+
   testWidgets('complete reset reloads an existing app at the tutorial', (
     tester,
   ) async {
     final controller = await _controller(tester);
     await tester.pumpWidget(RegaliaApp(controller: controller));
     await tester.pump();
-    expect(find.byTooltip('Settings'), findsOneWidget);
+    expect(find.byTooltip('Master settings'), findsOneWidget);
 
     await tester.runAsync(controller.resetGame);
     await tester.pump();

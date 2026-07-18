@@ -8,6 +8,7 @@ import '../app/app_controller.dart';
 import '../app/branding.dart';
 import '../app/journey.dart';
 import '../app/theme.dart';
+import '../content/content_models.dart';
 import '../core/models.dart';
 import '../widgets/crown_mark.dart';
 import '../widgets/pixel_art.dart';
@@ -26,10 +27,12 @@ class JourneyScreen extends StatefulWidget {
   const JourneyScreen({
     super.key,
     required this.controller,
+    this.arc,
     this.externalUrlLauncher,
   });
 
   final AppController controller;
+  final StoryArc? arc;
   final ExternalUrlLauncher? externalUrlLauncher;
 
   @override
@@ -44,11 +47,13 @@ class _JourneyScreenState extends State<JourneyScreen> {
   Completer<void>? _movementSkip;
   bool _moving = false;
 
+  StoryArc get _arc => widget.arc ?? widget.controller.originArc!;
+
   @override
   void initState() {
     super.initState();
     _displayedMarkerPosition =
-        widget.controller.frontierPuzzle?.order.toDouble();
+        widget.controller.frontierPuzzleFor(_arc)?.order.toDouble();
     WidgetsBinding.instance.addPostFrameCallback((_) => _arriveOnMap());
   }
 
@@ -62,11 +67,11 @@ class _JourneyScreenState extends State<JourneyScreen> {
   Future<void> _arriveOnMap() async {
     await _scrollToMarker();
     if (!mounted) return;
-    final progress = widget.controller.journeyProgress;
+    final progress = widget.controller.journeyProgressFor(_arc);
     final chapter =
         progress.frontierPuzzle == null
-            ? journeyChapters.last
-            : chapterForOrder(progress.frontierPuzzle!.order);
+            ? _arc.chapters.last
+            : _arc.chapterForOrder(progress.frontierPuzzle!.order);
     final reached = progress.completedCount >= chapter.startOrder - 1;
     if (reached && !widget.controller.hasSeenStoryBeat(chapter.storyBeatId)) {
       await _showChapter(chapter);
@@ -114,8 +119,8 @@ class _JourneyScreenState extends State<JourneyScreen> {
         if (_movementSkip!.isCompleted) break;
         final sameChapter =
             target != null &&
-            chapterForOrder(outcome.puzzle.order).id ==
-                chapterForOrder(target.round()).id;
+            _arc.chapterForOrder(outcome.puzzle.order).id ==
+                _arc.chapterForOrder(target.round()).id;
         setState(() {
           _walkFrame = (step - 1) % 4;
           _displayedMarkerPosition =
@@ -143,11 +148,14 @@ class _JourneyScreenState extends State<JourneyScreen> {
     if (!mounted) return;
 
     if (outcome.isJourneyComplete) {
-      if (!widget.controller.hasSeenStoryBeat(StoryBeatIds.finale)) {
+      if (!widget.controller.hasSeenStoryBeat(_arc.finaleScene.id)) {
         await Navigator.of(context).push(
           MaterialPageRoute(
             builder:
-                (_) => StorySceneScreen.finale(controller: widget.controller),
+                (_) => StorySceneScreen.finale(
+                  controller: widget.controller,
+                  arc: _arc,
+                ),
           ),
         );
       }
@@ -166,7 +174,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
       ..showSnackBar(
         SnackBar(
           content: Text(
-            '${chapterForOrder(outcome.nextPuzzle!.order).title} · Puzzle ${outcome.nextPuzzle!.order}',
+            '${_arc.chapterForOrder(outcome.nextPuzzle!.order).title} · Puzzle ${outcome.nextPuzzle!.order}',
           ),
           action: SnackBarAction(
             label: 'Next puzzle',
@@ -214,6 +222,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
               (_) => StorySceneScreen.chapter(
                 controller: widget.controller,
                 chapter: chapter,
+                arc: _arc,
               ),
         ),
       );
@@ -241,11 +250,11 @@ class _JourneyScreenState extends State<JourneyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final progress = widget.controller.journeyProgress;
+    final progress = widget.controller.journeyProgressFor(_arc);
     final activeChapter =
         progress.frontierPuzzle == null
-            ? journeyChapters.last
-            : chapterForOrder(progress.frontierPuzzle!.order);
+            ? _arc.chapters.last
+            : _arc.chapterForOrder(progress.frontierPuzzle!.order);
     final themed = RegaliaTheme.forChapter(activeChapter);
     return Theme(
       data: themed,
@@ -294,14 +303,15 @@ class _JourneyScreenState extends State<JourneyScreen> {
                   ),
                   PixelIconButton(
                     glyph: PixelGlyph.gear,
-                    tooltip: 'Settings',
+                    tooltip: 'Story arc settings',
                     onPressed:
                         () => Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder:
-                                (_) => SettingsScreen(
+                                (_) => StoryArcSettingsScreen(
                                   controller: widget.controller,
+                                  arc: _arc,
                                 ),
                           ),
                         ),
@@ -316,10 +326,11 @@ class _JourneyScreenState extends State<JourneyScreen> {
                       SliverToBoxAdapter(
                         child: _JourneyHeader(
                           controller: widget.controller,
+                          arc: _arc,
                           progress: progress,
                           onContinue:
                               () => _openPuzzle(
-                                widget.controller.recommendedPuzzle(),
+                                widget.controller.recommendedPuzzleFor(_arc),
                               ),
                           onChallenge: _openChallenge,
                         ),
@@ -330,9 +341,10 @@ class _JourneyScreenState extends State<JourneyScreen> {
                             constraints: const BoxConstraints(maxWidth: 600),
                             child: Column(
                               children: [
-                                for (final chapter in journeyChapters)
+                                for (final chapter in _arc.chapters)
                                   _RouteSection(
                                     controller: widget.controller,
+                                    arc: _arc,
                                     chapter: chapter,
                                     markerPosition: _displayedMarkerPosition,
                                     moving: _moving,
@@ -355,6 +367,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
                                           ? _markerKey
                                           : null,
                                   controller: widget.controller,
+                                  arc: _arc,
                                   reached: progress.isJourneyComplete,
                                 ),
                                 const SizedBox(height: 64),
@@ -437,23 +450,25 @@ Future<bool> _launchExternalUrl(Uri uri) => launchUrl(
 class _JourneyHeader extends StatelessWidget {
   const _JourneyHeader({
     required this.controller,
+    required this.arc,
     required this.progress,
     required this.onContinue,
     required this.onChallenge,
   });
 
   final AppController controller;
+  final StoryArc arc;
   final JourneyProgress progress;
   final VoidCallback onContinue;
   final VoidCallback onChallenge;
 
   @override
   Widget build(BuildContext context) {
-    final target = controller.recommendedPuzzle();
+    final target = controller.recommendedPuzzleFor(arc);
     final title =
         progress.isJourneyComplete
             ? 'The realms remain open'
-            : chapterForOrder(target.order).title;
+            : arc.chapterForOrder(target.order).title;
     final label =
         progress.isJourneyComplete
             ? progress.assistedCount > 0
@@ -495,7 +510,7 @@ class _JourneyHeader extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${progress.completedCount}/120',
+                        '${progress.completedCount}/${arc.catalog.puzzles.length}',
                         style: const TextStyle(fontWeight: FontWeight.w700),
                       ),
                     ],
@@ -505,18 +520,24 @@ class _JourneyHeader extends StatelessWidget {
                     height: 12,
                     child: Row(
                       children: [
-                        for (var segment = 0; segment < 12; segment++) ...[
+                        for (
+                          var segment = 0;
+                          segment < arc.chapters.length;
+                          segment++
+                        ) ...[
                           Expanded(
                             child: ColoredBox(
                               color:
-                                  progress.completedCount >= (segment + 1) * 10
+                                  progress.completedCount >=
+                                          arc.chapters[segment].endOrder
                                       ? Theme.of(context).colorScheme.secondary
                                       : Theme.of(
                                         context,
                                       ).colorScheme.surfaceContainerHighest,
                             ),
                           ),
-                          if (segment < 11) const SizedBox(width: 2),
+                          if (segment < arc.chapters.length - 1)
+                            const SizedBox(width: 2),
                         ],
                       ],
                     ),
@@ -549,8 +570,8 @@ class _JourneyHeader extends StatelessWidget {
                     ),
                     label: Text(
                       controller.hasChallenge
-                          ? 'Resume challenge mode'
-                          : 'Challenge mode',
+                          ? 'Resume Just Puzzle!'
+                          : 'Just Puzzle!',
                     ),
                   ),
                 ],
@@ -566,6 +587,7 @@ class _JourneyHeader extends StatelessWidget {
 class _RouteSection extends StatelessWidget {
   const _RouteSection({
     required this.controller,
+    required this.arc,
     required this.chapter,
     required this.markerPosition,
     required this.moving,
@@ -576,6 +598,7 @@ class _RouteSection extends StatelessWidget {
   });
 
   final AppController controller;
+  final StoryArc arc;
   final JourneyChapter chapter;
   final double? markerPosition;
   final bool moving;
@@ -586,12 +609,12 @@ class _RouteSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final progress = controller.journeyProgress;
+    final progress = controller.journeyProgressFor(arc);
     final reached =
-        controller.fullMapUnlocked ||
+        controller.isMapUnlocked(arc.id) ||
         progress.completedCount >= chapter.startOrder - 1;
     final puzzles =
-        controller.catalog!.puzzles
+        arc.catalog.puzzles
             .where((puzzle) => chapter.contains(puzzle.order))
             .toList();
     final chapterTheme = RegaliaTheme.forChapter(chapter);
@@ -717,6 +740,7 @@ class _RouteSection extends StatelessWidget {
                           child: _PuzzleNode(
                             puzzle: puzzles[index],
                             controller: controller,
+                            arc: arc,
                             onOpen: onOpen,
                           ),
                         ),
@@ -756,18 +780,20 @@ class _PuzzleNode extends StatelessWidget {
   const _PuzzleNode({
     required this.puzzle,
     required this.controller,
+    required this.arc,
     required this.onOpen,
   });
 
   final PuzzleDefinition puzzle;
   final AppController controller;
+  final StoryArc arc;
   final ValueChanged<PuzzleDefinition> onOpen;
 
   @override
   Widget build(BuildContext context) {
     final record = controller.recordFor(puzzle.id);
     final canOpen = controller.canOpenPuzzle(puzzle);
-    final current = controller.frontierPuzzle?.id == puzzle.id;
+    final current = controller.frontierPuzzleFor(arc)?.id == puzzle.id;
     final active = controller.hasActiveBoard(puzzle);
     final available =
         canOpen &&
@@ -886,10 +912,12 @@ class _FinalLandmark extends StatelessWidget {
   const _FinalLandmark({
     super.key,
     required this.controller,
+    required this.arc,
     required this.reached,
   });
 
   final AppController controller;
+  final StoryArc arc;
   final bool reached;
 
   @override
@@ -900,8 +928,8 @@ class _FinalLandmark extends StatelessWidget {
       enabled: reached,
       label:
           reached
-              ? 'Dawn has returned to the realms. Replay the finale.'
-              : 'The Queen waits in the Empyrean Citadel. Complete puzzle 120 to reach the Sky Throne.',
+              ? '${arc.finaleScene.title}. Replay the finale.'
+              : '${arc.title} finale awaits. Complete puzzle ${arc.catalog.puzzles.last.order} to reach it.',
       child: InkWell(
         key: const ValueKey('final-landmark'),
         onTap:
@@ -909,7 +937,10 @@ class _FinalLandmark extends StatelessWidget {
                 ? () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder:
-                        (_) => StorySceneScreen.finale(controller: controller),
+                        (_) => StorySceneScreen.finale(
+                          controller: controller,
+                          arc: arc,
+                        ),
                   ),
                 )
                 : null,
@@ -918,7 +949,7 @@ class _FinalLandmark extends StatelessWidget {
           children: [
             Positioned.fill(
               child: PixelLandscape(
-                chapter: journeyChapters.last,
+                chapter: arc.chapters.last,
                 brightness: Theme.of(context).brightness,
                 sceneKind:
                     reached ? PixelSceneKind.finale : PixelSceneKind.panorama,
@@ -964,7 +995,9 @@ class _FinalLandmark extends StatelessWidget {
                   const SizedBox(width: 10),
                   Flexible(
                     child: Text(
-                      reached ? 'The Dawn Returns' : 'The Sky Throne Awaits',
+                      reached
+                          ? arc.finaleScene.title
+                          : '${arc.title} Finale Awaits',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),

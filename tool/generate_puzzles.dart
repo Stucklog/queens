@@ -5,6 +5,7 @@ import 'package:regalia/core/exact_solver.dart';
 import 'package:regalia/core/generator.dart';
 import 'package:regalia/core/human_solver.dart';
 import 'package:regalia/core/models.dart';
+import 'package:regalia/content/content_ids.dart';
 
 Future<void> main(List<String> arguments) async {
   final command = arguments.isEmpty ? 'report' : arguments.first;
@@ -197,9 +198,9 @@ void _validateTutorial(PuzzleDefinition tutorial, PuzzleCatalog catalog) {
   const exact = ExactSolver();
   const human = HumanSolver();
   const generator = PuzzleGenerator();
-  if (tutorial.id != 'guided-tutorial' ||
+  if (tutorial.id != ContentIds.tutorialPuzzle ||
       catalog.puzzles.any((puzzle) => puzzle.id == tutorial.id)) {
-    throw StateError('Tutorial must have a separate guided-tutorial ID');
+    throw StateError('Tutorial must have a separate namespaced ID');
   }
   final issue = generator.validateRegionQuality(tutorial);
   if (issue != null) throw StateError('${tutorial.id}: $issue');

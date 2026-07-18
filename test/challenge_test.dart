@@ -31,7 +31,7 @@ void main() {
     expect(first.toJson(), again.toJson());
     expect(first.tier, DifficultyTier.expert);
     expect(first.size, anyOf(9, 10));
-    expect(first.puzzleId, 'challenge-2a-00003');
+    expect(first.puzzleId, 'regalia:puzzle/just-puzzle/run-2a/board-00003');
 
     final mixed = {
       for (var number = 1; number <= 4; number++)

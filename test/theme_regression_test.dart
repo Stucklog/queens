@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/app/journey.dart';
 import 'package:regalia/main.dart';
-import 'package:regalia/screens/journey_screen.dart';
+import 'package:regalia/screens/home_screen.dart';
 import 'package:regalia/screens/settings_screen.dart';
 import 'package:regalia/widgets/pixel_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,13 +33,13 @@ void main() {
       await tester.pumpWidget(RegaliaApp(controller: controller));
       await tester.pump(const Duration(milliseconds: 500));
 
-      expect(find.byType(JourneyScreen), findsOneWidget);
+      expect(find.byType(HomeScreen), findsOneWidget);
       expect(
-        Theme.of(tester.element(find.byType(JourneyScreen))).brightness,
+        Theme.of(tester.element(find.byType(HomeScreen))).brightness,
         Brightness.dark,
       );
 
-      await tester.tap(find.byTooltip('Settings'));
+      await tester.tap(find.byTooltip('Master settings'));
       await tester.pumpAndSettle();
 
       expect(find.byType(SettingsScreen), findsOneWidget);

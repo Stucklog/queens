@@ -20,6 +20,12 @@ void main() {
 
     await tester.tap(find.text('Skip'));
     await _pumpFrames(tester);
+    expect(find.text('Queen’s Regalia: Origin Story'), findsOneWidget);
+
+    await tester.tap(
+      find.byKey(const ValueKey('story-arc-tile-regalia:arc/origin')),
+    );
+    await _pumpFrames(tester);
     expect(find.text('The Night of Crownfall'), findsOneWidget);
 
     await tester.tap(find.text('Take up the Regalia'));
