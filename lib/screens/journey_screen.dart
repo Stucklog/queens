@@ -46,6 +46,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
   int _walkFrame = 0;
   Completer<void>? _movementSkip;
   bool _moving = false;
+  final Set<String> _presentationPrecaches = {};
 
   StoryArc get _arc => widget.arc ?? widget.controller.originArc!;
 
@@ -67,6 +68,9 @@ class _JourneyScreenState extends State<JourneyScreen> {
   Future<void> _arriveOnMap() async {
     await _scrollToMarker();
     if (!mounted) return;
+    unawaited(
+      _precachePuzzlePresentation(widget.controller.recommendedPuzzleFor(_arc)),
+    );
     final progress = widget.controller.journeyProgressFor(_arc);
     final chapter =
         progress.frontierPuzzle == null
@@ -80,6 +84,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
 
   Future<void> _openPuzzle(PuzzleDefinition puzzle) async {
     if (!widget.controller.openPuzzle(puzzle)) return;
+    unawaited(_precachePuzzlePresentation(puzzle));
     final outcome = await Navigator.of(context).push<PuzzleCompletionOutcome>(
       MaterialPageRoute(
         builder:
@@ -96,6 +101,10 @@ class _JourneyScreenState extends State<JourneyScreen> {
   Future<void> _moveAfter(PuzzleCompletionOutcome outcome) async {
     await _waitUntilMapIsVisible();
     if (!mounted) return;
+    final nextPuzzle = outcome.nextPuzzle;
+    if (nextPuzzle != null) {
+      unawaited(_precachePuzzlePresentation(nextPuzzle));
+    }
     setState(() {
       _displayedMarkerPosition = outcome.puzzle.order.toDouble();
       _moving = true;
@@ -149,6 +158,13 @@ class _JourneyScreenState extends State<JourneyScreen> {
 
     if (outcome.isJourneyComplete) {
       if (!widget.controller.hasSeenStoryBeat(_arc.finaleScene.id)) {
+        unawaited(
+          precachePixelArtAssets(context, [
+            _arc.finaleScene.artAsset,
+            PixelStoryKnightSprite.assetPath,
+            PixelQueenSprite.assetPath,
+          ]),
+        );
         await Navigator.of(context).push(
           MaterialPageRoute(
             builder:
@@ -215,17 +231,38 @@ class _JourneyScreenState extends State<JourneyScreen> {
     );
   }
 
-  Future<void> _showChapter(JourneyChapter chapter) =>
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder:
-              (_) => StorySceneScreen.chapter(
-                controller: widget.controller,
-                chapter: chapter,
-                arc: _arc,
-              ),
-        ),
-      );
+  Future<void> _showChapter(JourneyChapter chapter) async {
+    final scene = _arc.sceneById(chapter.sceneId);
+    unawaited(
+      precachePixelArtAssets(context, [
+        scene.artAsset,
+        PixelStoryKnightSprite.assetPath,
+      ]),
+    );
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder:
+            (_) => StorySceneScreen.chapter(
+              controller: widget.controller,
+              chapter: chapter,
+              arc: _arc,
+            ),
+      ),
+    );
+  }
+
+  Future<void> _precachePuzzlePresentation(PuzzleDefinition puzzle) async {
+    final encounter = _arc.encounterForPuzzle(puzzle);
+    if (encounter == null || !_presentationPrecaches.add(encounter.id)) return;
+    try {
+      await Future.wait([
+        precachePixelArtAssets(context, [encounter.spriteAsset]),
+        PixelKnightSprite.preloadFinishers(),
+      ]);
+    } on Object {
+      // The puzzle remains playable with its true-error sprite fallbacks.
+    }
+  }
 
   Future<void> _openChallenge() => Navigator.of(context).push(
     MaterialPageRoute(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../app/app_controller.dart';
@@ -22,7 +24,17 @@ class HomeScreen extends StatelessWidget {
   final AppController controller;
 
   Future<void> _openArc(BuildContext context, StoryArc arc) async {
-    if (!controller.hasSeenStoryBeat(arc.openingScene.id)) {
+    final openingUnseen = !controller.hasSeenStoryBeat(arc.openingScene.id);
+    unawaited(
+      precachePixelArtAssets(context, [
+        arc.chapters.first.artAsset,
+        if (openingUnseen) ...[
+          arc.openingScene.artAsset,
+          PixelStoryKnightSprite.assetPath,
+        ],
+      ]),
+    );
+    if (openingUnseen) {
       await Navigator.of(context).push<void>(
         MaterialPageRoute(
           builder:

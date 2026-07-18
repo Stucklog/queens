@@ -10,6 +10,30 @@ enum PixelSceneKind { panorama, opening, chapter, finale }
 
 enum PixelArtPlacement { story, route, banner }
 
+/// Warms only the images needed by the next presentation surface.
+///
+/// A packaged asset can still disappear or become corrupt independently of
+/// the metadata that references it. Precache failures are deliberately left
+/// for the widget's error fallback instead of interrupting navigation.
+Future<void> precachePixelArtAssets(
+  BuildContext context,
+  Iterable<String> assetPaths,
+) async {
+  await Future.wait(
+    assetPaths.map((assetPath) async {
+      try {
+        await precacheImage(
+          AssetImage(assetPath),
+          context,
+          onError: (error, stackTrace) {},
+        );
+      } on Object {
+        // Image widgets retain a graceful fallback for true asset failures.
+      }
+    }),
+  );
+}
+
 enum KnightAnimation {
   walk,
   bounce,
@@ -89,7 +113,17 @@ class PixelLandscape extends StatelessWidget {
   final int frame;
   final String? assetPath;
 
-  String get _assetPath =>
+  String get _assetPath => resolveAssetPath(
+    chapter: chapter,
+    sceneKind: sceneKind,
+    assetPath: assetPath,
+  );
+
+  static String resolveAssetPath({
+    required JourneyChapter chapter,
+    PixelSceneKind sceneKind = PixelSceneKind.panorama,
+    String? assetPath,
+  }) =>
       assetPath ??
       switch (sceneKind) {
         PixelSceneKind.opening => 'assets/art/backgrounds/story_opening.webp',
@@ -112,6 +146,7 @@ class PixelLandscape extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fallback = CustomPaint(
+      key: const ValueKey('pixel-landscape-error-fallback'),
       painter: PixelLandscapePainter(
         chapter: chapter,
         brightness: brightness,
@@ -129,7 +164,10 @@ class PixelLandscape extends StatelessWidget {
           excludeFromSemantics: true,
           frameBuilder: (context, child, imageFrame, wasLoaded) {
             if (wasLoaded || imageFrame != null) return child;
-            return fallback;
+            return ColoredBox(
+              key: const ValueKey('pixel-landscape-loading'),
+              color: chapter.palette.background,
+            );
           },
           errorBuilder: (context, error, stackTrace) => fallback,
         ),
@@ -1698,11 +1736,15 @@ class PixelStoryKnightSprite extends StatelessWidget {
             excludeFromSemantics: true,
             frameBuilder: (context, child, imageFrame, wasLoaded) {
               if (wasLoaded || imageFrame != null) return child;
-              return CustomPaint(painter: _PixelKnightPainter(frame: frame));
+              return const SizedBox.expand(
+                key: ValueKey('story-knight-loading'),
+              );
             },
             errorBuilder:
-                (context, error, stackTrace) =>
-                    CustomPaint(painter: _PixelKnightPainter(frame: frame)),
+                (context, error, stackTrace) => CustomPaint(
+                  key: const ValueKey('story-knight-error-fallback'),
+                  painter: _PixelKnightPainter(frame: frame),
+                ),
           ),
         ),
       ),
@@ -1734,6 +1776,12 @@ class PixelKnightSprite extends StatefulWidget {
   static Future<void> preload() async {
     await Future.wait([_KnightAtlas.image, _KnightFinisherAtlas.image]);
   }
+
+  /// Decodes the small, commonly used movement atlas during app startup.
+  static Future<void> preloadCommon() => _KnightAtlas.image;
+
+  /// Decodes the larger finisher atlas only when combat is approaching.
+  static Future<void> preloadFinishers() => _KnightFinisherAtlas.image;
 
   @override
   State<PixelKnightSprite> createState() => _PixelKnightSpriteState();
@@ -1855,7 +1903,15 @@ class _PixelKnightSpriteState extends State<PixelKnightSprite>
             builder: (context, snapshot) {
               final image = snapshot.data;
               if (image == null) {
-                return CustomPaint(painter: _PixelKnightPainter(frame: frame));
+                if (snapshot.hasError) {
+                  return CustomPaint(
+                    key: const ValueKey('knight-atlas-error-fallback'),
+                    painter: _PixelKnightPainter(frame: frame),
+                  );
+                }
+                return const SizedBox.expand(
+                  key: ValueKey('knight-atlas-loading'),
+                );
               }
               return _paintAtlasFrame(image, frame);
             },
@@ -2512,6 +2568,8 @@ class PixelQueenSprite extends StatelessWidget {
     this.width = 48,
     this.height = 76,
   });
+  static const assetPath = 'assets/art/queen.png';
+
   final int frame;
   final double width;
   final double height;
@@ -2534,17 +2592,19 @@ class PixelQueenSprite extends StatelessWidget {
           width: width,
           height: height,
           child: Image.asset(
-            'assets/art/queen.png',
+            assetPath,
             fit: BoxFit.contain,
             filterQuality: FilterQuality.none,
             excludeFromSemantics: true,
             frameBuilder: (context, child, imageFrame, wasLoaded) {
               if (wasLoaded || imageFrame != null) return child;
-              return CustomPaint(painter: _PixelQueenPainter(frame));
+              return const SizedBox.expand(key: ValueKey('queen-art-loading'));
             },
             errorBuilder:
-                (context, error, stackTrace) =>
-                    CustomPaint(painter: _PixelQueenPainter(frame)),
+                (context, error, stackTrace) => CustomPaint(
+                  key: const ValueKey('queen-art-error-fallback'),
+                  painter: _PixelQueenPainter(frame),
+                ),
           ),
         ),
       ),

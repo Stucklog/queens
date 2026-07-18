@@ -412,11 +412,15 @@ class _PixelEnemySpriteState extends State<PixelEnemySprite>
                   excludeFromSemantics: true,
                   frameBuilder: (context, child, imageFrame, wasLoaded) {
                     if (wasLoaded || imageFrame != null) return child;
-                    return CustomPaint(painter: fallback);
+                    return const SizedBox.expand(
+                      key: ValueKey('enemy-atlas-loading'),
+                    );
                   },
                   errorBuilder:
-                      (context, error, stackTrace) =>
-                          CustomPaint(painter: fallback),
+                      (context, error, stackTrace) => CustomPaint(
+                        key: const ValueKey('enemy-atlas-error-fallback'),
+                        painter: fallback,
+                      ),
                 ),
               ),
             ],

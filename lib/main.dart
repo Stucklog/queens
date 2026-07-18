@@ -15,7 +15,7 @@ import 'widgets/pixel_ui.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  PixelKnightSprite.preload().ignore();
+  PixelKnightSprite.preloadCommon().ignore();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,

@@ -50,9 +50,27 @@ class _GameScreenState extends State<GameScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       widget.controller.startTimer(widget.puzzle.id);
       _keyboardFocus.requestFocus();
+      unawaited(_precacheEncounterPresentation());
     });
+  }
+
+  Future<void> _precacheEncounterPresentation() async {
+    if (widget.playMode != PuzzlePlayMode.journey) return;
+    final encounter = widget.controller
+        .arcForPuzzle(widget.puzzle)
+        ?.encounterForPuzzle(widget.puzzle);
+    if (encounter == null) return;
+    try {
+      await Future.wait([
+        precachePixelArtAssets(context, [encounter.spriteAsset]),
+        PixelKnightSprite.preloadFinishers(),
+      ]);
+    } on Object {
+      // A broken optional art asset must never make the puzzle unplayable.
+    }
   }
 
   @override
