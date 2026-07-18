@@ -111,9 +111,9 @@ void main() {
               puzzle: puzzle,
               board: board,
               onCellPressed: board.cycle,
-              onCellExcluded: (cell) {
+              onCellDragged: (cell, targetState) {
                 if (board.at(cell) != ManualCellState.crown) {
-                  board.set(cell, ManualCellState.cross);
+                  board.set(cell, targetState);
                 }
               },
               onExclusionDragStarted: board.beginBatch,

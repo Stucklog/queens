@@ -199,9 +199,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   automaticExclusions: widget.controller.ruleEngine
                       .automaticExclusions(_puzzle, _board),
                   onCellPressed: (cell) => setState(() => _board.cycle(cell)),
-                  onCellExcluded: (cell) {
+                  onCellDragged: (cell, targetState) {
                     if (_board.at(cell) != ManualCellState.crown) {
-                      setState(() => _board.set(cell, ManualCellState.cross));
+                      setState(() => _board.set(cell, targetState));
                     }
                   },
                 ),

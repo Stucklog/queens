@@ -12,13 +12,16 @@ import '../core/models.dart';
 /// may call attention to a mark without changing it.
 enum BoardCue { hintSource, hintElimination, hintPlacement, checkError }
 
+typedef CellDragCallback =
+    void Function(Cell cell, ManualCellState targetState);
+
 class RegaliaBoard extends StatelessWidget {
   const RegaliaBoard({
     super.key,
     required this.puzzle,
     required this.board,
     required this.onCellPressed,
-    this.onCellExcluded,
+    this.onCellDragged,
     this.onExclusionDragStarted,
     this.onExclusionDragEnded,
     this.automaticExclusions = const {},
@@ -31,7 +34,7 @@ class RegaliaBoard extends StatelessWidget {
   final PuzzleDefinition puzzle;
   final BoardState board;
   final ValueChanged<Cell> onCellPressed;
-  final ValueChanged<Cell>? onCellExcluded;
+  final CellDragCallback? onCellDragged;
   final VoidCallback? onExclusionDragStarted;
   final VoidCallback? onExclusionDragEnded;
   final Set<Cell> automaticExclusions;
@@ -65,7 +68,8 @@ class RegaliaBoard extends StatelessWidget {
       aspectRatio: 1,
       child: _DragExcluder(
         boardSize: puzzle.size,
-        onCellExcluded: onCellExcluded,
+        stateAt: board.at,
+        onCellDragged: onCellDragged,
         onDragStarted: onExclusionDragStarted,
         onDragEnded: onExclusionDragEnded,
         child: DecoratedBox(
@@ -880,14 +884,16 @@ class _PixelGridGeometry {
 class _DragExcluder extends StatefulWidget {
   const _DragExcluder({
     required this.boardSize,
-    required this.onCellExcluded,
+    required this.stateAt,
+    required this.onCellDragged,
     required this.onDragStarted,
     required this.onDragEnded,
     required this.child,
   });
 
   final int boardSize;
-  final ValueChanged<Cell>? onCellExcluded;
+  final ManualCellState Function(Cell) stateAt;
+  final CellDragCallback? onCellDragged;
   final VoidCallback? onDragStarted;
   final VoidCallback? onDragEnded;
   final Widget child;
@@ -899,38 +905,66 @@ class _DragExcluder extends StatefulWidget {
 class _DragExcluderState extends State<_DragExcluder> {
   Cell? _startCell;
   Cell? _lastCell;
+  ManualCellState? _targetState;
+  Axis? _activeAxis;
   final Set<Cell> _visited = {};
 
   @override
   Widget build(BuildContext context) => GestureDetector(
     behavior: HitTestBehavior.translucent,
     excludeFromSemantics: true,
-    onPanDown:
-        widget.onCellExcluded == null
+    onHorizontalDragDown:
+        widget.onCellDragged == null
             ? null
             : (details) => _startCell = _cellAt(details.localPosition),
-    onPanStart:
-        widget.onCellExcluded == null
+    onVerticalDragDown:
+        widget.onCellDragged == null
             ? null
-            : (details) {
-              _visited.clear();
-              widget.onDragStarted?.call();
-              final current = _cellAt(details.localPosition);
-              _markPath(_startCell ?? current, current);
-              _lastCell = current;
-            },
-    onPanUpdate:
-        widget.onCellExcluded == null
+            : (details) => _startCell = _cellAt(details.localPosition),
+    onHorizontalDragStart:
+        widget.onCellDragged == null
             ? null
-            : (details) {
-              final current = _cellAt(details.localPosition);
-              _markPath(_lastCell ?? current, current);
-              _lastCell = current;
-            },
-    onPanEnd: widget.onCellExcluded == null ? null : (_) => _finishDrag(),
-    onPanCancel: widget.onCellExcluded == null ? null : _finishDrag,
+            : (details) => _startDrag(details, Axis.horizontal),
+    onHorizontalDragUpdate: widget.onCellDragged == null ? null : _updateDrag,
+    onHorizontalDragEnd:
+        widget.onCellDragged == null
+            ? null
+            : (_) => _finishDrag(Axis.horizontal),
+    onHorizontalDragCancel:
+        widget.onCellDragged == null
+            ? null
+            : () => _finishDrag(Axis.horizontal),
+    onVerticalDragStart:
+        widget.onCellDragged == null
+            ? null
+            : (details) => _startDrag(details, Axis.vertical),
+    onVerticalDragUpdate: widget.onCellDragged == null ? null : _updateDrag,
+    onVerticalDragEnd:
+        widget.onCellDragged == null ? null : (_) => _finishDrag(Axis.vertical),
+    onVerticalDragCancel:
+        widget.onCellDragged == null ? null : () => _finishDrag(Axis.vertical),
     child: widget.child,
   );
+
+  void _startDrag(DragStartDetails details, Axis axis) {
+    _activeAxis = axis;
+    _visited.clear();
+    widget.onDragStarted?.call();
+    final current = _cellAt(details.localPosition);
+    final start = _startCell ?? current;
+    _targetState =
+        widget.stateAt(start) == ManualCellState.cross
+            ? ManualCellState.empty
+            : ManualCellState.cross;
+    _markPath(start, current);
+    _lastCell = current;
+  }
+
+  void _updateDrag(DragUpdateDetails details) {
+    final current = _cellAt(details.localPosition);
+    _markPath(_lastCell ?? current, current);
+    _lastCell = current;
+  }
 
   Cell _cellAt(Offset position) {
     final size = context.size ?? Size.zero;
@@ -952,14 +986,17 @@ class _DragExcluderState extends State<_DragExcluder> {
         (from.row + (to.row - from.row) * fraction).round(),
         (from.column + (to.column - from.column) * fraction).round(),
       );
-      if (_visited.add(cell)) widget.onCellExcluded!(cell);
+      if (_visited.add(cell)) widget.onCellDragged!(cell, _targetState!);
     }
   }
 
-  void _finishDrag() {
+  void _finishDrag(Axis axis) {
+    if (_activeAxis != axis) return;
     if (_lastCell != null) widget.onDragEnded?.call();
     _startCell = null;
     _lastCell = null;
+    _targetState = null;
+    _activeAxis = null;
     _visited.clear();
   }
 }

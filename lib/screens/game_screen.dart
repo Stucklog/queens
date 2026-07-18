@@ -161,7 +161,7 @@ class _GameScreenState extends State<GameScreen> {
                             cues: _cues,
                             selected: _selected,
                             onCellPressed: _pressCell,
-                            onCellExcluded: _excludeCell,
+                            onCellDragged: _dragCell,
                             onExclusionDragStarted: _beginExclusionDrag,
                             onExclusionDragEnded: _endExclusionDrag,
                           ),
@@ -189,14 +189,19 @@ class _GameScreenState extends State<GameScreen> {
                             ),
                           );
                         }
-                        return SingleChildScrollView(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
-                          child: Column(
-                            children: [
-                              boardWidget,
-                              const SizedBox(height: 18),
-                              controls,
-                            ],
+                        return ClipRect(
+                          key: const ValueKey('puzzle-scroll-safe-area'),
+                          child: SingleChildScrollView(
+                            key: const ValueKey('puzzle-scroll-view'),
+                            physics: const ClampingScrollPhysics(),
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
+                            child: Column(
+                              children: [
+                                boardWidget,
+                                const SizedBox(height: 18),
+                                controls,
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -222,10 +227,10 @@ class _GameScreenState extends State<GameScreen> {
     if (outcome != null) _showCompletion(outcome);
   }
 
-  void _excludeCell(Cell cell) {
+  void _dragCell(Cell cell, ManualCellState targetState) {
     final board = widget.controller.boardFor(widget.puzzle);
-    if (board.at(cell) == ManualCellState.crown ||
-        board.at(cell) == ManualCellState.cross) {
+    final before = board.at(cell);
+    if (before == ManualCellState.crown || before == targetState) {
       return;
     }
     setState(() {
@@ -233,10 +238,14 @@ class _GameScreenState extends State<GameScreen> {
       _cues = {};
       _conflicts = {};
     });
-    widget.controller.setCell(widget.puzzle, cell, ManualCellState.cross);
+    widget.controller.setCell(widget.puzzle, cell, targetState);
     if (!_exclusionDragReacted) {
       _exclusionDragReacted = true;
-      _playKnightAnimation(KnightAnimation.defend);
+      _playKnightAnimation(
+        targetState == ManualCellState.cross
+            ? KnightAnimation.defend
+            : KnightAnimation.surprised,
+      );
     }
   }
 
