@@ -306,7 +306,9 @@ void main() {
       arc.chapters.every(
         (chapter) =>
             ContentId.isValid(chapter.id, kind: 'chapter') &&
-            ContentId.isValid(chapter.mapId, kind: 'map'),
+            ContentId.isValid(chapter.mapId, kind: 'map') &&
+            ContentId.isValid(chapter.boss.id, kind: 'boss') &&
+            ContentId.isValid(chapter.boss.puzzleId, kind: 'puzzle'),
       ),
       isTrue,
     );

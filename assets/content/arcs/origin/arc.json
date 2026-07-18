@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/origin",
-  "contentVersion": 1,
+  "contentVersion": 2,
   "title": "Queen’s Regalia: Origin Story",
   "mapId": "regalia:map/origin/pilgrimage",
   "puzzleCatalogAsset": "assets/puzzles/catalog.json",
@@ -23,6 +23,14 @@
       "endOrder": 20,
       "difficulty": "easy",
       "size": 6,
+      "boss": {
+        "id": "regalia:boss/origin/starfall-stag",
+        "name": "Starfall Stag",
+        "puzzleId": "regalia:puzzle/origin/boss/starfall-stag",
+        "size": 7,
+        "targetDifficulty": "easy",
+        "unlocks": "regalia:chapter/origin/whisperwood"
+      },
       "primaryColor": "#527663",
       "secondaryColor": "#5d9ab5"
     },
@@ -39,6 +47,14 @@
       "endOrder": 30,
       "difficulty": "easy",
       "size": 7,
+      "boss": {
+        "id": "regalia:boss/origin/elderroot-wyrm",
+        "name": "Elderroot Wyrm",
+        "puzzleId": "regalia:puzzle/origin/boss/elderroot-wyrm",
+        "size": 7,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/origin/windmill-heights"
+      },
       "primaryColor": "#365f50",
       "secondaryColor": "#704d78"
     },
@@ -55,6 +71,14 @@
       "endOrder": 40,
       "difficulty": "medium",
       "size": 7,
+      "boss": {
+        "id": "regalia:boss/origin/tempest-roc",
+        "name": "Tempest Roc",
+        "puzzleId": "regalia:puzzle/origin/boss/tempest-roc",
+        "size": 8,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/origin/sunken-cloister"
+      },
       "primaryColor": "#536d88",
       "secondaryColor": "#a75b3b"
     },
@@ -71,6 +95,14 @@
       "endOrder": 60,
       "difficulty": "medium",
       "size": 8,
+      "boss": {
+        "id": "regalia:boss/origin/abyssal-bellkeeper",
+        "name": "Abyssal Bellkeeper",
+        "puzzleId": "regalia:puzzle/origin/boss/abyssal-bellkeeper",
+        "size": 8,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/origin/emberbell-caverns"
+      },
       "primaryColor": "#247f82",
       "secondaryColor": "#879e91"
     },
@@ -87,6 +119,14 @@
       "endOrder": 80,
       "difficulty": "hard",
       "size": 8,
+      "boss": {
+        "id": "regalia:boss/origin/cindermaw-behemoth",
+        "name": "Cindermaw Behemoth",
+        "puzzleId": "regalia:puzzle/origin/boss/cindermaw-behemoth",
+        "size": 9,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/origin/goblin-underkeep"
+      },
       "primaryColor": "#8d3e31",
       "secondaryColor": "#db7a37"
     },
@@ -103,6 +143,14 @@
       "endOrder": 90,
       "difficulty": "hard",
       "size": 9,
+      "boss": {
+        "id": "regalia:boss/origin/gilded-war-colossus",
+        "name": "Gilded War Colossus",
+        "puzzleId": "regalia:puzzle/origin/boss/gilded-war-colossus",
+        "size": 9,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/origin/moonlit-catacombs"
+      },
       "primaryColor": "#5b4c2a",
       "secondaryColor": "#91a934"
     },
@@ -119,6 +167,14 @@
       "endOrder": 100,
       "difficulty": "expert",
       "size": 9,
+      "boss": {
+        "id": "regalia:boss/origin/sevenfold-wraith",
+        "name": "The Sevenfold Wraith",
+        "puzzleId": "regalia:puzzle/origin/boss/sevenfold-wraith",
+        "size": 10,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/origin/crownspire"
+      },
       "primaryColor": "#514d82",
       "secondaryColor": "#9ca9c7"
     },
@@ -135,6 +191,14 @@
       "endOrder": 120,
       "difficulty": "expert",
       "size": 10,
+      "boss": {
+        "id": "regalia:boss/origin/hollow-star",
+        "name": "The Hollow Star",
+        "puzzleId": "regalia:puzzle/origin/boss/hollow-star",
+        "size": 12,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:unlock/origin/finale"
+      },
       "primaryColor": "#244a98",
       "secondaryColor": "#bd8b2d"
     }

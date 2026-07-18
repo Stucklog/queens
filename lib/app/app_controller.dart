@@ -16,6 +16,7 @@ import '../content/content_models.dart';
 import '../content/content_repository.dart';
 import '../content/entitlements.dart';
 import 'challenge.dart';
+import 'game_configuration.dart';
 import 'journey.dart';
 
 class AppSettings {
@@ -61,6 +62,8 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     ContentAssetReader? contentAssetReader,
     ContentEntitlementPolicy? contentPolicy,
     this.contentManifestAsset = 'assets/content/manifest.json',
+    this.unlockFinaleWithGameBoard =
+        GameConfiguration.unlockFinaleWithGameBoard,
   }) : _contentAssetReader = contentAssetReader ?? rootBundle.loadString,
        contentPolicy = contentPolicy ?? ContentEntitlementPolicy.current();
 
@@ -70,6 +73,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   final ContentAssetReader _contentAssetReader;
   final ContentEntitlementPolicy contentPolicy;
   final String contentManifestAsset;
+  final bool unlockFinaleWithGameBoard;
   static const journeySchemaVersion = 1;
   static const saveMigrationVersion = 1;
   late final SharedPreferences _preferences;
@@ -174,10 +178,8 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     if (_catalogFingerprint != null &&
         _preferences.getString(SaveIds.originCatalogFingerprint) !=
             _catalogFingerprint) {
-      // Puzzle IDs stay stable between curated releases. Discard attempt data
-      // when their underlying boards change so marks and completions cannot be
-      // applied to a different puzzle.
-      await _clearOriginProgress(keepSeenScenes: true);
+      // Changed boards receive new puzzle IDs. Keep entries whose stable IDs
+      // still exist; restore below filters removed IDs and incompatible sizes.
       await _preferences.setString(
         SaveIds.originCatalogFingerprint,
         _catalogFingerprint!,
@@ -255,7 +257,8 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     final fingerprint = _arcCatalogFingerprints[arc.id]!;
     final fingerprintKey = SaveIds.forArc(arc.id, 'catalog-fingerprint');
     if (_preferences.getString(fingerprintKey) != fingerprint) {
-      await _clearArcProgress(arc.id);
+      // Arc-owned puzzle IDs are immutable for a given grid. Restore below
+      // keeps compatible IDs and ignores content that was replaced.
       await _preferences.setString(fingerprintKey, fingerprint);
     }
     final puzzleSizes = {
@@ -505,19 +508,6 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
       _preferences.remove(SaveIds.originRecords),
       _preferences.remove(SaveIds.originLastPuzzle),
       if (!keepSeenScenes) _preferences.remove(SaveIds.originSeenScenes),
-    ]);
-  }
-
-  Future<void> _clearArcProgress(
-    String arcId, {
-    bool keepSeenScenes = false,
-  }) async {
-    await Future.wait([
-      _preferences.remove(SaveIds.forArc(arcId, 'boards')),
-      _preferences.remove(SaveIds.forArc(arcId, 'records')),
-      _preferences.remove(SaveIds.forArc(arcId, 'last-puzzle')),
-      if (!keepSeenScenes)
-        _preferences.remove(SaveIds.forArc(arcId, 'seen-scenes')),
     ]);
   }
 
@@ -1031,6 +1021,8 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     final next = frontierPuzzleFor(arc);
     final currentChapter = arc.chapterForOrder(puzzle.order);
     final nextChapter = next == null ? null : arc.chapterForOrder(next.order);
+    final journeyComplete = wasFrontier && next == null;
+    if (journeyComplete) unlockedContentIds.add(arc.unlockIds.finale);
     return PuzzleCompletionOutcome(
       puzzle: puzzle,
       advancedJourney: wasFrontier,
@@ -1041,7 +1033,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
                   nextChapter.id != currentChapter.id
               ? nextChapter
               : null,
-      isJourneyComplete: wasFrontier && next == null,
+      isJourneyComplete: journeyComplete,
     );
   }
 
@@ -1137,11 +1129,21 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     return arc != null && unlockedContentIds.contains(arc.unlockIds.fullMap);
   }
 
+  bool isFinaleUnlocked(String arcId) {
+    final arc = content?.arc(arcId);
+    return arc != null &&
+        (unlockedContentIds.contains(arc.unlockIds.finale) ||
+            journeyProgressFor(arc).isJourneyComplete);
+  }
+
   Future<void> unlockEntireMap(String arcId) async {
     final arc = content?.arc(arcId);
     if (arc == null) throw ArgumentError.value(arcId, 'arcId');
-    if (isMapUnlocked(arcId)) return;
-    unlockedContentIds.add(arc.unlockIds.fullMap);
+    final changed = unlockedContentIds.add(arc.unlockIds.fullMap);
+    final finaleChanged =
+        unlockFinaleWithGameBoard &&
+        unlockedContentIds.add(arc.unlockIds.finale);
+    if (!changed && !finaleChanged) return;
     notifyListeners();
     await _save();
   }

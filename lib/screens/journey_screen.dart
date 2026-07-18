@@ -368,7 +368,9 @@ class _JourneyScreenState extends State<JourneyScreen> {
                                           : null,
                                   controller: widget.controller,
                                   arc: _arc,
-                                  reached: progress.isJourneyComplete,
+                                  reached: widget.controller.isFinaleUnlocked(
+                                    _arc.id,
+                                  ),
                                 ),
                                 const SizedBox(height: 64),
                               ],
@@ -791,6 +793,7 @@ class _PuzzleNode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final boss = arc.bossForPuzzle(puzzle);
     final record = controller.recordFor(puzzle.id);
     final canOpen = controller.canOpenPuzzle(puzzle);
     final current = controller.frontierPuzzleFor(arc)?.id == puzzle.id;
@@ -816,13 +819,17 @@ class _PuzzleNode extends StatelessWidget {
               _ => 'locked',
             };
     final prerequisite = math.max(1, puzzle.order - 1);
+    final nodeName =
+        boss == null ? 'Puzzle ${puzzle.order}' : '${boss.name} chapter boss';
     final explanation =
         canOpen
-            ? 'Puzzle ${puzzle.order}, $status.'
-            : 'Puzzle ${puzzle.order}, locked. Complete puzzle $prerequisite first.';
+            ? '$nodeName, $status.'
+            : '$nodeName, locked. Complete puzzle $prerequisite first.';
     final colors = Theme.of(context).colorScheme;
     final glyph =
-        active
+        boss != null && !active && record.status == CompletionStatus.newPuzzle
+            ? PixelGlyph.star
+            : active
             ? PixelGlyph.ellipsis
             : current
             ? PixelGlyph.arrowRight
@@ -890,11 +897,11 @@ class _PuzzleNode extends StatelessWidget {
                       excludeFromSemantics: true,
                     ),
                     Text(
-                      '${puzzle.order}',
+                      boss == null ? '${puzzle.order}' : 'BOSS',
                       style: TextStyle(
                         color: foreground,
                         fontWeight: FontWeight.w700,
-                        fontSize: 12,
+                        fontSize: boss == null ? 12 : 9,
                       ),
                     ),
                   ],

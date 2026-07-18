@@ -94,6 +94,13 @@ class StoryArc {
     orElse: () => chapters.last,
   );
 
+  ChapterBoss? bossForPuzzle(PuzzleDefinition puzzle) {
+    for (final chapter in chapters) {
+      if (chapter.boss.puzzleId == puzzle.id) return chapter.boss;
+    }
+    return null;
+  }
+
   void _validate() {
     final arc = ContentId.parse(id, expectedKind: 'arc');
     final map = ContentId.parse(mapId, expectedKind: 'map');
@@ -108,7 +115,8 @@ class StoryArc {
     }
     var nextOrder = 1;
     final ids = <String>{id, mapId, unlockIds.fullMap, unlockIds.finale};
-    for (final chapter in chapters) {
+    for (var chapterIndex = 0; chapterIndex < chapters.length; chapterIndex++) {
+      final chapter = chapters[chapterIndex];
       final chapterId = ContentId.parse(chapter.id, expectedKind: 'chapter');
       final sceneId = ContentId.parse(chapter.sceneId, expectedKind: 'scene');
       if (chapterId.arcName != arc.localName ||
@@ -147,6 +155,37 @@ class StoryArc {
           puzzle.order != index + 1 ||
           !ids.add(puzzle.id)) {
         throw FormatException('Invalid puzzle sequence in $id at ${puzzle.id}');
+      }
+    }
+    for (var chapterIndex = 0; chapterIndex < chapters.length; chapterIndex++) {
+      final chapter = chapters[chapterIndex];
+      final boss = chapter.boss;
+      final bossId = ContentId.parse(boss.id, expectedKind: 'boss');
+      final bossPuzzleId = ContentId.parse(
+        boss.puzzleId,
+        expectedKind: 'puzzle',
+      );
+      final expectedUnlockTarget =
+          chapterIndex + 1 < chapters.length
+              ? chapters[chapterIndex + 1].id
+              : unlockIds.finale;
+      final expectedDifficulty =
+          chapterIndex + 1 < chapters.length
+              ? chapters[chapterIndex + 1].difficulty
+              : chapter.difficulty;
+      final unlockTarget = ContentId.parse(boss.unlockTargetId);
+      final puzzle = catalog.puzzles[chapter.endOrder - 1];
+      if (bossId.arcName != arc.localName ||
+          bossPuzzleId.arcName != arc.localName ||
+          unlockTarget.arcName != arc.localName ||
+          !ids.add(boss.id) ||
+          boss.name.trim().isEmpty ||
+          boss.unlockTargetId != expectedUnlockTarget ||
+          boss.targetDifficulty != expectedDifficulty ||
+          boss.puzzleId != puzzle.id ||
+          boss.size != puzzle.size ||
+          boss.targetDifficulty != puzzle.tier) {
+        throw FormatException('Invalid boss ${boss.id} for ${chapter.id}');
       }
     }
   }

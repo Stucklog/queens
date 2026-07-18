@@ -6,12 +6,14 @@ class ExactSolveResult {
     required this.searchNodes,
     required this.backtracks,
     required this.maxBranching,
+    this.searchComplete = true,
   });
 
   final List<List<Cell>> solutions;
   final int searchNodes;
   final int backtracks;
   final int maxBranching;
+  final bool searchComplete;
 
   int get solutionCount => solutions.length;
 }
@@ -25,6 +27,7 @@ class ExactSolver {
     Set<Cell> required = const {},
     Set<Cell> forbidden = const {},
     int limit = 2,
+    int? nodeLimit,
   }) {
     final requiredCells = <Cell>{...required};
     final forbiddenCells = <Cell>{...forbidden};
@@ -91,6 +94,7 @@ class ExactSolver {
     var searchNodes = 0;
     var backtracks = 0;
     var maxBranching = 0;
+    var searchComplete = true;
 
     bool legal(Cell cell) {
       if (forbiddenCells.contains(cell) ||
@@ -117,7 +121,11 @@ class ExactSolver {
     }
 
     void search() {
-      if (solutions.length >= limit) return;
+      if (solutions.length >= limit || !searchComplete) return;
+      if (nodeLimit != null && searchNodes >= nodeLimit) {
+        searchComplete = false;
+        return;
+      }
       searchNodes++;
       if (assigned.length == puzzle.size) {
         solutions.add(assigned.values.toList()..sort());
@@ -150,7 +158,7 @@ class ExactSolver {
         assigned.remove(cell.row);
         usedColumns.remove(cell.column);
         usedRegions.remove(puzzle.regionAt(cell));
-        if (solutions.length >= limit) return;
+        if (solutions.length >= limit || !searchComplete) return;
       }
     }
 
@@ -160,6 +168,7 @@ class ExactSolver {
       searchNodes: searchNodes,
       backtracks: backtracks,
       maxBranching: maxBranching,
+      searchComplete: searchComplete,
     );
   }
 

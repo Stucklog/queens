@@ -250,6 +250,11 @@ class StoryArcSettingsScreen extends StatelessWidget {
   final AppController controller;
   final StoryArc arc;
 
+  bool get _unlockActionComplete =>
+      controller.isMapUnlocked(arc.id) &&
+      (!controller.unlockFinaleWithGameBoard ||
+          controller.isFinaleUnlocked(arc.id));
+
   Future<void> _unlockEntireMap(BuildContext context) async {
     final unlock = await showDialog<bool>(
       context: context,
@@ -265,7 +270,9 @@ class StoryArcSettingsScreen extends StatelessWidget {
             title: Text('Unlock ${arc.title} map?'),
             content: Text(
               'Every puzzle and chapter landmark in ${arc.title} will become '
-              'available immediately. Other story arcs are not affected.',
+              'available immediately. '
+              '${controller.unlockFinaleWithGameBoard ? 'The finale will also unlock immediately. ' : ''}'
+              'Other story arcs are not affected.',
             ),
             actions: [
               TextButton(
@@ -357,6 +364,7 @@ class StoryArcSettingsScreen extends StatelessWidget {
                       Text(
                         controller.isMapUnlocked(arc.id)
                             ? 'Every puzzle and chapter landmark in this arc is available.'
+                                '${controller.isFinaleUnlocked(arc.id) ? ' The finale is unlocked.' : ''}'
                             : 'Open this arc’s puzzles and landmarks without '
                                 'finishing them in order.',
                       ),
@@ -364,23 +372,25 @@ class StoryArcSettingsScreen extends StatelessWidget {
                       OutlinedButton.icon(
                         key: ValueKey('unlock-entire-map-${arc.id}'),
                         onPressed:
-                            controller.isMapUnlocked(arc.id)
+                            _unlockActionComplete
                                 ? null
                                 : () => _unlockEntireMap(context),
                         icon: PixelIcon(
-                          controller.isMapUnlocked(arc.id)
+                          _unlockActionComplete
                               ? PixelGlyph.check
                               : PixelGlyph.lock,
                           color:
-                              controller.isMapUnlocked(arc.id)
+                              _unlockActionComplete
                                   ? Theme.of(context).disabledColor
                                   : Theme.of(context).colorScheme.secondary,
                           size: 16,
                           excludeFromSemantics: true,
                         ),
                         label: Text(
-                          controller.isMapUnlocked(arc.id)
+                          _unlockActionComplete
                               ? 'This arc’s map is unlocked'
+                              : controller.isMapUnlocked(arc.id)
+                              ? 'Unlock this arc’s finale'
                               : 'Unlock this arc’s map',
                         ),
                       ),

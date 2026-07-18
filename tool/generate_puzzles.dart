@@ -27,8 +27,9 @@ Future<void> main(List<String> arguments) async {
                 GenerationRequest(DifficultyTier.hard, 9, 1),
                 GenerationRequest(DifficultyTier.expert, 9, 1),
                 GenerationRequest(DifficultyTier.expert, 10, 1),
+                GenerationRequest(DifficultyTier.expert, 12, 1),
               ]
-              : launchPlan;
+              : originStoryGenerationPlan;
       final generated = const PuzzleGenerator().generateCatalog(
         seed: seed,
         plan: plan,
@@ -42,29 +43,7 @@ Future<void> main(List<String> arguments) async {
         'generatedAt': DateTime.now().toUtc().toIso8601String(),
         'seed': seed,
         'puzzles': [
-          for (final entry in generated)
-            {
-              'id': entry.definition.id,
-              'seed': entry.seed,
-              'solution':
-                  entry.solution
-                      .map((cell) => {'row': cell.row, 'column': cell.column})
-                      .toList(),
-              'exact': {
-                'searchNodes': entry.exact.searchNodes,
-                'backtracks': entry.exact.backtracks,
-                'maxBranching': entry.exact.maxBranching,
-              },
-              'generationScore': entry.generationScore.toJson(),
-              'human': {
-                'actualTier': entry.human.tier.name,
-                'actualScore': entry.human.score,
-                'deductions':
-                    entry.human.trace
-                        .map((step) => step.technique.name)
-                        .toList(),
-              },
-            },
+          for (final entry in generated) _generationReportEntry(entry),
         ],
       };
       await File(catalogPath).parent.create(recursive: true);
@@ -78,6 +57,102 @@ Future<void> main(List<String> arguments) async {
       ).writeAsString(const JsonEncoder.withIndent('  ').convert(report));
       stdout.writeln(
         'Generated ${generated.length} validated puzzles in $catalogPath.',
+      );
+    case 'generate-boss':
+      final selector = arguments.length > 1 ? arguments[1] : '';
+      final request = originBossGenerationPlan.firstWhere(
+        (candidate) => candidate.puzzleId!.endsWith('/$selector'),
+        orElse: () => throw ArgumentError.value(selector, 'boss'),
+      );
+      final seed = int.tryParse(_option(arguments, '--seed') ?? '') ?? 20260718;
+      final maxAttempts =
+          int.tryParse(_option(arguments, '--max-attempts') ?? '') ?? 5000;
+      final generated =
+          const PuzzleGenerator()
+              .generateCatalog(
+                seed: seed,
+                plan: [request],
+                maxAttemptsPerPuzzle: maxAttempts,
+              )
+              .single;
+      final output = _option(arguments, '--output');
+      final encoded = const JsonEncoder.withIndent(
+        '  ',
+      ).convert(generated.definition.toJson());
+      if (output == null) {
+        stdout.writeln(encoded);
+      } else {
+        await File(output).writeAsString(encoded);
+        stdout.writeln('Generated ${request.puzzleId} in $output.');
+      }
+    case 'generate-bosses':
+      final seed = int.tryParse(_option(arguments, '--seed') ?? '') ?? 20260718;
+      final existing = await _loadCatalog(catalogPath);
+      final generated = <GeneratedPuzzle>[];
+      for (var index = 0; index < originBossGenerationPlan.length; index++) {
+        final request = originBossGenerationPlan[index];
+        stdout.writeln(
+          'Generating ${request.puzzleId} (${request.tier.label} ${request.size}x${request.size})...',
+        );
+        generated.add(
+          const PuzzleGenerator()
+              .generateCatalog(
+                seed: request.size == 12 ? seed : seed + index * 1000003,
+                plan: [request],
+              )
+              .single,
+        );
+      }
+      const bossOrders = [20, 30, 40, 60, 80, 90, 100, 120];
+      final replacements = <int, PuzzleDefinition>{};
+      for (var index = 0; index < bossOrders.length; index++) {
+        final source = generated[index].definition;
+        replacements[bossOrders[index]] = PuzzleDefinition(
+          id: source.id,
+          order: bossOrders[index],
+          size: source.size,
+          tier: source.tier,
+          regions: source.regions,
+          schemaVersion: source.schemaVersion,
+          contentHash: source.contentHash,
+          difficultyScore: source.difficultyScore,
+          scoringModel: source.scoringModel,
+        );
+      }
+      final updated = PuzzleCatalog(
+        schemaVersion: existing.schemaVersion,
+        scoringModel: existing.scoringModel,
+        puzzles: [
+          for (final puzzle in existing.puzzles)
+            replacements[puzzle.order] ?? puzzle,
+        ],
+      );
+      _validate(updated);
+      await File(catalogPath).writeAsString(
+        const JsonEncoder.withIndent('  ').convert({
+          'schemaVersion': updated.schemaVersion,
+          'scoringModel': updated.scoringModel,
+          'puzzles': [for (final puzzle in updated.puzzles) puzzle.toJson()],
+        }),
+      );
+      final reportPath =
+          _option(arguments, '--report') ?? 'tool/validation_report.json';
+      final report =
+          jsonDecode(await File(reportPath).readAsString())
+              as Map<String, Object?>;
+      final reportPuzzles = report['puzzles']! as List<Object?>;
+      for (var index = 0; index < bossOrders.length; index++) {
+        reportPuzzles[bossOrders[index] - 1] = _generationReportEntry(
+          generated[index],
+        );
+      }
+      report['generatedAt'] = DateTime.now().toUtc().toIso8601String();
+      report['seed'] = seed;
+      await File(
+        reportPath,
+      ).writeAsString(const JsonEncoder.withIndent('  ').convert(report));
+      stdout.writeln(
+        'Generated and installed ${generated.length} chapter bosses in $catalogPath.',
       );
     case 'validate':
       final catalog = await _loadCatalog(catalogPath);
@@ -141,7 +216,7 @@ Future<void> main(List<String> arguments) async {
       stdout.writeln('Tier mismatches: $mismatches');
     default:
       stderr.writeln(
-        'Usage: dart run tool/generate_puzzles.dart <generate|validate|inspect|report> [id] [--catalog path] [--seed n]',
+        'Usage: dart run tool/generate_puzzles.dart <generate|generate-boss|generate-bosses|validate|inspect|report> [id] [--catalog path] [--seed n]',
       );
       exitCode = 64;
   }
@@ -149,6 +224,26 @@ Future<void> main(List<String> arguments) async {
 
 Future<PuzzleCatalog> _loadCatalog(String path) async =>
     PuzzleCatalog.fromJsonString(await File(path).readAsString());
+
+Map<String, Object> _generationReportEntry(GeneratedPuzzle entry) => {
+  'id': entry.definition.id,
+  'seed': entry.seed,
+  'solution':
+      entry.solution
+          .map((cell) => {'row': cell.row, 'column': cell.column})
+          .toList(),
+  'exact': {
+    'searchNodes': entry.exact.searchNodes,
+    'backtracks': entry.exact.backtracks,
+    'maxBranching': entry.exact.maxBranching,
+  },
+  'generationScore': entry.generationScore.toJson(),
+  'human': {
+    'actualTier': entry.human.tier.name,
+    'actualScore': entry.human.score,
+    'deductions': entry.human.trace.map((step) => step.technique.name).toList(),
+  },
+};
 
 void _validate(PuzzleCatalog catalog) {
   catalog.validateSchema();

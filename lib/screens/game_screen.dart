@@ -86,6 +86,7 @@ class _GameScreenState extends State<GameScreen> {
         widget.playMode == PuzzlePlayMode.journey
             ? widget.controller.arcForPuzzle(puzzle)
             : null;
+    final boss = storyArc?.bossForPuzzle(puzzle);
     final themed = RegaliaTheme.forChapter(visualChapter);
     return Theme(
       data: themed,
@@ -104,12 +105,15 @@ class _GameScreenState extends State<GameScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}',
+                          boss?.name ??
+                              '${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         Text(
                           widget.playMode == PuzzlePlayMode.challenge
                               ? 'Just Puzzle! ${widget.challengeNumber ?? puzzle.order}'
+                              : boss != null
+                              ? 'Chapter boss · ${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'
                               : 'Puzzle ${puzzle.order} of ${storyArc!.catalog.puzzles.length}',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),

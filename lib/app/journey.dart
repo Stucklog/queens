@@ -16,6 +16,45 @@ class JourneyPalette {
   Color get surface => regaliaMidnightSurface;
 }
 
+class ChapterBoss {
+  const ChapterBoss({
+    required this.id,
+    required this.name,
+    required this.puzzleId,
+    required this.size,
+    required this.targetDifficulty,
+    required this.unlockTargetId,
+  });
+
+  final String id;
+  final String name;
+  final String puzzleId;
+  final int size;
+  final DifficultyTier targetDifficulty;
+
+  /// The next chapter ID, or the arc finale unlock ID for the final boss.
+  final String unlockTargetId;
+
+  factory ChapterBoss.fromJson(Map<String, Object?> json) {
+    final id = json['id']! as String;
+    final puzzleId = json['puzzleId']! as String;
+    final unlockTargetId = json['unlocks']! as String;
+    ContentId.parse(id, expectedKind: 'boss');
+    ContentId.parse(puzzleId, expectedKind: 'puzzle');
+    ContentId.parse(unlockTargetId);
+    return ChapterBoss(
+      id: id,
+      name: json['name']! as String,
+      puzzleId: puzzleId,
+      size: (json['size']! as num).toInt(),
+      targetDifficulty: DifficultyTierLabel.parse(
+        json['targetDifficulty']! as String,
+      ),
+      unlockTargetId: unlockTargetId,
+    );
+  }
+}
+
 class JourneyChapter {
   const JourneyChapter({
     required this.id,
@@ -30,6 +69,7 @@ class JourneyChapter {
     required this.endOrder,
     required this.difficulty,
     required this.size,
+    required this.boss,
     required this.palette,
   });
 
@@ -45,6 +85,7 @@ class JourneyChapter {
   final int endOrder;
   final DifficultyTier difficulty;
   final int size;
+  final ChapterBoss boss;
   final JourneyPalette palette;
 
   String get storyBeatId => sceneId;
@@ -79,6 +120,7 @@ class JourneyChapter {
       endOrder: (json['endOrder']! as num).toInt(),
       difficulty: DifficultyTierLabel.parse(json['difficulty']! as String),
       size: (json['size']! as num).toInt(),
+      boss: ChapterBoss.fromJson(json['boss']! as Map<String, Object?>),
       palette: JourneyPalette(
         primary: color('primaryColor'),
         secondary: color('secondaryColor'),
@@ -104,6 +146,14 @@ const journeyChapters = <JourneyChapter>[
     endOrder: 20,
     difficulty: DifficultyTier.easy,
     size: 6,
+    boss: ChapterBoss(
+      id: 'regalia:boss/origin/starfall-stag',
+      name: 'Starfall Stag',
+      puzzleId: 'regalia:puzzle/origin/boss/starfall-stag',
+      size: 7,
+      targetDifficulty: DifficultyTier.easy,
+      unlockTargetId: 'regalia:chapter/origin/whisperwood',
+    ),
     palette: JourneyPalette(
       primary: Color(0xff527663),
       secondary: Color(0xff5d9ab5),
@@ -122,6 +172,14 @@ const journeyChapters = <JourneyChapter>[
     endOrder: 30,
     difficulty: DifficultyTier.easy,
     size: 7,
+    boss: ChapterBoss(
+      id: 'regalia:boss/origin/elderroot-wyrm',
+      name: 'Elderroot Wyrm',
+      puzzleId: 'regalia:puzzle/origin/boss/elderroot-wyrm',
+      size: 7,
+      targetDifficulty: DifficultyTier.medium,
+      unlockTargetId: 'regalia:chapter/origin/windmill-heights',
+    ),
     palette: JourneyPalette(
       primary: Color(0xff365f50),
       secondary: Color(0xff704d78),
@@ -141,6 +199,14 @@ const journeyChapters = <JourneyChapter>[
     endOrder: 40,
     difficulty: DifficultyTier.medium,
     size: 7,
+    boss: ChapterBoss(
+      id: 'regalia:boss/origin/tempest-roc',
+      name: 'Tempest Roc',
+      puzzleId: 'regalia:puzzle/origin/boss/tempest-roc',
+      size: 8,
+      targetDifficulty: DifficultyTier.medium,
+      unlockTargetId: 'regalia:chapter/origin/sunken-cloister',
+    ),
     palette: JourneyPalette(
       primary: Color(0xff536d88),
       secondary: Color(0xffa75b3b),
@@ -160,6 +226,14 @@ const journeyChapters = <JourneyChapter>[
     endOrder: 60,
     difficulty: DifficultyTier.medium,
     size: 8,
+    boss: ChapterBoss(
+      id: 'regalia:boss/origin/abyssal-bellkeeper',
+      name: 'Abyssal Bellkeeper',
+      puzzleId: 'regalia:puzzle/origin/boss/abyssal-bellkeeper',
+      size: 8,
+      targetDifficulty: DifficultyTier.hard,
+      unlockTargetId: 'regalia:chapter/origin/emberbell-caverns',
+    ),
     palette: JourneyPalette(
       primary: Color(0xff247f82),
       secondary: Color(0xff879e91),
@@ -178,6 +252,14 @@ const journeyChapters = <JourneyChapter>[
     endOrder: 80,
     difficulty: DifficultyTier.hard,
     size: 8,
+    boss: ChapterBoss(
+      id: 'regalia:boss/origin/cindermaw-behemoth',
+      name: 'Cindermaw Behemoth',
+      puzzleId: 'regalia:puzzle/origin/boss/cindermaw-behemoth',
+      size: 9,
+      targetDifficulty: DifficultyTier.hard,
+      unlockTargetId: 'regalia:chapter/origin/goblin-underkeep',
+    ),
     palette: JourneyPalette(
       primary: Color(0xff8d3e31),
       secondary: Color(0xffdb7a37),
@@ -196,6 +278,14 @@ const journeyChapters = <JourneyChapter>[
     endOrder: 90,
     difficulty: DifficultyTier.hard,
     size: 9,
+    boss: ChapterBoss(
+      id: 'regalia:boss/origin/gilded-war-colossus',
+      name: 'Gilded War Colossus',
+      puzzleId: 'regalia:puzzle/origin/boss/gilded-war-colossus',
+      size: 9,
+      targetDifficulty: DifficultyTier.expert,
+      unlockTargetId: 'regalia:chapter/origin/moonlit-catacombs',
+    ),
     palette: JourneyPalette(
       primary: Color(0xff5b4c2a),
       secondary: Color(0xff91a934),
@@ -215,6 +305,14 @@ const journeyChapters = <JourneyChapter>[
     endOrder: 100,
     difficulty: DifficultyTier.expert,
     size: 9,
+    boss: ChapterBoss(
+      id: 'regalia:boss/origin/sevenfold-wraith',
+      name: 'The Sevenfold Wraith',
+      puzzleId: 'regalia:puzzle/origin/boss/sevenfold-wraith',
+      size: 10,
+      targetDifficulty: DifficultyTier.expert,
+      unlockTargetId: 'regalia:chapter/origin/crownspire',
+    ),
     palette: JourneyPalette(
       primary: Color(0xff514d82),
       secondary: Color(0xff9ca9c7),
@@ -233,6 +331,14 @@ const journeyChapters = <JourneyChapter>[
     endOrder: 120,
     difficulty: DifficultyTier.expert,
     size: 10,
+    boss: ChapterBoss(
+      id: 'regalia:boss/origin/hollow-star',
+      name: 'The Hollow Star',
+      puzzleId: 'regalia:puzzle/origin/boss/hollow-star',
+      size: 12,
+      targetDifficulty: DifficultyTier.expert,
+      unlockTargetId: ContentIds.originFinaleUnlock,
+    ),
     palette: JourneyPalette(
       primary: Color(0xff244a98),
       secondary: Color(0xffbd8b2d),

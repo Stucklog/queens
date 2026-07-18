@@ -73,7 +73,9 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
-    final puzzle = catalog.puzzles.firstWhere((entry) => entry.size == 10);
+    final puzzle = catalog.puzzles.firstWhere(
+      (entry) => entry.size == 10 && !entry.id.contains('/boss/'),
+    );
     final board = BoardState(puzzleId: puzzle.id, size: puzzle.size);
     for (final cell
         in const ExactSolver().solve(puzzle, limit: 1).solutions.single) {

@@ -6,14 +6,27 @@ import 'models.dart';
 import 'rule_engine.dart';
 
 class GenerationRequest {
-  const GenerationRequest(this.tier, this.size, this.count);
+  const GenerationRequest(
+    this.tier,
+    this.size,
+    this.count, {
+    this.puzzleId,
+    this.reserveTierOrdinal = false,
+  }) : assert(puzzleId == null || count == 1);
+
   final DifficultyTier tier;
   final int size;
   final int count;
+  final String? puzzleId;
+
+  /// Bosses use named IDs. Same-tier bosses reserve the ordinary numeric ID
+  /// they replace so later regular puzzle IDs retain their published order.
+  final bool reserveTierOrdinal;
 }
 
+/// Required size/difficulty allocation for the bundled 120-puzzle catalog.
 const launchPlan = <GenerationRequest>[
-  GenerationRequest(DifficultyTier.easy, 6, 20),
+  GenerationRequest(DifficultyTier.easy, 6, 19),
   GenerationRequest(DifficultyTier.easy, 7, 10),
   GenerationRequest(DifficultyTier.medium, 7, 10),
   GenerationRequest(DifficultyTier.medium, 8, 20),
@@ -21,6 +34,122 @@ const launchPlan = <GenerationRequest>[
   GenerationRequest(DifficultyTier.hard, 9, 10),
   GenerationRequest(DifficultyTier.expert, 9, 10),
   GenerationRequest(DifficultyTier.expert, 10, 20),
+  GenerationRequest(DifficultyTier.expert, 12, 1),
+];
+
+/// Story-ordered generation plan. Boss slots sit at each chapter boundary.
+const originStoryGenerationPlan = <GenerationRequest>[
+  GenerationRequest(DifficultyTier.easy, 6, 19),
+  GenerationRequest(
+    DifficultyTier.easy,
+    7,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/starfall-stag',
+    reserveTierOrdinal: true,
+  ),
+  GenerationRequest(DifficultyTier.easy, 7, 9),
+  GenerationRequest(
+    DifficultyTier.medium,
+    7,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/elderroot-wyrm',
+  ),
+  GenerationRequest(DifficultyTier.medium, 7, 9),
+  GenerationRequest(
+    DifficultyTier.medium,
+    8,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/tempest-roc',
+    reserveTierOrdinal: true,
+  ),
+  GenerationRequest(DifficultyTier.medium, 8, 19),
+  GenerationRequest(
+    DifficultyTier.hard,
+    8,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/abyssal-bellkeeper',
+  ),
+  GenerationRequest(DifficultyTier.hard, 8, 19),
+  GenerationRequest(
+    DifficultyTier.hard,
+    9,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/cindermaw-behemoth',
+    reserveTierOrdinal: true,
+  ),
+  GenerationRequest(DifficultyTier.hard, 9, 9),
+  GenerationRequest(
+    DifficultyTier.expert,
+    9,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/gilded-war-colossus',
+  ),
+  GenerationRequest(DifficultyTier.expert, 9, 9),
+  GenerationRequest(
+    DifficultyTier.expert,
+    10,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/sevenfold-wraith',
+    reserveTierOrdinal: true,
+  ),
+  GenerationRequest(DifficultyTier.expert, 10, 19),
+  GenerationRequest(
+    DifficultyTier.expert,
+    12,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/hollow-star',
+  ),
+];
+
+const originBossGenerationPlan = <GenerationRequest>[
+  GenerationRequest(
+    DifficultyTier.easy,
+    7,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/starfall-stag',
+  ),
+  GenerationRequest(
+    DifficultyTier.medium,
+    7,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/elderroot-wyrm',
+  ),
+  GenerationRequest(
+    DifficultyTier.medium,
+    8,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/tempest-roc',
+  ),
+  GenerationRequest(
+    DifficultyTier.hard,
+    8,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/abyssal-bellkeeper',
+  ),
+  GenerationRequest(
+    DifficultyTier.hard,
+    9,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/cindermaw-behemoth',
+  ),
+  GenerationRequest(
+    DifficultyTier.expert,
+    9,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/gilded-war-colossus',
+  ),
+  GenerationRequest(
+    DifficultyTier.expert,
+    10,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/sevenfold-wraith',
+  ),
+  GenerationRequest(
+    DifficultyTier.expert,
+    12,
+    1,
+    puzzleId: 'regalia:puzzle/origin/boss/hollow-star',
+  ),
 ];
 
 class GeneratedPuzzle {
@@ -249,6 +378,7 @@ class PuzzleGenerator {
           }
           final number = (tierNumbers[request.tier] ?? 0) + 1;
           final id =
+              request.puzzleId ??
               'regalia:puzzle/origin/${request.tier.name}-${number.toString().padLeft(3, '0')}';
           final definition = PuzzleDefinition(
             id: id,
@@ -358,7 +488,9 @@ class PuzzleGenerator {
           );
           fingerprints.add(fingerprint);
           solutionLayouts.add(solvedLayoutKey);
-          tierNumbers[request.tier] = number;
+          if (request.puzzleId == null || request.reserveTierOrdinal) {
+            tierNumbers[request.tier] = number;
+          }
           workingBaseByBand.remove(bandKey);
           break;
         }
@@ -757,7 +889,12 @@ class PuzzleGenerator {
         contentHash: PuzzleDefinition.stableHash(size, flat),
         difficultyScore: 0,
       );
-      final result = exactSolver.solve(puzzle, limit: 2);
+      final result = exactSolver.solve(
+        puzzle,
+        limit: 2,
+        nodeLimit: size >= 12 ? 100000 : null,
+      );
+      if (!result.searchComplete) return null;
       if (result.solutionCount == 1) {
         return result.solutions.single.toSet().containsAll(intended)
             ? result
@@ -874,7 +1011,15 @@ class PuzzleGenerator {
             _regionConnected(grid, oldRegion) &&
             _regionConnected(grid, target) &&
             !_hasHole(definition)) {
-          final result = exactSolver.solve(definition, limit: 2);
+          final result = exactSolver.solve(
+            definition,
+            limit: 2,
+            nodeLimit: size >= 12 ? 100000 : null,
+          );
+          if (!result.searchComplete) {
+            grid[cell.row][cell.column] = oldRegion;
+            continue;
+          }
           if (result.solutionCount == 1 &&
               result.solutions.single.toSet().containsAll(solution)) {
             changes++;

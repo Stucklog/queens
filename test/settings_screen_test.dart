@@ -61,6 +61,42 @@ void main() {
     expect(find.text('This arc’s map is unlocked'), findsOneWidget);
   });
 
+  testWidgets('map unlock grants finale immediately when configured', (
+    tester,
+  ) async {
+    final controller = await _controller(
+      tester,
+      unlockFinaleWithGameBoard: true,
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: RegaliaTheme.midnight(),
+        home: StoryArcSettingsScreen(
+          controller: controller,
+          arc: controller.originArc!,
+        ),
+      ),
+    );
+
+    await tester.tap(
+      find.byKey(const ValueKey('unlock-entire-map-regalia:arc/origin')),
+    );
+    await tester.pump();
+    expect(
+      find.textContaining('The finale will also unlock immediately'),
+      findsOneWidget,
+    );
+    await tester.tap(
+      find.byKey(const ValueKey('confirm-unlock-map-regalia:arc/origin')),
+    );
+    await tester.pump();
+    await tester.runAsync(controller.flushPersistence);
+    await tester.pump();
+
+    expect(controller.isFinaleUnlocked(ContentIds.originArc), isTrue);
+    expect(find.textContaining('The finale is unlocked'), findsOneWidget);
+  });
+
   testWidgets('complete reset requires two destructive-action warnings', (
     tester,
   ) async {
@@ -184,13 +220,18 @@ Finder _settingsScroll() =>
         )
         .first;
 
-Future<AppController> _controller(WidgetTester tester) async {
+Future<AppController> _controller(
+  WidgetTester tester, {
+  bool unlockFinaleWithGameBoard = false,
+}) async {
   SharedPreferences.setMockInitialValues({
     'regalia.tutorialComplete': true,
     'regalia.journeySchemaVersion': 1,
     'regalia.seenStoryBeats': ['opening', 'chapter.clovermead'],
   });
-  final controller = AppController();
+  final controller = AppController(
+    unlockFinaleWithGameBoard: unlockFinaleWithGameBoard,
+  );
   await tester.runAsync(controller.initialize);
   addTearDown(controller.dispose);
   return controller;

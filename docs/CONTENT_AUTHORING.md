@@ -15,6 +15,7 @@ and hyphens are allowed. Arc-owned IDs put the arc name first in the path:
 regalia:arc/origin
 regalia:map/origin/pilgrimage
 regalia:chapter/origin/clovermead
+regalia:boss/origin/starfall-stag
 regalia:puzzle/origin/easy-001
 regalia:scene/origin/opening
 regalia:unlock/origin/full-map
@@ -35,6 +36,7 @@ the arc, not chapter positions or display labels.
    `regalia:arc/moon-court` and `regalia:entitlement/paid/moon-court`.
 2. Create `assets/content/arcs/<arc>/arc.json` with schema version, content
    version, namespaced map/unlock IDs, chapter ranges and presentation data,
+   one named boss per chapter,
    all scene copy, explicit chapter/scene `artAsset` paths, and the puzzle
    catalog asset path. Use the origin arc as the canonical schema example.
 3. Create a catalog whose puzzle IDs are `regalia:puzzle/<arc>/...`. Orders must
@@ -54,8 +56,33 @@ the arc, not chapter positions or display labels.
 
 The loader validates namespace ownership, unique IDs, contiguous chapters and
 puzzles, required opening/finale scenes, catalog integrity, and package/manifest
-arc agreement. An optional package that is absent or invalid receives an
+arc agreement. Every chapter boss must reference the puzzle at its chapter’s
+`endOrder`; its size and target difficulty must match that puzzle. A non-final
+boss must target the next chapter and match that chapter’s difficulty. The last
+boss targets the arc’s finale unlock. An optional package that is absent or
+invalid receives an
 availability status; other packages continue to load.
+
+## Origin chapter bosses
+
+Boss sizes preview the next realm’s board size and difficulty. The last map
+encounter deliberately expands beyond the regular 10×10 Expert boards.
+
+| Chapter | Boss | Puzzle order | Size | Target difficulty | Unlocks |
+| --- | --- | ---: | ---: | --- | --- |
+| Asterfall Vale | Starfall Stag | 20 | 7×7 | Easy | Myrrhveil Wilds |
+| Myrrhveil Wilds | Elderroot Wyrm | 30 | 7×7 | Medium | Skyglass Reach |
+| Skyglass Reach | Tempest Roc | 40 | 8×8 | Medium | Nacre Basilica |
+| Nacre Basilica | Abyssal Bellkeeper | 60 | 8×8 | Hard | Pyreheart Caldera |
+| Pyreheart Caldera | Cindermaw Behemoth | 80 | 9×9 | Hard | Brasswake Arsenal |
+| Brasswake Arsenal | Gilded War Colossus | 90 | 9×9 | Expert | Pale Moon Necropolis |
+| Pale Moon Necropolis | The Sevenfold Wraith | 100 | 10×10 | Expert | Empyrean Citadel |
+| Empyrean Citadel | The Hollow Star | 120 | 12×12 | Expert | Finale |
+
+Run `dart run tool/generate_puzzles.dart generate-bosses` to regenerate only
+these eight slots, or `generate` for the complete story-ordered catalog. Both
+paths include the 12×12 finale in exact-solver, region-quality, uniqueness, and
+human-difficulty validation.
 
 ## Entitlements and availability
 
@@ -94,6 +121,17 @@ The gear on a story map opens that selected arc’s settings, not master setting
 Always pass the target arc ID to the controller. An arc reset removes only IDs
 owned by that namespace and must preserve master preferences, tutorial state,
 Just Puzzle runs, entitlements, and progress in every other arc.
+
+`GameConfiguration.unlockFinaleWithGameBoard` controls whether the map-unlock
+action also grants the declared finale unlock. Its release build define is
+`REGALIA_UNLOCK_FINALE_WITH_GAME_BOARD`; it defaults to `false`, preserving the
+map-only behavior. Set it to `true` with `--dart-define` when a distribution
+should expose the finale from Settings immediately.
+
+Catalog upgrades retain boards and completion records whose immutable puzzle
+IDs and sizes still exist. A changed grid must therefore receive a new puzzle
+ID; removed/replaced IDs are ignored during restore while unaffected progress
+survives.
 
 ## Package and release
 

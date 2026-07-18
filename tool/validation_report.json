@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-14T17:51:17.954934Z",
-  "seed": 20260714,
+  "generatedAt": "2026-07-18T14:15:24.387679Z",
+  "seed": 20260718,
   "puzzles": [
     {
       "id": "regalia:puzzle/origin/easy-001",
@@ -1248,24 +1248,24 @@
       }
     },
     {
-      "id": "regalia:puzzle/origin/easy-020",
-      "seed": 68862029,
+      "id": "regalia:puzzle/origin/boss/starfall-stag",
+      "seed": 314654181,
       "solution": [
         {
           "row": 0,
-          "column": 4
-        },
-        {
-          "row": 1,
           "column": 0
         },
         {
-          "row": 2,
+          "row": 1,
           "column": 2
         },
         {
-          "row": 3,
+          "row": 2,
           "column": 5
+        },
+        {
+          "row": 3,
+          "column": 1
         },
         {
           "row": 4,
@@ -1273,37 +1273,45 @@
         },
         {
           "row": 5,
-          "column": 1
+          "column": 6
+        },
+        {
+          "row": 6,
+          "column": 4
         }
       ],
       "exact": {
-        "searchNodes": 97,
-        "backtracks": 40,
-        "maxBranching": 6
+        "searchNodes": 533,
+        "backtracks": 222,
+        "maxBranching": 7
       },
       "generationScore": {
         "uniqueness": 100,
         "difficultyFit": 100,
-        "visualBalance": 56,
-        "novelty": 36,
-        "total": 848
+        "visualBalance": 71,
+        "novelty": 100,
+        "total": 942
       },
       "human": {
         "actualTier": "easy",
-        "actualScore": 10,
+        "actualScore": 11,
         "deductions": [
           "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "singleRemaining",
+          "singleRemaining",
+          "singleRemaining",
           "singleRemaining",
           "directExclusion",
           "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "singleRemaining",
-          "singleRemaining",
           "singleRemaining",
           "singleRemaining",
           "singleRemaining"
@@ -2011,24 +2019,24 @@
       }
     },
     {
-      "id": "regalia:puzzle/origin/easy-030",
-      "seed": 116375099,
+      "id": "regalia:puzzle/origin/boss/elderroot-wyrm",
+      "seed": 2019099114,
       "solution": [
         {
           "row": 0,
-          "column": 4
+          "column": 5
         },
         {
           "row": 1,
-          "column": 0
-        },
-        {
-          "row": 2,
           "column": 3
         },
         {
+          "row": 2,
+          "column": 0
+        },
+        {
           "row": 3,
-          "column": 5
+          "column": 4
         },
         {
           "row": 4,
@@ -2044,57 +2052,29 @@
         }
       ],
       "exact": {
-        "searchNodes": 129,
-        "backtracks": 60,
+        "searchNodes": 160,
+        "backtracks": 62,
         "maxBranching": 7
       },
       "generationScore": {
         "uniqueness": 100,
         "difficultyFit": 100,
-        "visualBalance": 51,
-        "novelty": 43,
-        "total": 845
+        "visualBalance": 35,
+        "novelty": 100,
+        "total": 870
       },
       "human": {
-        "actualTier": "easy",
-        "actualScore": 23,
+        "actualTier": "medium",
+        "actualScore": 35,
         "deductions": [
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
+          "lockedIntersection",
+          "lockedIntersection",
+          "lockedIntersection",
+          "lockedIntersection",
           "singleRemaining",
           "singleRemaining",
           "singleRemaining",
+          "lockedIntersection",
           "singleRemaining",
           "singleRemaining",
           "singleRemaining",
@@ -2707,59 +2687,68 @@
       }
     },
     {
-      "id": "regalia:puzzle/origin/medium-010",
-      "seed": 520054827,
+      "id": "regalia:puzzle/origin/boss/tempest-roc",
+      "seed": 781238268,
       "solution": [
         {
           "row": 0,
-          "column": 4
-        },
-        {
-          "row": 1,
-          "column": 6
-        },
-        {
-          "row": 2,
-          "column": 3
-        },
-        {
-          "row": 3,
-          "column": 0
-        },
-        {
-          "row": 4,
-          "column": 2
-        },
-        {
-          "row": 5,
           "column": 5
         },
         {
+          "row": 1,
+          "column": 7
+        },
+        {
+          "row": 2,
+          "column": 2
+        },
+        {
+          "row": 3,
+          "column": 6
+        },
+        {
+          "row": 4,
+          "column": 4
+        },
+        {
+          "row": 5,
+          "column": 0
+        },
+        {
           "row": 6,
+          "column": 3
+        },
+        {
+          "row": 7,
           "column": 1
         }
       ],
       "exact": {
-        "searchNodes": 352,
-        "backtracks": 144,
-        "maxBranching": 7
+        "searchNodes": 527,
+        "backtracks": 233,
+        "maxBranching": 8
       },
       "generationScore": {
         "uniqueness": 100,
         "difficultyFit": 100,
-        "visualBalance": 47,
-        "novelty": 45,
-        "total": 839
+        "visualBalance": 50,
+        "novelty": 100,
+        "total": 900
       },
       "human": {
         "actualTier": "medium",
-        "actualScore": 32,
+        "actualScore": 35,
         "deductions": [
           "lockedIntersection",
           "lockedIntersection",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "singleRemaining",
+          "singleRemaining",
+          "singleRemaining",
           "lockedIntersection",
-          "singleRemaining",
-          "singleRemaining",
+          "lockedIntersection",
           "singleRemaining",
           "singleRemaining",
           "singleRemaining",
@@ -4148,8 +4137,8 @@
       }
     },
     {
-      "id": "regalia:puzzle/origin/medium-030",
-      "seed": 382784831,
+      "id": "regalia:puzzle/origin/boss/abyssal-bellkeeper",
+      "seed": 14347854259,
       "solution": [
         {
           "row": 0,
@@ -4157,27 +4146,27 @@
         },
         {
           "row": 1,
-          "column": 3
-        },
-        {
-          "row": 2,
           "column": 7
         },
         {
-          "row": 3,
-          "column": 0
-        },
-        {
-          "row": 4,
-          "column": 6
-        },
-        {
-          "row": 5,
+          "row": 2,
           "column": 4
         },
         {
-          "row": 6,
+          "row": 3,
+          "column": 6
+        },
+        {
+          "row": 4,
           "column": 2
+        },
+        {
+          "row": 5,
+          "column": 0
+        },
+        {
+          "row": 6,
+          "column": 3
         },
         {
           "row": 7,
@@ -4185,38 +4174,40 @@
         }
       ],
       "exact": {
-        "searchNodes": 218,
-        "backtracks": 78,
+        "searchNodes": 299,
+        "backtracks": 161,
         "maxBranching": 8
       },
       "generationScore": {
         "uniqueness": 100,
         "difficultyFit": 100,
-        "visualBalance": 50,
-        "novelty": 50,
-        "total": 850
+        "visualBalance": 53,
+        "novelty": 100,
+        "total": 906
       },
       "human": {
-        "actualTier": "medium",
-        "actualScore": 39,
+        "actualTier": "hard",
+        "actualScore": 65,
         "deductions": [
+          "lockedIntersection",
+          "lockedIntersection",
+          "singleRemaining",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
           "directExclusion",
           "directExclusion",
           "directExclusion",
           "lockedIntersection",
           "adjacentRowSupport",
           "directExclusion",
-          "directExclusion",
-          "lockedIntersection",
-          "lockedIntersection",
-          "lockedIntersection",
+          "hallPair",
           "lockedIntersection",
           "singleRemaining",
           "singleRemaining",
           "singleRemaining",
           "singleRemaining",
-          "singleRemaining",
-          "adjacentRowSupport",
+          "lockedIntersection",
           "singleRemaining",
           "singleRemaining",
           "singleRemaining"
@@ -5711,28 +5702,28 @@
       }
     },
     {
-      "id": "regalia:puzzle/origin/hard-020",
-      "seed": 6083676995,
+      "id": "regalia:puzzle/origin/boss/cindermaw-behemoth",
+      "seed": 3168069367,
       "solution": [
         {
           "row": 0,
-          "column": 7
+          "column": 5
         },
         {
           "row": 1,
-          "column": 1
+          "column": 8
         },
         {
           "row": 2,
-          "column": 6
+          "column": 4
         },
         {
           "row": 3,
-          "column": 2
+          "column": 7
         },
         {
           "row": 4,
-          "column": 5
+          "column": 0
         },
         {
           "row": 5,
@@ -5740,48 +5731,48 @@
         },
         {
           "row": 6,
-          "column": 0
+          "column": 1
         },
         {
           "row": 7,
-          "column": 4
+          "column": 6
+        },
+        {
+          "row": 8,
+          "column": 2
         }
       ],
       "exact": {
-        "searchNodes": 326,
-        "backtracks": 111,
-        "maxBranching": 8
+        "searchNodes": 275,
+        "backtracks": 101,
+        "maxBranching": 9
       },
       "generationScore": {
         "uniqueness": 100,
         "difficultyFit": 100,
-        "visualBalance": 34,
-        "novelty": 47,
-        "total": 815
+        "visualBalance": 43,
+        "novelty": 100,
+        "total": 886
       },
       "human": {
         "actualTier": "hard",
-        "actualScore": 67,
+        "actualScore": 63,
         "deductions": [
           "lockedIntersection",
           "lockedIntersection",
           "lockedIntersection",
           "lockedIntersection",
-          "lockedIntersection",
-          "lockedIntersection",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "hallPair",
-          "lockedIntersection",
           "singleRemaining",
           "singleRemaining",
+          "lockedIntersection",
+          "lockedIntersection",
+          "adjacentRowSupport",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "singleRemaining",
+          "hallTriple",
           "singleRemaining",
           "singleRemaining",
           "singleRemaining",
@@ -6535,20 +6526,20 @@
       }
     },
     {
-      "id": "regalia:puzzle/origin/hard-030",
-      "seed": 7493946009,
+      "id": "regalia:puzzle/origin/boss/gilded-war-colossus",
+      "seed": 582930249,
       "solution": [
         {
           "row": 0,
-          "column": 7
-        },
-        {
-          "row": 1,
           "column": 4
         },
         {
+          "row": 1,
+          "column": 7
+        },
+        {
           "row": 2,
-          "column": 6
+          "column": 3
         },
         {
           "row": 3,
@@ -6556,7 +6547,7 @@
         },
         {
           "row": 4,
-          "column": 3
+          "column": 2
         },
         {
           "row": 5,
@@ -6564,51 +6555,56 @@
         },
         {
           "row": 6,
-          "column": 2
+          "column": 6
         },
         {
           "row": 7,
-          "column": 5
+          "column": 1
         },
         {
           "row": 8,
-          "column": 1
+          "column": 5
         }
       ],
       "exact": {
-        "searchNodes": 873,
-        "backtracks": 365,
+        "searchNodes": 15986,
+        "backtracks": 6637,
         "maxBranching": 9
       },
       "generationScore": {
         "uniqueness": 100,
         "difficultyFit": 100,
-        "visualBalance": 46,
-        "novelty": 62,
-        "total": 854
+        "visualBalance": 70,
+        "novelty": 100,
+        "total": 940
       },
       "human": {
-        "actualTier": "hard",
-        "actualScore": 64,
+        "actualTier": "expert",
+        "actualScore": 99,
         "deductions": [
           "lockedIntersection",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "directExclusion",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "directExclusion",
+          "oneStepContradiction",
           "lockedIntersection",
+          "oneStepContradiction",
+          "singleRemaining",
+          "singleRemaining",
           "singleRemaining",
           "lockedIntersection",
           "lockedIntersection",
-          "lockedIntersection",
-          "adjacentRowSupport",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
-          "hallPair",
-          "singleRemaining",
-          "singleRemaining",
-          "directExclusion",
           "singleRemaining",
           "singleRemaining",
           "singleRemaining",
@@ -7461,83 +7457,78 @@
       }
     },
     {
-      "id": "regalia:puzzle/origin/expert-010",
-      "seed": 371496319,
+      "id": "regalia:puzzle/origin/boss/sevenfold-wraith",
+      "seed": 26447375,
       "solution": [
         {
           "row": 0,
-          "column": 6
-        },
-        {
-          "row": 1,
-          "column": 4
-        },
-        {
-          "row": 2,
-          "column": 8
-        },
-        {
-          "row": 3,
           "column": 3
         },
         {
-          "row": 4,
-          "column": 7
+          "row": 1,
+          "column": 9
         },
         {
-          "row": 5,
-          "column": 0
+          "row": 2,
+          "column": 4
         },
         {
-          "row": 6,
+          "row": 3,
           "column": 2
         },
         {
-          "row": 7,
+          "row": 4,
           "column": 5
         },
         {
-          "row": 8,
+          "row": 5,
+          "column": 7
+        },
+        {
+          "row": 6,
           "column": 1
+        },
+        {
+          "row": 7,
+          "column": 8
+        },
+        {
+          "row": 8,
+          "column": 0
+        },
+        {
+          "row": 9,
+          "column": 6
         }
       ],
       "exact": {
-        "searchNodes": 1809,
-        "backtracks": 710,
-        "maxBranching": 9
+        "searchNodes": 9671,
+        "backtracks": 4079,
+        "maxBranching": 10
       },
       "generationScore": {
         "uniqueness": 100,
         "difficultyFit": 100,
-        "visualBalance": 43,
-        "novelty": 57,
-        "total": 843
+        "visualBalance": 58,
+        "novelty": 100,
+        "total": 916
       },
       "human": {
         "actualTier": "expert",
-        "actualScore": 95,
+        "actualScore": 86,
         "deductions": [
           "lockedIntersection",
+          "singleRemaining",
           "lockedIntersection",
+          "singleRemaining",
+          "directExclusion",
+          "oneStepContradiction",
           "lockedIntersection",
-          "directExclusion",
-          "directExclusion",
-          "adjacentRowSupport",
-          "adjacentRowSupport",
-          "directExclusion",
-          "directExclusion",
-          "directExclusion",
           "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "adjacentRowSupport",
           "lockedIntersection",
           "singleRemaining",
           "singleRemaining",
           "singleRemaining",
-          "singleRemaining",
-          "lockedIntersection",
           "singleRemaining",
           "singleRemaining",
           "singleRemaining",
@@ -9337,12 +9328,12 @@
       }
     },
     {
-      "id": "regalia:puzzle/origin/expert-030",
-      "seed": 1658925719,
+      "id": "regalia:puzzle/origin/boss/hollow-star",
+      "seed": 190808232,
       "solution": [
         {
           "row": 0,
-          "column": 4
+          "column": 7
         },
         {
           "row": 1,
@@ -9350,7 +9341,7 @@
         },
         {
           "row": 2,
-          "column": 9
+          "column": 5
         },
         {
           "row": 3,
@@ -9358,15 +9349,15 @@
         },
         {
           "row": 4,
-          "column": 7
+          "column": 3
         },
         {
           "row": 5,
-          "column": 5
+          "column": 9
         },
         {
           "row": 6,
-          "column": 8
+          "column": 6
         },
         {
           "row": 7,
@@ -9374,24 +9365,32 @@
         },
         {
           "row": 8,
-          "column": 3
+          "column": 4
         },
         {
           "row": 9,
-          "column": 6
+          "column": 10
+        },
+        {
+          "row": 10,
+          "column": 8
+        },
+        {
+          "row": 11,
+          "column": 11
         }
       ],
       "exact": {
-        "searchNodes": 7062,
-        "backtracks": 2806,
-        "maxBranching": 10
+        "searchNodes": 28236,
+        "backtracks": 11830,
+        "maxBranching": 12
       },
       "generationScore": {
         "uniqueness": 100,
         "difficultyFit": 100,
-        "visualBalance": 66,
-        "novelty": 57,
-        "total": 889
+        "visualBalance": 64,
+        "novelty": 100,
+        "total": 928
       },
       "human": {
         "actualTier": "expert",
@@ -9403,7 +9402,43 @@
           "directExclusion",
           "directExclusion",
           "directExclusion",
-          "directExclusion",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
+          "oneStepContradiction",
           "oneStepContradiction",
           "oneStepContradiction",
           "lockedIntersection",
@@ -9412,31 +9447,13 @@
           "oneStepContradiction",
           "oneStepContradiction",
           "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "singleRemaining",
-          "oneStepContradiction",
-          "oneStepContradiction",
-          "singleRemaining",
           "singleRemaining",
           "lockedIntersection",
           "lockedIntersection",
+          "singleRemaining",
+          "singleRemaining",
+          "singleRemaining",
+          "singleRemaining",
           "singleRemaining",
           "singleRemaining",
           "singleRemaining",

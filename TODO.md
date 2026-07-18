@@ -19,7 +19,7 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Ensure missing or unavailable future arcs fail gracefully and do not affect the origin story or puzzle-only mode.
   - Document the content packaging and release process so adding a new arc is a seamless update.
 
-- [ ] **P1 — Optionally unlock the final scene from the Settings “Unlock Game Board” action.**
+- [x] **P1 — Optionally unlock the final scene from the Settings “Unlock Game Board” action.**
   - When enabled, make the existing unlock-game-board button also unlock access to the final scene.
   - Add a clearly named code/configuration toggle so this behavior can be turned on or off later without reworking the UI.
   - Keep the current board-unlock behavior unchanged when the toggle is disabled.
@@ -32,12 +32,12 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Let players revisit completed lessons and practice techniques without affecting the main journey.
   - Track lesson completion and make the Academy accessible from the main navigation.
 
-- [ ] **P1 — Add a boss puzzle at the end of every chapter.**
+- [x] **P1 — Add a boss puzzle at the end of every chapter.**
   - Set each boss puzzle’s difficulty to match the difficulty of the next chapter.
   - Verify that completing the puzzle unlocks the next chapter/map progression.
   - Define and document the boss, puzzle size, and target difficulty for each chapter.
 
-- [ ] **P1 — Add the final map boss as a 12×12 puzzle.**
+- [x] **P1 — Add the final map boss as a 12×12 puzzle.**
   - Confirm the 12×12 board is supported by generation, rendering, input, validation, and completion flows.
   - Give the final boss an appropriately climactic encounter and completion sequence.
 
