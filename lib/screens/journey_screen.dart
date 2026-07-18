@@ -861,7 +861,7 @@ class _PuzzleNode extends StatelessWidget {
         boss != null
             ? '${boss.name} chapter boss'
             : encounter != null
-            ? 'Puzzle ${puzzle.order} with optional ${encounter.name} encounter'
+            ? 'Puzzle ${puzzle.order} with ${encounter.name} encounter'
             : 'Puzzle ${puzzle.order}';
     final explanation =
         canOpen

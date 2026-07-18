@@ -40,16 +40,14 @@
           "name": "Vale Thornling",
           "puzzleId": "regalia:puzzle/origin/easy-004",
           "spriteFamily": "rootbound",
-          "spriteAsset": "assets/art/combat/opponents/vale-thornling.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/vale-thornling.png"
         },
         {
           "id": "regalia:enemy/origin/star-touched-hart",
           "name": "Star-Touched Hart",
           "puzzleId": "regalia:puzzle/origin/easy-012",
           "spriteFamily": "antlered",
-          "spriteAsset": "assets/art/combat/opponents/star-touched-hart.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/star-touched-hart.png"
         }
       ],
       "primaryColor": "#527663",
@@ -85,16 +83,14 @@
           "name": "Briar Imp",
           "puzzleId": "regalia:puzzle/origin/easy-023",
           "spriteFamily": "rootbound",
-          "spriteAsset": "assets/art/combat/opponents/briar-imp.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/briar-imp.png"
         },
         {
           "id": "regalia:enemy/origin/lantern-moth",
           "name": "Lantern Moth",
           "puzzleId": "regalia:puzzle/origin/easy-027",
           "spriteFamily": "winged",
-          "spriteAsset": "assets/art/combat/opponents/lantern-moth.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/lantern-moth.png"
         }
       ],
       "primaryColor": "#365f50",
@@ -130,16 +126,14 @@
           "name": "Gale Harrier",
           "puzzleId": "regalia:puzzle/origin/medium-004",
           "spriteFamily": "winged",
-          "spriteAsset": "assets/art/combat/opponents/gale-harrier.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/gale-harrier.png"
         },
         {
           "id": "regalia:enemy/origin/skyglass-wisp",
           "name": "Skyglass Wisp",
           "puzzleId": "regalia:puzzle/origin/medium-007",
           "spriteFamily": "cosmic",
-          "spriteAsset": "assets/art/combat/opponents/skyglass-wisp.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/skyglass-wisp.png"
         }
       ],
       "primaryColor": "#536d88",
@@ -175,16 +169,14 @@
           "name": "Coral Husk",
           "puzzleId": "regalia:puzzle/origin/medium-015",
           "spriteFamily": "abyssal",
-          "spriteAsset": "assets/art/combat/opponents/coral-husk.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/coral-husk.png"
         },
         {
           "id": "regalia:enemy/origin/drowned-acolyte",
           "name": "Drowned Acolyte",
           "puzzleId": "regalia:puzzle/origin/medium-023",
           "spriteFamily": "spectral",
-          "spriteAsset": "assets/art/combat/opponents/drowned-acolyte.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/drowned-acolyte.png"
         }
       ],
       "primaryColor": "#247f82",
@@ -220,16 +212,14 @@
           "name": "Cinderling",
           "puzzleId": "regalia:puzzle/origin/hard-006",
           "spriteFamily": "volcanic",
-          "spriteAsset": "assets/art/combat/opponents/cinderling.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/cinderling.png"
         },
         {
           "id": "regalia:enemy/origin/basalt-brute",
           "name": "Basalt Brute",
           "puzzleId": "regalia:puzzle/origin/hard-013",
           "spriteFamily": "volcanic",
-          "spriteAsset": "assets/art/combat/opponents/basalt-brute.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/basalt-brute.png"
         }
       ],
       "primaryColor": "#8d3e31",
@@ -265,16 +255,14 @@
           "name": "Brass Sentry",
           "puzzleId": "regalia:puzzle/origin/hard-024",
           "spriteFamily": "clockwork",
-          "spriteAsset": "assets/art/combat/opponents/brass-sentry.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/brass-sentry.png"
         },
         {
           "id": "regalia:enemy/origin/gear-goblin",
           "name": "Gear Goblin",
           "puzzleId": "regalia:puzzle/origin/hard-027",
           "spriteFamily": "clockwork",
-          "spriteAsset": "assets/art/combat/opponents/gear-goblin.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/gear-goblin.png"
         }
       ],
       "primaryColor": "#5b4c2a",
@@ -310,16 +298,14 @@
           "name": "Pale Shade",
           "puzzleId": "regalia:puzzle/origin/expert-004",
           "spriteFamily": "spectral",
-          "spriteAsset": "assets/art/combat/opponents/pale-shade.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/pale-shade.png"
         },
         {
           "id": "regalia:enemy/origin/moonbone-hound",
           "name": "Moonbone Hound",
           "puzzleId": "regalia:puzzle/origin/expert-007",
           "spriteFamily": "antlered",
-          "spriteAsset": "assets/art/combat/opponents/moonbone-hound.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/moonbone-hound.png"
         }
       ],
       "primaryColor": "#514d82",
@@ -355,16 +341,14 @@
           "name": "Starbound Sentinel",
           "puzzleId": "regalia:puzzle/origin/expert-016",
           "spriteFamily": "clockwork",
-          "spriteAsset": "assets/art/combat/opponents/starbound-sentinel.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/starbound-sentinel.png"
         },
         {
           "id": "regalia:enemy/origin/eclipse-drake",
           "name": "Eclipse Drake",
           "puzzleId": "regalia:puzzle/origin/expert-023",
           "spriteFamily": "winged",
-          "spriteAsset": "assets/art/combat/opponents/eclipse-drake.png",
-          "rewardLabel": "Presentation only · route progress unchanged"
+          "spriteAsset": "assets/art/combat/opponents/eclipse-drake.png"
         }
       ],
       "primaryColor": "#244a98",

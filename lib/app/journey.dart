@@ -41,8 +41,6 @@ class CombatEncounter {
     required this.spriteAsset,
     required this.spectacleLevel,
     required this.isBoss,
-    required this.skippable,
-    required this.rewardLabel,
   });
 
   final String id;
@@ -56,10 +54,6 @@ class CombatEncounter {
   /// One for regular encounters and 1–8 for increasingly climactic bosses.
   final int spectacleLevel;
   final bool isBoss;
-
-  /// Optional enemies can be dismissed without changing puzzle progression.
-  final bool skippable;
-  final String rewardLabel;
 }
 
 class ChapterEnemy extends CombatEncounter {
@@ -69,8 +63,7 @@ class ChapterEnemy extends CombatEncounter {
     required super.puzzleId,
     required super.spriteFamily,
     required super.spriteAsset,
-    required super.rewardLabel,
-  }) : super(spectacleLevel: 1, isBoss: false, skippable: true);
+  }) : super(spectacleLevel: 1, isBoss: false);
 
   factory ChapterEnemy.fromJson(Map<String, Object?> json) {
     final id = json['id']! as String;
@@ -83,7 +76,6 @@ class ChapterEnemy extends CombatEncounter {
       puzzleId: puzzleId,
       spriteFamily: EnemySpriteFamily.parse(json['spriteFamily']! as String),
       spriteAsset: json['spriteAsset']! as String,
-      rewardLabel: json['rewardLabel']! as String,
     );
   }
 }
@@ -99,11 +91,7 @@ class ChapterBoss extends CombatEncounter {
     required this.size,
     required this.targetDifficulty,
     required this.unlockTargetId,
-  }) : super(
-         isBoss: true,
-         skippable: false,
-         rewardLabel: 'Opens the road ahead',
-       );
+  }) : super(isBoss: true);
 
   final int size;
   final DifficultyTier targetDifficulty;

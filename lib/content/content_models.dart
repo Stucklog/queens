@@ -216,15 +216,13 @@ class StoryArc {
             !ids.add(encounter.id) ||
             !encounterPuzzleIds.add(encounter.puzzleId) ||
             encounter.name.trim().isEmpty ||
-            encounter.rewardLabel.trim().isEmpty ||
             !_isCombatSpriteAsset(encounter.spriteAsset) ||
-            !encounter.skippable ||
             encounter.isBoss ||
             encounter.spectacleLevel != 1 ||
             !chapter.contains(encounterPuzzle.order) ||
             encounter.puzzleId == boss.puzzleId) {
           throw FormatException(
-            'Invalid optional encounter ${encounter.id} for ${chapter.id}',
+            'Invalid encounter ${encounter.id} for ${chapter.id}',
           );
         }
       }

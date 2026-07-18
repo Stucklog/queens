@@ -46,12 +46,10 @@ void main() {
       expect(puzzle.tier, boss.targetDifficulty);
       expect(ContentId.isValid(boss.id, kind: 'boss'), isTrue);
       expect(boss.spectacleLevel, index + 1);
-      expect(boss.skippable, isFalse);
       expect(chapter.encounters, hasLength(2));
       expect(
         chapter.encounters.every(
           (encounter) =>
-              encounter.skippable &&
               !encounter.isBoss &&
               encounter.puzzleId != boss.puzzleId &&
               chapter.contains(arc.catalog.byId(encounter.puzzleId).order),

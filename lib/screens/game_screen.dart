@@ -43,7 +43,6 @@ class _GameScreenState extends State<GameScreen> {
   KnightAnimation _knightAnimation = KnightAnimation.bounce;
   int _knightRestartToken = 0;
   bool _exclusionDragReacted = false;
-  bool _encounterSkipped = false;
   PuzzleCompletionOutcome? _pendingCompletion;
 
   @override
@@ -69,7 +68,7 @@ class _GameScreenState extends State<GameScreen> {
         PixelKnightSprite.preloadFinishers(),
       ]);
     } on Object {
-      // A broken optional art asset must never make the puzzle unplayable.
+      // A broken combat art asset must never make the puzzle unplayable.
     }
   }
 
@@ -111,10 +110,7 @@ class _GameScreenState extends State<GameScreen> {
             : null;
     final boss = storyArc?.bossForPuzzle(puzzle);
     final declaredEncounter = storyArc?.encounterForPuzzle(puzzle);
-    final encounter =
-        _encounterSkipped && declaredEncounter?.skippable == true
-            ? null
-            : declaredEncounter;
+    final encounter = declaredEncounter;
     final themed = RegaliaTheme.forChapter(visualChapter);
     return Theme(
       data: themed,
@@ -146,7 +142,7 @@ class _GameScreenState extends State<GameScreen> {
                               : boss != null
                               ? 'Chapter boss · ${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'
                               : declaredEncounter != null
-                              ? 'Optional encounter · ${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'
+                              ? 'Enemy encounter · ${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'
                               : 'Puzzle ${puzzle.order} of ${storyArc!.catalog.puzzles.length}',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
@@ -183,10 +179,6 @@ class _GameScreenState extends State<GameScreen> {
                           restartToken: activeKnightRestartToken,
                           knightLine: _knightLine(activeKnightAnimation),
                           encounter: encounter,
-                          onSkipEncounter:
-                              encounter?.skippable == true
-                                  ? _skipEncounter
-                                  : null,
                           onKnightCompleted:
                               () => _completeKnightReaction(
                                 activeKnightAnimation,
@@ -511,7 +503,6 @@ class _GameScreenState extends State<GameScreen> {
         _selected = const Cell(0, 0);
         _cues = {};
         _conflicts = {};
-        _encounterSkipped = false;
         _pendingCompletion = null;
         _knightAnimation = KnightAnimation.bounce;
         _knightRestartToken++;
@@ -627,23 +618,11 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
-  void _skipEncounter() {
-    if (_pendingCompletion != null) return;
-    setState(() {
-      _encounterSkipped = true;
-      _knightAnimation = KnightAnimation.bounce;
-      _knightRestartToken++;
-    });
-  }
-
   void _beginCompletionSequence(PuzzleCompletionOutcome outcome) {
     _pendingCompletion = outcome;
-    final encounter =
-        _encounterSkipped
-            ? null
-            : widget.controller
-                .arcForPuzzle(widget.puzzle)
-                ?.encounterForPuzzle(widget.puzzle);
+    final encounter = widget.controller
+        .arcForPuzzle(widget.puzzle)
+        ?.encounterForPuzzle(widget.puzzle);
     _playKnightAnimation(
       encounter == null
           ? KnightAnimation.special

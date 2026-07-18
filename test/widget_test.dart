@@ -185,7 +185,7 @@ void main() {
     expect(semanticsWithLabel('Puzzle 3, current.'), findsOneWidget);
     expect(
       semanticsWithLabel(
-        'Puzzle 4 with optional Vale Thornling encounter, locked. '
+        'Puzzle 4 with Vale Thornling encounter, locked. '
         'Complete puzzle 3 first.',
       ),
       findsOneWidget,

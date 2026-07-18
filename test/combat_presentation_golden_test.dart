@@ -241,6 +241,118 @@ void main() {
     },
     timeout: const Timeout(Duration(minutes: 2)),
   );
+
+  testWidgets(
+    'all opponent reaction frames face the knight and stay in bounds',
+    (tester) async {
+      tester.view.physicalSize = const Size(1000, 2200);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await _precacheOpponents(tester, allOpponents);
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: RegaliaTheme.midnight(),
+          home: Scaffold(
+            body: RepaintBoundary(
+              key: const ValueKey('all-opponent-reactions'),
+              child: ColoredBox(
+                color: const Color(0xff091329),
+                child: Column(
+                  children: [
+                    for (var row = 0; row < 6; row++)
+                      Expanded(
+                        child: Row(
+                          children: [
+                            for (var column = 0; column < 4; column++)
+                              Expanded(
+                                child: _OpponentReactionCard(
+                                  encounter: allOpponents[row * 4 + column],
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await expectLater(
+        find.byKey(const ValueKey('all-opponent-reactions')),
+        matchesGoldenFile('goldens/combat_all_opponent_reactions.png'),
+      );
+    },
+    timeout: const Timeout(Duration(minutes: 2)),
+  );
+}
+
+class _OpponentReactionCard extends StatelessWidget {
+  const _OpponentReactionCard({required this.encounter});
+
+  final CombatEncounter encounter;
+
+  static const _moves = [
+    KnightAnimation.bounce,
+    KnightAnimation.attack,
+    KnightAnimation.defend,
+    KnightAnimation.damage,
+    KnightAnimation.surprised,
+    KnightAnimation.regaliaNova,
+  ];
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(3),
+    child: DecoratedBox(
+      decoration: BoxDecoration(
+        color: const Color(0xff293756),
+        border: Border.all(color: const Color(0xffd5b343), width: 2),
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(4, 3, 4, 0),
+            child: Text(
+              encounter.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 11),
+            ),
+          ),
+          Expanded(
+            child: GridView.count(
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(4),
+              crossAxisCount: 4,
+              childAspectRatio: 1.08,
+              crossAxisSpacing: 2,
+              mainAxisSpacing: 2,
+              children: [
+                for (final move in _moves)
+                  for (var frame = 0; frame < 4; frame++)
+                    ColoredBox(
+                      color: const Color(0xff1e2948),
+                      child: PixelEnemySprite(
+                        encounter: encounter,
+                        stimulus: move,
+                        frame: frame,
+                        width: 50,
+                        height: 50,
+                      ),
+                    ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 Future<void> _precacheOpponents(

@@ -47,52 +47,44 @@ void main() {
     },
   );
 
-  testWidgets(
-    'optional encounters react and can be left without board changes',
-    (tester) async {
-      SharedPreferences.setMockInitialValues({SaveIds.tutorialComplete: true});
-      final controller = _TimerlessController();
-      await tester.runAsync(controller.initialize);
-      addTearDown(controller.dispose);
-      await controller.unlockEntireMap(ContentIds.originArc);
-      final arc = controller.originArc!;
-      final encounter = arc.chapters.first.encounters.first;
-      final puzzle = arc.catalog.byId(encounter.puzzleId);
-      expect(controller.openPuzzle(puzzle), isTrue);
+  testWidgets('in-chapter encounters react and cannot be dismissed', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({SaveIds.tutorialComplete: true});
+    final controller = _TimerlessController();
+    await tester.runAsync(controller.initialize);
+    addTearDown(controller.dispose);
+    await controller.unlockEntireMap(ContentIds.originArc);
+    final arc = controller.originArc!;
+    final encounter = arc.chapters.first.encounters.first;
+    final puzzle = arc.catalog.byId(encounter.puzzleId);
+    expect(controller.openPuzzle(puzzle), isTrue);
 
-      await tester.pumpWidget(
-        MaterialApp(home: GameScreen(controller: controller, puzzle: puzzle)),
-      );
-      await tester.pump();
+    await tester.pumpWidget(
+      MaterialApp(home: GameScreen(controller: controller, puzzle: puzzle)),
+    );
+    await tester.pump();
 
-      expect(find.byKey(const ValueKey('puzzle-enemy-sprite')), findsOneWidget);
-      expect(find.text('OPTIONAL · FLAIR ONLY'), findsOneWidget);
-      expect(find.text(encounter.name), findsAtLeastNWidgets(1));
-      expect(find.text('WATCHING'), findsOneWidget);
+    expect(find.byKey(const ValueKey('puzzle-enemy-sprite')), findsOneWidget);
+    expect(find.text('ENCOUNTER'), findsOneWidget);
+    expect(find.textContaining('OPTIONAL'), findsNothing);
+    expect(find.textContaining('FLAIR'), findsNothing);
+    expect(find.text(encounter.name), findsAtLeastNWidgets(1));
+    expect(find.text('WATCHING'), findsOneWidget);
+    expect(find.byKey(const ValueKey('skip-optional-encounter')), findsNothing);
 
-      final cell = find.byKey(const ValueKey('cell-0-0'));
-      await tester.tap(cell);
-      await tester.pump();
-      expect(find.text('STRIKES'), findsOneWidget);
-      await tester.tap(cell);
-      await tester.pump();
-      expect(find.text('STAGGERED'), findsOneWidget);
-      final boardBeforeLeaving = List<ManualCellState>.of(
-        controller.boardFor(puzzle).cells,
-      );
-
-      await tester.tap(find.byKey(const ValueKey('skip-optional-encounter')));
-      await tester.pump();
-      expect(find.byKey(const ValueKey('puzzle-enemy-sprite')), findsNothing);
-      expect(
-        controller.boardFor(puzzle).cells,
-        orderedEquals(boardBeforeLeaving),
-      );
-    },
-  );
+    final cell = find.byKey(const ValueKey('cell-0-0'));
+    await tester.tap(cell);
+    await tester.pump();
+    expect(find.text('STRIKES'), findsOneWidget);
+    await tester.tap(cell);
+    await tester.pump();
+    expect(find.text('STAGGERED'), findsOneWidget);
+    expect(find.byKey(const ValueKey('puzzle-enemy-sprite')), findsOneWidget);
+  });
 
   testWidgets(
-    'optional encounters end with the reusable Crown Slash finisher',
+    'in-chapter encounters end with the reusable Crown Slash finisher',
     (tester) async {
       SharedPreferences.setMockInitialValues({SaveIds.tutorialComplete: true});
       final controller = _TimerlessController();

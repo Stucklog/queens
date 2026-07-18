@@ -37,6 +37,13 @@ void main() {
       expect(atlas.width, 768, reason: asset);
       expect(atlas.height, 1152, reason: asset);
       _expectAnimatedAtlas(atlas, columns: 4, rows: 6, reason: asset);
+      _expectTransparentCellGutters(
+        atlas,
+        columns: 4,
+        rows: 6,
+        gutter: 8,
+        reason: asset,
+      );
     }
   });
 }
@@ -94,4 +101,43 @@ void _expectAnimatedAtlas(
     );
   }
   expect(transparentPixels, greaterThan(0), reason: reason);
+}
+
+void _expectTransparentCellGutters(
+  image_lib.Image atlas, {
+  required int columns,
+  required int rows,
+  required int gutter,
+  String? reason,
+}) {
+  final cellWidth = atlas.width ~/ columns;
+  final cellHeight = atlas.height ~/ rows;
+  final offenders = <String>[];
+  for (var row = 0; row < rows; row++) {
+    for (var column = 0; column < columns; column++) {
+      var occupied = 0;
+      for (var localY = 0; localY < cellHeight; localY++) {
+        for (var localX = 0; localX < cellWidth; localX++) {
+          if (localX >= gutter &&
+              localX < cellWidth - gutter &&
+              localY >= gutter &&
+              localY < cellHeight - gutter) {
+            continue;
+          }
+          final pixel = atlas.getPixel(
+            column * cellWidth + localX,
+            row * cellHeight + localY,
+          );
+          if (pixel.a >= 16) occupied++;
+        }
+      }
+      if (occupied > 0) offenders.add('row $row frame $column ($occupied)');
+    }
+  }
+  expect(
+    offenders,
+    isEmpty,
+    reason:
+        '${reason ?? 'atlas'} crosses a cell gutter: ${offenders.join(', ')}',
+  );
 }

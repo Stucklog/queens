@@ -41,9 +41,9 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Confirm the 12×12 board is supported by generation, rendering, input, validation, and completion flows.
   - Give the final boss an appropriately climactic encounter and completion sequence.
 
-- [x] **P2 — Add optional enemy encounters within chapters.**
+- [x] **P2 — Add enemy encounters within chapters.**
   - Give each chapter a small set of enemy sprites that can appear during selected puzzles.
-  - Keep these encounters optional so they do not block the main chapter path.
+  - Keep encounter presentation mandatory on its selected puzzle without adding a separate route gate.
   - Establish which puzzles trigger each encounter and how encounters affect presentation or rewards.
 
 ## Combat animation and boss presentation
@@ -157,7 +157,7 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 ## Verification checklist
 
 - [ ] Play through every chapter from a fresh start and confirm the boss puzzle appears at the correct point.
-- [x] Confirm all boss and optional enemy animations finish cleanly without desynchronizing from puzzle completion.
+- [x] Confirm all boss and in-chapter enemy animations finish cleanly without desynchronizing from puzzle completion.
 - [ ] Confirm story scenes display the intended text without clipping, overflow, or unreadable pacing.
 - [ ] Confirm the final map tile and all updated art pass visual regression checks.
 - [ ] Run the full test suite and perform a release build after the above work is complete.

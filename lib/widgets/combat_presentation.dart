@@ -42,7 +42,6 @@ class CombatPresentationBar extends StatelessWidget {
     required this.knightLine,
     required this.onKnightCompleted,
     this.encounter,
-    this.onSkipEncounter,
   });
 
   final KnightAnimation animation;
@@ -50,7 +49,6 @@ class CombatPresentationBar extends StatelessWidget {
   final String knightLine;
   final VoidCallback onKnightCompleted;
   final CombatEncounter? encounter;
-  final VoidCallback? onSkipEncounter;
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +58,8 @@ class CombatPresentationBar extends StatelessWidget {
     final encounterDescription =
         activeEncounter == null
             ? ''
-            : ' ${activeEncounter.isBoss ? 'Boss' : 'Optional enemy'} '
-                '${activeEncounter.name}. Enemy ${reaction.label.toLowerCase()}. '
-                '${activeEncounter.rewardLabel}.';
+            : ' ${activeEncounter.isBoss ? 'Boss' : 'Enemy'} '
+                '${activeEncounter.name}. Enemy ${reaction.label.toLowerCase()}.';
     return Semantics(
       container: true,
       liveRegion: true,
@@ -113,7 +110,6 @@ class CombatPresentationBar extends StatelessWidget {
                       child: _EncounterStatus(
                         encounter: activeEncounter,
                         reaction: reaction,
-                        onSkip: onSkipEncounter,
                       ),
                     ),
                     SizedBox(
@@ -182,15 +178,10 @@ class _KnightStatus extends StatelessWidget {
 }
 
 class _EncounterStatus extends StatelessWidget {
-  const _EncounterStatus({
-    required this.encounter,
-    required this.reaction,
-    this.onSkip,
-  });
+  const _EncounterStatus({required this.encounter, required this.reaction});
 
   final CombatEncounter encounter;
   final EnemyReaction reaction;
-  final VoidCallback? onSkip;
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +194,7 @@ class _EncounterStatus extends StatelessWidget {
           child: Text(
             encounter.isBoss
                 ? 'BOSS · FINISH ${encounter.spectacleLevel}/8'
-                : 'OPTIONAL · FLAIR ONLY',
+                : 'ENCOUNTER',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -225,43 +216,20 @@ class _EncounterStatus extends StatelessWidget {
             ),
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
-              child: ExcludeSemantics(
-                child: Text(
-                  reaction.label,
-                  key: const ValueKey('enemy-reaction-label'),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color:
-                        reaction == EnemyReaction.defeated
-                            ? colors.primary
-                            : colors.onSurfaceVariant,
-                    fontSize: 10,
-                  ),
-                ),
-              ),
+        ExcludeSemantics(
+          child: Text(
+            reaction.label,
+            key: const ValueKey('enemy-reaction-label'),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color:
+                  reaction == EnemyReaction.defeated
+                      ? colors.primary
+                      : colors.onSurfaceVariant,
+              fontSize: 10,
             ),
-            if (encounter.skippable && onSkip != null) ...[
-              const SizedBox(width: 4),
-              SizedBox(
-                height: 25,
-                child: TextButton(
-                  key: const ValueKey('skip-optional-encounter'),
-                  onPressed: onSkip,
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    minimumSize: const Size(38, 24),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  child: const Text('LEAVE', style: TextStyle(fontSize: 9)),
-                ),
-              ),
-            ],
-          ],
+          ),
         ),
       ],
     );
