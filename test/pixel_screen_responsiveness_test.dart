@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/app/theme.dart';
+import 'package:regalia/content/content_ids.dart';
 import 'package:regalia/screens/challenge_screen.dart';
 import 'package:regalia/screens/game_screen.dart';
 import 'package:regalia/screens/rules_screen.dart';
@@ -121,6 +122,28 @@ void main() {
       expect(find.text('Check progress'), findsOneWidget);
       expect(find.text('Hint'), findsOneWidget);
     }
+
+    await controller.unlockEntireMap(ContentIds.originArc);
+    final encounter = controller.originArc!.chapters.first.encounters.first;
+    final encounterPuzzle = controller.originArc!.catalog.byId(
+      encounter.puzzleId,
+    );
+    expect(controller.openPuzzle(encounterPuzzle), isTrue);
+    _setViewSize(tester, _narrow);
+    await _pumpScreen(
+      tester,
+      GameScreen(controller: controller, puzzle: encounterPuzzle),
+      reason: 'encounter game at ${_narrow.width}x${_narrow.height}',
+    );
+    expect(find.byKey(const ValueKey('puzzle-enemy-sprite')), findsOneWidget);
+    expect(
+      tester.getRect(find.byKey(const ValueKey('puzzle-knight-sprite'))).size,
+      const Size(120, 105),
+    );
+    expect(
+      tester.getRect(find.byKey(const ValueKey('puzzle-enemy-sprite'))).size,
+      const Size(111, 114),
+    );
   });
 
   testWidgets('challenge setup remains responsive at both breakpoints', (

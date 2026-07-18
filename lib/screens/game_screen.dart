@@ -168,8 +168,8 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                     ],
                     bottom: PreferredSize(
-                      preferredSize: Size.fromHeight(
-                        encounter == null ? 74 : 94,
+                      preferredSize: const Size.fromHeight(
+                        CombatPresentationBar.preferredHeight,
                       ),
                       child: RepaintBoundary(
                         key: const ValueKey('puzzle-knight-companion-surface'),

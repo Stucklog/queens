@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/app/theme.dart';
+import 'package:regalia/content/content_ids.dart';
 import 'package:regalia/screens/game_screen.dart';
 import 'package:regalia/widgets/pixel_art.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,6 +56,48 @@ void main() {
     await expectLater(
       find.byKey(const ValueKey('puzzle-knight-companion-surface')),
       matchesGoldenFile('goldens/knight_companion_attack_bar.png'),
+    );
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('enlarged combatants face off in the narrow play layout', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    SharedPreferences.setMockInitialValues({'regalia.tutorialComplete': true});
+    final controller = _TimerlessController();
+    await tester.runAsync(controller.initialize);
+    addTearDown(controller.dispose);
+    await controller.unlockEntireMap(ContentIds.originArc);
+    final encounter = controller.originArc!.chapters.first.encounters.first;
+    final puzzle = controller.originArc!.catalog.byId(encounter.puzzleId);
+    expect(controller.openPuzzle(puzzle), isTrue);
+
+    await tester.pumpWidget(const MaterialApp(home: Scaffold()));
+    final context = tester.element(find.byType(Scaffold));
+    await tester.runAsync(
+      () => precacheImage(AssetImage(encounter.spriteAsset), context),
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: RegaliaTheme.midnight(),
+        home: GameScreen(controller: controller, puzzle: puzzle),
+      ),
+    );
+    await tester.pump();
+    final cell = find.byKey(const ValueKey('cell-0-0'));
+    await tester.tap(cell);
+    await tester.pump();
+    await tester.tap(cell);
+    await tester.pump(const Duration(milliseconds: 260));
+
+    expect(find.byKey(const ValueKey('puzzle-enemy-sprite')), findsOneWidget);
+    await expectLater(
+      find.byKey(const ValueKey('puzzle-knight-companion-surface')),
+      matchesGoldenFile('goldens/knight_companion_encounter_bar.png'),
     );
     await tester.pumpWidget(const SizedBox.shrink());
   });

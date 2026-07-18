@@ -50,6 +50,19 @@ class CombatPresentationBar extends StatelessWidget {
   final VoidCallback onKnightCompleted;
   final CombatEncounter? encounter;
 
+  /// The puzzle header keeps one stage geometry whether an encounter is
+  /// present or not, so the crown-bearer never jumps when combat begins.
+  static const double height = 126;
+  static const double preferredHeight = height + 8;
+
+  static const double knightWidth = 120;
+  static const double knightHeight = 105;
+  static const double enemyWidth = 111;
+  static const double enemyHeight = 114;
+  static const double combatantOverlap = 24;
+  static const double encounterStageWidth =
+      knightWidth + enemyWidth - combatantOverlap;
+
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -65,7 +78,8 @@ class CombatPresentationBar extends StatelessWidget {
       liveRegion: true,
       label: 'Knight companion. $knightLine$encounterDescription',
       child: Container(
-        height: activeEncounter == null ? 66 : 86,
+        key: const ValueKey('combat-presentation-bar-surface'),
+        height: height,
         margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
         decoration: BoxDecoration(
           color: colors.surfaceContainerHigh,
@@ -87,50 +101,95 @@ class CombatPresentationBar extends StatelessWidget {
                   restartToken: restartToken,
                   color: colors.secondary,
                 ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: activeEncounter == null ? 106 : 84,
-                    child: Center(
-                      child: PixelKnightSprite(
-                        key: const ValueKey('puzzle-knight-sprite'),
-                        animation: animation,
-                        loop: animation == KnightAnimation.bounce,
-                        restartToken: restartToken,
-                        onCompleted: onKnightCompleted,
-                        width: activeEncounter == null ? 92 : 80,
-                        height: activeEncounter == null ? 57 : 70,
-                      ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _CombatantStage(
+                      animation: animation,
+                      restartToken: restartToken,
+                      onKnightCompleted: onKnightCompleted,
+                      encounter: activeEncounter,
                     ),
-                  ),
-                  if (activeEncounter == null)
-                    Expanded(child: _KnightStatus(line: knightLine))
-                  else ...[
+                    const SizedBox(width: 4),
                     Expanded(
-                      child: _EncounterStatus(
-                        encounter: activeEncounter,
-                        reaction: reaction,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 78,
-                      child: Center(
-                        child: PixelEnemySprite(
-                          key: const ValueKey('puzzle-enemy-sprite'),
-                          encounter: activeEncounter,
-                          stimulus: animation,
-                          restartToken: restartToken,
-                          width: 74,
-                          height: 76,
-                        ),
-                      ),
+                      child:
+                          activeEncounter == null
+                              ? _KnightStatus(line: knightLine)
+                              : _EncounterStatus(
+                                encounter: activeEncounter,
+                                reaction: reaction,
+                              ),
                     ),
                   ],
-                ],
+                ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _CombatantStage extends StatelessWidget {
+  const _CombatantStage({
+    required this.animation,
+    required this.restartToken,
+    required this.onKnightCompleted,
+    this.encounter,
+  });
+
+  final KnightAnimation animation;
+  final int restartToken;
+  final VoidCallback onKnightCompleted;
+  final CombatEncounter? encounter;
+
+  @override
+  Widget build(BuildContext context) {
+    final activeEncounter = encounter;
+    return SizedBox(
+      key: const ValueKey('puzzle-combatant-stage'),
+      width:
+          activeEncounter == null
+              ? CombatPresentationBar.knightWidth
+              : CombatPresentationBar.encounterStageWidth,
+      height: CombatPresentationBar.enemyHeight,
+      child: Stack(
+        clipBehavior: Clip.hardEdge,
+        children: [
+          Positioned(
+            left: 0,
+            bottom: 0,
+            child: PixelKnightSprite(
+              key: const ValueKey('puzzle-knight-sprite'),
+              animation: animation,
+              loop: animation == KnightAnimation.bounce,
+              restartToken: restartToken,
+              onCompleted: onKnightCompleted,
+              width: CombatPresentationBar.knightWidth,
+              height: CombatPresentationBar.knightHeight,
+            ),
+          ),
+          if (activeEncounter != null)
+            Positioned(
+              // The authored transparent gutters overlap so the visible
+              // silhouettes read as close combat without moving the knight.
+              left:
+                  CombatPresentationBar.knightWidth -
+                  CombatPresentationBar.combatantOverlap,
+              bottom: 0,
+              child: PixelEnemySprite(
+                key: const ValueKey('puzzle-enemy-sprite'),
+                encounter: activeEncounter,
+                stimulus: animation,
+                restartToken: restartToken,
+                width: CombatPresentationBar.enemyWidth,
+                height: CombatPresentationBar.enemyHeight,
+              ),
+            ),
+        ],
       ),
     );
   }

@@ -44,7 +44,7 @@ void main() {
   testWidgets(
     'boss finishes escalate through eight distinct spectacle tiers',
     (tester) async {
-      tester.view.physicalSize = const Size(760, 420);
+      tester.view.physicalSize = const Size(760, 560);
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
@@ -67,7 +67,7 @@ void main() {
                     physics: const NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.all(8),
                     crossAxisCount: 2,
-                    childAspectRatio: 3.72,
+                    childAspectRatio: 2.75,
                     children: [
                       for (final chapter in journeyChapters)
                         CombatPresentationBar(

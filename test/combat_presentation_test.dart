@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
+import 'package:regalia/app/journey.dart';
 import 'package:regalia/content/content_ids.dart';
 import 'package:regalia/core/exact_solver.dart';
 import 'package:regalia/core/models.dart';
@@ -44,6 +45,77 @@ void main() {
           greaterThan(finishers[index - 1].presentationDuration),
         );
       }
+    },
+  );
+
+  testWidgets(
+    'puzzle stage pins the enlarged knight and places the enemy beside her',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 180);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      Future<void> pumpBar(CombatEncounter? encounter) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: MediaQuery(
+              data: const MediaQueryData(disableAnimations: true),
+              child: Scaffold(
+                body: Align(
+                  alignment: Alignment.topLeft,
+                  child: SizedBox(
+                    width: 390,
+                    height: CombatPresentationBar.preferredHeight,
+                    child: CombatPresentationBar(
+                      animation: KnightAnimation.attack,
+                      restartToken: 1,
+                      knightLine: 'A crown claims its ground.',
+                      encounter: encounter,
+                      onKnightCompleted: () {},
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pump();
+      }
+
+      await pumpBar(null);
+      final soloStageRect = tester.getRect(
+        find.byKey(const ValueKey('puzzle-combatant-stage')),
+      );
+      final soloKnightRect = tester.getRect(
+        find.byKey(const ValueKey('puzzle-knight-sprite')),
+      );
+      final soloKnightOffset = soloKnightRect.topLeft - soloStageRect.topLeft;
+      expect(soloKnightRect.size, const Size(120, 105));
+      expect(soloStageRect.size, const Size(120, 114));
+
+      await pumpBar(_layoutTestEncounter);
+      final combatStageRect = tester.getRect(
+        find.byKey(const ValueKey('puzzle-combatant-stage')),
+      );
+      final combatKnightRect = tester.getRect(
+        find.byKey(const ValueKey('puzzle-knight-sprite')),
+      );
+      final enemyRect = tester.getRect(
+        find.byKey(const ValueKey('puzzle-enemy-sprite')),
+      );
+      expect(combatStageRect.topLeft, soloStageRect.topLeft);
+      expect(combatKnightRect.topLeft, soloKnightRect.topLeft);
+      expect(
+        combatKnightRect.topLeft - combatStageRect.topLeft,
+        soloKnightOffset,
+      );
+      expect(combatKnightRect.size, const Size(120, 105));
+      expect(enemyRect.size, const Size(111, 114));
+      expect(combatStageRect.size, const Size(207, 114));
+      expect(enemyRect.left, combatKnightRect.right - 24);
+      expect(enemyRect.bottom, combatKnightRect.bottom);
+      expect(enemyRect.bottom, combatStageRect.bottom);
     },
   );
 
@@ -219,3 +291,13 @@ class _TimerlessController extends AppController {
   @override
   void stopTimer() {}
 }
+
+const _layoutTestEncounter = CombatEncounter(
+  id: 'regalia:enemy/layout-test',
+  name: 'Layout Test',
+  puzzleId: 'regalia:puzzle/layout-test',
+  spriteFamily: EnemySpriteFamily.clockwork,
+  spriteAsset: 'assets/art/combat/opponents/gear-goblin.png',
+  spectacleLevel: 1,
+  isBoss: false,
+);
