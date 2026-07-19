@@ -321,10 +321,13 @@ class _PixelBoardOverlayPainter extends CustomPainter {
       if (cue != null) {
         switch (cue) {
           case BoardCue.hintSource:
+            _drawCueWash(canvas, geometry, rect, _hintSource);
             _drawEdgeTicks(canvas, geometry, rect, _hintSource);
           case BoardCue.hintElimination:
+            _drawCueWash(canvas, geometry, rect, _hintElimination);
             _drawDiagonalCorners(canvas, geometry, rect, _hintElimination);
           case BoardCue.hintPlacement:
+            _drawCueWash(canvas, geometry, rect, _gold);
             _drawBrackets(canvas, geometry, rect, _gold, inset: 4, arm: 4);
           case BoardCue.checkError:
             _drawCheckerFrame(canvas, geometry, rect, colorScheme.error);
@@ -347,6 +350,21 @@ class _PixelBoardOverlayPainter extends CustomPainter {
       }
     }
     _drawFrame(canvas, geometry);
+  }
+
+  void _drawCueWash(
+    Canvas canvas,
+    _PixelGridGeometry geometry,
+    Rect rect,
+    Color color,
+  ) {
+    final unit = geometry.scaledPixel(rect, 1);
+    canvas.drawRect(
+      geometry.snapRect(rect.deflate(unit * 1.5)),
+      Paint()
+        ..color = color.withValues(alpha: .22)
+        ..isAntiAlias = false,
+    );
   }
 
   void _drawEdgeTicks(
@@ -674,7 +692,7 @@ class _PixelCellMarkPainter extends CustomPainter {
       case ManualCellState.cross:
         _drawCross(pixels);
       case ManualCellState.empty:
-        if (automaticallyExcluded) _drawAutomaticExclusion(pixels);
+        if (automaticallyExcluded) _drawCross(pixels);
     }
   }
 
@@ -728,14 +746,6 @@ class _PixelCellMarkPainter extends CustomPainter {
       pixels.rect(coordinate, coordinate, 2, 2, face);
       pixels.rect(13 - step * 2, coordinate, 2, 2, face);
     }
-  }
-
-  void _drawAutomaticExclusion(_CellSpriteCanvas pixels) {
-    final shade = colorScheme.onSurface.withValues(alpha: .25);
-    final face = colorScheme.onSurfaceVariant.withValues(alpha: .5);
-    pixels.rect(7, 5, 2, 6, shade);
-    pixels.rect(5, 7, 6, 2, shade);
-    pixels.rect(7, 7, 2, 2, face);
   }
 
   @override

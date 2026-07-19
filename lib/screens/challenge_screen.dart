@@ -333,29 +333,35 @@ class _ChallengeRun extends StatelessWidget {
       SizedBox(
         height: 190,
         child: DecoratedBox(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).colorScheme.onSurface,
-              width: 3,
+          decoration: ShapeDecoration(
+            shape: PixelOrganicBorder(
+              side: BorderSide(
+                color: Theme.of(context).colorScheme.onSurface,
+                width: 3,
+              ),
             ),
           ),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              PixelLandscape(
-                chapter: chapter,
-                brightness: Theme.of(context).brightness,
-                placement: PixelArtPlacement.banner,
-              ),
-              const Align(
-                alignment: Alignment(-.58, .72),
-                child: PixelKnightSprite(
-                  animation: KnightAnimation.bounce,
-                  width: 72,
-                  height: 108,
+          child: ClipPath(
+            clipper: const ShapeBorderClipper(shape: PixelOrganicBorder()),
+            clipBehavior: Clip.hardEdge,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                PixelLandscape(
+                  chapter: chapter,
+                  brightness: Theme.of(context).brightness,
+                  placement: PixelArtPlacement.banner,
                 ),
-              ),
-            ],
+                const Align(
+                  alignment: Alignment(-.58, .72),
+                  child: PixelKnightSprite(
+                    animation: KnightAnimation.bounce,
+                    width: 72,
+                    height: 108,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -378,13 +384,15 @@ class _ChallengeRun extends StatelessWidget {
       const SizedBox(height: 18),
       Container(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
+        decoration: ShapeDecoration(
           color: Theme.of(context).colorScheme.surface,
-          border: Border.all(
-            color: Theme.of(context).colorScheme.onSurface,
-            width: 3,
+          shape: PixelOrganicBorder(
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.onSurface,
+              width: 3,
+            ),
           ),
-          boxShadow: [
+          shadows: [
             BoxShadow(
               color: Colors.black.withValues(alpha: .2),
               offset: const Offset(5, 5),
@@ -504,11 +512,13 @@ class _Stat extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-    decoration: BoxDecoration(
+    decoration: ShapeDecoration(
       color: Theme.of(context).colorScheme.surface,
-      border: Border.all(
-        color: Theme.of(context).colorScheme.onSurface,
-        width: 2,
+      shape: PixelOrganicBorder.compact(
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.onSurface,
+          width: 2,
+        ),
       ),
     ),
     child: Column(

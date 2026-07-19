@@ -451,6 +451,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
                           child: Material(
                             color: Colors.transparent,
                             child: InkWell(
+                              customBorder: const PixelOrganicBorder(),
                               onTap: () {
                                 if (!(_movementSkip?.isCompleted ?? true)) {
                                   _movementSkip!.complete();
@@ -521,7 +522,7 @@ class _OpeningLandmark extends StatelessWidget {
           '${arc.openingScene.title}. Replay the prologue without changing progress.',
       child: Material(
         color: Theme.of(context).colorScheme.surface,
-        shape: RoundedRectangleBorder(
+        shape: PixelOrganicBorder(
           side: BorderSide(
             color: Theme.of(context).colorScheme.secondary,
             width: 3,
@@ -531,6 +532,7 @@ class _OpeningLandmark extends StatelessWidget {
         child: InkWell(
           key: const ValueKey('intro-landmark'),
           onTap: onReplay,
+          customBorder: const PixelOrganicBorder(),
           child: SizedBox(
             height: 92,
             child: Stack(
@@ -641,14 +643,16 @@ class _JourneyHeader extends StatelessWidget {
         constraints: const BoxConstraints(maxWidth: 600),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-          child: Container(
-            decoration: BoxDecoration(
+          child: DecoratedBox(
+            decoration: ShapeDecoration(
               color: Theme.of(context).colorScheme.surface,
-              border: Border.all(
-                color: Theme.of(context).colorScheme.onSurface,
-                width: 3,
+              shape: PixelOrganicBorder(
+                side: BorderSide(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  width: 3,
+                ),
               ),
-              boxShadow: [
+              shadows: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: .22),
                   offset: const Offset(5, 5),
@@ -832,12 +836,13 @@ class _RouteSection extends StatelessWidget {
                             color: Theme.of(
                               context,
                             ).colorScheme.surface.withValues(alpha: .9),
-                            shape: const RoundedRectangleBorder(
+                            shape: const PixelOrganicBorder(
                               side: BorderSide(width: 3),
                             ),
                             child: InkWell(
                               key: ValueKey('landmark-${chapter.id}'),
                               onTap: reached ? onLandmark : null,
+                              customBorder: const PixelOrganicBorder(),
                               child: Padding(
                                 padding: const EdgeInsets.all(12),
                                 child: Row(
@@ -1031,9 +1036,10 @@ class _PuzzleNode extends StatelessWidget {
       label: explanation,
       child: Tooltip(
         message: explanation,
-        child: Container(
-          decoration: BoxDecoration(
-            boxShadow: [
+        child: DecoratedBox(
+          decoration: ShapeDecoration(
+            shape: const PixelOrganicBorder.compact(),
+            shadows: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: .26),
                 offset: const Offset(4, 4),
@@ -1042,7 +1048,7 @@ class _PuzzleNode extends StatelessWidget {
           ),
           child: Material(
             color: fill,
-            shape: RoundedRectangleBorder(
+            shape: PixelOrganicBorder.compact(
               side: BorderSide(
                 color: current ? colors.secondary : colors.outlineVariant,
                 width: current ? 4 : 2,
@@ -1051,6 +1057,7 @@ class _PuzzleNode extends StatelessWidget {
             child: InkWell(
               key: ValueKey('puzzle-node-${puzzle.order}'),
               onTap: canOpen ? () => onOpen(puzzle) : null,
+              customBorder: const PixelOrganicBorder.compact(),
               child: SizedBox.square(
                 dimension: 56,
                 child: Column(
@@ -1110,7 +1117,7 @@ class _FinalLandmark extends StatelessWidget {
                     : '${arc.title} finale awaits. Complete puzzle ${arc.catalog.puzzles.last.order} to reach it.',
             child: Material(
               color: Theme.of(context).colorScheme.surface,
-              shape: RoundedRectangleBorder(
+              shape: PixelOrganicBorder(
                 side: BorderSide(
                   color: Theme.of(context).colorScheme.onSurface,
                   width: 3,
@@ -1119,6 +1126,7 @@ class _FinalLandmark extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                 key: const ValueKey('final-landmark'),
+                customBorder: const PixelOrganicBorder(),
                 onTap:
                     reached
                         ? () => Navigator.of(context).push(
@@ -1181,42 +1189,46 @@ class _FinalLandmark extends StatelessWidget {
                       left: 14,
                       right: 14,
                       top: 14,
-                      child: Container(
-                        decoration: BoxDecoration(
+                      child: DecoratedBox(
+                        decoration: ShapeDecoration(
                           color: Theme.of(
                             context,
                           ).colorScheme.surface.withValues(alpha: .92),
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.onSurface,
-                            width: 3,
+                          shape: PixelOrganicBorder(
+                            side: BorderSide(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              width: 3,
+                            ),
                           ),
                         ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 10,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            PixelIcon(
-                              reached ? PixelGlyph.crown : PixelGlyph.lock,
-                              color: Theme.of(context).colorScheme.onSurface,
-                              size: 24,
-                              excludeFromSemantics: true,
-                            ),
-                            const SizedBox(width: 10),
-                            Flexible(
-                              child: Text(
-                                reached
-                                    ? arc.finaleScene.title
-                                    : 'Finale awaits',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.titleLarge,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 10,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              PixelIcon(
+                                reached ? PixelGlyph.crown : PixelGlyph.lock,
+                                color: Theme.of(context).colorScheme.onSurface,
+                                size: 24,
+                                excludeFromSemantics: true,
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 10),
+                              Flexible(
+                                child: Text(
+                                  reached
+                                      ? arc.finaleScene.title
+                                      : 'Finale awaits',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

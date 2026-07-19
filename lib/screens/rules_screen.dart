@@ -48,7 +48,7 @@ class RulesScreen extends StatelessWidget {
           icon: PixelGlyph.tap,
           title: 'Mark your thinking',
           body:
-              'Tap a cell to cycle empty > X > crown > empty, or drag across cells to mark them X. Pixel sparks are automatic exclusions and do not count as assistance.',
+              'Tap a cell to cycle empty > X > crown > empty, or drag across cells to mark them X. After a crown is placed, matching X marks show automatic exclusions; they do not count as assistance.',
         ),
       ],
     ),

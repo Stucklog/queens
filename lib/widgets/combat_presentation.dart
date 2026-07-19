@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../app/journey.dart';
 import 'pixel_art.dart';
+import 'pixel_ui.dart';
 
 enum EnemyReaction { idle, staggered, striking, pressing, exposed, defeated }
 
@@ -81,14 +82,18 @@ class CombatPresentationBar extends StatelessWidget {
         key: const ValueKey('combat-presentation-bar-surface'),
         height: height,
         margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-        decoration: BoxDecoration(
+        decoration: ShapeDecoration(
           color: colors.surfaceContainerHigh,
-          border: Border.all(color: colors.secondary, width: 2),
-          boxShadow: const [
+          shape: PixelOrganicBorder(
+            side: BorderSide(color: colors.secondary, width: 2),
+          ),
+          shadows: const [
             BoxShadow(color: Color(0x77080d20), offset: Offset(4, 4)),
           ],
         ),
-        child: ClipRect(
+        child: ClipPath(
+          clipper: const ShapeBorderClipper(shape: PixelOrganicBorder()),
+          clipBehavior: Clip.hardEdge,
           child: Stack(
             fit: StackFit.expand,
             children: [

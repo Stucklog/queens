@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import '../app/app_controller.dart';
 import '../app/journey.dart';
 import '../app/theme.dart';
+import '../core/human_solver.dart';
 import '../core/models.dart';
 import '../widgets/completion_dialog.dart';
 import '../widgets/combat_presentation.dart';
@@ -29,6 +30,10 @@ class GameScreen extends StatefulWidget {
   final PuzzlePlayMode playMode;
   final int? challengeNumber;
 
+  /// Two seconds longer than Flutter's default snackbar duration. The board
+  /// cue is cleared only after the snackbar has completely left the screen.
+  static const hintDisplayDuration = Duration(seconds: 6);
+
   @override
   State<GameScreen> createState() => _GameScreenState();
 }
@@ -44,6 +49,8 @@ class _GameScreenState extends State<GameScreen> {
   int _knightRestartToken = 0;
   bool _exclusionDragReacted = false;
   PuzzleCompletionOutcome? _pendingCompletion;
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _activeHintMessage;
+  int _hintMessageToken = 0;
 
   @override
   void initState() {
@@ -74,6 +81,7 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   void dispose() {
+    _hintMessageToken++;
     widget.controller.stopTimer();
     _keyboardFocus.dispose();
     super.dispose();
@@ -265,6 +273,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _pressCell(Cell cell) {
+    _dismissHintFeedback();
     final board = widget.controller.boardFor(widget.puzzle);
     final before = board.at(cell);
     setState(() {
@@ -282,6 +291,7 @@ class _GameScreenState extends State<GameScreen> {
     if (before == ManualCellState.crown || before == targetState) {
       return;
     }
+    _dismissHintFeedback();
     setState(() {
       _selected = cell;
       _cues = {};
@@ -299,6 +309,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _setSelected(ManualCellState state) {
+    _dismissHintFeedback();
     final board = widget.controller.boardFor(widget.puzzle);
     final before = board.at(_selected);
     setState(() {
@@ -363,6 +374,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _check() {
+    _dismissHintFeedback();
     final result = widget.controller.checkProgress(widget.puzzle);
     setState(() {
       _cues = {
@@ -386,9 +398,11 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _hint() {
+    _dismissHintFeedback();
     final deduction = widget.controller.hint(widget.puzzle);
     _playKnightAnimation(KnightAnimation.surprised);
     if (deduction == null) {
+      setState(() => _cues = {});
       _message(
         'No hint available',
         'Try clearing a mark and checking the board again.',
@@ -396,43 +410,96 @@ class _GameScreenState extends State<GameScreen> {
       );
       return;
     }
+    final hintCues = {
+      for (final cell in deduction.sources) cell: BoardCue.hintSource,
+      for (final cell in deduction.eliminated) cell: BoardCue.hintElimination,
+      if (deduction.placement != null)
+        deduction.placement!: BoardCue.hintPlacement,
+    };
+    final token = ++_hintMessageToken;
     setState(() {
-      _cues = {
-        for (final cell in deduction.sources) cell: BoardCue.hintSource,
-        for (final cell in deduction.eliminated) cell: BoardCue.hintElimination,
-        if (deduction.placement != null)
-          deduction.placement!: BoardCue.hintPlacement,
-      };
+      _cues = hintCues;
       _conflicts = {};
     });
-    _message('A gentle nudge', deduction.explanation, PixelGlyph.hint);
+    final feature = _message(
+      'A gentle nudge',
+      _accessibleHintText(deduction),
+      PixelGlyph.hint,
+      duration: GameScreen.hintDisplayDuration,
+    );
+    _activeHintMessage = feature;
+    unawaited(
+      feature.closed.then((_) {
+        if (!mounted || token != _hintMessageToken) return;
+        _activeHintMessage = null;
+        setState(() => _cues = {});
+      }),
+    );
   }
 
-  void _message(String title, String message, PixelGlyph icon) {
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> _message(
+    String title,
+    String message,
+    PixelGlyph icon, {
+    Duration? duration,
+  }) {
     final colors = Theme.of(context).colorScheme;
     final accent = icon == PixelGlyph.error ? colors.error : colors.secondary;
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            side: BorderSide(color: accent, width: 3),
-          ),
-          content: Row(
-            children: [
-              PixelIcon(
-                icon,
-                color: accent,
-                size: 24,
-                excludeFromSemantics: true,
-              ),
-              const SizedBox(width: 12),
-              Expanded(child: Text('$title — $message')),
-            ],
+    final messenger = ScaffoldMessenger.of(context)..hideCurrentSnackBar();
+    return messenger.showSnackBar(
+      SnackBar(
+        duration: duration ?? const Duration(seconds: 4),
+        behavior: SnackBarBehavior.floating,
+        shape: PixelOrganicBorder(side: BorderSide(color: accent, width: 3)),
+        content: Semantics(
+          key: const ValueKey('puzzle-feedback-message'),
+          container: true,
+          liveRegion: true,
+          label: '$title. $message',
+          child: ExcludeSemantics(
+            child: Row(
+              children: [
+                PixelIcon(
+                  icon,
+                  color: accent,
+                  size: 24,
+                  excludeFromSemantics: true,
+                ),
+                const SizedBox(width: 12),
+                Expanded(child: Text('$title — $message')),
+              ],
+            ),
           ),
         ),
-      );
+      ),
+    );
+  }
+
+  String _accessibleHintText(Deduction deduction) {
+    final target =
+        deduction.placement ??
+        (deduction.eliminated.length == 1
+            ? deduction.eliminated.single
+            : deduction.sources.length == 1
+            ? deduction.sources.single
+            : null);
+    final visualLead =
+        target != null
+            ? 'Highlighted ${_spokenCell(target)}.'
+            : deduction.eliminated.isNotEmpty
+            ? 'Highlighted ${deduction.eliminated.length} cells to exclude.'
+            : 'Highlighted ${deduction.sources.length} source cells.';
+    return '$visualLead ${deduction.explanation}';
+  }
+
+  String _spokenCell(Cell cell) =>
+      'row ${cell.row + 1}, column ${String.fromCharCode(65 + cell.column)}';
+
+  void _dismissHintFeedback() {
+    if (_activeHintMessage == null) return;
+    _hintMessageToken++;
+    _activeHintMessage = null;
+    ScaffoldMessenger.maybeOf(context)?.removeCurrentSnackBar();
   }
 
   Future<void> _confirmReset() async {
@@ -459,6 +526,7 @@ class _GameScreenState extends State<GameScreen> {
           ),
     );
     if (reset ?? false) {
+      _dismissHintFeedback();
       widget.controller.reset(widget.puzzle);
       widget.controller.startTimer(widget.puzzle.id);
       setState(() {
@@ -529,6 +597,7 @@ class _GameScreenState extends State<GameScreen> {
   void _undo() {
     final board = widget.controller.boardFor(widget.puzzle);
     if (board.undoStack.isEmpty) return;
+    _dismissHintFeedback();
     widget.controller.undo(widget.puzzle);
     setState(() {
       _cues = {};
@@ -540,6 +609,7 @@ class _GameScreenState extends State<GameScreen> {
   void _redo() {
     final board = widget.controller.boardFor(widget.puzzle);
     if (board.redoStack.isEmpty) return;
+    _dismissHintFeedback();
     final before = List<ManualCellState>.of(board.cells);
     widget.controller.redo(widget.puzzle);
     setState(() {

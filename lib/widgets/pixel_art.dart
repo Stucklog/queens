@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../app/journey.dart';
+import 'pixel_ui.dart';
 
 enum PixelSceneKind { panorama, opening, chapter, finale }
 
@@ -232,19 +233,23 @@ class _PixelStorySceneState extends State<PixelStoryScene>
           builder: (context, _) {
             final frame = still ? 0 : (_animation.value * 6).floor() % 6;
             return DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  width: 4,
+              decoration: ShapeDecoration(
+                shape: PixelOrganicBorder(
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    width: 4,
+                  ),
                 ),
-                boxShadow: [
+                shadows: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: .22),
                     offset: const Offset(6, 6),
                   ),
                 ],
               ),
-              child: ClipRect(
+              child: ClipPath(
+                clipper: const ShapeBorderClipper(shape: PixelOrganicBorder()),
+                clipBehavior: Clip.hardEdge,
                 child: Stack(
                   fit: StackFit.expand,
                   children: [

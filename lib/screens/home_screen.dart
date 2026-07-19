@@ -150,7 +150,7 @@ class _StoryArcTile extends StatelessWidget {
       child: Material(
         key: ValueKey('story-arc-tile-${arc.id}'),
         color: Theme.of(context).colorScheme.surface,
-        shape: RoundedRectangleBorder(
+        shape: PixelOrganicBorder(
           side: BorderSide(
             color: Theme.of(context).colorScheme.secondary,
             width: 3,
@@ -159,6 +159,7 @@ class _StoryArcTile extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         child: InkWell(
           onTap: onPressed,
+          customBorder: const PixelOrganicBorder(),
           child: SizedBox(
             height: 250,
             child: Stack(
@@ -274,6 +275,7 @@ class _JustPuzzleTile extends StatelessWidget {
       child: InkWell(
         key: const ValueKey('open-just-puzzle-home'),
         onTap: onPressed,
+        customBorder: const PixelOrganicBorder(),
         child: Padding(
           padding: const EdgeInsets.all(18),
           child: Row(

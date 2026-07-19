@@ -31,6 +31,182 @@ enum PixelGlyph {
   hourglass,
 }
 
+/// A deterministic, code-native outline with subtly irregular pixel steps.
+///
+/// The contour is deliberately stable rather than randomized: it gives panels
+/// and controls a hand-drawn silhouette without shimmering between rebuilds or
+/// making golden tests dependent on a random seed. [compact] is intended for
+/// controls whose shortest side is below roughly 56 logical pixels.
+class PixelOrganicBorder extends OutlinedBorder {
+  const PixelOrganicBorder({super.side, this.irregularity = 4})
+    : assert(irregularity >= 0);
+
+  const PixelOrganicBorder.compact({super.side}) : irregularity = 2;
+
+  final double irregularity;
+
+  @override
+  PixelOrganicBorder copyWith({BorderSide? side, double? irregularity}) =>
+      PixelOrganicBorder(
+        side: side ?? this.side,
+        irregularity: irregularity ?? this.irregularity,
+      );
+
+  @override
+  ShapeBorder scale(double t) =>
+      PixelOrganicBorder(side: side.scale(t), irregularity: irregularity * t);
+
+  @override
+  ShapeBorder? lerpFrom(ShapeBorder? a, double t) {
+    if (a is PixelOrganicBorder) {
+      return PixelOrganicBorder(
+        side: BorderSide.lerp(a.side, side, t),
+        irregularity: a.irregularity + (irregularity - a.irregularity) * t,
+      );
+    }
+    return super.lerpFrom(a, t);
+  }
+
+  @override
+  ShapeBorder? lerpTo(ShapeBorder? b, double t) {
+    if (b is PixelOrganicBorder) {
+      return PixelOrganicBorder(
+        side: BorderSide.lerp(side, b.side, t),
+        irregularity: irregularity + (b.irregularity - irregularity) * t,
+      );
+    }
+    return super.lerpTo(b, t);
+  }
+
+  @override
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
+    final inset = math.max(0.0, side.strokeInset);
+    return _pixelOrganicPath(
+      rect.deflate(inset),
+      math.max(0.0, irregularity - inset),
+    );
+  }
+
+  @override
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) =>
+      _pixelOrganicPath(rect, irregularity);
+
+  @override
+  bool get preferPaintInterior => true;
+
+  @override
+  void paintInterior(
+    Canvas canvas,
+    Rect rect,
+    Paint paint, {
+    TextDirection? textDirection,
+  }) => canvas.drawPath(getOuterPath(rect), paint);
+
+  @override
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
+    if (side.style == BorderStyle.none) return;
+    final offset = -side.strokeOffset / 2;
+    final outline = _pixelOrganicPath(
+      rect.deflate(offset),
+      math.max(0.0, irregularity - offset),
+    );
+    canvas.drawPath(
+      outline,
+      side.toPaint()
+        ..strokeJoin = StrokeJoin.bevel
+        ..isAntiAlias = false,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PixelOrganicBorder &&
+          other.side == side &&
+          other.irregularity == irregularity;
+
+  @override
+  int get hashCode => Object.hash(side, irregularity);
+}
+
+Path _pixelOrganicPath(Rect rect, double requestedIrregularity) {
+  final path = Path();
+  if (rect.isEmpty) return path;
+
+  final shortestSide = math.min(rect.width, rect.height);
+  final irregularity = math.min(requestedIrregularity, shortestSide / 6);
+  if (irregularity < 1) return path..addRect(rect);
+
+  double snapX(double fraction) =>
+      rect.left + (rect.width * fraction).roundToDouble();
+  double snapY(double fraction) =>
+      rect.top + (rect.height * fraction).roundToDouble();
+
+  final base = irregularity.roundToDouble();
+  final shallow = math.max(2.0, base - 1);
+  final step = math.min(1.0, base / 2);
+  final topJogStart = snapX(.34);
+  final topJogEnd = snapX(.62);
+  final rightJogStart = snapY(.31);
+  final rightJogEnd = snapY(.58);
+  final bottomJogStart = snapX(.43);
+  final bottomJogEnd = snapX(.72);
+  final leftJogStart = snapY(.39);
+  final leftJogEnd = snapY(.69);
+  final canJogHorizontally = rect.width >= 24;
+  final canJogVertically = rect.height >= 24;
+
+  path.moveTo(rect.left + shallow, rect.top);
+  if (canJogHorizontally) {
+    path
+      ..lineTo(topJogStart, rect.top)
+      ..lineTo(topJogStart, rect.top + step)
+      ..lineTo(topJogEnd, rect.top + step)
+      ..lineTo(topJogEnd, rect.top);
+  }
+  path
+    ..lineTo(rect.right - base, rect.top)
+    ..lineTo(rect.right - step, rect.top + base)
+    ..lineTo(rect.right, rect.top + base);
+
+  if (canJogVertically) {
+    path
+      ..lineTo(rect.right, rightJogStart)
+      ..lineTo(rect.right - step, rightJogStart)
+      ..lineTo(rect.right - step, rightJogEnd)
+      ..lineTo(rect.right, rightJogEnd);
+  }
+  path
+    ..lineTo(rect.right, rect.bottom - shallow)
+    ..lineTo(rect.right - shallow, rect.bottom - step)
+    ..lineTo(rect.right - shallow, rect.bottom);
+
+  if (canJogHorizontally) {
+    path
+      ..lineTo(bottomJogEnd, rect.bottom)
+      ..lineTo(bottomJogEnd, rect.bottom - step)
+      ..lineTo(bottomJogStart, rect.bottom - step)
+      ..lineTo(bottomJogStart, rect.bottom);
+  }
+  path
+    ..lineTo(rect.left + base, rect.bottom)
+    ..lineTo(rect.left + step, rect.bottom - base)
+    ..lineTo(rect.left, rect.bottom - base);
+
+  if (canJogVertically) {
+    path
+      ..lineTo(rect.left, leftJogEnd)
+      ..lineTo(rect.left + step, leftJogEnd)
+      ..lineTo(rect.left + step, leftJogStart)
+      ..lineTo(rect.left, leftJogStart);
+  }
+  path
+    ..lineTo(rect.left, rect.top + shallow)
+    ..lineTo(rect.left + shallow, rect.top + step)
+    ..close();
+  return path;
+}
+
 /// A hard-edged, code-native icon drawn on a 16-by-16 logical pixel grid.
 ///
 /// Icons are intentionally offered at 16, 24, and 32 logical pixels. Those
@@ -113,7 +289,7 @@ class PixelIconButton extends StatelessWidget {
   static const _pixelStyle = ButtonStyle(
     minimumSize: WidgetStatePropertyAll(Size.square(48)),
     padding: WidgetStatePropertyAll(EdgeInsets.zero),
-    shape: WidgetStatePropertyAll(RoundedRectangleBorder()),
+    shape: WidgetStatePropertyAll(PixelOrganicBorder.compact()),
     tapTargetSize: MaterialTapTargetSize.padded,
   );
 
@@ -151,7 +327,7 @@ class PixelBackButton extends StatelessWidget {
   );
 }
 
-/// A shared square-cornered surface with a hard, unblurred drop shadow.
+/// A shared organic-edged surface with a hard, unblurred drop shadow.
 class PixelPanel extends StatelessWidget {
   const PixelPanel({
     super.key,
@@ -176,13 +352,15 @@ class PixelPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     return DecoratedBox(
-      decoration: BoxDecoration(
+      decoration: ShapeDecoration(
         color: color ?? colors.surface,
-        border: Border.all(
-          color: borderColor ?? colors.outline,
-          width: borderWidth,
+        shape: PixelOrganicBorder(
+          side: BorderSide(
+            color: borderColor ?? colors.outline,
+            width: borderWidth,
+          ),
         ),
-        boxShadow: [
+        shadows: [
           BoxShadow(
             color: shadowColor ?? Colors.black.withValues(alpha: .36),
             offset: shadowOffset,
@@ -438,10 +616,12 @@ class _PixelToggleVisual extends StatelessWidget {
       child: Container(
         width: 40,
         height: 24,
-        decoration: BoxDecoration(
+        decoration: ShapeDecoration(
           color: value ? active : inactive,
-          border: Border.all(color: border, width: 2),
-          boxShadow: [
+          shape: PixelOrganicBorder.compact(
+            side: BorderSide(color: border, width: 2),
+          ),
+          shadows: [
             BoxShadow(
               color: Colors.black.withValues(alpha: .32),
               offset: const Offset(2, 2),

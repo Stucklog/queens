@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/pixel_ui.dart';
 import 'journey.dart';
 
 class RegaliaTheme {
@@ -58,16 +59,14 @@ class RegaliaTheme {
       cardTheme: CardThemeData(
         color: midnightSurface,
         elevation: 0,
-        shape: RoundedRectangleBorder(
+        shape: PixelOrganicBorder(
           side: BorderSide(color: scheme.outline, width: 2),
         ),
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: midnightSurface,
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: secondary, width: 3),
-        ),
+        shape: PixelOrganicBorder(side: BorderSide(color: secondary, width: 3)),
         titleTextStyle: _type(ThemeData.dark().textTheme, ivory).headlineSmall,
       ),
       appBarTheme: AppBarTheme(
@@ -128,13 +127,13 @@ class RegaliaTheme {
                     ? secondaryContainer
                     : Colors.transparent,
           ),
-          shape: const WidgetStatePropertyAll(RoundedRectangleBorder()),
+          shape: const WidgetStatePropertyAll(PixelOrganicBorder.compact()),
         ),
       ),
       listTileTheme: ListTileThemeData(
         iconColor: secondary,
         textColor: ivory,
-        shape: RoundedRectangleBorder(
+        shape: PixelOrganicBorder(
           side: BorderSide(color: scheme.outlineVariant, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -143,15 +142,15 @@ class RegaliaTheme {
         backgroundColor: ink,
         contentTextStyle: _type(ThemeData.dark().textTheme, ivory).bodyMedium,
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: secondary, width: 3),
-        ),
+        shape: PixelOrganicBorder(side: BorderSide(color: secondary, width: 3)),
         behavior: SnackBarBehavior.floating,
       ),
       tooltipTheme: TooltipThemeData(
-        decoration: BoxDecoration(
+        decoration: ShapeDecoration(
           color: ink,
-          border: Border.all(color: secondary, width: 2),
+          shape: PixelOrganicBorder(
+            side: BorderSide(color: secondary, width: 2),
+          ),
         ),
         textStyle: _type(ThemeData.dark().textTheme, ivory).labelMedium,
         waitDuration: const Duration(milliseconds: 500),
@@ -165,13 +164,13 @@ class RegaliaTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: midnightSurfaceLow,
-        border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
+        border: const OutlineInputBorder(borderRadius: _inputBorderRadius),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.zero,
+          borderRadius: _inputBorderRadius,
           borderSide: BorderSide(color: scheme.outline, width: 2),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.zero,
+          borderRadius: _inputBorderRadius,
           borderSide: BorderSide(color: secondary, width: 3),
         ),
       ),
@@ -219,7 +218,7 @@ class RegaliaTheme {
               : background,
     ),
     side: WidgetStatePropertyAll(BorderSide(color: border, width: 2)),
-    shape: const WidgetStatePropertyAll(RoundedRectangleBorder()),
+    shape: const WidgetStatePropertyAll(PixelOrganicBorder()),
     elevation: const WidgetStatePropertyAll(0),
     textStyle: const WidgetStatePropertyAll(
       TextStyle(
@@ -229,6 +228,13 @@ class RegaliaTheme {
         letterSpacing: .3,
       ),
     ),
+  );
+
+  static const _inputBorderRadius = BorderRadius.only(
+    topLeft: Radius.circular(5),
+    topRight: Radius.circular(9),
+    bottomRight: Radius.circular(6),
+    bottomLeft: Radius.circular(8),
   );
 
   static TextTheme _type(TextTheme base, Color color) => base

@@ -213,7 +213,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
 
   String get _practicePrompt {
     if (_board.cells.contains(ManualCellState.crown)) {
-      return 'Crown placed — pixel sparks show its automatic exclusions.';
+      return 'Crown placed — matching X marks show its automatic exclusions.';
     }
     if (_board.cells.contains(ManualCellState.cross)) {
       return 'Good. Tap that X again to turn it into a crown.';

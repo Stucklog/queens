@@ -3,6 +3,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/widgets/pixel_ui.dart';
 
 void main() {
+  test('organic border keeps stable bounds with irregular corners', () {
+    const border = PixelOrganicBorder(side: BorderSide(width: 2));
+    const rect = Rect.fromLTWH(0, 0, 100, 48);
+
+    final outer = border.getOuterPath(rect);
+    final inner = border.getInnerPath(rect);
+
+    expect(outer.getBounds(), rect);
+    expect(outer.contains(const Offset(.5, .5)), isFalse);
+    expect(outer.contains(rect.center), isTrue);
+    expect(inner.getBounds(), const Rect.fromLTWH(2, 2, 96, 44));
+    expect(border.copyWith(), border);
+    expect(const PixelOrganicBorder.compact().irregularity, 2);
+  });
+
   testWidgets('every pixel glyph renders at each supported size', (
     tester,
   ) async {
@@ -66,6 +81,27 @@ void main() {
     expect(tester.getSize(find.byType(IconButton)), const Size(48, 48));
     await tester.tap(find.byType(PixelIconButton));
     expect(presses, 1);
+    final target = tester.getRect(find.byType(IconButton));
+    await tester.tapAt(target.topLeft + const Offset(3, 3));
+    expect(presses, 2);
+  });
+
+  testWidgets('pixel panel paints an organic shadow without changing layout', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Center(
+          child: PixelPanel(child: SizedBox(width: 100, height: 40)),
+        ),
+      ),
+    );
+
+    final panel = tester.widget<DecoratedBox>(find.byType(DecoratedBox));
+    final decoration = panel.decoration as ShapeDecoration;
+    expect(decoration.shape, isA<PixelOrganicBorder>());
+    expect(decoration.shadows, isNotEmpty);
+    expect(tester.getSize(find.byType(PixelPanel)), const Size(132, 72));
   });
 
   testWidgets('pixel toggle tile announces and changes its state', (
@@ -102,6 +138,16 @@ void main() {
     await tester.tap(find.text('Reduce motion'));
     await tester.pump();
     expect(value, isTrue);
+    final track = tester.widget<Container>(
+      find.descendant(
+        of: find.byType(PixelToggleTile),
+        matching: find.byType(Container),
+      ),
+    );
+    expect(
+      (track.decoration as ShapeDecoration).shape,
+      isA<PixelOrganicBorder>(),
+    );
   });
 
   testWidgets(
