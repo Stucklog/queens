@@ -61,20 +61,15 @@ void main() {
     expect(find.text('This arc’s map is unlocked'), findsOneWidget);
   });
 
-  testWidgets('map unlock grants finale immediately when configured', (
+  testWidgets('map unlock keeps the finale gated by the final boss', (
     tester,
   ) async {
-    final controller = await _controller(
-      tester,
-      unlockFinaleWithGameBoard: true,
-    );
+    final controller = await _controller(tester);
+    final arc = controller.originArc!;
     await tester.pumpWidget(
       MaterialApp(
         theme: RegaliaTheme.midnight(),
-        home: StoryArcSettingsScreen(
-          controller: controller,
-          arc: controller.originArc!,
-        ),
+        home: StoryArcSettingsScreen(controller: controller, arc: arc),
       ),
     );
 
@@ -83,7 +78,7 @@ void main() {
     );
     await tester.pump();
     expect(
-      find.textContaining('The finale will also unlock immediately'),
+      find.textContaining('The finale remains locked until the final boss'),
       findsOneWidget,
     );
     await tester.tap(
@@ -93,8 +88,11 @@ void main() {
     await tester.runAsync(controller.flushPersistence);
     await tester.pump();
 
-    expect(controller.isFinaleUnlocked(ContentIds.originArc), isTrue);
-    expect(find.textContaining('The finale is unlocked'), findsOneWidget);
+    final finalBoss = arc.catalog.byId(arc.chapters.last.boss.puzzleId);
+    expect(controller.isMapUnlocked(arc.id), isTrue);
+    expect(controller.canOpenPuzzle(finalBoss), isTrue);
+    expect(controller.isFinaleUnlocked(arc.id), isFalse);
+    expect(find.textContaining('Defeat the final boss'), findsOneWidget);
   });
 
   testWidgets('complete reset requires two destructive-action warnings', (
@@ -220,18 +218,13 @@ Finder _settingsScroll() =>
         )
         .first;
 
-Future<AppController> _controller(
-  WidgetTester tester, {
-  bool unlockFinaleWithGameBoard = false,
-}) async {
+Future<AppController> _controller(WidgetTester tester) async {
   SharedPreferences.setMockInitialValues({
     'regalia.tutorialComplete': true,
     'regalia.journeySchemaVersion': 1,
     'regalia.seenStoryBeats': ['opening', 'chapter.clovermead'],
   });
-  final controller = AppController(
-    unlockFinaleWithGameBoard: unlockFinaleWithGameBoard,
-  );
+  final controller = AppController();
   await tester.runAsync(controller.initialize);
   addTearDown(controller.dispose);
   return controller;

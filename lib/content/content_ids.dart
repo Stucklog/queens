@@ -135,4 +135,7 @@ abstract final class SaveIds {
   static const justPuzzleSession = 'regalia:save/just-puzzle/session';
   static const justPuzzleDiversity = 'regalia:save/just-puzzle/diversity';
   static const justPuzzleRetries = 'regalia:save/just-puzzle/retries';
+  static const academyBoards = 'regalia:save/academy/boards';
+  static const academyCompletedLessons =
+      'regalia:save/academy/completed-lessons';
 }

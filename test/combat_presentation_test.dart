@@ -6,6 +6,7 @@ import 'package:regalia/content/content_ids.dart';
 import 'package:regalia/core/exact_solver.dart';
 import 'package:regalia/core/models.dart';
 import 'package:regalia/screens/game_screen.dart';
+import 'package:regalia/widgets/boss_finisher_cutscene.dart';
 import 'package:regalia/widgets/combat_presentation.dart';
 import 'package:regalia/widgets/pixel_art.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -247,10 +248,14 @@ void main() {
     await tester.tap(finalCell);
     await tester.pump();
 
+    final presentation = BossFinisherPresentation.forSpectacle(
+      boss.spectacleLevel,
+    );
+    await tester.pump(presentation.timing.entrance);
     expect(
       tester
           .widget<PixelKnightSprite>(
-            find.byKey(const ValueKey('puzzle-knight-sprite')),
+            find.byKey(const ValueKey('boss-finisher-knight-sprite')),
           )
           .animation,
       KnightAnimation.regaliaNova,
@@ -258,14 +263,14 @@ void main() {
     expect(
       tester
           .widget<PixelEnemySprite>(
-            find.byKey(const ValueKey('puzzle-enemy-sprite')),
+            find.byKey(const ValueKey('boss-finisher-boss-sprite')),
           )
           .stimulus,
       KnightAnimation.regaliaNova,
     );
-    expect(find.text('DEFEATED'), findsOneWidget);
+    expect(find.text('K.O.'), findsOneWidget);
     expect(
-      find.byKey(const ValueKey('combat-special-effects')),
+      find.byKey(const ValueKey('boss-finisher-special-effects')),
       findsOneWidget,
     );
     expect(find.byKey(const ValueKey('completion-knight')), findsNothing);

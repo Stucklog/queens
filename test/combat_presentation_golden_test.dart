@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/journey.dart';
 import 'package:regalia/app/theme.dart';
+import 'package:regalia/widgets/boss_finisher_cutscene.dart';
 import 'package:regalia/widgets/combat_presentation.dart';
 import 'package:regalia/widgets/pixel_art.dart';
 
@@ -242,6 +243,28 @@ void main() {
     timeout: const Timeout(Duration(minutes: 2)),
   );
 
+  testWidgets('final boss finisher resolves cleanly in narrow layout', (
+    tester,
+  ) async {
+    await _goldenFinalBossFinisher(
+      tester,
+      finalBoss: allOpponents.where((enemy) => enemy.isBoss).last,
+      size: const Size(390, 844),
+      file: 'goldens/boss_finisher_narrow_midnight.png',
+    );
+  });
+
+  testWidgets('final boss finisher resolves cleanly in wide layout', (
+    tester,
+  ) async {
+    await _goldenFinalBossFinisher(
+      tester,
+      finalBoss: allOpponents.where((enemy) => enemy.isBoss).last,
+      size: const Size(1180, 800),
+      file: 'goldens/boss_finisher_wide_midnight.png',
+    );
+  });
+
   testWidgets(
     'all opponent reaction frames face the knight and stay in bounds',
     (tester) async {
@@ -292,6 +315,47 @@ void main() {
       );
     },
     timeout: const Timeout(Duration(minutes: 3)),
+  );
+}
+
+Future<void> _goldenFinalBossFinisher(
+  WidgetTester tester, {
+  required CombatEncounter finalBoss,
+  required Size size,
+  required String file,
+}) async {
+  tester.view.physicalSize = size;
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.resetPhysicalSize);
+  addTearDown(tester.view.resetDevicePixelRatio);
+  final chapter = journeyChapters.last;
+  await _precacheOpponents(tester, [finalBoss]);
+  await tester.pumpWidget(
+    MaterialApp(
+      theme: RegaliaTheme.forChapter(chapter),
+      home: MediaQuery(
+        data: MediaQueryData(size: size, disableAnimations: true),
+        child: RepaintBoundary(
+          key: const ValueKey('boss-finisher-golden'),
+          child: BossFinisherCutscene(
+            boss: chapter.boss,
+            background: PixelLandscape(
+              chapter: chapter,
+              brightness: Brightness.dark,
+              placement: PixelArtPlacement.story,
+            ),
+            accentColor: chapter.palette.secondary,
+            energyColor: chapter.palette.primary,
+            onFinished: () {},
+          ),
+        ),
+      ),
+    ),
+  );
+  await tester.pumpAndSettle();
+  await expectLater(
+    find.byKey(const ValueKey('boss-finisher-golden')),
+    matchesGoldenFile(file),
   );
 }
 

@@ -10,7 +10,7 @@ on the content model and interaction fixes introduced earlier.
 | --- | --- | --- | --- |
 | 1 | P0 puzzle input and viewport fixes | Overscroll behind banner; vertical `X` dragging; regression tests | GPT-5.6 Sol — high |
 | 2 | Scalable content/platform foundation | Story arcs, namespaced IDs, data-driven loading, web “Just Puzzle!”, entitlement/fallback behavior, packaging docs | GPT-5.6 Sol — xhigh |
-| 3 | Chapter bosses and progression | Boss puzzle per chapter, next-chapter difficulty, 12×12 finale, settings-based finale unlock toggle, progression tests | GPT-5.6 Sol — xhigh |
+| 3 | Chapter bosses and progression | Boss puzzle per chapter, next-chapter difficulty, 12×12 finale, final-boss-only finale unlock, progression tests | GPT-5.6 Sol — xhigh |
 | 4 | Combat encounter system | Remove dance, boss/enemy response sequences, escalating special moves, optional encounters | GPT-5.6 Sol — xhigh |
 | 5 | Academy | Lessons, visuals/practice puzzles, unlocks, persistence, navigation | GPT-5.6 Sol — high |
 | 6 | Story and map presentation | Expanded intro/finale/chapter text, sprite-free chapter starts, replayable intro tile, final chapter tile/layout | GPT-5.6 Terra — high; use GPT Image 2 for new art |
@@ -35,7 +35,7 @@ Use TODO.md as the source of truth. Implement its extensible content architectur
 ## 3. Chapter bosses and progression
 
 ```text
-Use TODO.md as the source of truth. Build chapter-boss progression on top of the new content model. Add one boss puzzle at each chapter ending, with its difficulty matching the next chapter; completing it must unlock the next chapter. Implement and document the boss roster, sizes, and target difficulty. Make the final map boss a fully supported 12×12 puzzle across generation, rendering, input, validation, saving, and completion. Add a named configuration toggle so Settings → Unlock Game Board can also unlock the finale immediately when enabled, while preserving current behavior when disabled. Add progression and save-state tests.
+Use TODO.md as the source of truth. Build chapter-boss progression on top of the new content model. Add one boss puzzle at each chapter ending, with its difficulty matching the next chapter; completing it must unlock the next chapter. Implement and document the boss roster, sizes, and target difficulty. Make the final map boss a fully supported 12×12 puzzle across generation, rendering, input, validation, saving, and completion. Keep Settings → Unlock Game Board map-only, and make saved final-boss completion the sole gameplay gate for the finale. Add progression and save-state tests.
 ```
 
 ## 4. Combat encounter system

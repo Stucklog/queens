@@ -15,8 +15,8 @@ import '../content/content_ids.dart';
 import '../content/content_models.dart';
 import '../content/content_repository.dart';
 import '../content/entitlements.dart';
+import 'academy.dart';
 import 'challenge.dart';
-import 'game_configuration.dart';
 import 'journey.dart';
 
 class AppSettings {
@@ -62,8 +62,6 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     ContentAssetReader? contentAssetReader,
     ContentEntitlementPolicy? contentPolicy,
     this.contentManifestAsset = 'assets/content/manifest.json',
-    this.unlockFinaleWithGameBoard =
-        GameConfiguration.unlockFinaleWithGameBoard,
   }) : _contentAssetReader = contentAssetReader ?? rootBundle.loadString,
        contentPolicy = contentPolicy ?? ContentEntitlementPolicy.current();
 
@@ -73,7 +71,6 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   final ContentAssetReader _contentAssetReader;
   final ContentEntitlementPolicy contentPolicy;
   final String contentManifestAsset;
-  final bool unlockFinaleWithGameBoard;
   static const journeySchemaVersion = 1;
   static const saveMigrationVersion = 1;
   late final SharedPreferences _preferences;
@@ -81,12 +78,14 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   final Map<String, String> _arcCatalogFingerprints = {};
   ContentRegistry? content;
   PuzzleCatalog? catalog;
+  AcademyCatalog? academy;
   PuzzleDefinition? tutorialPuzzle;
   AppSettings settings = const AppSettings();
   final Map<String, BoardState> boards = {};
   final Map<String, CompletionRecord> records = {};
   final Set<String> seenStoryBeatIds = {};
   final Set<String> unlockedContentIds = {};
+  final Set<String> completedAcademyLessonIds = {};
   ChallengeSession? challengeSession;
   bool isStartingChallenge = false;
   bool isPreparingChallenge = false;
@@ -111,6 +110,10 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
       content?.availableArcs ?? const <StoryArc>[];
   bool get hasOriginStory => originArc != null;
   bool get justPuzzleAvailable => content?.justPuzzleAvailable ?? false;
+  bool get academyAvailable => academy?.lessons.isNotEmpty ?? false;
+  List<AcademyLesson> get academyLessons =>
+      academy?.lessons ?? const <AcademyLesson>[];
+  int get academyCompletedCount => completedAcademyLessonIds.length;
   bool get fullMapUnlocked => isMapUnlocked(ContentIds.originArc);
 
   ArcAvailability availabilityForArc(String arcId) =>
@@ -142,6 +145,19 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
       // or Just Puzzle. A damaged optional asset must not brick the app.
       debugPrint('Tutorial content is unavailable: $error');
     }
+    try {
+      final sourceCatalog = catalog;
+      if (sourceCatalog != null) {
+        academy = AcademyCatalog.fromJsonString(
+          await _contentAssetReader('assets/academy/lessons.json'),
+          sourceCatalog: sourceCatalog,
+        );
+      }
+    } on Object catch (error) {
+      // Lessons are optional system content. Story and puzzle-only play stay
+      // available if the Academy package cannot be decoded.
+      debugPrint('Academy content is unavailable: $error');
+    }
     _preferences = await SharedPreferences.getInstance();
     await _migrateLegacySave();
     settings =
@@ -152,6 +168,36 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     );
     _restoreChallengeGenerationState();
     tutorialComplete = _preferences.getBool(SaveIds.tutorialComplete) ?? false;
+    final academyLessonIds = academyLessons.map((lesson) => lesson.id).toSet();
+    completedAcademyLessonIds.addAll(
+      (_preferences.getStringList(SaveIds.academyCompletedLessons) ?? const [])
+          .where(academyLessonIds.contains),
+    );
+    final academyPuzzleSizes = {
+      for (final lesson in academyLessons)
+        lesson.practicePuzzle.id: lesson.practicePuzzle.size,
+    };
+    final academyBoardPayload = _preferences.getString(SaveIds.academyBoards);
+    if (academyBoardPayload != null) {
+      try {
+        final entries = jsonDecode(academyBoardPayload) as Map<String, Object?>;
+        for (final entry in entries.entries) {
+          try {
+            final board = BoardState.fromJson(
+              entry.value! as Map<String, Object?>,
+            );
+            if (board.puzzleId == entry.key &&
+                academyPuzzleSizes[entry.key] == board.size) {
+              boards[entry.key] = board;
+            }
+          } on Object catch (error) {
+            debugPrint('Ignoring invalid Academy board ${entry.key}: $error');
+          }
+        }
+      } on Object catch (error) {
+        debugPrint('Ignoring invalid Academy boards: $error');
+      }
+    }
     unlockedContentIds.addAll(
       _preferences.getStringList(SaveIds.unlockedContentIds) ?? const [],
     );
@@ -239,6 +285,13 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     for (final arc in availableStoryArcs) {
       if (arc.id == ContentIds.originArc) continue;
       await _restoreArcProgress(arc);
+    }
+    final reconciledFinaleUnlocks = _reconcileFinaleUnlocksWithBossRecords();
+    if (reconciledFinaleUnlocks) {
+      await _preferences.setStringList(
+        SaveIds.unlockedContentIds,
+        unlockedContentIds.toList()..sort(),
+      );
     }
     notifyListeners();
     if (challengeSession != null &&
@@ -848,6 +901,35 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     return null;
   }
 
+  AcademyLesson? academyLessonForPuzzle(PuzzleDefinition puzzle) =>
+      academy?.lessonForPuzzle(puzzle);
+
+  bool isAcademyLessonComplete(AcademyLesson lesson) =>
+      completedAcademyLessonIds.contains(lesson.id);
+
+  bool isAcademyLessonUnlocked(AcademyLesson lesson) {
+    final lessons = academyLessons;
+    final index = lessons.indexWhere((candidate) => candidate.id == lesson.id);
+    if (index < 0) return false;
+    return index == 0 || isAcademyLessonComplete(lessons[index - 1]);
+  }
+
+  /// Opens a fresh, Academy-owned attempt without creating a journey record.
+  bool openAcademyPractice(AcademyLesson lesson) {
+    if (!isAcademyLessonUnlocked(lesson)) return false;
+    final board = boardFor(lesson.practicePuzzle);
+    board.cells.fillRange(0, board.cells.length, ManualCellState.empty);
+    board.undoStack.clear();
+    board.redoStack.clear();
+    board.elapsedSeconds = 0;
+    board.assisted = false;
+    board.hintCount = 0;
+    board.checkCount = 0;
+    unawaited(_save());
+    notifyListeners();
+    return true;
+  }
+
   StoryArc? arcForChapter(JourneyChapter chapter) {
     for (final arc in availableStoryArcs) {
       if (ContentId.belongsToArc(chapter.id, arc.id, kind: 'chapter')) {
@@ -1011,6 +1093,18 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         isChallenge: true,
       );
     }
+    final academyLesson = academyLessonForPuzzle(puzzle);
+    if (academyLesson != null) {
+      completedAcademyLessonIds.add(academyLesson.id);
+      stopTimer();
+      return PuzzleCompletionOutcome(
+        puzzle: puzzle,
+        advancedJourney: false,
+        nextPuzzle: null,
+        enteredChapter: null,
+        isJourneyComplete: false,
+      );
+    }
     final arc = arcForPuzzle(puzzle);
     if (arc == null) return null;
     final wasFrontier = frontierPuzzleFor(arc)?.id == puzzle.id;
@@ -1022,7 +1116,10 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     final currentChapter = arc.chapterForOrder(puzzle.order);
     final nextChapter = next == null ? null : arc.chapterForOrder(next.order);
     final journeyComplete = wasFrontier && next == null;
-    if (journeyComplete) unlockedContentIds.add(arc.unlockIds.finale);
+    final boss = arc.bossForPuzzle(puzzle);
+    if (boss?.unlockTargetId == arc.unlockIds.finale) {
+      unlockedContentIds.add(arc.unlockIds.finale);
+    }
     return PuzzleCompletionOutcome(
       puzzle: puzzle,
       advancedJourney: wasFrontier,
@@ -1058,6 +1155,11 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     board.assisted = false;
     board.hintCount = 0;
     board.checkCount = 0;
+    if (academyLessonForPuzzle(puzzle) != null) {
+      unawaited(_save());
+      notifyListeners();
+      return;
+    }
     if (challengeSession?.currentPuzzle.id == puzzle.id) {
       unawaited(_save());
       notifyListeners();
@@ -1131,19 +1233,33 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
 
   bool isFinaleUnlocked(String arcId) {
     final arc = content?.arc(arcId);
-    return arc != null &&
-        (unlockedContentIds.contains(arc.unlockIds.finale) ||
-            journeyProgressFor(arc).isJourneyComplete);
+    return arc != null && _hasDefeatedFinalBoss(arc);
+  }
+
+  bool _hasDefeatedFinalBoss(StoryArc arc) {
+    final finalBoss = arc.chapters.last.boss;
+    final status = recordFor(finalBoss.puzzleId).status;
+    return status == CompletionStatus.cleanSolved ||
+        status == CompletionStatus.assistedSolved;
+  }
+
+  bool _reconcileFinaleUnlocksWithBossRecords() {
+    var changed = false;
+    for (final arc in availableStoryArcs) {
+      if (_hasDefeatedFinalBoss(arc)) {
+        changed = unlockedContentIds.add(arc.unlockIds.finale) || changed;
+      } else {
+        changed = unlockedContentIds.remove(arc.unlockIds.finale) || changed;
+      }
+    }
+    return changed;
   }
 
   Future<void> unlockEntireMap(String arcId) async {
     final arc = content?.arc(arcId);
     if (arc == null) throw ArgumentError.value(arcId, 'arcId');
     final changed = unlockedContentIds.add(arc.unlockIds.fullMap);
-    final finaleChanged =
-        unlockFinaleWithGameBoard &&
-        unlockedContentIds.add(arc.unlockIds.finale);
-    if (!changed && !finaleChanged) return;
+    if (!changed) return;
     notifyListeners();
     await _save();
   }
@@ -1196,6 +1312,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     boards.clear();
     records.clear();
     seenStoryBeatIds.clear();
+    completedAcademyLessonIds.clear();
     tutorialComplete = false;
     unlockedContentIds.clear();
     lastPuzzleId = null;
@@ -1220,6 +1337,12 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
       for (final signature in _challengeDiversityHistory) signature.toJson(),
     ]);
     final challengeRetryJson = jsonEncode(_challengeRetrySalts);
+    final academyBoardsJson = jsonEncode({
+      for (final lesson in academyLessons)
+        if (boards.containsKey(lesson.practicePuzzle.id))
+          lesson.practicePuzzle.id: boards[lesson.practicePuzzle.id]!.toJson(),
+    });
+    final academyCompleted = completedAcademyLessonIds.toList()..sort();
     final arcSnapshots = {
       for (final arc in availableStoryArcs)
         arc.id: (
@@ -1276,6 +1399,13 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
           challengeDiversityJson,
         ),
         _preferences.setString(SaveIds.justPuzzleRetries, challengeRetryJson),
+        if (academy != null) ...[
+          _preferences.setString(SaveIds.academyBoards, academyBoardsJson),
+          _preferences.setStringList(
+            SaveIds.academyCompletedLessons,
+            academyCompleted,
+          ),
+        ],
         if (latestPuzzle != null)
           for (final arc in availableStoryArcs)
             if (ContentId.belongsToArc(latestPuzzle, arc.id, kind: 'puzzle'))
