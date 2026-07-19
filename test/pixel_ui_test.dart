@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/widgets/pixel_ui.dart';
 
 void main() {
-  test('organic border keeps stable bounds with irregular corners', () {
+  test('organic border keeps straight edges and stable rounded corners', () {
     const border = PixelOrganicBorder(side: BorderSide(width: 2));
     const rect = Rect.fromLTWH(0, 0, 100, 48);
 
@@ -15,7 +15,7 @@ void main() {
     expect(outer.contains(rect.center), isTrue);
     expect(inner.getBounds(), const Rect.fromLTWH(2, 2, 96, 44));
     expect(border.copyWith(), border);
-    expect(const PixelOrganicBorder.compact().irregularity, 2);
+    expect(const PixelOrganicBorder.compact().radius, 5);
   });
 
   testWidgets('every pixel glyph renders at each supported size', (

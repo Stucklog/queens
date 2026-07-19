@@ -138,6 +138,7 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Keep hit areas, text layout, contrast, and accessibility behavior unchanged.
   - Apply the treatment consistently without making important controls or puzzle boundaries unclear.
   - Update visual regression tests or golden assets for the affected components.
+  - Final direction: use clean, old-game rounded corners with straight edges rather than wiggly outlines.
 
 ## UI and naming
 
