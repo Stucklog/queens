@@ -10,7 +10,9 @@ import '../app/journey.dart';
 import '../app/theme.dart';
 import '../content/content_models.dart';
 import '../core/models.dart';
+import '../widgets/combat_presentation.dart';
 import '../widgets/crown_mark.dart';
+import '../widgets/encounter_cutscene.dart';
 import '../widgets/pixel_art.dart';
 import '../widgets/pixel_ui.dart';
 import 'challenge_screen.dart';
@@ -85,10 +87,53 @@ class _JourneyScreenState extends State<JourneyScreen> {
   Future<void> _openPuzzle(PuzzleDefinition puzzle) async {
     if (!widget.controller.openPuzzle(puzzle)) return;
     unawaited(_precachePuzzlePresentation(puzzle));
+    final encounter = _arc.encounterForPuzzle(puzzle);
+    final chapter = _arc.chapterForOrder(puzzle.order);
     final outcome = await Navigator.of(context).push<PuzzleCompletionOutcome>(
       MaterialPageRoute(
-        builder:
-            (_) => GameScreen(controller: widget.controller, puzzle: puzzle),
+        builder: (routeContext) {
+          Widget buildPuzzle(BuildContext context) =>
+              GameScreen(controller: widget.controller, puzzle: puzzle);
+
+          if (encounter == null) return buildPuzzle(routeContext);
+          return EncounterCutsceneTransition(
+            cutsceneBuilder:
+                (context, onFinished) => Theme(
+                  data: RegaliaTheme.forChapter(chapter),
+                  child: Builder(
+                    builder:
+                        (context) => EncounterCutscene(
+                          background: PixelLandscape(
+                            chapter: chapter,
+                            brightness: Theme.of(context).brightness,
+                            placement: PixelArtPlacement.banner,
+                          ),
+                          knightArt: const PixelKnightSprite(
+                            animation: KnightAnimation.bounce,
+                            loop: true,
+                            width: 154,
+                            height: 218,
+                          ),
+                          enemyArt: PixelEnemySprite(
+                            encounter: encounter,
+                            stimulus: KnightAnimation.bounce,
+                            width: 218,
+                            height: 218,
+                          ),
+                          enemyName: encounter.name,
+                          encounterLabel:
+                              encounter.isBoss
+                                  ? 'CHAPTER BOSS'
+                                  : 'ENEMY ENCOUNTER',
+                          accentColor: chapter.palette.secondary,
+                          energyColor: chapter.palette.primary,
+                          onFinished: onFinished,
+                        ),
+                  ),
+                ),
+            destinationBuilder: buildPuzzle,
+          );
+        },
       ),
     );
     if (!mounted || outcome == null || !outcome.advancedJourney) {
