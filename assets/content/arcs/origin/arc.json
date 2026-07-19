@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/origin",
-  "contentVersion": 5,
+  "contentVersion": 6,
   "title": "Queen’s Regalia: Origin Story",
   "mapId": "regalia:map/origin/pilgrimage",
   "puzzleCatalogAsset": "assets/puzzles/catalog.json",
@@ -20,7 +20,7 @@
       "title": "Asterfall Vale",
       "caption": "Where heaven struck the earth, the fallen Regalia chooses its bearer.",
       "startOrder": 1,
-      "endOrder": 20,
+      "endOrder": 9,
       "difficulty": "easy",
       "size": 6,
       "boss": {
@@ -38,14 +38,14 @@
         {
           "id": "regalia:enemy/origin/vale-thornling",
           "name": "Vale Thornling",
-          "puzzleId": "regalia:puzzle/origin/easy-004",
+          "puzzleId": "regalia:puzzle/origin/easy-003",
           "spriteFamily": "rootbound",
           "spriteAsset": "assets/art/combat/opponents/vale-thornling.png"
         },
         {
           "id": "regalia:enemy/origin/star-touched-hart",
           "name": "Star-Touched Hart",
-          "puzzleId": "regalia:puzzle/origin/easy-012",
+          "puzzleId": "regalia:puzzle/origin/easy-006",
           "spriteFamily": "antlered",
           "spriteAsset": "assets/art/combat/opponents/star-touched-hart.png"
         }
@@ -62,8 +62,8 @@
       "visualIndex": 1,
       "title": "Myrrhveil Wilds",
       "caption": "Ancient roots part for the crown—and wake what sleeps below.",
-      "startOrder": 21,
-      "endOrder": 30,
+      "startOrder": 10,
+      "endOrder": 18,
       "difficulty": "easy",
       "size": 7,
       "boss": {
@@ -88,7 +88,7 @@
         {
           "id": "regalia:enemy/origin/lantern-moth",
           "name": "Lantern Moth",
-          "puzzleId": "regalia:puzzle/origin/easy-027",
+          "puzzleId": "regalia:puzzle/origin/easy-026",
           "spriteFamily": "winged",
           "spriteAsset": "assets/art/combat/opponents/lantern-moth.png"
         }
@@ -105,8 +105,8 @@
       "visualIndex": 2,
       "title": "Skyglass Reach",
       "caption": "Ancient wind arches awaken, carrying the bearer beyond the storm.",
-      "startOrder": 31,
-      "endOrder": 40,
+      "startOrder": 19,
+      "endOrder": 27,
       "difficulty": "medium",
       "size": 7,
       "boss": {
@@ -124,14 +124,14 @@
         {
           "id": "regalia:enemy/origin/gale-harrier",
           "name": "Gale Harrier",
-          "puzzleId": "regalia:puzzle/origin/medium-004",
+          "puzzleId": "regalia:puzzle/origin/medium-003",
           "spriteFamily": "winged",
           "spriteAsset": "assets/art/combat/opponents/gale-harrier.png"
         },
         {
           "id": "regalia:enemy/origin/skyglass-wisp",
           "name": "Skyglass Wisp",
-          "puzzleId": "regalia:puzzle/origin/medium-007",
+          "puzzleId": "regalia:puzzle/origin/medium-006",
           "spriteFamily": "cosmic",
           "spriteAsset": "assets/art/combat/opponents/skyglass-wisp.png"
         }
@@ -148,8 +148,8 @@
       "visualIndex": 3,
       "title": "Nacre Basilica",
       "caption": "Beneath the drowned bells, a forgotten covenant opens the deep road.",
-      "startOrder": 41,
-      "endOrder": 60,
+      "startOrder": 28,
+      "endOrder": 36,
       "difficulty": "medium",
       "size": 8,
       "boss": {
@@ -167,14 +167,14 @@
         {
           "id": "regalia:enemy/origin/coral-husk",
           "name": "Coral Husk",
-          "puzzleId": "regalia:puzzle/origin/medium-015",
+          "puzzleId": "regalia:puzzle/origin/medium-013",
           "spriteFamily": "abyssal",
           "spriteAsset": "assets/art/combat/opponents/coral-husk.png"
         },
         {
           "id": "regalia:enemy/origin/drowned-acolyte",
           "name": "Drowned Acolyte",
-          "puzzleId": "regalia:puzzle/origin/medium-023",
+          "puzzleId": "regalia:puzzle/origin/medium-016",
           "spriteFamily": "spectral",
           "spriteAsset": "assets/art/combat/opponents/drowned-acolyte.png"
         }
@@ -191,8 +191,8 @@
       "visualIndex": 4,
       "title": "Pyreheart Caldera",
       "caption": "At the world’s molten heart, living crystal answers the crown.",
-      "startOrder": 61,
-      "endOrder": 80,
+      "startOrder": 37,
+      "endOrder": 45,
       "difficulty": "hard",
       "size": 8,
       "boss": {
@@ -210,14 +210,14 @@
         {
           "id": "regalia:enemy/origin/cinderling",
           "name": "Cinderling",
-          "puzzleId": "regalia:puzzle/origin/hard-006",
+          "puzzleId": "regalia:puzzle/origin/hard-003",
           "spriteFamily": "volcanic",
           "spriteAsset": "assets/art/combat/opponents/cinderling.png"
         },
         {
           "id": "regalia:enemy/origin/basalt-brute",
           "name": "Basalt Brute",
-          "puzzleId": "regalia:puzzle/origin/hard-013",
+          "puzzleId": "regalia:puzzle/origin/hard-006",
           "spriteFamily": "volcanic",
           "spriteAsset": "assets/art/combat/opponents/basalt-brute.png"
         }
@@ -234,8 +234,8 @@
       "visualIndex": 5,
       "title": "Brasswake Arsenal",
       "caption": "The old empire’s last war-engine wakes to bar the ascent.",
-      "startOrder": 81,
-      "endOrder": 90,
+      "startOrder": 46,
+      "endOrder": 54,
       "difficulty": "hard",
       "size": 9,
       "boss": {
@@ -253,14 +253,14 @@
         {
           "id": "regalia:enemy/origin/brass-sentry",
           "name": "Brass Sentry",
-          "puzzleId": "regalia:puzzle/origin/hard-024",
+          "puzzleId": "regalia:puzzle/origin/hard-023",
           "spriteFamily": "clockwork",
           "spriteAsset": "assets/art/combat/opponents/brass-sentry.png"
         },
         {
           "id": "regalia:enemy/origin/gear-goblin",
           "name": "Gear Goblin",
-          "puzzleId": "regalia:puzzle/origin/hard-027",
+          "puzzleId": "regalia:puzzle/origin/hard-026",
           "spriteFamily": "clockwork",
           "spriteAsset": "assets/art/combat/opponents/gear-goblin.png"
         }
@@ -277,8 +277,8 @@
       "visualIndex": 6,
       "title": "Pale Moon Necropolis",
       "caption": "Seven fallen queens rise beneath the pale moon to judge the bearer.",
-      "startOrder": 91,
-      "endOrder": 100,
+      "startOrder": 55,
+      "endOrder": 63,
       "difficulty": "expert",
       "size": 9,
       "boss": {
@@ -296,14 +296,14 @@
         {
           "id": "regalia:enemy/origin/pale-shade",
           "name": "Pale Shade",
-          "puzzleId": "regalia:puzzle/origin/expert-004",
+          "puzzleId": "regalia:puzzle/origin/expert-003",
           "spriteFamily": "spectral",
           "spriteAsset": "assets/art/combat/opponents/pale-shade.png"
         },
         {
           "id": "regalia:enemy/origin/moonbone-hound",
           "name": "Moonbone Hound",
-          "puzzleId": "regalia:puzzle/origin/expert-007",
+          "puzzleId": "regalia:puzzle/origin/expert-006",
           "spriteFamily": "antlered",
           "spriteAsset": "assets/art/combat/opponents/moonbone-hound.png"
         }
@@ -320,8 +320,8 @@
       "visualIndex": 7,
       "title": "Empyrean Citadel",
       "caption": "Above the clouds, the vacant throne waits beneath a dying sun.",
-      "startOrder": 101,
-      "endOrder": 120,
+      "startOrder": 64,
+      "endOrder": 72,
       "difficulty": "expert",
       "size": 10,
       "boss": {
@@ -339,14 +339,14 @@
         {
           "id": "regalia:enemy/origin/starbound-sentinel",
           "name": "Starbound Sentinel",
-          "puzzleId": "regalia:puzzle/origin/expert-016",
+          "puzzleId": "regalia:puzzle/origin/expert-013",
           "spriteFamily": "clockwork",
           "spriteAsset": "assets/art/combat/opponents/starbound-sentinel.png"
         },
         {
           "id": "regalia:enemy/origin/eclipse-drake",
           "name": "Eclipse Drake",
-          "puzzleId": "regalia:puzzle/origin/expert-023",
+          "puzzleId": "regalia:puzzle/origin/expert-016",
           "spriteFamily": "winged",
           "spriteAsset": "assets/art/combat/opponents/eclipse-drake.png"
         }

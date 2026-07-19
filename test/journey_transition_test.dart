@@ -11,7 +11,7 @@ void main() {
   testWidgets('chapter boundary opens the new location with reduced motion', (
     tester,
   ) async {
-    final controller = await _seededController(tester, completed: 19);
+    final controller = await _seededController(tester, completed: 8);
     await _pumpReducedJourney(tester, controller);
 
     await _solveFrontier(tester, controller);
@@ -20,16 +20,16 @@ void main() {
     await tester.tap(find.text('Advance'));
     await tester.pumpAndSettle();
 
-    expect(controller.frontierPuzzle?.order, 21);
+    expect(controller.frontierPuzzle?.order, 10);
     expect(find.text('Myrrhveil Wilds'), findsWidgets);
     expect(find.text('Enter Myrrhveil'), findsOneWidget);
     expect(find.textContaining('tap to skip'), findsNothing);
   });
 
-  testWidgets('puzzle 120 opens the reunion and then the replay map', (
+  testWidgets('puzzle 72 opens the reunion and then the replay map', (
     tester,
   ) async {
-    final controller = await _seededController(tester, completed: 119);
+    final controller = await _seededController(tester, completed: 71);
     await _pumpReducedJourney(tester, controller);
 
     await _solveFrontier(tester, controller);
@@ -81,7 +81,7 @@ Future<AppController> _seededController(
   WidgetTester tester, {
   required int completed,
 }) async {
-  final reachedOrder = completed >= 120 ? 120 : completed + 1;
+  final reachedOrder = completed >= 72 ? 72 : completed + 1;
   final chapter = chapterForOrder(reachedOrder);
   SharedPreferences.setMockInitialValues({
     'regalia.tutorialComplete': true,

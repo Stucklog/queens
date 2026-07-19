@@ -20,14 +20,14 @@ void main() {
   test('origin content declares the complete validated boss roster', () async {
     final arc = await _loadOriginArc();
     const expected = [
-      ('Starfall Stag', 20, 7, DifficultyTier.easy),
-      ('Elderroot Wyrm', 30, 7, DifficultyTier.medium),
-      ('Tempest Roc', 40, 8, DifficultyTier.medium),
-      ('Abyssal Bellkeeper', 60, 8, DifficultyTier.hard),
-      ('Cindermaw Behemoth', 80, 9, DifficultyTier.hard),
-      ('Gilded War Colossus', 90, 9, DifficultyTier.expert),
-      ('The Sevenfold Wraith', 100, 10, DifficultyTier.expert),
-      ('The Hollow Star', 120, 12, DifficultyTier.expert),
+      ('Starfall Stag', 9, 7, DifficultyTier.easy),
+      ('Elderroot Wyrm', 18, 7, DifficultyTier.medium),
+      ('Tempest Roc', 27, 8, DifficultyTier.medium),
+      ('Abyssal Bellkeeper', 36, 8, DifficultyTier.hard),
+      ('Cindermaw Behemoth', 45, 9, DifficultyTier.hard),
+      ('Gilded War Colossus', 54, 9, DifficultyTier.expert),
+      ('The Sevenfold Wraith', 63, 10, DifficultyTier.expert),
+      ('The Hollow Star', 72, 12, DifficultyTier.expert),
     ];
 
     expect(arc.chapters, hasLength(expected.length));
@@ -46,7 +46,14 @@ void main() {
       expect(puzzle.tier, boss.targetDifficulty);
       expect(ContentId.isValid(boss.id, kind: 'boss'), isTrue);
       expect(boss.spectacleLevel, index + 1);
+      expect(chapter.endOrder - chapter.startOrder + 1, 9);
       expect(chapter.encounters, hasLength(2));
+      expect(
+        chapter.encounters
+            .map((encounter) => arc.catalog.byId(encounter.puzzleId).order)
+            .toList(),
+        [chapter.startOrder + 2, chapter.startOrder + 5],
+      );
       expect(
         chapter.encounters.every(
           (encounter) =>
@@ -62,6 +69,13 @@ void main() {
           .expand((chapter) => chapter.encounters)
           .map((enemy) => enemy.id),
       hasLength(16),
+    );
+    expect(
+      [
+        for (final puzzle in arc.catalog.puzzles)
+          if (arc.encounterForPuzzle(puzzle) != null) puzzle.order,
+      ],
+      [for (var order = 3; order <= 72; order += 3) order],
     );
   });
 

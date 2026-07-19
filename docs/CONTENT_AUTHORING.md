@@ -80,14 +80,14 @@ encounter deliberately expands beyond the regular 10×10 Expert boards.
 
 | Chapter | Boss | Puzzle order | Size | Target difficulty | Unlocks |
 | --- | --- | ---: | ---: | --- | --- |
-| Asterfall Vale | Starfall Stag | 20 | 7×7 | Easy | Myrrhveil Wilds |
-| Myrrhveil Wilds | Elderroot Wyrm | 30 | 7×7 | Medium | Skyglass Reach |
-| Skyglass Reach | Tempest Roc | 40 | 8×8 | Medium | Nacre Basilica |
-| Nacre Basilica | Abyssal Bellkeeper | 60 | 8×8 | Hard | Pyreheart Caldera |
-| Pyreheart Caldera | Cindermaw Behemoth | 80 | 9×9 | Hard | Brasswake Arsenal |
-| Brasswake Arsenal | Gilded War Colossus | 90 | 9×9 | Expert | Pale Moon Necropolis |
-| Pale Moon Necropolis | The Sevenfold Wraith | 100 | 10×10 | Expert | Empyrean Citadel |
-| Empyrean Citadel | The Hollow Star | 120 | 12×12 | Expert | Finale |
+| Asterfall Vale | Starfall Stag | 9 | 7×7 | Easy | Myrrhveil Wilds |
+| Myrrhveil Wilds | Elderroot Wyrm | 18 | 7×7 | Medium | Skyglass Reach |
+| Skyglass Reach | Tempest Roc | 27 | 8×8 | Medium | Nacre Basilica |
+| Nacre Basilica | Abyssal Bellkeeper | 36 | 8×8 | Hard | Pyreheart Caldera |
+| Pyreheart Caldera | Cindermaw Behemoth | 45 | 9×9 | Hard | Brasswake Arsenal |
+| Brasswake Arsenal | Gilded War Colossus | 54 | 9×9 | Expert | Pale Moon Necropolis |
+| Pale Moon Necropolis | The Sevenfold Wraith | 63 | 10×10 | Expert | Empyrean Citadel |
+| Empyrean Citadel | The Hollow Star | 72 | 12×12 | Expert | Finale |
 
 Run `dart run tool/generate_puzzles.dart generate-bosses` to regenerate only
 these eight slots, or `generate` for the complete story-ordered catalog. Both
@@ -104,6 +104,11 @@ display name, an existing non-boss `puzzleId`, a `spriteFamily`, and a
 `spriteAsset`. An encounter is mandatory presentation on its selected puzzle:
 it cannot be dismissed from the header, grants no separate durable reward, and
 does not add a new frontier or unlock requirement.
+
+The origin arc has nine puzzles per chapter, displayed as a 3×3 route. Its two
+regular enemies occupy local positions 3 and 6, and its boss occupies position
+9, so every puzzle whose global order is a multiple of three is a combat
+encounter and every map row ends with one.
 
 Combat `spriteAsset` files are transparent PNG atlases with four columns and
 six rows. Rows, in order, are idle, stagger, strike, press, exposed, and defeat.

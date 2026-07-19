@@ -12,7 +12,10 @@ class GenerationRequest {
     this.count, {
     this.puzzleId,
     this.reserveTierOrdinal = false,
-  }) : assert(puzzleId == null || count == 1);
+    this.firstTierOrdinal,
+  }) : assert(puzzleId == null || count == 1),
+       assert(firstTierOrdinal == null || firstTierOrdinal > 0),
+       assert(puzzleId == null || firstTierOrdinal == null);
 
   final DifficultyTier tier;
   final int size;
@@ -22,24 +25,33 @@ class GenerationRequest {
   /// Bosses use named IDs. Same-tier bosses reserve the ordinary numeric ID
   /// they replace so later regular puzzle IDs retain their published order.
   final bool reserveTierOrdinal;
+
+  /// Keeps published numeric IDs stable when a curated story plan omits
+  /// puzzles from an earlier edition of the catalog.
+  final int? firstTierOrdinal;
 }
 
-/// Required size/difficulty allocation for the bundled 120-puzzle catalog.
+/// Required size/difficulty allocation for the bundled 72-puzzle catalog.
+///
+/// Each nine-node chapter contains eight puzzles at its displayed combination
+/// followed by a boss that previews the next chapter's combination. That
+/// leaves the opening combination with eight entries and the 12x12 finale
+/// with one; every intervening combination has nine.
 const launchPlan = <GenerationRequest>[
-  GenerationRequest(DifficultyTier.easy, 6, 19),
-  GenerationRequest(DifficultyTier.easy, 7, 10),
-  GenerationRequest(DifficultyTier.medium, 7, 10),
-  GenerationRequest(DifficultyTier.medium, 8, 20),
-  GenerationRequest(DifficultyTier.hard, 8, 20),
-  GenerationRequest(DifficultyTier.hard, 9, 10),
-  GenerationRequest(DifficultyTier.expert, 9, 10),
-  GenerationRequest(DifficultyTier.expert, 10, 20),
+  GenerationRequest(DifficultyTier.easy, 6, 8),
+  GenerationRequest(DifficultyTier.easy, 7, 9),
+  GenerationRequest(DifficultyTier.medium, 7, 9),
+  GenerationRequest(DifficultyTier.medium, 8, 9),
+  GenerationRequest(DifficultyTier.hard, 8, 9),
+  GenerationRequest(DifficultyTier.hard, 9, 9),
+  GenerationRequest(DifficultyTier.expert, 9, 9),
+  GenerationRequest(DifficultyTier.expert, 10, 9),
   GenerationRequest(DifficultyTier.expert, 12, 1),
 ];
 
 /// Story-ordered generation plan. Boss slots sit at each chapter boundary.
 const originStoryGenerationPlan = <GenerationRequest>[
-  GenerationRequest(DifficultyTier.easy, 6, 19),
+  GenerationRequest(DifficultyTier.easy, 6, 8),
   GenerationRequest(
     DifficultyTier.easy,
     7,
@@ -47,14 +59,14 @@ const originStoryGenerationPlan = <GenerationRequest>[
     puzzleId: 'regalia:puzzle/origin/boss/starfall-stag',
     reserveTierOrdinal: true,
   ),
-  GenerationRequest(DifficultyTier.easy, 7, 9),
+  GenerationRequest(DifficultyTier.easy, 7, 8, firstTierOrdinal: 21),
   GenerationRequest(
     DifficultyTier.medium,
     7,
     1,
     puzzleId: 'regalia:puzzle/origin/boss/elderroot-wyrm',
   ),
-  GenerationRequest(DifficultyTier.medium, 7, 9),
+  GenerationRequest(DifficultyTier.medium, 7, 8),
   GenerationRequest(
     DifficultyTier.medium,
     8,
@@ -62,14 +74,14 @@ const originStoryGenerationPlan = <GenerationRequest>[
     puzzleId: 'regalia:puzzle/origin/boss/tempest-roc',
     reserveTierOrdinal: true,
   ),
-  GenerationRequest(DifficultyTier.medium, 8, 19),
+  GenerationRequest(DifficultyTier.medium, 8, 8, firstTierOrdinal: 11),
   GenerationRequest(
     DifficultyTier.hard,
     8,
     1,
     puzzleId: 'regalia:puzzle/origin/boss/abyssal-bellkeeper',
   ),
-  GenerationRequest(DifficultyTier.hard, 8, 19),
+  GenerationRequest(DifficultyTier.hard, 8, 8),
   GenerationRequest(
     DifficultyTier.hard,
     9,
@@ -77,14 +89,14 @@ const originStoryGenerationPlan = <GenerationRequest>[
     puzzleId: 'regalia:puzzle/origin/boss/cindermaw-behemoth',
     reserveTierOrdinal: true,
   ),
-  GenerationRequest(DifficultyTier.hard, 9, 9),
+  GenerationRequest(DifficultyTier.hard, 9, 8, firstTierOrdinal: 21),
   GenerationRequest(
     DifficultyTier.expert,
     9,
     1,
     puzzleId: 'regalia:puzzle/origin/boss/gilded-war-colossus',
   ),
-  GenerationRequest(DifficultyTier.expert, 9, 9),
+  GenerationRequest(DifficultyTier.expert, 9, 8),
   GenerationRequest(
     DifficultyTier.expert,
     10,
@@ -92,7 +104,7 @@ const originStoryGenerationPlan = <GenerationRequest>[
     puzzleId: 'regalia:puzzle/origin/boss/sevenfold-wraith',
     reserveTierOrdinal: true,
   ),
-  GenerationRequest(DifficultyTier.expert, 10, 19),
+  GenerationRequest(DifficultyTier.expert, 10, 8, firstTierOrdinal: 11),
   GenerationRequest(
     DifficultyTier.expert,
     12,
@@ -316,6 +328,10 @@ class PuzzleGenerator {
         >{};
     var sequence = 0;
     for (final request in plan) {
+      final firstTierOrdinal = request.firstTierOrdinal;
+      if (firstTierOrdinal != null) {
+        tierNumbers[request.tier] = firstTierOrdinal - 1;
+      }
       for (var index = 0; index < request.count; index++) {
         sequence++;
         GeneratedPuzzle? accepted;

@@ -178,18 +178,39 @@ void main() {
 
     expect(find.text('QUEEN’S REGALIA'), findsOneWidget);
     expect(find.byKey(const ValueKey('puzzle-node-1')), findsOneWidget);
-    expect(find.byKey(const ValueKey('puzzle-node-120')), findsOneWidget);
+    expect(find.byKey(const ValueKey('puzzle-node-72')), findsOneWidget);
+    final firstChapterCenters = [
+      for (var order = 1; order <= 9; order++)
+        tester.getCenter(find.byKey(ValueKey('puzzle-node-$order'))),
+    ];
+    final expectedColumns =
+        firstChapterCenters.take(3).map((center) => center.dx).toList()..sort();
+    for (var row = 0; row < 3; row++) {
+      final rowCenters = firstChapterCenters.skip(row * 3).take(3).toList();
+      expect(
+        rowCenters.map((center) => center.dy),
+        everyElement(rowCenters.first.dy),
+      );
+      expect(
+        rowCenters.map((center) => center.dx).toList()..sort(),
+        expectedColumns,
+      );
+    }
+    final horizontalPitch = expectedColumns[1] - expectedColumns[0];
+    final verticalPitch =
+        firstChapterCenters[3].dy - firstChapterCenters.first.dy;
+    expect(verticalPitch, closeTo(horizontalPitch, .01));
     Finder semanticsWithLabel(String label) => find.byWidgetPredicate(
       (widget) => widget is Semantics && widget.properties.label == label,
     );
     expect(semanticsWithLabel('Puzzle 1, clean.'), findsOneWidget);
     expect(semanticsWithLabel('Puzzle 2, assisted.'), findsOneWidget);
-    expect(semanticsWithLabel('Puzzle 3, current.'), findsOneWidget);
     expect(
-      semanticsWithLabel(
-        'Puzzle 4 with Vale Thornling encounter, locked. '
-        'Complete puzzle 3 first.',
-      ),
+      semanticsWithLabel('Puzzle 3 with Vale Thornling encounter, current.'),
+      findsOneWidget,
+    );
+    expect(
+      semanticsWithLabel('Puzzle 4, locked. Complete puzzle 3 first.'),
       findsOneWidget,
     );
     expect(semanticsWithLabel('Crown bearer at puzzle 3'), findsOneWidget);

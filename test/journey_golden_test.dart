@@ -34,7 +34,7 @@ void main() {
   testWidgets('Brasswake Arsenal panorama in portrait midnight theme', (
     tester,
   ) async {
-    final controller = await _controllerAt(tester, completed: 80);
+    final controller = await _controllerAt(tester, completed: 45);
     await _goldenMap(
       tester,
       controller: controller,
@@ -46,7 +46,7 @@ void main() {
   testWidgets('Empyrean Citadel route in narrow midnight theme', (
     tester,
   ) async {
-    final controller = await _controllerAt(tester, completed: 100);
+    final controller = await _controllerAt(tester, completed: 63);
     await _goldenMap(
       tester,
       controller: controller,
@@ -56,7 +56,7 @@ void main() {
   });
 
   testWidgets('completed finale tile in narrow midnight theme', (tester) async {
-    final controller = await _controllerAt(tester, completed: 120);
+    final controller = await _controllerAt(tester, completed: 72);
     await _goldenMap(
       tester,
       controller: controller,
@@ -66,7 +66,7 @@ void main() {
   });
 
   testWidgets('completed finale tile in wide midnight theme', (tester) async {
-    final controller = await _controllerAt(tester, completed: 120);
+    final controller = await _controllerAt(tester, completed: 72);
     await _goldenMap(
       tester,
       controller: controller,
@@ -86,7 +86,7 @@ void main() {
   });
 
   testWidgets('finale story scene in midnight theme', (tester) async {
-    final controller = await _controllerAt(tester, completed: 120);
+    final controller = await _controllerAt(tester, completed: 72);
     await _goldenStory(
       tester,
       controller: controller,
@@ -96,7 +96,7 @@ void main() {
   });
 
   testWidgets('chapter story scene in midnight theme', (tester) async {
-    final controller = await _controllerAt(tester, completed: 45);
+    final controller = await _controllerAt(tester, completed: 27);
     final chapter = journeyChapters[3];
     await _goldenStory(
       tester,
@@ -112,7 +112,7 @@ Future<AppController> _controllerAt(
   WidgetTester tester, {
   required int completed,
 }) async {
-  final reachedOrder = completed >= 120 ? 120 : completed + 1;
+  final reachedOrder = completed >= 72 ? 72 : completed + 1;
   final chapter = chapterForOrder(reachedOrder);
   SharedPreferences.setMockInitialValues({
     'regalia.tutorialComplete': true,

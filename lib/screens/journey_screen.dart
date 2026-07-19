@@ -837,7 +837,7 @@ class _RouteSection extends StatelessWidget {
                 final layout = _RouteLayout(
                   width: width,
                   count: puzzles.length,
-                  columns: 4,
+                  columns: 3,
                 );
                 Offset? markerOrigin;
                 if (markerPosition != null &&
@@ -1297,17 +1297,21 @@ class _RouteLayout {
     final rows = (count / columns).ceil();
     const nodeSize = 56.0;
     const top = 132.0;
-    const rowGap = 88.0;
-    final gap = columns == 1 ? 0.0 : (width - nodeSize) / (columns - 1);
+    const maximumPitch = 88.0;
+    final availablePitch =
+        columns == 1 ? 0.0 : math.max(0.0, (width - nodeSize) / (columns - 1));
+    final pitch = math.min(maximumPitch, availablePitch);
+    final gridWidth = nodeSize + pitch * (columns - 1);
+    final gridLeft = (width - gridWidth) / 2;
     for (var index = 0; index < count; index++) {
       final row = index ~/ columns;
       final logicalColumn = index % columns;
       final column = row.isEven ? logicalColumn : columns - 1 - logicalColumn;
-      final origin = Offset(column * gap, top + row * rowGap);
+      final origin = Offset(gridLeft + column * pitch, top + row * pitch);
       origins.add(origin);
       points.add(origin + const Offset(nodeSize / 2, nodeSize / 2));
     }
-    height = top + rows * rowGap + 8;
+    height = top + math.max(0, rows - 1) * pitch + nodeSize + 40;
   }
 
   final double width;

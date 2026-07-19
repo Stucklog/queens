@@ -218,7 +218,7 @@ const journeyChapters = <JourneyChapter>[
     caption:
         'Where heaven struck the earth, the fallen Regalia chooses its bearer.',
     startOrder: 1,
-    endOrder: 20,
+    endOrder: 9,
     difficulty: DifficultyTier.easy,
     size: 6,
     boss: ChapterBoss(
@@ -246,8 +246,8 @@ const journeyChapters = <JourneyChapter>[
     visualIndex: 1,
     title: 'Myrrhveil Wilds',
     caption: 'Ancient roots part for the crown—and wake what sleeps below.',
-    startOrder: 21,
-    endOrder: 30,
+    startOrder: 10,
+    endOrder: 18,
     difficulty: DifficultyTier.easy,
     size: 7,
     boss: ChapterBoss(
@@ -276,8 +276,8 @@ const journeyChapters = <JourneyChapter>[
     title: 'Skyglass Reach',
     caption:
         'Ancient wind arches awaken, carrying the bearer beyond the storm.',
-    startOrder: 31,
-    endOrder: 40,
+    startOrder: 19,
+    endOrder: 27,
     difficulty: DifficultyTier.medium,
     size: 7,
     boss: ChapterBoss(
@@ -306,8 +306,8 @@ const journeyChapters = <JourneyChapter>[
     title: 'Nacre Basilica',
     caption:
         'Beneath the drowned bells, a forgotten covenant opens the deep road.',
-    startOrder: 41,
-    endOrder: 60,
+    startOrder: 28,
+    endOrder: 36,
     difficulty: DifficultyTier.medium,
     size: 8,
     boss: ChapterBoss(
@@ -335,8 +335,8 @@ const journeyChapters = <JourneyChapter>[
     visualIndex: 4,
     title: 'Pyreheart Caldera',
     caption: 'At the world’s molten heart, living crystal answers the crown.',
-    startOrder: 61,
-    endOrder: 80,
+    startOrder: 37,
+    endOrder: 45,
     difficulty: DifficultyTier.hard,
     size: 8,
     boss: ChapterBoss(
@@ -364,8 +364,8 @@ const journeyChapters = <JourneyChapter>[
     visualIndex: 5,
     title: 'Brasswake Arsenal',
     caption: 'The old empire’s last war-engine wakes to bar the ascent.',
-    startOrder: 81,
-    endOrder: 90,
+    startOrder: 46,
+    endOrder: 54,
     difficulty: DifficultyTier.hard,
     size: 9,
     boss: ChapterBoss(
@@ -394,8 +394,8 @@ const journeyChapters = <JourneyChapter>[
     title: 'Pale Moon Necropolis',
     caption:
         'Seven fallen queens rise beneath the pale moon to judge the bearer.',
-    startOrder: 91,
-    endOrder: 100,
+    startOrder: 55,
+    endOrder: 63,
     difficulty: DifficultyTier.expert,
     size: 9,
     boss: ChapterBoss(
@@ -423,8 +423,8 @@ const journeyChapters = <JourneyChapter>[
     visualIndex: 7,
     title: 'Empyrean Citadel',
     caption: 'Above the clouds, the vacant throne waits beneath a dying sun.',
-    startOrder: 101,
-    endOrder: 120,
+    startOrder: 64,
+    endOrder: 72,
     difficulty: DifficultyTier.expert,
     size: 10,
     boss: ChapterBoss(
