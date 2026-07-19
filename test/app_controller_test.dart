@@ -77,6 +77,58 @@ void main() {
     );
   });
 
+  test(
+    'catalog compaction keeps retained progress and drops removed IDs',
+    () async {
+      const retainedRecord = CompletionRecord(
+        status: CompletionStatus.cleanSolved,
+        attemptCount: 2,
+      );
+      const removedRecord = CompletionRecord(
+        status: CompletionStatus.assistedSolved,
+        attemptCount: 1,
+      );
+      final retainedBoard = BoardState(
+        puzzleId: 'regalia:puzzle/origin/easy-021',
+        size: 7,
+      )..set(const Cell(0, 0), ManualCellState.cross, recordUndo: false);
+      SharedPreferences.setMockInitialValues({
+        SaveIds.tutorialComplete: true,
+        'regalia.journeySchemaVersion': AppController.journeySchemaVersion,
+        SaveIds.migrationVersion: AppController.saveMigrationVersion,
+        SaveIds.originCatalogFingerprint: 'origin-catalog-before-compaction',
+        SaveIds.originRecords: jsonEncode({
+          'regalia:puzzle/origin/easy-001': retainedRecord.toJson(),
+          'regalia:puzzle/origin/easy-009': removedRecord.toJson(),
+        }),
+        SaveIds.originBoards: jsonEncode({
+          retainedBoard.puzzleId: retainedBoard.toJson(),
+        }),
+        SaveIds.originLastPuzzle: 'regalia:puzzle/origin/easy-009',
+      });
+
+      final controller = AppController();
+      await controller.initialize();
+      addTearDown(controller.dispose);
+
+      expect(
+        controller.recordFor('regalia:puzzle/origin/easy-001').status,
+        CompletionStatus.cleanSolved,
+      );
+      expect(
+        controller.records,
+        isNot(contains('regalia:puzzle/origin/easy-009')),
+      );
+      expect(
+        controller.boards['regalia:puzzle/origin/easy-021']?.at(
+          const Cell(0, 0),
+        ),
+        ManualCellState.cross,
+      );
+      expect(controller.lastPuzzleId, isNull);
+    },
+  );
+
   test('hints never mutate marks and assistance survives undo', () async {
     SharedPreferences.setMockInitialValues({'regalia.tutorialComplete': true});
     final controller = AppController();
@@ -303,26 +355,26 @@ void main() {
       final controller = AppController();
       await controller.initialize();
       final puzzles = controller.catalog!.puzzles;
-      for (final puzzle in puzzles.take(19)) {
+      for (final puzzle in puzzles.take(8)) {
         controller.records[puzzle.id] = const CompletionRecord(
           status: CompletionStatus.cleanSolved,
         );
       }
-      final twentieth = puzzles[19];
-      controller.openPuzzle(twentieth);
+      final ninth = puzzles[8];
+      controller.openPuzzle(ninth);
       PuzzleCompletionOutcome? boundaryOutcome;
       for (final cell
-          in const ExactSolver().solve(twentieth, limit: 1).solutions.single) {
+          in const ExactSolver().solve(ninth, limit: 1).solutions.single) {
         boundaryOutcome = controller.setCell(
-          twentieth,
+          ninth,
           cell,
           ManualCellState.crown,
         );
       }
       expect(boundaryOutcome?.enteredChapter?.title, 'Myrrhveil Wilds');
-      expect(controller.frontierPuzzle?.order, 21);
+      expect(controller.frontierPuzzle?.order, 10);
 
-      for (final puzzle in puzzles.take(119)) {
+      for (final puzzle in puzzles.take(71)) {
         controller.records[puzzle.id] = CompletionRecord(
           status:
               puzzle.order == 7

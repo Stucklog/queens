@@ -189,7 +189,7 @@ void main() {
       );
     });
 
-    test('guided tutorial is valid, unique, and separate from the 120', () {
+    test('guided tutorial is valid, unique, and separate from the 72', () {
       expect(tutorial.id, 'regalia:puzzle/system/guided-tutorial');
       expect(
         catalog.puzzles.map((puzzle) => puzzle.id),
@@ -208,7 +208,7 @@ void main() {
     });
 
     test('contains the exact launch allocation', () {
-      expect(catalog.puzzles, hasLength(120));
+      expect(catalog.puzzles, hasLength(72));
       for (final request in launchPlan) {
         expect(
           catalog.puzzles.where(
@@ -260,7 +260,7 @@ void main() {
             jsonDecode(await File('tool/validation_report.json').readAsString())
                 as Map<String, Object?>;
         final entries = report['puzzles']! as List<Object?>;
-        expect(entries, hasLength(120));
+        expect(entries, hasLength(72));
         final solutionLayouts = <String>{};
         for (final raw in entries) {
           final entry = raw! as Map<String, Object?>;
@@ -370,7 +370,9 @@ void main() {
     });
 
     test('deterministic generation reproduces a fixture', () {
-      const request = [GenerationRequest(DifficultyTier.easy, 6, 1)];
+      const request = [
+        GenerationRequest(DifficultyTier.easy, 6, 1, firstTierOrdinal: 21),
+      ];
       final first =
           const PuzzleGenerator()
               .generateCatalog(seed: 77, plan: request)
@@ -382,6 +384,7 @@ void main() {
       expect(first.definition.regions, second.definition.regions);
       expect(first.solution, second.solution);
       expect(first.definition.contentHash, second.definition.contentHash);
+      expect(first.definition.id, 'regalia:puzzle/origin/easy-021');
     });
   });
 }

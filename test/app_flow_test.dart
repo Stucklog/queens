@@ -43,7 +43,7 @@ void main() {
     await tester.ensureVisible(find.text('Enter Asterfall'));
     await tester.tap(find.text('Enter Asterfall'));
     await _pumpFrames(tester);
-    expect(find.byKey(const ValueKey('puzzle-node-120')), findsOneWidget);
+    expect(find.byKey(const ValueKey('puzzle-node-72')), findsOneWidget);
 
     final firstNode = find.byKey(const ValueKey('puzzle-node-1'));
     await tester.ensureVisible(firstNode);
@@ -102,7 +102,7 @@ void main() {
     await tester.tap(secondNode);
     await _pumpFrames(tester);
     final second = controller.catalog!.puzzles[1];
-    expect(find.text('Puzzle ${second.order} of 120'), findsOneWidget);
+    expect(find.text('Puzzle ${second.order} of 72'), findsOneWidget);
 
     await tester.runAsync(controller.flushPersistence);
     await tester.pumpWidget(const SizedBox.shrink());

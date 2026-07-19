@@ -483,668 +483,8 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia:puzzle/origin/easy-009",
-      "order": 9,
-      "size": 6,
-      "tier": "easy",
-      "regions": [
-        [
-          1,
-          1,
-          1,
-          1,
-          2,
-          0
-        ],
-        [
-          1,
-          1,
-          2,
-          2,
-          2,
-          0
-        ],
-        [
-          4,
-          1,
-          1,
-          2,
-          2,
-          2
-        ],
-        [
-          4,
-          4,
-          3,
-          3,
-          5,
-          2
-        ],
-        [
-          4,
-          4,
-          4,
-          4,
-          5,
-          2
-        ],
-        [
-          5,
-          5,
-          5,
-          5,
-          5,
-          2
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "94f81d24",
-      "difficultyScore": 11,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/easy-010",
-      "order": 10,
-      "size": 6,
-      "tier": "easy",
-      "regions": [
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          3,
-          0,
-          2,
-          2,
-          1,
-          1
-        ],
-        [
-          3,
-          0,
-          2,
-          2,
-          2,
-          5
-        ],
-        [
-          3,
-          3,
-          4,
-          4,
-          2,
-          5
-        ],
-        [
-          3,
-          3,
-          4,
-          5,
-          2,
-          5
-        ],
-        [
-          3,
-          3,
-          4,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "dd025906",
-      "difficultyScore": 17,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/easy-011",
-      "order": 11,
-      "size": 6,
-      "tier": "easy",
-      "regions": [
-        [
-          1,
-          0,
-          0,
-          2,
-          2,
-          2
-        ],
-        [
-          1,
-          1,
-          1,
-          1,
-          5,
-          2
-        ],
-        [
-          1,
-          1,
-          5,
-          5,
-          5,
-          2
-        ],
-        [
-          3,
-          1,
-          5,
-          5,
-          5,
-          2
-        ],
-        [
-          3,
-          4,
-          4,
-          5,
-          2,
-          2
-        ],
-        [
-          4,
-          4,
-          5,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "8461e73f",
-      "difficultyScore": 13,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/easy-012",
-      "order": 12,
-      "size": 6,
-      "tier": "easy",
-      "regions": [
-        [
-          0,
-          0,
-          1,
-          1,
-          2,
-          2
-        ],
-        [
-          3,
-          1,
-          1,
-          2,
-          2,
-          2
-        ],
-        [
-          3,
-          1,
-          3,
-          3,
-          2,
-          2
-        ],
-        [
-          3,
-          3,
-          3,
-          2,
-          2,
-          2
-        ],
-        [
-          3,
-          3,
-          4,
-          4,
-          5,
-          5
-        ],
-        [
-          3,
-          3,
-          5,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "fe795155",
-      "difficultyScore": 5,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/easy-013",
-      "order": 13,
-      "size": 6,
-      "tier": "easy",
-      "regions": [
-        [
-          2,
-          2,
-          2,
-          0,
-          0,
-          0
-        ],
-        [
-          3,
-          3,
-          2,
-          2,
-          1,
-          1
-        ],
-        [
-          3,
-          3,
-          2,
-          2,
-          2,
-          1
-        ],
-        [
-          3,
-          3,
-          3,
-          3,
-          4,
-          1
-        ],
-        [
-          3,
-          3,
-          5,
-          5,
-          4,
-          4
-        ],
-        [
-          3,
-          5,
-          5,
-          4,
-          4,
-          4
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "e7c8f97a",
-      "difficultyScore": 13,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/easy-014",
-      "order": 14,
-      "size": 6,
-      "tier": "easy",
-      "regions": [
-        [
-          5,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        [
-          5,
-          5,
-          1,
-          0,
-          1,
-          1
-        ],
-        [
-          5,
-          3,
-          1,
-          1,
-          1,
-          2
-        ],
-        [
-          5,
-          3,
-          4,
-          4,
-          1,
-          2
-        ],
-        [
-          5,
-          3,
-          3,
-          4,
-          2,
-          2
-        ],
-        [
-          5,
-          5,
-          5,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "1332903b",
-      "difficultyScore": 14,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/easy-015",
-      "order": 15,
-      "size": 6,
-      "tier": "easy",
-      "regions": [
-        [
-          1,
-          1,
-          0,
-          0,
-          0,
-          3
-        ],
-        [
-          2,
-          1,
-          1,
-          0,
-          0,
-          3
-        ],
-        [
-          2,
-          2,
-          2,
-          2,
-          3,
-          3
-        ],
-        [
-          2,
-          4,
-          2,
-          2,
-          2,
-          3
-        ],
-        [
-          2,
-          4,
-          4,
-          3,
-          3,
-          3
-        ],
-        [
-          5,
-          5,
-          4,
-          3,
-          3,
-          3
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "138e0e52",
-      "difficultyScore": 12,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/easy-016",
-      "order": 16,
-      "size": 6,
-      "tier": "easy",
-      "regions": [
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          1,
-          2,
-          2,
-          2,
-          0,
-          0
-        ],
-        [
-          1,
-          2,
-          2,
-          2,
-          0,
-          0
-        ],
-        [
-          3,
-          3,
-          2,
-          4,
-          4,
-          0
-        ],
-        [
-          3,
-          5,
-          2,
-          4,
-          4,
-          5
-        ],
-        [
-          5,
-          5,
-          5,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "9ea94b8a",
-      "difficultyScore": 6,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/easy-017",
-      "order": 17,
-      "size": 6,
-      "tier": "easy",
-      "regions": [
-        [
-          0,
-          3,
-          3,
-          1,
-          1,
-          1
-        ],
-        [
-          0,
-          2,
-          3,
-          1,
-          1,
-          1
-        ],
-        [
-          2,
-          2,
-          3,
-          3,
-          3,
-          3
-        ],
-        [
-          2,
-          5,
-          5,
-          3,
-          4,
-          4
-        ],
-        [
-          5,
-          5,
-          5,
-          4,
-          4,
-          4
-        ],
-        [
-          5,
-          5,
-          5,
-          5,
-          5,
-          4
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "72a6de17",
-      "difficultyScore": 5,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/easy-018",
-      "order": 18,
-      "size": 6,
-      "tier": "easy",
-      "regions": [
-        [
-          1,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          1,
-          1,
-          3,
-          3,
-          2,
-          2
-        ],
-        [
-          3,
-          3,
-          3,
-          3,
-          3,
-          2
-        ],
-        [
-          4,
-          4,
-          4,
-          3,
-          3,
-          5
-        ],
-        [
-          4,
-          4,
-          4,
-          3,
-          3,
-          5
-        ],
-        [
-          4,
-          4,
-          4,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "fbbc11a4",
-      "difficultyScore": 11,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/easy-019",
-      "order": 19,
-      "size": 6,
-      "tier": "easy",
-      "regions": [
-        [
-          2,
-          2,
-          0,
-          1,
-          1,
-          1
-        ],
-        [
-          2,
-          0,
-          0,
-          0,
-          0,
-          1
-        ],
-        [
-          2,
-          2,
-          2,
-          2,
-          1,
-          1
-        ],
-        [
-          2,
-          2,
-          2,
-          2,
-          3,
-          5
-        ],
-        [
-          4,
-          2,
-          4,
-          5,
-          3,
-          5
-        ],
-        [
-          4,
-          4,
-          4,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "02df1dc3",
-      "difficultyScore": 15,
-      "scoringModel": "human-v3"
-    },
-    {
       "id": "regalia:puzzle/origin/boss/starfall-stag",
-      "order": 20,
+      "order": 9,
       "size": 7,
       "tier": "easy",
       "regions": [
@@ -1219,7 +559,7 @@
     },
     {
       "id": "regalia:puzzle/origin/easy-021",
-      "order": 21,
+      "order": 10,
       "size": 7,
       "tier": "easy",
       "regions": [
@@ -1294,7 +634,7 @@
     },
     {
       "id": "regalia:puzzle/origin/easy-022",
-      "order": 22,
+      "order": 11,
       "size": 7,
       "tier": "easy",
       "regions": [
@@ -1369,7 +709,7 @@
     },
     {
       "id": "regalia:puzzle/origin/easy-023",
-      "order": 23,
+      "order": 12,
       "size": 7,
       "tier": "easy",
       "regions": [
@@ -1444,7 +784,7 @@
     },
     {
       "id": "regalia:puzzle/origin/easy-024",
-      "order": 24,
+      "order": 13,
       "size": 7,
       "tier": "easy",
       "regions": [
@@ -1519,7 +859,7 @@
     },
     {
       "id": "regalia:puzzle/origin/easy-025",
-      "order": 25,
+      "order": 14,
       "size": 7,
       "tier": "easy",
       "regions": [
@@ -1594,7 +934,7 @@
     },
     {
       "id": "regalia:puzzle/origin/easy-026",
-      "order": 26,
+      "order": 15,
       "size": 7,
       "tier": "easy",
       "regions": [
@@ -1669,7 +1009,7 @@
     },
     {
       "id": "regalia:puzzle/origin/easy-027",
-      "order": 27,
+      "order": 16,
       "size": 7,
       "tier": "easy",
       "regions": [
@@ -1744,7 +1084,7 @@
     },
     {
       "id": "regalia:puzzle/origin/easy-028",
-      "order": 28,
+      "order": 17,
       "size": 7,
       "tier": "easy",
       "regions": [
@@ -1818,83 +1158,8 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia:puzzle/origin/easy-029",
-      "order": 29,
-      "size": 7,
-      "tier": "easy",
-      "regions": [
-        [
-          2,
-          2,
-          2,
-          2,
-          3,
-          0,
-          0
-        ],
-        [
-          2,
-          1,
-          1,
-          1,
-          3,
-          3,
-          3
-        ],
-        [
-          2,
-          3,
-          3,
-          1,
-          1,
-          1,
-          3
-        ],
-        [
-          2,
-          2,
-          3,
-          3,
-          3,
-          3,
-          3
-        ],
-        [
-          2,
-          2,
-          3,
-          3,
-          4,
-          4,
-          4
-        ],
-        [
-          2,
-          2,
-          2,
-          6,
-          6,
-          6,
-          5
-        ],
-        [
-          2,
-          6,
-          6,
-          6,
-          6,
-          6,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "e9b24a90",
-      "difficultyScore": 14,
-      "scoringModel": "human-v3"
-    },
-    {
       "id": "regalia:puzzle/origin/boss/elderroot-wyrm",
-      "order": 30,
+      "order": 18,
       "size": 7,
       "tier": "medium",
       "regions": [
@@ -1969,7 +1234,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-001",
-      "order": 31,
+      "order": 19,
       "size": 7,
       "tier": "medium",
       "regions": [
@@ -2044,7 +1309,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-002",
-      "order": 32,
+      "order": 20,
       "size": 7,
       "tier": "medium",
       "regions": [
@@ -2119,7 +1384,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-003",
-      "order": 33,
+      "order": 21,
       "size": 7,
       "tier": "medium",
       "regions": [
@@ -2194,7 +1459,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-004",
-      "order": 34,
+      "order": 22,
       "size": 7,
       "tier": "medium",
       "regions": [
@@ -2269,7 +1534,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-005",
-      "order": 35,
+      "order": 23,
       "size": 7,
       "tier": "medium",
       "regions": [
@@ -2344,7 +1609,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-006",
-      "order": 36,
+      "order": 24,
       "size": 7,
       "tier": "medium",
       "regions": [
@@ -2419,7 +1684,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-007",
-      "order": 37,
+      "order": 25,
       "size": 7,
       "tier": "medium",
       "regions": [
@@ -2494,7 +1759,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-008",
-      "order": 38,
+      "order": 26,
       "size": 7,
       "tier": "medium",
       "regions": [
@@ -2568,83 +1833,8 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia:puzzle/origin/medium-009",
-      "order": 39,
-      "size": 7,
-      "tier": "medium",
-      "regions": [
-        [
-          2,
-          2,
-          4,
-          3,
-          1,
-          0,
-          0
-        ],
-        [
-          2,
-          2,
-          4,
-          3,
-          1,
-          1,
-          5
-        ],
-        [
-          4,
-          2,
-          4,
-          3,
-          3,
-          1,
-          5
-        ],
-        [
-          4,
-          4,
-          4,
-          3,
-          5,
-          5,
-          5
-        ],
-        [
-          4,
-          4,
-          4,
-          3,
-          5,
-          5,
-          5
-        ],
-        [
-          6,
-          6,
-          6,
-          3,
-          3,
-          5,
-          5
-        ],
-        [
-          6,
-          6,
-          6,
-          6,
-          6,
-          6,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "47d8876f",
-      "difficultyScore": 42,
-      "scoringModel": "human-v3"
-    },
-    {
       "id": "regalia:puzzle/origin/boss/tempest-roc",
-      "order": 40,
+      "order": 27,
       "size": 8,
       "tier": "medium",
       "regions": [
@@ -2736,7 +1926,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-011",
-      "order": 41,
+      "order": 28,
       "size": 8,
       "tier": "medium",
       "regions": [
@@ -2828,7 +2018,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-012",
-      "order": 42,
+      "order": 29,
       "size": 8,
       "tier": "medium",
       "regions": [
@@ -2920,7 +2110,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-013",
-      "order": 43,
+      "order": 30,
       "size": 8,
       "tier": "medium",
       "regions": [
@@ -3012,7 +2202,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-014",
-      "order": 44,
+      "order": 31,
       "size": 8,
       "tier": "medium",
       "regions": [
@@ -3104,7 +2294,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-015",
-      "order": 45,
+      "order": 32,
       "size": 8,
       "tier": "medium",
       "regions": [
@@ -3196,7 +2386,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-016",
-      "order": 46,
+      "order": 33,
       "size": 8,
       "tier": "medium",
       "regions": [
@@ -3288,7 +2478,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-017",
-      "order": 47,
+      "order": 34,
       "size": 8,
       "tier": "medium",
       "regions": [
@@ -3380,7 +2570,7 @@
     },
     {
       "id": "regalia:puzzle/origin/medium-018",
-      "order": 48,
+      "order": 35,
       "size": 8,
       "tier": "medium",
       "regions": [
@@ -3471,1020 +2661,8 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia:puzzle/origin/medium-019",
-      "order": 49,
-      "size": 8,
-      "tier": "medium",
-      "regions": [
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          1,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          1,
-          1,
-          1,
-          0,
-          4,
-          2,
-          2,
-          2
-        ],
-        [
-          1,
-          1,
-          1,
-          1,
-          4,
-          3,
-          3,
-          2
-        ],
-        [
-          1,
-          1,
-          1,
-          4,
-          4,
-          3,
-          5,
-          2
-        ],
-        [
-          1,
-          1,
-          6,
-          6,
-          4,
-          4,
-          5,
-          5
-        ],
-        [
-          1,
-          6,
-          6,
-          5,
-          5,
-          5,
-          5,
-          5
-        ],
-        [
-          6,
-          6,
-          7,
-          7,
-          7,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "edda9903",
-      "difficultyScore": 39,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/medium-020",
-      "order": 50,
-      "size": 8,
-      "tier": "medium",
-      "regions": [
-        [
-          4,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          4,
-          1,
-          3,
-          3,
-          2,
-          2,
-          2,
-          2
-        ],
-        [
-          4,
-          3,
-          3,
-          3,
-          2,
-          3,
-          5,
-          2
-        ],
-        [
-          4,
-          4,
-          6,
-          3,
-          3,
-          3,
-          5,
-          5
-        ],
-        [
-          4,
-          4,
-          6,
-          6,
-          3,
-          3,
-          3,
-          5
-        ],
-        [
-          4,
-          6,
-          6,
-          6,
-          6,
-          7,
-          5,
-          5
-        ],
-        [
-          4,
-          4,
-          6,
-          6,
-          6,
-          7,
-          7,
-          7
-        ],
-        [
-          6,
-          6,
-          6,
-          6,
-          6,
-          7,
-          7,
-          7
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "24dd8176",
-      "difficultyScore": 34,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/medium-021",
-      "order": 51,
-      "size": 8,
-      "tier": "medium",
-      "regions": [
-        [
-          0,
-          0,
-          0,
-          2,
-          2,
-          2,
-          1,
-          4
-        ],
-        [
-          0,
-          0,
-          0,
-          2,
-          2,
-          2,
-          1,
-          4
-        ],
-        [
-          0,
-          0,
-          2,
-          2,
-          2,
-          1,
-          1,
-          4
-        ],
-        [
-          0,
-          0,
-          2,
-          2,
-          3,
-          3,
-          4,
-          4
-        ],
-        [
-          0,
-          0,
-          2,
-          2,
-          3,
-          3,
-          3,
-          4
-        ],
-        [
-          0,
-          0,
-          2,
-          5,
-          5,
-          5,
-          3,
-          4
-        ],
-        [
-          6,
-          0,
-          5,
-          5,
-          4,
-          4,
-          4,
-          4
-        ],
-        [
-          6,
-          6,
-          5,
-          4,
-          4,
-          7,
-          7,
-          4
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "023b7aff",
-      "difficultyScore": 34,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/medium-022",
-      "order": 52,
-      "size": 8,
-      "tier": "medium",
-      "regions": [
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          3
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3,
-          1
-        ],
-        [
-          2,
-          2,
-          2,
-          0,
-          3,
-          0,
-          3,
-          1
-        ],
-        [
-          2,
-          6,
-          2,
-          3,
-          3,
-          3,
-          3,
-          4
-        ],
-        [
-          2,
-          6,
-          2,
-          3,
-          3,
-          5,
-          4,
-          4
-        ],
-        [
-          2,
-          6,
-          2,
-          3,
-          5,
-          5,
-          4,
-          4
-        ],
-        [
-          2,
-          6,
-          3,
-          3,
-          5,
-          5,
-          5,
-          4
-        ],
-        [
-          2,
-          6,
-          6,
-          6,
-          6,
-          7,
-          7,
-          4
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "442b6faf",
-      "difficultyScore": 35,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/medium-023",
-      "order": 53,
-      "size": 8,
-      "tier": "medium",
-      "regions": [
-        [
-          1,
-          1,
-          6,
-          6,
-          2,
-          0,
-          0,
-          0
-        ],
-        [
-          3,
-          1,
-          6,
-          6,
-          2,
-          2,
-          2,
-          0
-        ],
-        [
-          3,
-          3,
-          6,
-          6,
-          2,
-          2,
-          2,
-          0
-        ],
-        [
-          3,
-          6,
-          6,
-          4,
-          2,
-          2,
-          2,
-          2
-        ],
-        [
-          3,
-          3,
-          6,
-          4,
-          4,
-          2,
-          2,
-          2
-        ],
-        [
-          3,
-          6,
-          6,
-          6,
-          4,
-          4,
-          5,
-          5
-        ],
-        [
-          3,
-          3,
-          6,
-          6,
-          4,
-          5,
-          5,
-          7
-        ],
-        [
-          3,
-          3,
-          3,
-          3,
-          4,
-          4,
-          5,
-          7
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "fd31a544",
-      "difficultyScore": 35,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/medium-024",
-      "order": 54,
-      "size": 8,
-      "tier": "medium",
-      "regions": [
-        [
-          0,
-          0,
-          0,
-          3,
-          3,
-          1,
-          1,
-          1
-        ],
-        [
-          0,
-          2,
-          2,
-          2,
-          3,
-          3,
-          3,
-          1
-        ],
-        [
-          4,
-          2,
-          2,
-          2,
-          2,
-          2,
-          3,
-          3
-        ],
-        [
-          4,
-          2,
-          2,
-          6,
-          5,
-          2,
-          3,
-          3
-        ],
-        [
-          4,
-          2,
-          2,
-          6,
-          5,
-          2,
-          2,
-          3
-        ],
-        [
-          7,
-          6,
-          6,
-          6,
-          5,
-          5,
-          5,
-          3
-        ],
-        [
-          7,
-          6,
-          6,
-          6,
-          5,
-          6,
-          5,
-          5
-        ],
-        [
-          7,
-          7,
-          7,
-          6,
-          6,
-          6,
-          6,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "929e4326",
-      "difficultyScore": 36,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/medium-025",
-      "order": 55,
-      "size": 8,
-      "tier": "medium",
-      "regions": [
-        [
-          2,
-          2,
-          2,
-          3,
-          3,
-          1,
-          0,
-          0
-        ],
-        [
-          2,
-          2,
-          2,
-          2,
-          3,
-          1,
-          5,
-          5
-        ],
-        [
-          2,
-          4,
-          7,
-          2,
-          3,
-          1,
-          5,
-          5
-        ],
-        [
-          4,
-          4,
-          7,
-          2,
-          3,
-          3,
-          3,
-          5
-        ],
-        [
-          4,
-          4,
-          7,
-          7,
-          5,
-          5,
-          5,
-          5
-        ],
-        [
-          4,
-          4,
-          7,
-          5,
-          5,
-          6,
-          6,
-          5
-        ],
-        [
-          7,
-          7,
-          7,
-          6,
-          6,
-          6,
-          6,
-          5
-        ],
-        [
-          7,
-          7,
-          7,
-          7,
-          7,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "7d7b0d86",
-      "difficultyScore": 39,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/medium-026",
-      "order": 56,
-      "size": 8,
-      "tier": "medium",
-      "regions": [
-        [
-          2,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1
-        ],
-        [
-          2,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        [
-          2,
-          2,
-          0,
-          0,
-          1,
-          3,
-          3,
-          1
-        ],
-        [
-          2,
-          4,
-          0,
-          0,
-          0,
-          0,
-          3,
-          1
-        ],
-        [
-          5,
-          4,
-          4,
-          6,
-          6,
-          3,
-          3,
-          1
-        ],
-        [
-          5,
-          6,
-          6,
-          6,
-          1,
-          1,
-          1,
-          1
-        ],
-        [
-          6,
-          6,
-          7,
-          6,
-          7,
-          7,
-          1,
-          7
-        ],
-        [
-          6,
-          6,
-          7,
-          7,
-          7,
-          7,
-          7,
-          7
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "86afc04f",
-      "difficultyScore": 38,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/medium-027",
-      "order": 57,
-      "size": 8,
-      "tier": "medium",
-      "regions": [
-        [
-          3,
-          3,
-          3,
-          2,
-          2,
-          0,
-          0,
-          1
-        ],
-        [
-          3,
-          4,
-          4,
-          4,
-          2,
-          2,
-          7,
-          1
-        ],
-        [
-          3,
-          4,
-          4,
-          4,
-          2,
-          2,
-          7,
-          7
-        ],
-        [
-          3,
-          3,
-          3,
-          4,
-          4,
-          4,
-          4,
-          7
-        ],
-        [
-          3,
-          3,
-          4,
-          4,
-          4,
-          4,
-          7,
-          7
-        ],
-        [
-          3,
-          6,
-          4,
-          5,
-          5,
-          5,
-          5,
-          7
-        ],
-        [
-          3,
-          6,
-          6,
-          5,
-          5,
-          5,
-          7,
-          7
-        ],
-        [
-          3,
-          3,
-          6,
-          7,
-          7,
-          7,
-          7,
-          7
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "58e0467e",
-      "difficultyScore": 34,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/medium-028",
-      "order": 58,
-      "size": 8,
-      "tier": "medium",
-      "regions": [
-        [
-          1,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0
-        ],
-        [
-          1,
-          1,
-          1,
-          1,
-          1,
-          2,
-          2,
-          0
-        ],
-        [
-          1,
-          2,
-          2,
-          2,
-          2,
-          2,
-          4,
-          0
-        ],
-        [
-          1,
-          3,
-          3,
-          3,
-          2,
-          2,
-          4,
-          4
-        ],
-        [
-          3,
-          3,
-          4,
-          3,
-          4,
-          4,
-          4,
-          4
-        ],
-        [
-          3,
-          4,
-          4,
-          4,
-          4,
-          6,
-          5,
-          5
-        ],
-        [
-          3,
-          3,
-          3,
-          3,
-          4,
-          6,
-          6,
-          5
-        ],
-        [
-          3,
-          3,
-          7,
-          7,
-          4,
-          4,
-          6,
-          6
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "b8f2feb7",
-      "difficultyScore": 42,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/medium-029",
-      "order": 59,
-      "size": 8,
-      "tier": "medium",
-      "regions": [
-        [
-          1,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          1,
-          2,
-          2,
-          2,
-          0,
-          2,
-          0,
-          0
-        ],
-        [
-          1,
-          1,
-          1,
-          2,
-          2,
-          2,
-          0,
-          0
-        ],
-        [
-          3,
-          1,
-          3,
-          3,
-          2,
-          0,
-          0,
-          0
-        ],
-        [
-          3,
-          3,
-          3,
-          2,
-          2,
-          2,
-          0,
-          4
-        ],
-        [
-          5,
-          5,
-          3,
-          3,
-          3,
-          2,
-          4,
-          4
-        ],
-        [
-          5,
-          7,
-          3,
-          3,
-          6,
-          6,
-          4,
-          4
-        ],
-        [
-          7,
-          7,
-          7,
-          6,
-          6,
-          6,
-          4,
-          4
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "85f280d7",
-      "difficultyScore": 37,
-      "scoringModel": "human-v3"
-    },
-    {
       "id": "regalia:puzzle/origin/boss/abyssal-bellkeeper",
-      "order": 60,
+      "order": 36,
       "size": 8,
       "tier": "hard",
       "regions": [
@@ -4576,7 +2754,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-001",
-      "order": 61,
+      "order": 37,
       "size": 8,
       "tier": "hard",
       "regions": [
@@ -4668,7 +2846,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-002",
-      "order": 62,
+      "order": 38,
       "size": 8,
       "tier": "hard",
       "regions": [
@@ -4760,7 +2938,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-003",
-      "order": 63,
+      "order": 39,
       "size": 8,
       "tier": "hard",
       "regions": [
@@ -4852,7 +3030,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-004",
-      "order": 64,
+      "order": 40,
       "size": 8,
       "tier": "hard",
       "regions": [
@@ -4944,7 +3122,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-005",
-      "order": 65,
+      "order": 41,
       "size": 8,
       "tier": "hard",
       "regions": [
@@ -5036,7 +3214,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-006",
-      "order": 66,
+      "order": 42,
       "size": 8,
       "tier": "hard",
       "regions": [
@@ -5128,7 +3306,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-007",
-      "order": 67,
+      "order": 43,
       "size": 8,
       "tier": "hard",
       "regions": [
@@ -5220,7 +3398,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-008",
-      "order": 68,
+      "order": 44,
       "size": 8,
       "tier": "hard",
       "regions": [
@@ -5311,1020 +3489,8 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia:puzzle/origin/hard-009",
-      "order": 69,
-      "size": 8,
-      "tier": "hard",
-      "regions": [
-        [
-          0,
-          0,
-          0,
-          1,
-          2,
-          2,
-          2,
-          2
-        ],
-        [
-          0,
-          3,
-          3,
-          1,
-          1,
-          1,
-          2,
-          2
-        ],
-        [
-          0,
-          3,
-          3,
-          1,
-          3,
-          1,
-          1,
-          2
-        ],
-        [
-          0,
-          0,
-          3,
-          3,
-          3,
-          2,
-          1,
-          2
-        ],
-        [
-          4,
-          0,
-          3,
-          5,
-          3,
-          2,
-          2,
-          2
-        ],
-        [
-          4,
-          0,
-          0,
-          5,
-          3,
-          3,
-          3,
-          3
-        ],
-        [
-          4,
-          7,
-          0,
-          5,
-          5,
-          3,
-          6,
-          6
-        ],
-        [
-          4,
-          7,
-          5,
-          5,
-          5,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "b2df3898",
-      "difficultyScore": 64,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/hard-010",
-      "order": 70,
-      "size": 8,
-      "tier": "hard",
-      "regions": [
-        [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        [
-          0,
-          2,
-          2,
-          2,
-          1,
-          1,
-          3,
-          3
-        ],
-        [
-          2,
-          2,
-          2,
-          2,
-          1,
-          3,
-          3,
-          3
-        ],
-        [
-          2,
-          2,
-          4,
-          3,
-          3,
-          3,
-          3,
-          7
-        ],
-        [
-          4,
-          4,
-          4,
-          3,
-          3,
-          6,
-          3,
-          7
-        ],
-        [
-          5,
-          4,
-          6,
-          6,
-          3,
-          6,
-          7,
-          7
-        ],
-        [
-          5,
-          4,
-          6,
-          6,
-          6,
-          6,
-          7,
-          7
-        ],
-        [
-          4,
-          4,
-          6,
-          7,
-          7,
-          7,
-          7,
-          7
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "400d22c9",
-      "difficultyScore": 68,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/hard-011",
-      "order": 71,
-      "size": 8,
-      "tier": "hard",
-      "regions": [
-        [
-          2,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        [
-          2,
-          0,
-          3,
-          1,
-          3,
-          1,
-          1,
-          4
-        ],
-        [
-          2,
-          0,
-          3,
-          3,
-          3,
-          1,
-          1,
-          4
-        ],
-        [
-          2,
-          0,
-          3,
-          3,
-          3,
-          4,
-          4,
-          4
-        ],
-        [
-          2,
-          2,
-          2,
-          3,
-          4,
-          4,
-          4,
-          4
-        ],
-        [
-          2,
-          2,
-          2,
-          3,
-          5,
-          5,
-          5,
-          4
-        ],
-        [
-          2,
-          2,
-          2,
-          5,
-          5,
-          5,
-          6,
-          6
-        ],
-        [
-          2,
-          2,
-          2,
-          5,
-          7,
-          7,
-          6,
-          6
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "1a807dc2",
-      "difficultyScore": 70,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/hard-012",
-      "order": 72,
-      "size": 8,
-      "tier": "hard",
-      "regions": [
-        [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        [
-          0,
-          0,
-          1,
-          1,
-          1,
-          3,
-          3,
-          1
-        ],
-        [
-          0,
-          0,
-          0,
-          1,
-          2,
-          2,
-          3,
-          3
-        ],
-        [
-          0,
-          0,
-          1,
-          1,
-          1,
-          2,
-          2,
-          3
-        ],
-        [
-          0,
-          0,
-          0,
-          4,
-          1,
-          2,
-          5,
-          3
-        ],
-        [
-          4,
-          4,
-          4,
-          4,
-          5,
-          5,
-          5,
-          5
-        ],
-        [
-          4,
-          6,
-          4,
-          4,
-          4,
-          5,
-          7,
-          5
-        ],
-        [
-          4,
-          6,
-          4,
-          4,
-          4,
-          4,
-          7,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "11604fcb",
-      "difficultyScore": 68,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/hard-013",
-      "order": 73,
-      "size": 8,
-      "tier": "hard",
-      "regions": [
-        [
-          1,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0
-        ],
-        [
-          1,
-          1,
-          1,
-          1,
-          2,
-          2,
-          0,
-          0
-        ],
-        [
-          4,
-          1,
-          1,
-          1,
-          3,
-          2,
-          0,
-          2
-        ],
-        [
-          4,
-          1,
-          4,
-          1,
-          3,
-          2,
-          2,
-          2
-        ],
-        [
-          4,
-          4,
-          4,
-          1,
-          3,
-          2,
-          5,
-          2
-        ],
-        [
-          4,
-          4,
-          3,
-          3,
-          3,
-          2,
-          5,
-          5
-        ],
-        [
-          4,
-          6,
-          6,
-          3,
-          2,
-          2,
-          5,
-          5
-        ],
-        [
-          7,
-          7,
-          6,
-          3,
-          5,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "797113af",
-      "difficultyScore": 66,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/hard-014",
-      "order": 74,
-      "size": 8,
-      "tier": "hard",
-      "regions": [
-        [
-          0,
-          0,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2
-        ],
-        [
-          3,
-          0,
-          0,
-          0,
-          0,
-          2,
-          1,
-          1
-        ],
-        [
-          3,
-          3,
-          3,
-          3,
-          2,
-          2,
-          2,
-          2
-        ],
-        [
-          6,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3
-        ],
-        [
-          6,
-          4,
-          3,
-          3,
-          3,
-          5,
-          5,
-          5
-        ],
-        [
-          6,
-          4,
-          6,
-          6,
-          7,
-          7,
-          5,
-          5
-        ],
-        [
-          6,
-          6,
-          6,
-          7,
-          7,
-          7,
-          5,
-          5
-        ],
-        [
-          6,
-          6,
-          7,
-          7,
-          7,
-          7,
-          7,
-          7
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "f9b3ab58",
-      "difficultyScore": 65,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/hard-015",
-      "order": 75,
-      "size": 8,
-      "tier": "hard",
-      "regions": [
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          1,
-          1,
-          0,
-          1,
-          1,
-          0,
-          0,
-          0
-        ],
-        [
-          2,
-          1,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0
-        ],
-        [
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          3
-        ],
-        [
-          7,
-          2,
-          2,
-          4,
-          4,
-          3,
-          3,
-          3
-        ],
-        [
-          7,
-          7,
-          5,
-          4,
-          4,
-          6,
-          6,
-          6
-        ],
-        [
-          7,
-          5,
-          5,
-          5,
-          4,
-          4,
-          6,
-          6
-        ],
-        [
-          7,
-          7,
-          7,
-          5,
-          5,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "413acbf2",
-      "difficultyScore": 62,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/hard-016",
-      "order": 76,
-      "size": 8,
-      "tier": "hard",
-      "regions": [
-        [
-          1,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0
-        ],
-        [
-          1,
-          1,
-          1,
-          2,
-          1,
-          1,
-          2,
-          2
-        ],
-        [
-          1,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          3
-        ],
-        [
-          1,
-          1,
-          1,
-          3,
-          3,
-          3,
-          3,
-          3
-        ],
-        [
-          4,
-          4,
-          4,
-          5,
-          5,
-          3,
-          3,
-          3
-        ],
-        [
-          4,
-          4,
-          4,
-          5,
-          5,
-          5,
-          3,
-          6
-        ],
-        [
-          5,
-          4,
-          4,
-          4,
-          5,
-          5,
-          5,
-          6
-        ],
-        [
-          5,
-          5,
-          5,
-          5,
-          5,
-          7,
-          7,
-          7
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "57bea1ae",
-      "difficultyScore": 68,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/hard-017",
-      "order": 77,
-      "size": 8,
-      "tier": "hard",
-      "regions": [
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          3
-        ],
-        [
-          1,
-          0,
-          2,
-          0,
-          2,
-          2,
-          2,
-          3
-        ],
-        [
-          1,
-          0,
-          2,
-          2,
-          2,
-          3,
-          3,
-          3
-        ],
-        [
-          1,
-          1,
-          1,
-          2,
-          3,
-          3,
-          4,
-          4
-        ],
-        [
-          1,
-          1,
-          1,
-          2,
-          2,
-          3,
-          5,
-          4
-        ],
-        [
-          1,
-          1,
-          2,
-          2,
-          2,
-          5,
-          5,
-          4
-        ],
-        [
-          1,
-          6,
-          6,
-          6,
-          6,
-          5,
-          5,
-          4
-        ],
-        [
-          1,
-          6,
-          6,
-          6,
-          6,
-          7,
-          7,
-          4
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "86c19bdc",
-      "difficultyScore": 65,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/hard-018",
-      "order": 78,
-      "size": 8,
-      "tier": "hard",
-      "regions": [
-        [
-          1,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0
-        ],
-        [
-          1,
-          1,
-          4,
-          4,
-          1,
-          1,
-          0,
-          2
-        ],
-        [
-          4,
-          4,
-          4,
-          1,
-          1,
-          1,
-          3,
-          2
-        ],
-        [
-          4,
-          4,
-          4,
-          1,
-          3,
-          3,
-          3,
-          2
-        ],
-        [
-          4,
-          4,
-          4,
-          1,
-          2,
-          2,
-          2,
-          2
-        ],
-        [
-          4,
-          4,
-          4,
-          1,
-          6,
-          6,
-          5,
-          2
-        ],
-        [
-          4,
-          7,
-          2,
-          6,
-          6,
-          6,
-          5,
-          2
-        ],
-        [
-          4,
-          7,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "7ee9cdec",
-      "difficultyScore": 69,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/hard-019",
-      "order": 79,
-      "size": 8,
-      "tier": "hard",
-      "regions": [
-        [
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0
-        ],
-        [
-          1,
-          4,
-          4,
-          1,
-          4,
-          4,
-          0,
-          3
-        ],
-        [
-          1,
-          4,
-          4,
-          4,
-          4,
-          2,
-          2,
-          3
-        ],
-        [
-          4,
-          4,
-          4,
-          4,
-          3,
-          3,
-          3,
-          3
-        ],
-        [
-          4,
-          5,
-          4,
-          6,
-          6,
-          6,
-          3,
-          6
-        ],
-        [
-          4,
-          5,
-          5,
-          5,
-          5,
-          6,
-          3,
-          6
-        ],
-        [
-          7,
-          7,
-          7,
-          7,
-          7,
-          6,
-          6,
-          6
-        ],
-        [
-          7,
-          7,
-          7,
-          7,
-          7,
-          7,
-          7,
-          7
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "a865c1d6",
-      "difficultyScore": 69,
-      "scoringModel": "human-v3"
-    },
-    {
       "id": "regalia:puzzle/origin/boss/cindermaw-behemoth",
-      "order": 80,
+      "order": 45,
       "size": 9,
       "tier": "hard",
       "regions": [
@@ -6435,7 +3601,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-021",
-      "order": 81,
+      "order": 46,
       "size": 9,
       "tier": "hard",
       "regions": [
@@ -6546,7 +3712,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-022",
-      "order": 82,
+      "order": 47,
       "size": 9,
       "tier": "hard",
       "regions": [
@@ -6657,7 +3823,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-023",
-      "order": 83,
+      "order": 48,
       "size": 9,
       "tier": "hard",
       "regions": [
@@ -6768,7 +3934,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-024",
-      "order": 84,
+      "order": 49,
       "size": 9,
       "tier": "hard",
       "regions": [
@@ -6879,7 +4045,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-025",
-      "order": 85,
+      "order": 50,
       "size": 9,
       "tier": "hard",
       "regions": [
@@ -6990,7 +4156,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-026",
-      "order": 86,
+      "order": 51,
       "size": 9,
       "tier": "hard",
       "regions": [
@@ -7101,7 +4267,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-027",
-      "order": 87,
+      "order": 52,
       "size": 9,
       "tier": "hard",
       "regions": [
@@ -7212,7 +4378,7 @@
     },
     {
       "id": "regalia:puzzle/origin/hard-028",
-      "order": 88,
+      "order": 53,
       "size": 9,
       "tier": "hard",
       "regions": [
@@ -7322,119 +4488,8 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia:puzzle/origin/hard-029",
-      "order": 89,
-      "size": 9,
-      "tier": "hard",
-      "regions": [
-        [
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          0,
-          0
-        ],
-        [
-          2,
-          2,
-          4,
-          4,
-          2,
-          4,
-          1,
-          1,
-          1
-        ],
-        [
-          2,
-          2,
-          4,
-          4,
-          4,
-          4,
-          4,
-          4,
-          1
-        ],
-        [
-          2,
-          2,
-          3,
-          3,
-          4,
-          6,
-          4,
-          6,
-          1
-        ],
-        [
-          5,
-          2,
-          2,
-          2,
-          4,
-          6,
-          6,
-          6,
-          1
-        ],
-        [
-          5,
-          5,
-          2,
-          4,
-          4,
-          4,
-          4,
-          6,
-          1
-        ],
-        [
-          5,
-          7,
-          7,
-          7,
-          6,
-          6,
-          6,
-          6,
-          6
-        ],
-        [
-          5,
-          5,
-          5,
-          7,
-          7,
-          7,
-          7,
-          7,
-          6
-        ],
-        [
-          7,
-          7,
-          7,
-          7,
-          7,
-          7,
-          7,
-          8,
-          8
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "dc5609a3",
-      "difficultyScore": 66,
-      "scoringModel": "human-v3"
-    },
-    {
       "id": "regalia:puzzle/origin/boss/gilded-war-colossus",
-      "order": 90,
+      "order": 54,
       "size": 9,
       "tier": "expert",
       "regions": [
@@ -7545,7 +4600,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-001",
-      "order": 91,
+      "order": 55,
       "size": 9,
       "tier": "expert",
       "regions": [
@@ -7656,7 +4711,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-002",
-      "order": 92,
+      "order": 56,
       "size": 9,
       "tier": "expert",
       "regions": [
@@ -7767,7 +4822,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-003",
-      "order": 93,
+      "order": 57,
       "size": 9,
       "tier": "expert",
       "regions": [
@@ -7878,7 +4933,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-004",
-      "order": 94,
+      "order": 58,
       "size": 9,
       "tier": "expert",
       "regions": [
@@ -7989,7 +5044,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-005",
-      "order": 95,
+      "order": 59,
       "size": 9,
       "tier": "expert",
       "regions": [
@@ -8100,7 +5155,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-006",
-      "order": 96,
+      "order": 60,
       "size": 9,
       "tier": "expert",
       "regions": [
@@ -8211,7 +5266,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-007",
-      "order": 97,
+      "order": 61,
       "size": 9,
       "tier": "expert",
       "regions": [
@@ -8322,7 +5377,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-008",
-      "order": 98,
+      "order": 62,
       "size": 9,
       "tier": "expert",
       "regions": [
@@ -8432,119 +5487,8 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia:puzzle/origin/expert-009",
-      "order": 99,
-      "size": 9,
-      "tier": "expert",
-      "regions": [
-        [
-          4,
-          1,
-          1,
-          1,
-          3,
-          3,
-          0,
-          0,
-          0
-        ],
-        [
-          4,
-          4,
-          1,
-          1,
-          3,
-          3,
-          3,
-          0,
-          0
-        ],
-        [
-          4,
-          1,
-          1,
-          1,
-          1,
-          3,
-          3,
-          2,
-          2
-        ],
-        [
-          4,
-          1,
-          1,
-          3,
-          3,
-          3,
-          3,
-          2,
-          2
-        ],
-        [
-          4,
-          4,
-          4,
-          3,
-          3,
-          2,
-          2,
-          2,
-          2
-        ],
-        [
-          4,
-          6,
-          4,
-          3,
-          3,
-          5,
-          2,
-          2,
-          2
-        ],
-        [
-          4,
-          6,
-          4,
-          5,
-          5,
-          5,
-          5,
-          2,
-          2
-        ],
-        [
-          8,
-          6,
-          6,
-          5,
-          5,
-          2,
-          2,
-          2,
-          7
-        ],
-        [
-          8,
-          8,
-          6,
-          6,
-          6,
-          6,
-          2,
-          2,
-          7
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "5333b537",
-      "difficultyScore": 99,
-      "scoringModel": "human-v3"
-    },
-    {
       "id": "regalia:puzzle/origin/boss/sevenfold-wraith",
-      "order": 100,
+      "order": 63,
       "size": 10,
       "tier": "expert",
       "regions": [
@@ -8676,7 +5620,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-011",
-      "order": 101,
+      "order": 64,
       "size": 10,
       "tier": "expert",
       "regions": [
@@ -8808,7 +5752,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-012",
-      "order": 102,
+      "order": 65,
       "size": 10,
       "tier": "expert",
       "regions": [
@@ -8940,7 +5884,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-013",
-      "order": 103,
+      "order": 66,
       "size": 10,
       "tier": "expert",
       "regions": [
@@ -9072,7 +6016,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-014",
-      "order": 104,
+      "order": 67,
       "size": 10,
       "tier": "expert",
       "regions": [
@@ -9204,7 +6148,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-015",
-      "order": 105,
+      "order": 68,
       "size": 10,
       "tier": "expert",
       "regions": [
@@ -9336,7 +6280,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-016",
-      "order": 106,
+      "order": 69,
       "size": 10,
       "tier": "expert",
       "regions": [
@@ -9468,7 +6412,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-017",
-      "order": 107,
+      "order": 70,
       "size": 10,
       "tier": "expert",
       "regions": [
@@ -9600,7 +6544,7 @@
     },
     {
       "id": "regalia:puzzle/origin/expert-018",
-      "order": 108,
+      "order": 71,
       "size": 10,
       "tier": "expert",
       "regions": [
@@ -9731,1460 +6675,8 @@
       "scoringModel": "human-v3"
     },
     {
-      "id": "regalia:puzzle/origin/expert-019",
-      "order": 109,
-      "size": 10,
-      "tier": "expert",
-      "regions": [
-        [
-          3,
-          3,
-          3,
-          1,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0
-        ],
-        [
-          3,
-          3,
-          3,
-          3,
-          3,
-          1,
-          1,
-          1,
-          2,
-          2
-        ],
-        [
-          3,
-          3,
-          4,
-          4,
-          4,
-          4,
-          4,
-          1,
-          1,
-          2
-        ],
-        [
-          3,
-          3,
-          6,
-          4,
-          4,
-          4,
-          1,
-          1,
-          1,
-          5
-        ],
-        [
-          3,
-          6,
-          6,
-          6,
-          6,
-          4,
-          4,
-          1,
-          5,
-          5
-        ],
-        [
-          3,
-          3,
-          6,
-          4,
-          4,
-          4,
-          4,
-          5,
-          5,
-          5
-        ],
-        [
-          3,
-          6,
-          6,
-          6,
-          6,
-          6,
-          6,
-          6,
-          6,
-          5
-        ],
-        [
-          7,
-          6,
-          6,
-          6,
-          8,
-          6,
-          8,
-          8,
-          5,
-          5
-        ],
-        [
-          7,
-          7,
-          7,
-          6,
-          8,
-          8,
-          8,
-          5,
-          5,
-          5
-        ],
-        [
-          9,
-          9,
-          9,
-          6,
-          8,
-          8,
-          8,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "9f04ed00",
-      "difficultyScore": 99,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/expert-020",
-      "order": 110,
-      "size": 10,
-      "tier": "expert",
-      "regions": [
-        [
-          2,
-          2,
-          2,
-          2,
-          2,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        [
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          0,
-          0,
-          0,
-          1
-        ],
-        [
-          2,
-          2,
-          2,
-          6,
-          6,
-          6,
-          0,
-          4,
-          4,
-          4
-        ],
-        [
-          3,
-          3,
-          2,
-          6,
-          6,
-          0,
-          0,
-          0,
-          4,
-          7
-        ],
-        [
-          5,
-          2,
-          2,
-          6,
-          6,
-          6,
-          7,
-          0,
-          4,
-          7
-        ],
-        [
-          5,
-          5,
-          6,
-          6,
-          6,
-          6,
-          7,
-          7,
-          7,
-          7
-        ],
-        [
-          5,
-          6,
-          6,
-          6,
-          8,
-          6,
-          7,
-          7,
-          7,
-          7
-        ],
-        [
-          5,
-          6,
-          8,
-          8,
-          8,
-          8,
-          7,
-          9,
-          9,
-          9
-        ],
-        [
-          5,
-          8,
-          8,
-          8,
-          8,
-          8,
-          7,
-          9,
-          9,
-          9
-        ],
-        [
-          5,
-          8,
-          8,
-          8,
-          8,
-          8,
-          9,
-          9,
-          9,
-          9
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "97237b77",
-      "difficultyScore": 99,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/expert-021",
-      "order": 111,
-      "size": 10,
-      "tier": "expert",
-      "regions": [
-        [
-          1,
-          1,
-          1,
-          1,
-          4,
-          4,
-          2,
-          2,
-          0,
-          0
-        ],
-        [
-          1,
-          1,
-          3,
-          1,
-          4,
-          4,
-          4,
-          2,
-          2,
-          2
-        ],
-        [
-          3,
-          3,
-          3,
-          3,
-          3,
-          4,
-          4,
-          4,
-          5,
-          2
-        ],
-        [
-          3,
-          8,
-          8,
-          3,
-          4,
-          4,
-          5,
-          5,
-          5,
-          5
-        ],
-        [
-          8,
-          8,
-          8,
-          4,
-          4,
-          5,
-          5,
-          5,
-          5,
-          5
-        ],
-        [
-          8,
-          6,
-          8,
-          6,
-          7,
-          7,
-          5,
-          7,
-          5,
-          9
-        ],
-        [
-          8,
-          6,
-          6,
-          6,
-          7,
-          7,
-          7,
-          7,
-          7,
-          9
-        ],
-        [
-          8,
-          8,
-          8,
-          6,
-          7,
-          7,
-          7,
-          9,
-          9,
-          9
-        ],
-        [
-          6,
-          8,
-          6,
-          6,
-          7,
-          7,
-          7,
-          7,
-          7,
-          9
-        ],
-        [
-          6,
-          6,
-          6,
-          6,
-          7,
-          9,
-          9,
-          9,
-          9,
-          9
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "1ee4dcbd",
-      "difficultyScore": 87,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/expert-022",
-      "order": 112,
-      "size": 10,
-      "tier": "expert",
-      "regions": [
-        [
-          2,
-          0,
-          4,
-          4,
-          4,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        [
-          2,
-          0,
-          4,
-          4,
-          4,
-          4,
-          3,
-          3,
-          3,
-          1
-        ],
-        [
-          2,
-          2,
-          4,
-          4,
-          4,
-          4,
-          3,
-          3,
-          3,
-          1
-        ],
-        [
-          6,
-          2,
-          4,
-          6,
-          4,
-          5,
-          5,
-          3,
-          3,
-          3
-        ],
-        [
-          6,
-          2,
-          4,
-          6,
-          4,
-          5,
-          5,
-          3,
-          5,
-          5
-        ],
-        [
-          6,
-          6,
-          6,
-          6,
-          6,
-          7,
-          5,
-          5,
-          5,
-          9
-        ],
-        [
-          8,
-          8,
-          6,
-          6,
-          7,
-          7,
-          7,
-          5,
-          5,
-          9
-        ],
-        [
-          8,
-          8,
-          8,
-          7,
-          7,
-          7,
-          7,
-          7,
-          5,
-          9
-        ],
-        [
-          8,
-          8,
-          8,
-          7,
-          7,
-          7,
-          9,
-          9,
-          9,
-          9
-        ],
-        [
-          8,
-          8,
-          7,
-          7,
-          7,
-          7,
-          7,
-          7,
-          9,
-          9
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "30e3f21c",
-      "difficultyScore": 89,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/expert-023",
-      "order": 113,
-      "size": 10,
-      "tier": "expert",
-      "regions": [
-        [
-          4,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          4,
-          1,
-          0,
-          1,
-          0,
-          1,
-          0,
-          2,
-          0,
-          0
-        ],
-        [
-          4,
-          1,
-          1,
-          1,
-          1,
-          1,
-          0,
-          2,
-          0,
-          2
-        ],
-        [
-          4,
-          4,
-          1,
-          4,
-          1,
-          1,
-          3,
-          2,
-          2,
-          2
-        ],
-        [
-          4,
-          4,
-          4,
-          4,
-          1,
-          5,
-          3,
-          3,
-          2,
-          2
-        ],
-        [
-          7,
-          4,
-          4,
-          4,
-          4,
-          5,
-          5,
-          3,
-          3,
-          2
-        ],
-        [
-          7,
-          4,
-          4,
-          4,
-          4,
-          5,
-          5,
-          6,
-          3,
-          6
-        ],
-        [
-          7,
-          7,
-          8,
-          4,
-          8,
-          8,
-          5,
-          6,
-          6,
-          6
-        ],
-        [
-          9,
-          7,
-          8,
-          8,
-          8,
-          8,
-          6,
-          6,
-          6,
-          6
-        ],
-        [
-          9,
-          7,
-          8,
-          8,
-          6,
-          6,
-          6,
-          6,
-          6,
-          6
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "dba23ccd",
-      "difficultyScore": 95,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/expert-024",
-      "order": 114,
-      "size": 10,
-      "tier": "expert",
-      "regions": [
-        [
-          1,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          2,
-          2,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          2,
-          2,
-          2,
-          2,
-          1,
-          1,
-          3,
-          3,
-          0,
-          0
-        ],
-        [
-          2,
-          6,
-          2,
-          4,
-          4,
-          1,
-          3,
-          3,
-          3,
-          3
-        ],
-        [
-          6,
-          6,
-          2,
-          2,
-          4,
-          1,
-          4,
-          4,
-          3,
-          3
-        ],
-        [
-          6,
-          6,
-          2,
-          2,
-          4,
-          1,
-          1,
-          4,
-          4,
-          5
-        ],
-        [
-          7,
-          6,
-          6,
-          2,
-          4,
-          4,
-          4,
-          4,
-          5,
-          5
-        ],
-        [
-          7,
-          7,
-          8,
-          2,
-          8,
-          4,
-          4,
-          5,
-          5,
-          5
-        ],
-        [
-          7,
-          7,
-          8,
-          2,
-          8,
-          4,
-          4,
-          4,
-          4,
-          5
-        ],
-        [
-          9,
-          9,
-          8,
-          8,
-          8,
-          8,
-          8,
-          5,
-          5,
-          5
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "c7beb47f",
-      "difficultyScore": 99,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/expert-025",
-      "order": 115,
-      "size": 10,
-      "tier": "expert",
-      "regions": [
-        [
-          2,
-          2,
-          2,
-          2,
-          0,
-          0,
-          0,
-          1,
-          1,
-          1
-        ],
-        [
-          2,
-          2,
-          2,
-          2,
-          2,
-          2,
-          4,
-          4,
-          4,
-          1
-        ],
-        [
-          2,
-          2,
-          2,
-          2,
-          2,
-          4,
-          4,
-          4,
-          4,
-          6
-        ],
-        [
-          3,
-          2,
-          5,
-          2,
-          2,
-          4,
-          6,
-          6,
-          4,
-          6
-        ],
-        [
-          3,
-          2,
-          5,
-          2,
-          5,
-          4,
-          4,
-          6,
-          6,
-          6
-        ],
-        [
-          5,
-          5,
-          5,
-          5,
-          5,
-          5,
-          7,
-          9,
-          9,
-          6
-        ],
-        [
-          5,
-          5,
-          7,
-          7,
-          7,
-          5,
-          7,
-          9,
-          6,
-          6
-        ],
-        [
-          5,
-          5,
-          5,
-          7,
-          7,
-          7,
-          7,
-          9,
-          9,
-          9
-        ],
-        [
-          5,
-          5,
-          5,
-          7,
-          8,
-          8,
-          7,
-          7,
-          9,
-          9
-        ],
-        [
-          8,
-          8,
-          8,
-          8,
-          8,
-          8,
-          9,
-          9,
-          9,
-          9
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "ee3b585e",
-      "difficultyScore": 99,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/expert-026",
-      "order": 116,
-      "size": 10,
-      "tier": "expert",
-      "regions": [
-        [
-          2,
-          2,
-          2,
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          3
-        ],
-        [
-          2,
-          2,
-          2,
-          2,
-          0,
-          3,
-          3,
-          1,
-          3,
-          3
-        ],
-        [
-          5,
-          2,
-          4,
-          4,
-          4,
-          4,
-          3,
-          3,
-          3,
-          6
-        ],
-        [
-          5,
-          5,
-          5,
-          4,
-          4,
-          4,
-          3,
-          6,
-          6,
-          6
-        ],
-        [
-          5,
-          5,
-          5,
-          4,
-          4,
-          4,
-          6,
-          6,
-          6,
-          6
-        ],
-        [
-          5,
-          5,
-          5,
-          4,
-          6,
-          4,
-          6,
-          6,
-          7,
-          6
-        ],
-        [
-          5,
-          5,
-          4,
-          4,
-          6,
-          6,
-          6,
-          7,
-          7,
-          6
-        ],
-        [
-          5,
-          5,
-          5,
-          4,
-          6,
-          6,
-          7,
-          7,
-          7,
-          7
-        ],
-        [
-          8,
-          8,
-          5,
-          5,
-          6,
-          6,
-          9,
-          7,
-          7,
-          7
-        ],
-        [
-          8,
-          8,
-          8,
-          8,
-          8,
-          8,
-          9,
-          9,
-          9,
-          7
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "30b4ab59",
-      "difficultyScore": 98,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/expert-027",
-      "order": 117,
-      "size": 10,
-      "tier": "expert",
-      "regions": [
-        [
-          5,
-          3,
-          3,
-          3,
-          3,
-          3,
-          0,
-          1,
-          1,
-          1
-        ],
-        [
-          5,
-          5,
-          3,
-          3,
-          3,
-          3,
-          0,
-          0,
-          0,
-          1
-        ],
-        [
-          5,
-          5,
-          5,
-          3,
-          3,
-          2,
-          2,
-          2,
-          4,
-          1
-        ],
-        [
-          5,
-          5,
-          5,
-          5,
-          3,
-          3,
-          3,
-          4,
-          4,
-          4
-        ],
-        [
-          5,
-          5,
-          5,
-          5,
-          5,
-          5,
-          6,
-          4,
-          4,
-          4
-        ],
-        [
-          5,
-          5,
-          5,
-          6,
-          6,
-          6,
-          6,
-          6,
-          6,
-          4
-        ],
-        [
-          8,
-          8,
-          5,
-          7,
-          6,
-          6,
-          6,
-          6,
-          6,
-          6
-        ],
-        [
-          8,
-          8,
-          8,
-          7,
-          7,
-          7,
-          6,
-          6,
-          6,
-          6
-        ],
-        [
-          8,
-          8,
-          8,
-          8,
-          9,
-          9,
-          9,
-          9,
-          9,
-          9
-        ],
-        [
-          9,
-          9,
-          9,
-          9,
-          9,
-          9,
-          9,
-          9,
-          9,
-          9
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "83621b71",
-      "difficultyScore": 99,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/expert-028",
-      "order": 118,
-      "size": 10,
-      "tier": "expert",
-      "regions": [
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          2
-        ],
-        [
-          0,
-          0,
-          0,
-          4,
-          0,
-          1,
-          1,
-          1,
-          2,
-          2
-        ],
-        [
-          3,
-          3,
-          3,
-          4,
-          0,
-          1,
-          1,
-          2,
-          2,
-          2
-        ],
-        [
-          3,
-          4,
-          4,
-          4,
-          4,
-          1,
-          1,
-          2,
-          2,
-          1
-        ],
-        [
-          3,
-          4,
-          4,
-          4,
-          4,
-          4,
-          1,
-          1,
-          1,
-          1
-        ],
-        [
-          3,
-          3,
-          3,
-          3,
-          4,
-          4,
-          5,
-          1,
-          5,
-          1
-        ],
-        [
-          3,
-          6,
-          6,
-          6,
-          6,
-          5,
-          5,
-          1,
-          5,
-          1
-        ],
-        [
-          3,
-          7,
-          7,
-          8,
-          6,
-          5,
-          5,
-          5,
-          5,
-          5
-        ],
-        [
-          3,
-          9,
-          9,
-          8,
-          6,
-          5,
-          8,
-          5,
-          8,
-          5
-        ],
-        [
-          9,
-          9,
-          8,
-          8,
-          8,
-          8,
-          8,
-          8,
-          8,
-          8
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "d037ef8d",
-      "difficultyScore": 99,
-      "scoringModel": "human-v3"
-    },
-    {
-      "id": "regalia:puzzle/origin/expert-029",
-      "order": 119,
-      "size": 10,
-      "tier": "expert",
-      "regions": [
-        [
-          2,
-          2,
-          2,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          2,
-          2,
-          2,
-          2,
-          0,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        [
-          2,
-          4,
-          2,
-          2,
-          2,
-          0,
-          0,
-          1,
-          1,
-          1
-        ],
-        [
-          2,
-          4,
-          2,
-          2,
-          2,
-          2,
-          0,
-          3,
-          1,
-          1
-        ],
-        [
-          4,
-          4,
-          2,
-          3,
-          3,
-          3,
-          3,
-          3,
-          3,
-          1
-        ],
-        [
-          4,
-          5,
-          5,
-          5,
-          6,
-          6,
-          3,
-          6,
-          3,
-          3
-        ],
-        [
-          4,
-          4,
-          5,
-          5,
-          5,
-          6,
-          6,
-          6,
-          6,
-          6
-        ],
-        [
-          4,
-          7,
-          5,
-          8,
-          5,
-          6,
-          6,
-          6,
-          6,
-          6
-        ],
-        [
-          7,
-          7,
-          7,
-          8,
-          8,
-          8,
-          6,
-          6,
-          6,
-          6
-        ],
-        [
-          7,
-          9,
-          9,
-          8,
-          8,
-          8,
-          8,
-          8,
-          6,
-          6
-        ]
-      ],
-      "schemaVersion": 2,
-      "contentHash": "1a76bc75",
-      "difficultyScore": 98,
-      "scoringModel": "human-v3"
-    },
-    {
       "id": "regalia:puzzle/origin/boss/hollow-star",
-      "order": 120,
+      "order": 72,
       "size": 12,
       "tier": "expert",
       "regions": [

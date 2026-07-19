@@ -103,7 +103,7 @@ Future<void> main(List<String> arguments) async {
               .single,
         );
       }
-      const bossOrders = [20, 30, 40, 60, 80, 90, 100, 120];
+      const bossOrders = [9, 18, 27, 36, 45, 54, 63, 72];
       final replacements = <int, PuzzleDefinition>{};
       for (var index = 0; index < bossOrders.length; index++) {
         final source = generated[index].definition;
@@ -270,8 +270,8 @@ void _validate(PuzzleCatalog catalog) {
       throw StateError('${puzzle.id}: difficulty calibration mismatch');
     }
   }
-  if (catalog.puzzles.length != 120) {
-    throw StateError('Expected 120 puzzles, found ${catalog.puzzles.length}');
+  if (catalog.puzzles.length != 72) {
+    throw StateError('Expected 72 puzzles, found ${catalog.puzzles.length}');
   }
   for (final request in launchPlan) {
     final actual =
