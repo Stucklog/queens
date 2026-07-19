@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 /// The complete encounter-introduction timeline.
 ///
 /// Entrance, hold, and exit are parts of one deadline. This keeps the default
-/// presentation at two seconds total instead of adding transitions around a
-/// two-second hold.
+/// presentation at four seconds total instead of adding transitions around a
+/// four-second hold.
 @immutable
 class EncounterCutsceneTiming {
   const EncounterCutsceneTiming({
-    this.entrance = const Duration(milliseconds: 450),
-    this.hold = const Duration(milliseconds: 1050),
-    this.exit = const Duration(milliseconds: 500),
+    this.entrance = const Duration(milliseconds: 900),
+    this.hold = const Duration(milliseconds: 2100),
+    this.exit = const Duration(milliseconds: 1000),
     this.reducedMotion = const Duration(milliseconds: 240),
   });
 
@@ -25,8 +25,8 @@ class EncounterCutsceneTiming {
   final Duration exit;
 
   /// A brief static title card replaces the moving presentation when motion
-  /// reduction is enabled, so accessibility settings never add a two-second
-  /// input delay.
+  /// reduction is enabled, so accessibility settings never add the full
+  /// four-second input delay from the standard timeline.
   final Duration reducedMotion;
 
   Duration get total => entrance + hold + exit;

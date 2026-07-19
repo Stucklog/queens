@@ -3,16 +3,19 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/widgets/encounter_cutscene.dart';
 
 void main() {
-  testWidgets('standard encounter timeline releases at two seconds total', (
+  testWidgets('standard encounter timeline releases at four seconds total', (
     tester,
   ) async {
     const timing = EncounterCutsceneTiming.standard;
     var completions = 0;
 
-    expect(timing.total, const Duration(seconds: 2));
+    expect(timing.entrance, const Duration(milliseconds: 900));
+    expect(timing.hold, const Duration(milliseconds: 2100));
+    expect(timing.exit, const Duration(milliseconds: 1000));
+    expect(timing.total, const Duration(seconds: 4));
     expect(
       timing.entrance + timing.hold + timing.exit,
-      const Duration(seconds: 2),
+      const Duration(seconds: 4),
     );
 
     await tester.pumpWidget(

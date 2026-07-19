@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   testWidgets(
-    'journey encounter releases the puzzle at the two-second deadline',
+    'journey encounter releases the puzzle at the four-second deadline',
     (tester) async {
       final controller = await _journeyController(tester);
       final arc = controller.originArc!;
