@@ -49,8 +49,14 @@ void main() {
       ),
     );
     await tester.pump();
+    final atlasContext = tester.element(
+      find.byKey(const ValueKey('chapter-art-atlas')),
+    );
     await tester.runAsync(
-      () => Future<void>.delayed(const Duration(milliseconds: 100)),
+      () => precachePixelArtAssets(
+        atlasContext,
+        journeyChapters.map((chapter) => chapter.artAsset),
+      ),
     );
     await tester.pumpAndSettle();
 
