@@ -277,9 +277,10 @@ class _PixelStorySceneState extends State<PixelStoryScene>
                           frame: frame,
                           width: 92,
                           height: 145,
+                          faceLeft: true,
                         ),
                       ),
-                    ] else ...[
+                    ] else if (widget.kind != PixelSceneKind.chapter) ...[
                       Align(
                         alignment: Alignment(
                           -.58 + (frame.isEven ? 0 : .025),
@@ -2567,12 +2568,14 @@ class PixelQueenSprite extends StatelessWidget {
     this.frame = 0,
     this.width = 48,
     this.height = 76,
+    this.faceLeft = false,
   });
   static const assetPath = 'assets/art/queen.png';
 
   final int frame;
   final double width;
   final double height;
+  final bool faceLeft;
 
   @override
   Widget build(BuildContext context) {
@@ -2588,23 +2591,28 @@ class PixelQueenSprite extends StatelessWidget {
       child: Transform.rotate(
         angle: sway,
         alignment: Alignment.bottomCenter,
-        child: SizedBox(
-          width: width,
-          height: height,
-          child: Image.asset(
-            assetPath,
-            fit: BoxFit.contain,
-            filterQuality: FilterQuality.none,
-            excludeFromSemantics: true,
-            frameBuilder: (context, child, imageFrame, wasLoaded) {
-              if (wasLoaded || imageFrame != null) return child;
-              return const SizedBox.expand(key: ValueKey('queen-art-loading'));
-            },
-            errorBuilder:
-                (context, error, stackTrace) => CustomPaint(
-                  key: const ValueKey('queen-art-error-fallback'),
-                  painter: _PixelQueenPainter(frame),
-                ),
+        child: Transform.flip(
+          flipX: faceLeft,
+          child: SizedBox(
+            width: width,
+            height: height,
+            child: Image.asset(
+              assetPath,
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.none,
+              excludeFromSemantics: true,
+              frameBuilder: (context, child, imageFrame, wasLoaded) {
+                if (wasLoaded || imageFrame != null) return child;
+                return const SizedBox.expand(
+                  key: ValueKey('queen-art-loading'),
+                );
+              },
+              errorBuilder:
+                  (context, error, stackTrace) => CustomPaint(
+                    key: const ValueKey('queen-art-error-fallback'),
+                    painter: _PixelQueenPainter(frame),
+                  ),
+            ),
           ),
         ),
       ),

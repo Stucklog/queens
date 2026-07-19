@@ -5,38 +5,96 @@ import 'entitlements.dart';
 
 enum StorySceneRole { opening, chapter, finale }
 
+class StoryScenePageContent {
+  const StoryScenePageContent({
+    required this.title,
+    required this.paragraphs,
+    required this.semanticLabel,
+    required this.actionLabel,
+  });
+
+  final String title;
+  final List<String> paragraphs;
+  final String semanticLabel;
+  final String actionLabel;
+
+  factory StoryScenePageContent.fromJson(Map<String, Object?> json) {
+    final title = json['title']! as String;
+    final paragraphs = List<String>.unmodifiable(
+      (json['paragraphs']! as List<Object?>).cast<String>(),
+    );
+    final semanticLabel = json['semanticLabel']! as String;
+    final actionLabel = json['actionLabel']! as String;
+    if (title.trim().isEmpty ||
+        paragraphs.isEmpty ||
+        paragraphs.any((paragraph) => paragraph.trim().isEmpty) ||
+        semanticLabel.trim().isEmpty ||
+        actionLabel.trim().isEmpty) {
+      throw const FormatException('Story scene pages cannot be empty');
+    }
+    return StoryScenePageContent(
+      title: title,
+      paragraphs: paragraphs,
+      semanticLabel: semanticLabel,
+      actionLabel: actionLabel,
+    );
+  }
+}
+
 class StorySceneContent {
   const StorySceneContent({
     required this.id,
     required this.role,
-    required this.title,
-    required this.caption,
-    required this.semanticLabel,
-    required this.actionLabel,
+    required this.pages,
     required this.artAsset,
   });
 
   final String id;
   final StorySceneRole role;
-  final String title;
-  final String caption;
-  final String semanticLabel;
-  final String actionLabel;
+  final List<StoryScenePageContent> pages;
   final String artAsset;
+
+  String get title => pages.first.title;
+  String get caption => pages.first.paragraphs.join('\n\n');
+  String get semanticLabel => pages.first.semanticLabel;
+  String get actionLabel => pages.first.actionLabel;
 
   factory StorySceneContent.fromJson(Map<String, Object?> json) {
     final id = json['id']! as String;
     ContentId.parse(id, expectedKind: 'scene');
+    final pagesJson = json['pages'] as List<Object?>?;
+    final pages =
+        pagesJson == null
+            ? [
+              StoryScenePageContent(
+                title: json['title']! as String,
+                paragraphs: List.unmodifiable([
+                  if (json['paragraphs'] case final List<Object?> values)
+                    ...values.cast<String>()
+                  else
+                    json['caption']! as String,
+                ]),
+                semanticLabel: json['semanticLabel']! as String,
+                actionLabel: json['actionLabel']! as String,
+              ),
+            ]
+            : pagesJson
+                .map(
+                  (page) => StoryScenePageContent.fromJson(
+                    page! as Map<String, Object?>,
+                  ),
+                )
+                .toList(growable: false);
+    if (pages.isEmpty) {
+      throw FormatException('$id must contain at least one story page');
+    }
     return StorySceneContent(
       id: id,
       role: StorySceneRole.values.firstWhere(
         (value) => value.name == json['role'],
         orElse: () => throw FormatException('Unknown scene role for $id'),
       ),
-      title: json['title']! as String,
-      caption: json['caption']! as String,
-      semanticLabel: json['semanticLabel']! as String,
-      actionLabel: json['actionLabel']! as String,
+      pages: List.unmodifiable(pages),
       artAsset: json['artAsset']! as String,
     );
   }

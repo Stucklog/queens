@@ -83,6 +83,45 @@ void main() {
     );
   });
 
+  test(
+    'origin cinematics carry readable paged narrative and final art',
+    () async {
+      final assets = await assetsFor(futureChannels: ['paidPlatform']);
+      final registry = await repository(assets).load(
+        manifestAsset: 'manifest.json',
+        policy: const ContentEntitlementPolicy.web(),
+      );
+      final arc = registry.arc(ContentIds.originArc)!;
+
+      expect(arc.openingScene.pages, hasLength(greaterThan(1)));
+      expect(arc.finaleScene.pages, hasLength(greaterThan(1)));
+      expect(
+        arc.scenes
+            .where((scene) => scene.role == StorySceneRole.chapter)
+            .every((scene) => scene.pages.length == 1),
+        isTrue,
+      );
+      expect(
+        arc.scenes
+            .expand((scene) => scene.pages)
+            .every(
+              (page) =>
+                  page.paragraphs.length >= 2 &&
+                  page.paragraphs.every((paragraph) => paragraph.length >= 80),
+            ),
+        isTrue,
+      );
+      expect(
+        arc.chapters.last.artAsset,
+        'assets/art/backgrounds/chapter_crownspire_final.png',
+      );
+      expect(
+        arc.sceneById(arc.chapters.last.sceneId).artAsset,
+        arc.chapters.last.artAsset,
+      );
+    },
+  );
+
   test('paid arc must be entitled even when it is packaged', () async {
     final assets = await assetsFor(futureChannels: ['paidPlatform']);
     final registry = await repository(assets).load(

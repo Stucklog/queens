@@ -37,7 +37,7 @@ the arc, not chapter positions or display labels.
 2. Create `assets/content/arcs/<arc>/arc.json` with schema version, content
    version, namespaced map/unlock IDs, chapter ranges and presentation data,
    one named boss per chapter,
-   all scene copy, explicit chapter/scene `artAsset` paths, and the puzzle
+   all paged scene copy, explicit chapter/scene `artAsset` paths, and the puzzle
    catalog asset path. Use the origin arc as the canonical schema example.
 3. Create a catalog whose puzzle IDs are `regalia:puzzle/<arc>/...`. Orders must
    be contiguous from 1 and exactly cover the chapter ranges. Puzzle hashes,
@@ -62,6 +62,16 @@ boss must target the next chapter and match that chapter’s difficulty. The las
 boss targets the arc’s finale unlock. An optional package that is absent or
 invalid receives an
 availability status; other packages continue to load.
+
+Each scene owns one or more `pages`. A page requires a title, an ordered list
+of non-empty narrative `paragraphs`, an image `semanticLabel`, and the button
+label that advances from that page. Chapter introductions normally use one
+page with at least two paragraphs. Openings and finales may use multiple pages
+for paced prologues and epilogues; only completing the last page records the
+scene as seen. Map replay entries must set replay mode so revisiting a scene
+does not write story or progression state. The scene-level `artAsset` is shared
+by its pages, and opening/finale cinematics retain the principal character
+sprites while chapter-start cinematics show environment art alone.
 
 ## Origin chapter bosses
 

@@ -71,29 +71,29 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## Story and cinematic scenes
 
-- [ ] **P2 — Remove sprites from chapter-start screens.**
+- [x] **P2 — Remove sprites from chapter-start screens.**
   - Remove character and other scene sprites from the chapter introduction/start cards.
   - Retain the existing sprites in the intro and finale cinematic sequences.
   - Check spacing, backgrounds, text placement, and transitions after the sprites are removed.
   - Update visual regression tests or golden assets for the revised chapter-start layouts.
 
-- [ ] **P1 — Expand story text throughout the journey.**
+- [x] **P1 — Expand story text throughout the journey.**
   - Add at least one or two paragraphs of story text to every cinematic scene.
   - Review pacing so text appears at appropriate points before, during, and after major chapters.
 
-- [ ] **P1 — Expand the intro and finale.**
+- [x] **P1 — Expand the intro and finale.**
   - Make both scenes more substantial and narratively complete.
   - Consider splitting either sequence into multiple scenes to deepen character, setting, and stakes.
   - Add transitions and pacing checks so the expanded scenes remain engaging.
 
 ## Map and visual assets
 
-- [ ] **P2 — Add a small replayable intro tile at the top of the map.**
+- [x] **P2 — Add a small replayable intro tile at the top of the map.**
   - Place a compact tile above the chapter path that lets players rewatch the intro scene.
   - Make the tile visually distinct from playable chapters while fitting the map layout.
   - Ensure replaying the intro does not reset progress or alter chapter unlock state.
 
-- [ ] **P1 — Replace the final map chapter tile image.**
+- [x] **P1 — Replace the final map chapter tile image.**
   - Create or select a new image for the last chapter tile.
   - Fix the current poor layout at the end of the map.
   - Ensure the new tile is distinct from the preceding chapter and looks correct at all supported sizes.
@@ -158,6 +158,6 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 - [ ] Play through every chapter from a fresh start and confirm the boss puzzle appears at the correct point.
 - [x] Confirm all boss and in-chapter enemy animations finish cleanly without desynchronizing from puzzle completion.
-- [ ] Confirm story scenes display the intended text without clipping, overflow, or unreadable pacing.
-- [ ] Confirm the final map tile and all updated art pass visual regression checks.
-- [ ] Run the full test suite and perform a release build after the above work is complete.
+- [x] Confirm story scenes display the intended text without clipping, overflow, or unreadable pacing.
+- [x] Confirm the final map tile and all updated art pass visual regression checks.
+- [x] Run the full test suite and perform a release build after the above work is complete.

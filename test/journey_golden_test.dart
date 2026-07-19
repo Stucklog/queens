@@ -55,6 +55,26 @@ void main() {
     );
   });
 
+  testWidgets('completed finale tile in narrow midnight theme', (tester) async {
+    final controller = await _controllerAt(tester, completed: 120);
+    await _goldenMap(
+      tester,
+      controller: controller,
+      size: const Size(390, 844),
+      file: 'goldens/journey_finale_narrow_midnight.png',
+    );
+  });
+
+  testWidgets('completed finale tile in wide midnight theme', (tester) async {
+    final controller = await _controllerAt(tester, completed: 120);
+    await _goldenMap(
+      tester,
+      controller: controller,
+      size: const Size(1180, 800),
+      file: 'goldens/journey_finale_wide_midnight.png',
+    );
+  });
+
   testWidgets('opening story scene in midnight theme', (tester) async {
     final controller = await _controllerAt(tester, completed: 0);
     await _goldenStory(
@@ -83,6 +103,7 @@ void main() {
       controller: controller,
       scene: StorySceneScreen.chapter(controller: controller, chapter: chapter),
       file: 'goldens/story_chapter_midnight.png',
+      expectKnight: false,
     );
   });
 }
@@ -148,6 +169,7 @@ Future<void> _goldenStory(
   required AppController controller,
   required Widget scene,
   required String file,
+  bool expectKnight = true,
 }) async {
   tester.view.physicalSize = const Size(430, 840);
   tester.view.devicePixelRatio = 1;
@@ -165,8 +187,14 @@ Future<void> _goldenStory(
   );
   await tester.pump(const Duration(seconds: 1));
   await tester.pump();
-  expect(find.byType(PixelStoryKnightSprite), findsOneWidget);
-  expect(find.byKey(const ValueKey('story-knight-artwork')), findsOneWidget);
+  expect(
+    find.byType(PixelStoryKnightSprite),
+    expectKnight ? findsOneWidget : findsNothing,
+  );
+  expect(
+    find.byKey(const ValueKey('story-knight-artwork')),
+    expectKnight ? findsOneWidget : findsNothing,
+  );
   expect(find.byType(PixelKnightSprite), findsNothing);
   await expectLater(
     find.byKey(const ValueKey('story-golden')),

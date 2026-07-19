@@ -8,6 +8,8 @@ import 'package:regalia/app/journey.dart';
 import 'package:regalia/core/models.dart';
 import 'package:regalia/screens/game_screen.dart';
 import 'package:regalia/screens/journey_screen.dart';
+import 'package:regalia/screens/story_scene_screen.dart';
+import 'package:regalia/widgets/pixel_art.dart';
 import 'package:regalia/widgets/regalia_board.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -237,6 +239,70 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('prologue tile replays every page without changing progress', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    SharedPreferences.setMockInitialValues({
+      'regalia.tutorialComplete': true,
+      'regalia.journeySchemaVersion': 1,
+    });
+    final controller = _TimerlessController();
+    await tester.runAsync(controller.initialize);
+    addTearDown(controller.dispose);
+    await controller.markStoryBeatSeen(StoryBeatIds.opening);
+    await controller.markStoryBeatSeen(journeyChapters.first.storyBeatId);
+    final firstPuzzle = controller.catalog!.puzzles.first;
+    controller.records[firstPuzzle.id] = const CompletionRecord(
+      status: CompletionStatus.cleanSolved,
+    );
+    final recordsBefore = Map<String, CompletionRecord>.of(controller.records);
+    final unlocksBefore = Set<String>.of(controller.unlockedContentIds);
+    final seenBefore = Set<String>.of(controller.seenStoryBeatIds);
+    final storyWriteAttemptsBefore = controller.storyWriteAttempts;
+
+    await tester.pumpWidget(
+      MaterialApp(home: JourneyScreen(controller: controller)),
+    );
+    await tester.pump(const Duration(milliseconds: 500));
+
+    final introTile = find.byKey(const ValueKey('intro-landmark'));
+    await tester.ensureVisible(introTile);
+    await tester.tap(introTile);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(StorySceneScreen), findsOneWidget);
+    expect(find.byType(PixelStoryKnightSprite), findsOneWidget);
+    expect(find.text('PROLOGUE · 1 of 3'), findsOneWidget);
+    expect(find.text('The Stolen Dawn'), findsOneWidget);
+
+    await tester.ensureVisible(find.text('See what happened'));
+    await tester.tap(find.text('See what happened'));
+    await tester.pumpAndSettle();
+    expect(find.text('PROLOGUE · 2 of 3'), findsOneWidget);
+    expect(find.text('The Falling Crown'), findsOneWidget);
+
+    await tester.ensureVisible(find.text('Follow the crown'));
+    await tester.tap(find.text('Follow the crown'));
+    await tester.pumpAndSettle();
+    expect(find.text('PROLOGUE · 3 of 3'), findsOneWidget);
+    expect(find.text('The Knight’s Choice'), findsOneWidget);
+
+    await tester.ensureVisible(find.text('Begin the journey'));
+    await tester.tap(find.text('Begin the journey'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(JourneyScreen), findsOneWidget);
+    expect(controller.records, recordsBefore);
+    expect(controller.unlockedContentIds, unlocksBefore);
+    expect(controller.seenStoryBeatIds, seenBefore);
+    expect(controller.storyWriteAttempts, storyWriteAttemptsBefore);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('landscape host retains every panorama landmark', (tester) async {
     tester.view.physicalSize = const Size(1200, 800);
     tester.view.devicePixelRatio = 1;
@@ -266,6 +332,14 @@ void main() {
 }
 
 class _TimerlessController extends AppController {
+  int storyWriteAttempts = 0;
+
+  @override
+  Future<void> markStoryBeatSeen(String id) {
+    storyWriteAttempts++;
+    return super.markStoryBeatSeen(id);
+  }
+
   @override
   void startTimer(String puzzleId) {}
 

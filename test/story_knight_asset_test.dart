@@ -7,7 +7,7 @@ import 'package:regalia/widgets/pixel_art.dart';
 void main() {
   setUpAll(PixelKnightSprite.preload);
 
-  testWidgets('cinematic stories use the original high-resolution knight', (
+  testWidgets('only opening and finale cinematics retain character sprites', (
     tester,
   ) async {
     await tester.pumpWidget(
@@ -28,6 +28,10 @@ void main() {
 
     expect(find.byType(PixelStoryKnightSprite), findsOneWidget);
     expect(find.byType(PixelKnightSprite), findsNothing);
+    expect(
+      tester.widget<PixelQueenSprite>(find.byType(PixelQueenSprite)).faceLeft,
+      isTrue,
+    );
     final artwork = tester.widget<Image>(
       find.byKey(const ValueKey('story-knight-artwork')),
     );
@@ -36,6 +40,45 @@ void main() {
       (artwork.image as AssetImage).assetName,
       PixelStoryKnightSprite.assetPath,
     );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: RegaliaTheme.midnight(),
+        home: SizedBox(
+          width: 430,
+          height: 600,
+          child: PixelStoryScene(
+            chapter: journeyChapters.first,
+            kind: PixelSceneKind.opening,
+            semanticLabel: 'Opening artwork',
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.byType(PixelStoryKnightSprite), findsOneWidget);
+    expect(find.byType(PixelQueenSprite), findsNothing);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: RegaliaTheme.midnight(),
+        home: SizedBox(
+          width: 430,
+          height: 600,
+          child: PixelStoryScene(
+            chapter: journeyChapters.first,
+            kind: PixelSceneKind.chapter,
+            semanticLabel: 'Chapter artwork',
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.byType(PixelStoryKnightSprite), findsNothing);
+    expect(find.byType(PixelKnightSprite), findsNothing);
+    expect(find.byType(PixelQueenSprite), findsNothing);
 
     await tester.pumpWidget(
       MaterialApp(

@@ -53,13 +53,25 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.byType(StorySceneScreen), findsOneWidget);
-    expect(find.text('The Night of Crownfall'), findsOneWidget);
+    expect(find.text('The Stolen Dawn'), findsOneWidget);
 
-    await tester.tap(find.text('Take up the Regalia'));
+    await tester.ensureVisible(find.text('See what happened'));
+    await tester.tap(find.text('See what happened'));
     await tester.pumpAndSettle();
-    expect(find.text('Press onward'), findsOneWidget);
+    expect(find.text('The Falling Crown'), findsOneWidget);
 
-    await tester.tap(find.text('Press onward'));
+    await tester.ensureVisible(find.text('Follow the crown'));
+    await tester.tap(find.text('Follow the crown'));
+    await tester.pumpAndSettle();
+    expect(find.text('The Knight’s Choice'), findsOneWidget);
+
+    await tester.ensureVisible(find.text('Begin the journey'));
+    await tester.tap(find.text('Begin the journey'));
+    await tester.pumpAndSettle();
+    expect(find.text('Enter Asterfall'), findsOneWidget);
+
+    await tester.ensureVisible(find.text('Enter Asterfall'));
+    await tester.tap(find.text('Enter Asterfall'));
     await _pumpFrames(tester);
     expect(find.byType(JourneyScreen), findsOneWidget);
   });

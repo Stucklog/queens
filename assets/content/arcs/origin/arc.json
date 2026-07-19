@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/origin",
-  "contentVersion": 4,
+  "contentVersion": 5,
   "title": "Queen’s Regalia: Origin Story",
   "mapId": "regalia:map/origin/pilgrimage",
   "puzzleCatalogAsset": "assets/puzzles/catalog.json",
@@ -316,7 +316,7 @@
       "mapId": "regalia:map/origin/pilgrimage",
       "sceneId": "regalia:scene/origin/crownspire",
       "artKey": "crownspire",
-      "artAsset": "assets/art/backgrounds/chapter_crownspire.webp",
+      "artAsset": "assets/art/backgrounds/chapter_crownspire_final.png",
       "visualIndex": 7,
       "title": "Empyrean Citadel",
       "caption": "Above the clouds, the vacant throne waits beneath a dying sun.",
@@ -359,91 +359,197 @@
     {
       "id": "regalia:scene/origin/opening",
       "role": "opening",
-      "title": "The Night of Crownfall",
-      "caption": "When the Hollow Star steals the dawn, the Queen’s Regalia falls into the hands of an unknown knight.",
-      "semanticLabel": "A lone knight holds the fallen Regalia beside a star-scarred crater as the Hollow Star eclipses the distant Empyrean Citadel.",
-      "actionLabel": "Take up the Regalia",
+      "pages": [
+        {
+          "title": "The Stolen Dawn",
+          "paragraphs": [
+            "The Queen’s crown is called the Regalia. Each of its eight jewels carries the light of one realm. Together, the jewels keep the sun shining and the roads between the realms open.",
+            "One morning, the Hollow Star appears above the Empyrean Citadel. It blocks the sun, traps the Queen inside the palace, and begins spreading darkness across the land."
+          ],
+          "semanticLabel": "The Hollow Star blocks the sun above the Empyrean Citadel while darkness spreads across the realms.",
+          "actionLabel": "See what happened"
+        },
+        {
+          "title": "The Falling Crown",
+          "paragraphs": [
+            "Before she is trapped, the Queen uses the last of her magic to send the Regalia away. The crown falls from the citadel, and all eight of its jewels go dark.",
+            "The Regalia lands in Asterfall Vale, where a traveling knight finds it. When the knight touches the crown, it shows them the trapped Queen, the eight realms, and the Hollow Star."
+          ],
+          "semanticLabel": "The Regalia falls from the darkened citadel and lands near a lone knight in Asterfall Vale.",
+          "actionLabel": "Follow the crown"
+        },
+        {
+          "title": "The Knight’s Choice",
+          "paragraphs": [
+            "The crown’s message is simple: restore the eight jewels, return to the citadel, and defeat the Hollow Star. Each realm holds the power needed to light one jewel again.",
+            "The knight has no title and no army, but chooses to help. They take the Regalia and begin the journey in Asterfall Vale."
+          ],
+          "semanticLabel": "The knight lifts the darkened Regalia and prepares to travel through the eight realms.",
+          "actionLabel": "Begin the journey"
+        }
+      ],
       "artAsset": "assets/art/backgrounds/story_opening.webp"
     },
     {
       "id": "regalia:scene/origin/clovermead",
       "role": "chapter",
-      "title": "Asterfall Vale",
-      "caption": "Where heaven struck the earth, the fallen Regalia chooses its bearer.",
-      "semanticLabel": "The Regalia bearer enters Asterfall Vale beneath the advancing Hollow Star.",
-      "actionLabel": "Press onward",
+      "pages": [
+        {
+          "title": "Asterfall Vale",
+          "paragraphs": [
+            "Asterfall Vale is where the Regalia landed. Its people are hiding from creatures changed by the Hollow Star, and the road out of the valley is closed.",
+            "The first jewel can be restored at the valley’s old shrine. The Starfall Stag guards that shrine, so the knight must cross the vale and defeat it."
+          ],
+          "semanticLabel": "The knight enters Asterfall Vale, where the Regalia fell and the first jewel can be restored.",
+          "actionLabel": "Enter Asterfall"
+        }
+      ],
       "artAsset": "assets/art/backgrounds/chapter_clovermead.webp"
     },
     {
       "id": "regalia:scene/origin/whisperwood",
       "role": "chapter",
-      "title": "Myrrhveil Wilds",
-      "caption": "Ancient roots part for the crown—and wake what sleeps below.",
-      "semanticLabel": "The Regalia bearer enters Myrrhveil Wilds beneath the advancing Hollow Star.",
-      "actionLabel": "Press onward",
+      "pages": [
+        {
+          "title": "Myrrhveil Wilds",
+          "paragraphs": [
+            "When the first jewel lights up, the Regalia opens a path into Myrrhveil Wilds. The Hollow Star has twisted the forest’s roots, and the trees now block every road.",
+            "The second jewel can be restored at the oldest tree in the forest. The Elderroot Wyrm has wrapped itself around that tree and will not let the knight pass."
+          ],
+          "semanticLabel": "The knight enters a dark forest where twisted roots guard the power of the second jewel.",
+          "actionLabel": "Enter Myrrhveil"
+        }
+      ],
       "artAsset": "assets/art/backgrounds/chapter_whisperwood.webp"
     },
     {
       "id": "regalia:scene/origin/windmill-heights",
       "role": "chapter",
-      "title": "Skyglass Reach",
-      "caption": "Ancient wind arches awaken, carrying the bearer beyond the storm.",
-      "semanticLabel": "The Regalia bearer enters Skyglass Reach beneath the advancing Hollow Star.",
-      "actionLabel": "Press onward",
+      "pages": [
+        {
+          "title": "Skyglass Reach",
+          "paragraphs": [
+            "The second jewel opens the wind gates to Skyglass Reach. This realm is made of floating islands connected by bridges that only work when the winds are calm.",
+            "The Hollow Star has trapped the islands inside a violent storm. The knight must restore the third jewel and defeat the Tempest Roc to make the bridges safe again."
+          ],
+          "semanticLabel": "The knight approaches floating islands and broken wind bridges beneath a powerful storm.",
+          "actionLabel": "Enter Skyglass"
+        }
+      ],
       "artAsset": "assets/art/backgrounds/chapter_windmill_heights.webp"
     },
     {
       "id": "regalia:scene/origin/sunken-cloister",
       "role": "chapter",
-      "title": "Nacre Basilica",
-      "caption": "Beneath the drowned bells, a forgotten covenant opens the deep road.",
-      "semanticLabel": "The Regalia bearer enters Nacre Basilica beneath the advancing Hollow Star.",
-      "actionLabel": "Press onward",
+      "pages": [
+        {
+          "title": "Nacre Basilica",
+          "paragraphs": [
+            "The wind road carries the knight to Nacre Basilica, a city that is now half underwater. Its great bells once controlled the tides, but the Hollow Star has made them silent.",
+            "The fourth jewel lies inside the main bell tower. The knight must reach it and defeat the Abyssal Bellkeeper before the water rises over the city."
+          ],
+          "semanticLabel": "The knight enters a flooded city where the fourth jewel waits inside a silent bell tower.",
+          "actionLabel": "Enter Nacre Basilica"
+        }
+      ],
       "artAsset": "assets/art/backgrounds/chapter_sunken_cloister.webp"
     },
     {
       "id": "regalia:scene/origin/emberbell-caverns",
       "role": "chapter",
-      "title": "Pyreheart Caldera",
-      "caption": "At the world’s molten heart, living crystal answers the crown.",
-      "semanticLabel": "The Regalia bearer enters Pyreheart Caldera beneath the advancing Hollow Star.",
-      "actionLabel": "Press onward",
+      "pages": [
+        {
+          "title": "Pyreheart Caldera",
+          "paragraphs": [
+            "A tunnel below the basilica leads to Pyreheart Caldera. The Regalia was made in this ancient forge, but the Hollow Star has caused its lava and machines to run out of control.",
+            "The fifth jewel can be restored at the center of the forge. The Cindermaw Behemoth guards it, and the knight must defeat the creature to stop the eruptions."
+          ],
+          "semanticLabel": "The knight enters the ancient forge where the Regalia was made and the fifth jewel can be restored.",
+          "actionLabel": "Enter Pyreheart"
+        }
+      ],
       "artAsset": "assets/art/backgrounds/chapter_emberbell_caverns.webp"
     },
     {
       "id": "regalia:scene/origin/goblin-underkeep",
       "role": "chapter",
-      "title": "Brasswake Arsenal",
-      "caption": "The old empire’s last war-engine wakes to bar the ascent.",
-      "semanticLabel": "The Regalia bearer enters Brasswake Arsenal beneath the advancing Hollow Star.",
-      "actionLabel": "Press onward",
+      "pages": [
+        {
+          "title": "Brasswake Arsenal",
+          "paragraphs": [
+            "The road from the forge leads to Brasswake Arsenal, a factory built to defend the kingdom. With the Queen gone, its machines now attack everyone who enters.",
+            "The sixth jewel powers a lift to the upper realms. The Gilded War Colossus controls the lift, so the knight must shut it down and take back the jewel."
+          ],
+          "semanticLabel": "The knight enters a large factory where dangerous machines guard the sixth jewel and the only lift upward.",
+          "actionLabel": "Enter Brasswake"
+        }
+      ],
       "artAsset": "assets/art/backgrounds/chapter_goblin_underkeep.webp"
     },
     {
       "id": "regalia:scene/origin/moonlit-catacombs",
       "role": "chapter",
-      "title": "Pale Moon Necropolis",
-      "caption": "Seven fallen queens rise beneath the pale moon to judge the bearer.",
-      "semanticLabel": "The Regalia bearer enters Pale Moon Necropolis beneath the advancing Hollow Star.",
-      "actionLabel": "Press onward",
+      "pages": [
+        {
+          "title": "Pale Moon Necropolis",
+          "paragraphs": [
+            "The lift reaches Pale Moon Necropolis, where seven former queens are buried. Their spirits want to know why the knight carries the Regalia and whether it will be returned.",
+            "The Hollow Star has joined their fear into the Sevenfold Wraith. Defeating it will restore the seventh jewel and open the final road to the citadel."
+          ],
+          "semanticLabel": "The knight walks through the tombs of seven queens while their spirits guard the seventh jewel.",
+          "actionLabel": "Enter the Necropolis"
+        }
+      ],
       "artAsset": "assets/art/backgrounds/chapter_moonlit_catacombs.webp"
     },
     {
       "id": "regalia:scene/origin/crownspire",
       "role": "chapter",
-      "title": "Empyrean Citadel",
-      "caption": "Above the clouds, the vacant throne waits beneath a dying sun.",
-      "semanticLabel": "The Regalia bearer enters Empyrean Citadel beneath the advancing Hollow Star.",
-      "actionLabel": "Press onward",
-      "artAsset": "assets/art/backgrounds/chapter_crownspire.webp"
+      "pages": [
+        {
+          "title": "Empyrean Citadel",
+          "paragraphs": [
+            "With seven jewels restored, the Regalia carries the knight to the Empyrean Citadel. The city is empty, the Queen is still trapped, and the sun is almost completely dark.",
+            "The Hollow Star holds the eighth jewel above the throne. The knight must cross the citadel, defeat the Star, and free the Queen before the last light disappears."
+          ],
+          "semanticLabel": "The knight reaches the empty citadel where the Hollow Star guards the Queen and the eighth jewel.",
+          "actionLabel": "Enter the Citadel"
+        }
+      ],
+      "artAsset": "assets/art/backgrounds/chapter_crownspire_final.png"
     },
     {
       "id": "regalia:scene/origin/finale",
       "role": "finale",
-      "title": "The Dawn Returns",
-      "caption": "The Regalia crowns its queen, the Hollow Star breaks, and morning returns to every realm.",
-      "semanticLabel": "At sunrise in the Empyrean Citadel, the Queen wears the restored Regalia beside the returning knight as the Hollow Star shatters above the awakened city.",
-      "actionLabel": "Return to the realms",
+      "pages": [
+        {
+          "title": "The Hollow Star Falls",
+          "paragraphs": [
+            "The knight defeats the Hollow Star and restores the eighth jewel. With all eight jewels shining again, the Regalia breaks the darkness above the citadel.",
+            "The sun rises for the first time since the attack. The Queen is freed from the palace, and the roads between the eight realms open again."
+          ],
+          "semanticLabel": "The knight stands in the citadel as the Hollow Star breaks apart and sunlight returns.",
+          "actionLabel": "See the dawn return"
+        },
+        {
+          "title": "The Crown Returns",
+          "paragraphs": [
+            "The knight brings the restored Regalia to the Queen. They could keep the powerful crown, but the journey was always about saving the Queen and the people of the realms.",
+            "The knight returns the crown without asking for a reward. When the Queen puts it on, its light reaches every realm and drives away the remaining darkness."
+          ],
+          "semanticLabel": "The knight returns the restored Regalia to the Queen while the sun rises behind them.",
+          "actionLabel": "Return the crown"
+        },
+        {
+          "title": "The First Morning",
+          "paragraphs": [
+            "The Queen and her people begin repairing the damage caused by the Hollow Star. The forests recover, the storms clear, the floods fall, and the old roads become safe again.",
+            "The knight does not ask for a title. They choose to keep traveling and helping where they can. The eight realms remember them as the knight who brought back the dawn."
+          ],
+          "semanticLabel": "The Queen and the knight look over the restored realms from the citadel at sunrise.",
+          "actionLabel": "Finish the story"
+        }
+      ],
       "artAsset": "assets/art/backgrounds/story_finale.webp"
     }
   ]

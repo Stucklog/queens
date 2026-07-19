@@ -233,6 +233,21 @@ class _JourneyScreenState extends State<JourneyScreen> {
 
   Future<void> _showChapter(JourneyChapter chapter) async {
     final scene = _arc.sceneById(chapter.sceneId);
+    unawaited(precachePixelArtAssets(context, [scene.artAsset]));
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder:
+            (_) => StorySceneScreen.chapter(
+              controller: widget.controller,
+              chapter: chapter,
+              arc: _arc,
+            ),
+      ),
+    );
+  }
+
+  Future<void> _showOpening() async {
+    final scene = _arc.openingScene;
     unawaited(
       precachePixelArtAssets(context, [
         scene.artAsset,
@@ -242,10 +257,11 @@ class _JourneyScreenState extends State<JourneyScreen> {
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder:
-            (_) => StorySceneScreen.chapter(
+            (_) => StorySceneScreen.fromContent(
               controller: widget.controller,
-              chapter: chapter,
-              arc: _arc,
+              scene: scene,
+              chapter: _arc.chapters.first,
+              recordSeenOnComplete: false,
             ),
       ),
     );
@@ -378,6 +394,10 @@ class _JourneyScreenState extends State<JourneyScreen> {
                             constraints: const BoxConstraints(maxWidth: 600),
                             child: Column(
                               children: [
+                                _OpeningLandmark(
+                                  arc: _arc,
+                                  onReplay: _showOpening,
+                                ),
                                 for (final chapter in _arc.chapters)
                                   _RouteSection(
                                     controller: widget.controller,
@@ -485,6 +505,106 @@ Future<bool> _launchExternalUrl(Uri uri) => launchUrl(
   mode: LaunchMode.externalApplication,
   webOnlyWindowName: '_blank',
 );
+
+class _OpeningLandmark extends StatelessWidget {
+  const _OpeningLandmark({required this.arc, required this.onReplay});
+
+  final StoryArc arc;
+  final VoidCallback onReplay;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(18, 2, 18, 12),
+    child: Semantics(
+      button: true,
+      label:
+          '${arc.openingScene.title}. Replay the prologue without changing progress.',
+      child: Material(
+        color: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
+            width: 3,
+          ),
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: InkWell(
+          key: const ValueKey('intro-landmark'),
+          onTap: onReplay,
+          child: SizedBox(
+            height: 92,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                PixelLandscape(
+                  chapter: arc.chapters.first,
+                  brightness: Theme.of(context).brightness,
+                  sceneKind: PixelSceneKind.opening,
+                  placement: PixelArtPlacement.banner,
+                  assetPath: arc.openingScene.artAsset,
+                ),
+                const DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Color(0xf2151d3b), Color(0x99151d3b)],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 10,
+                  ),
+                  child: Row(
+                    children: [
+                      PixelIcon(
+                        PixelGlyph.book,
+                        color: Theme.of(context).colorScheme.secondary,
+                        size: 24,
+                        excludeFromSemantics: true,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Replay the prologue',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(color: Colors.white),
+                            ),
+                            Text(
+                              '${arc.openingScene.title} · Story only',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(color: Colors.white70),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const PixelIcon(
+                        PixelGlyph.arrowRight,
+                        color: Colors.white,
+                        size: 24,
+                        excludeFromSemantics: true,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
 class _JourneyHeader extends StatelessWidget {
   const _JourneyHeader({
@@ -974,94 +1094,139 @@ class _FinalLandmark extends StatelessWidget {
   final bool reached;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    height: 250,
-    child: Semantics(
-      button: reached,
-      enabled: reached,
-      label:
-          reached
-              ? '${arc.finaleScene.title}. Replay the finale.'
-              : '${arc.title} finale awaits. Complete puzzle ${arc.catalog.puzzles.last.order} to reach it.',
-      child: InkWell(
-        key: const ValueKey('final-landmark'),
-        onTap:
-            reached
-                ? () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder:
-                        (_) => StorySceneScreen.finale(
-                          controller: controller,
-                          arc: arc,
-                        ),
-                  ),
-                )
-                : null,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Positioned.fill(
-              child: PixelLandscape(
-                chapter: arc.chapters.last,
-                brightness: Theme.of(context).brightness,
-                sceneKind:
-                    reached ? PixelSceneKind.finale : PixelSceneKind.panorama,
-                placement: PixelArtPlacement.banner,
-              ),
-            ),
-            if (reached) ...[
-              const Positioned(
-                left: 64,
-                bottom: 25,
-                child: PixelKnightSprite(
-                  animation: KnightAnimation.bounce,
-                  loop: true,
-                  width: 50,
-                  height: 75,
-                ),
-              ),
-              const Positioned(
-                right: 64,
-                bottom: 25,
-                child: PixelQueenSprite(width: 54, height: 84),
-              ),
-            ],
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(
-                  context,
-                ).colorScheme.surface.withValues(alpha: .9),
-                border: Border.all(
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(18, 12, 18, 0),
+    child: LayoutBuilder(
+      builder: (context, constraints) {
+        final height = (constraints.maxWidth * .56).clamp(210.0, 300.0);
+        return SizedBox(
+          height: height,
+          child: Semantics(
+            button: reached,
+            enabled: reached,
+            label:
+                reached
+                    ? '${arc.finaleScene.title}. Replay the finale.'
+                    : '${arc.title} finale awaits. Complete puzzle ${arc.catalog.puzzles.last.order} to reach it.',
+            child: Material(
+              color: Theme.of(context).colorScheme.surface,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(
                   color: Theme.of(context).colorScheme.onSurface,
                   width: 3,
                 ),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  PixelIcon(
-                    reached ? PixelGlyph.crown : PixelGlyph.lock,
-                    color: Theme.of(context).colorScheme.onSurface,
-                    size: 24,
-                    excludeFromSemantics: true,
-                  ),
-                  const SizedBox(width: 10),
-                  Flexible(
-                    child: Text(
-                      reached
-                          ? arc.finaleScene.title
-                          : '${arc.title} Finale Awaits',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleLarge,
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                key: const ValueKey('final-landmark'),
+                onTap:
+                    reached
+                        ? () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder:
+                                (_) => StorySceneScreen.finale(
+                                  controller: controller,
+                                  arc: arc,
+                                ),
+                          ),
+                        )
+                        : null,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned.fill(
+                      child: PixelLandscape(
+                        chapter: arc.chapters.last,
+                        brightness: Theme.of(context).brightness,
+                        sceneKind:
+                            reached
+                                ? PixelSceneKind.finale
+                                : PixelSceneKind.panorama,
+                        placement: PixelArtPlacement.banner,
+                      ),
                     ),
-                  ),
-                ],
+                    const Positioned.fill(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Color(0x16080d20), Color(0xaa080d20)],
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (reached) ...[
+                      Positioned(
+                        left: constraints.maxWidth * .08,
+                        bottom: 12,
+                        child: const PixelKnightSprite(
+                          animation: KnightAnimation.bounce,
+                          loop: true,
+                          width: 44,
+                          height: 66,
+                        ),
+                      ),
+                      Positioned(
+                        right: constraints.maxWidth * .08,
+                        bottom: 12,
+                        child: const PixelQueenSprite(
+                          width: 46,
+                          height: 72,
+                          faceLeft: true,
+                        ),
+                      ),
+                    ],
+                    Positioned(
+                      left: 14,
+                      right: 14,
+                      top: 14,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.surface.withValues(alpha: .92),
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            width: 3,
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 10,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            PixelIcon(
+                              reached ? PixelGlyph.crown : PixelGlyph.lock,
+                              color: Theme.of(context).colorScheme.onSurface,
+                              size: 24,
+                              excludeFromSemantics: true,
+                            ),
+                            const SizedBox(width: 10),
+                            Flexible(
+                              child: Text(
+                                reached
+                                    ? arc.finaleScene.title
+                                    : 'Finale awaits',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     ),
   );
 }

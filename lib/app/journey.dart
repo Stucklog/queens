@@ -419,7 +419,7 @@ const journeyChapters = <JourneyChapter>[
     mapId: ContentIds.originMap,
     sceneId: 'regalia:scene/origin/crownspire',
     artKey: 'crownspire',
-    artAsset: 'assets/art/backgrounds/chapter_crownspire.webp',
+    artAsset: 'assets/art/backgrounds/chapter_crownspire_final.png',
     visualIndex: 7,
     title: 'Empyrean Citadel',
     caption: 'Above the clouds, the vacant throne waits beneath a dying sun.',
