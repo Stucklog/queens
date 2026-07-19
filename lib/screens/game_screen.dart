@@ -9,6 +9,7 @@ import '../app/journey.dart';
 import '../app/theme.dart';
 import '../core/human_solver.dart';
 import '../core/models.dart';
+import '../widgets/boss_finisher_cutscene.dart';
 import '../widgets/completion_dialog.dart';
 import '../widgets/combat_presentation.dart';
 import '../widgets/pixel_art.dart';
@@ -16,7 +17,7 @@ import '../widgets/pixel_ui.dart';
 import '../widgets/regalia_board.dart';
 import 'rules_screen.dart';
 
-enum PuzzlePlayMode { journey, challenge }
+enum PuzzlePlayMode { journey, challenge, academy }
 
 class GameScreen extends StatefulWidget {
   const GameScreen({
@@ -112,15 +113,16 @@ class _GameScreenState extends State<GameScreen> {
             : null;
     final difficultyLabel =
         challengeMode?.difficultyLabelFor(puzzle.tier) ?? puzzle.tier.label;
-    final visualChapter =
-        widget.playMode == PuzzlePlayMode.challenge
-            ? widget.controller.challengeVisualChapter(
-              puzzle.tier,
-              widget.challengeNumber ?? 1,
-            )
-            : widget.controller
-                .arcForPuzzle(puzzle)!
-                .chapterForOrder(puzzle.order);
+    final visualChapter = switch (widget.playMode) {
+      PuzzlePlayMode.journey => widget.controller
+          .arcForPuzzle(puzzle)!
+          .chapterForOrder(puzzle.order),
+      PuzzlePlayMode.challenge || PuzzlePlayMode.academy => widget.controller
+          .challengeVisualChapter(
+            puzzle.tier,
+            widget.challengeNumber ?? puzzle.order,
+          ),
+    };
     final storyArc =
         widget.playMode == PuzzlePlayMode.journey
             ? widget.controller.arcForPuzzle(puzzle)
@@ -146,15 +148,21 @@ class _GameScreenState extends State<GameScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          boss?.name ??
-                              (declaredEncounter?.isBoss == false
-                                  ? declaredEncounter!.name
-                                  : null) ??
-                              '$difficultyLabel · ${puzzle.size} × ${puzzle.size}',
+                          widget.playMode == PuzzlePlayMode.academy
+                              ? widget.controller
+                                  .academyLessonForPuzzle(puzzle)!
+                                  .title
+                              : boss?.name ??
+                                  (declaredEncounter?.isBoss == false
+                                      ? declaredEncounter!.name
+                                      : null) ??
+                                  '$difficultyLabel · ${puzzle.size} × ${puzzle.size}',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         Text(
-                          widget.playMode == PuzzlePlayMode.challenge
+                          widget.playMode == PuzzlePlayMode.academy
+                              ? 'Academy practice · ${puzzle.size} × ${puzzle.size}'
+                              : widget.playMode == PuzzlePlayMode.challenge
                               ? 'Just Puzzle! ${widget.challengeNumber ?? puzzle.order}'
                               : boss != null
                               ? 'Chapter boss · ${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'
@@ -330,7 +338,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _onKey(KeyEvent event) {
-    if (event is! KeyDownEvent) return;
+    if (event is! KeyDownEvent || _pendingCompletion != null) return;
     final key = event.logicalKey;
     final size = widget.puzzle.size;
     if (HardwareKeyboard.instance.isControlPressed ||
@@ -567,7 +575,12 @@ class _GameScreenState extends State<GameScreen> {
             board: board,
             advancesJourney: outcome.advancedJourney,
             isJourneyComplete: outcome.isJourneyComplete,
-            nextLabel: outcome.isChallenge ? 'Next puzzle' : null,
+            nextLabel:
+                widget.playMode == PuzzlePlayMode.academy
+                    ? 'Return to Academy'
+                    : outcome.isChallenge
+                    ? 'Next puzzle'
+                    : null,
             onReplay: () => Navigator.pop(context, 'replay'),
             onNext: () => Navigator.pop(context, 'next'),
           ),
@@ -698,10 +711,29 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _beginCompletionSequence(PuzzleCompletionOutcome outcome) {
+    final arc = widget.controller.arcForPuzzle(widget.puzzle);
+    final boss =
+        widget.playMode == PuzzlePlayMode.journey
+            ? arc?.bossForPuzzle(widget.puzzle)
+            : null;
+    final encounter = arc?.encounterForPuzzle(widget.puzzle);
+    if (boss != null) {
+      final finisher = finisherForSpectacle(boss.spectacleLevel);
+      setState(() {
+        _pendingCompletion = outcome;
+        _knightAnimation = finisher;
+        _knightRestartToken++;
+      });
+      unawaited(
+        _showBossFinisher(
+          boss,
+          arc!.chapterForOrder(widget.puzzle.order),
+          outcome,
+        ),
+      );
+      return;
+    }
     _pendingCompletion = outcome;
-    final encounter = widget.controller
-        .arcForPuzzle(widget.puzzle)
-        ?.encounterForPuzzle(widget.puzzle);
     _playKnightAnimation(
       encounter == null
           ? KnightAnimation.special
@@ -713,6 +745,43 @@ class _GameScreenState extends State<GameScreen> {
         unawaited(_finishCompletionSequence(token));
       });
     }
+  }
+
+  Future<void> _showBossFinisher(
+    ChapterBoss boss,
+    JourneyChapter chapter,
+    PuzzleCompletionOutcome outcome,
+  ) async {
+    final theme = RegaliaTheme.forChapter(chapter);
+    await Navigator.of(context).push<void>(
+      PageRouteBuilder<void>(
+        settings: RouteSettings(name: 'boss-finisher/${boss.id}'),
+        opaque: true,
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+        pageBuilder:
+            (routeContext, _, __) => Theme(
+              data: theme,
+              child: PopScope(
+                canPop: false,
+                child: BossFinisherCutscene(
+                  boss: boss,
+                  background: PixelLandscape(
+                    chapter: chapter,
+                    brightness: theme.brightness,
+                    placement: PixelArtPlacement.story,
+                  ),
+                  accentColor: chapter.palette.secondary,
+                  energyColor: chapter.palette.primary,
+                  onFinished: () => Navigator.of(routeContext).pop(),
+                ),
+              ),
+            ),
+      ),
+    );
+    if (!mounted || _pendingCompletion != outcome) return;
+    setState(() => _pendingCompletion = null);
+    await _showCompletion(outcome);
   }
 
   Future<void> _finishCompletionSequence(int restartToken) async {
@@ -746,8 +815,10 @@ class _GameScreenState extends State<GameScreen> {
         animation == KnightAnimation.bounce) {
       return;
     }
-    if (animation.isCompletionMove && _pendingCompletion != null) {
-      unawaited(_finishCompletionSequence(restartToken));
+    if (animation.isCompletionMove) {
+      if (_pendingCompletion != null) {
+        unawaited(_finishCompletionSequence(restartToken));
+      }
       return;
     }
     _playKnightAnimation(KnightAnimation.bounce);

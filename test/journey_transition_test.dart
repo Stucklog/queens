@@ -56,6 +56,69 @@ void main() {
   });
 
   testWidgets(
+    'the final boss alone unlocks a viewable finale through the map',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({
+        'regalia.tutorialComplete': true,
+        'regalia.journeySchemaVersion': 1,
+      });
+      final controller = _TimerlessController();
+      await tester.runAsync(controller.initialize);
+      final arc = controller.originArc!;
+      await controller.markStoryBeatSeen(arc.openingScene.id);
+      for (final chapter in arc.chapters) {
+        await controller.markStoryBeatSeen(chapter.storyBeatId);
+      }
+      await controller.unlockEntireMap(arc.id);
+
+      expect(controller.journeyProgressFor(arc).completedCount, 0);
+      expect(controller.isFinaleUnlocked(arc.id), isFalse);
+      await _pumpReducedJourney(tester, controller);
+
+      final finalBoss = arc.catalog.byId(arc.chapters.last.boss.puzzleId);
+      final bossNode = find.byKey(ValueKey('puzzle-node-${finalBoss.order}'));
+      await tester.drag(find.byType(CustomScrollView), const Offset(0, -5000));
+      await tester.pump();
+      await tester.tap(bossNode);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.pump();
+      await _solveOpenPuzzle(tester, controller, finalBoss);
+
+      expect(find.text('Return to journey'), findsOneWidget);
+      expect(controller.journeyProgressFor(arc).completedCount, 1);
+      expect(controller.isFinaleUnlocked(arc.id), isTrue);
+      await tester.tap(find.text('Return to journey'));
+      await tester.pumpAndSettle();
+
+      final finale = find.byKey(const ValueKey('final-landmark'));
+      await tester.ensureVisible(finale);
+      await tester.tap(finale);
+      await tester.pumpAndSettle();
+      expect(find.text(arc.finaleScene.title), findsOneWidget);
+
+      await tester.runAsync(controller.flushPersistence);
+      await tester.pumpWidget(const SizedBox.shrink());
+      controller.dispose();
+
+      final restored = _TimerlessController();
+      await tester.runAsync(restored.initialize);
+      addTearDown(restored.dispose);
+      final restoredArc = restored.originArc!;
+      expect(restored.journeyProgressFor(restoredArc).completedCount, 1);
+      expect(restored.isFinaleUnlocked(restoredArc.id), isTrue);
+
+      await _pumpReducedJourney(tester, restored);
+      final restoredFinale = find.byKey(const ValueKey('final-landmark'));
+      await tester.drag(find.byType(CustomScrollView), const Offset(0, -5000));
+      await tester.pump();
+      await tester.tap(restoredFinale);
+      await tester.pumpAndSettle();
+      expect(find.text(restoredArc.finaleScene.title), findsOneWidget);
+    },
+  );
+
+  testWidgets(
     'older puzzle completion offers replay without moving the knight',
     (tester) async {
       final controller = await _seededController(tester, completed: 1);

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -140,6 +141,139 @@ void main() {
     },
   );
 
+  test(
+    'defeating only the final boss unlocks the finale across sessions',
+    () async {
+      SharedPreferences.setMockInitialValues({SaveIds.tutorialComplete: true});
+      final controller = AppController();
+      await controller.initialize();
+      final arc = controller.originArc!;
+      final finalBoss = arc.catalog.byId(arc.chapters.last.boss.puzzleId);
+
+      await controller.unlockEntireMap(arc.id);
+      expect(controller.isMapUnlocked(arc.id), isTrue);
+      expect(controller.isFinaleUnlocked(arc.id), isFalse);
+      expect(controller.records, isEmpty);
+      expect(controller.openPuzzle(finalBoss), isTrue);
+
+      PuzzleCompletionOutcome? outcome;
+      for (final cell
+          in const ExactSolver().solve(finalBoss, limit: 1).solutions.single) {
+        outcome = controller.setCell(finalBoss, cell, ManualCellState.crown);
+      }
+
+      expect(outcome, isNotNull);
+      expect(outcome?.advancedJourney, isFalse);
+      expect(outcome?.isJourneyComplete, isFalse);
+      expect(controller.journeyProgressFor(arc).completedCount, 1);
+      expect(controller.isFinaleUnlocked(arc.id), isTrue);
+      expect(controller.unlockedContentIds, contains(arc.unlockIds.finale));
+
+      await controller.flushPersistence();
+      controller.dispose();
+      final restored = AppController();
+      await restored.initialize();
+      addTearDown(restored.dispose);
+      final restoredArc = restored.originArc!;
+      final restoredFinalBoss = restoredArc.catalog.byId(
+        restoredArc.chapters.last.boss.puzzleId,
+      );
+      expect(restored.journeyProgressFor(restoredArc).completedCount, 1);
+      expect(
+        restored.recordFor(restoredFinalBoss.id).status,
+        CompletionStatus.cleanSolved,
+      );
+      expect(restored.isFinaleUnlocked(restoredArc.id), isTrue);
+    },
+  );
+
+  test('non-final puzzle completion cannot unlock the finale', () async {
+    SharedPreferences.setMockInitialValues({SaveIds.tutorialComplete: true});
+    final controller = AppController();
+    await controller.initialize();
+    addTearDown(controller.dispose);
+    final arc = controller.originArc!;
+    final finalBossId = arc.chapters.last.boss.puzzleId;
+
+    for (final puzzle in arc.catalog.puzzles.where(
+      (puzzle) => puzzle.id != finalBossId,
+    )) {
+      controller.records[puzzle.id] = const CompletionRecord(
+        status: CompletionStatus.cleanSolved,
+      );
+    }
+
+    expect(
+      controller.journeyProgressFor(arc).completedCount,
+      arc.catalog.puzzles.length - 1,
+    );
+    expect(controller.frontierPuzzleFor(arc)?.id, finalBossId);
+    expect(controller.isFinaleUnlocked(arc.id), isFalse);
+    expect(
+      controller.unlockedContentIds,
+      isNot(contains(arc.unlockIds.finale)),
+    );
+  });
+
+  test('saved final-boss completion repairs a missing finale unlock', () async {
+    SharedPreferences.setMockInitialValues({SaveIds.tutorialComplete: true});
+    final first = AppController();
+    await first.initialize();
+    final arc = first.originArc!;
+    final finalBossId = arc.chapters.last.boss.puzzleId;
+    first.dispose();
+
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setString(
+      SaveIds.originRecords,
+      jsonEncode({
+        finalBossId:
+            const CompletionRecord(
+              status: CompletionStatus.assistedSolved,
+            ).toJson(),
+      }),
+    );
+    await preferences.setStringList(SaveIds.unlockedContentIds, const []);
+
+    final restored = AppController();
+    await restored.initialize();
+    addTearDown(restored.dispose);
+    expect(restored.isFinaleUnlocked(arc.id), isTrue);
+    expect(
+      preferences.getStringList(SaveIds.unlockedContentIds),
+      contains(arc.unlockIds.finale),
+    );
+  });
+
+  test(
+    'saved finale unlock is removed until the final boss is defeated',
+    () async {
+      SharedPreferences.setMockInitialValues({
+        SaveIds.tutorialComplete: true,
+        SaveIds.unlockedContentIds: const [
+          ContentIds.originFullMapUnlock,
+          ContentIds.originFinaleUnlock,
+        ],
+      });
+      final controller = AppController();
+      await controller.initialize();
+      addTearDown(controller.dispose);
+
+      expect(controller.isMapUnlocked(ContentIds.originArc), isTrue);
+      expect(controller.isFinaleUnlocked(ContentIds.originArc), isFalse);
+      expect(
+        controller.unlockedContentIds,
+        isNot(contains(ContentIds.originFinaleUnlock)),
+      );
+      final preferences = await SharedPreferences.getInstance();
+      expect(preferences.getStringList(SaveIds.unlockedContentIds), const [
+        ContentIds.originFullMapUnlock,
+      ]);
+      controller.unlockedContentIds.add(ContentIds.originFinaleUnlock);
+      expect(controller.isFinaleUnlocked(ContentIds.originArc), isFalse);
+    },
+  );
+
   test('12x12 final boss board and in-progress state restore intact', () async {
     SharedPreferences.setMockInitialValues({SaveIds.tutorialComplete: true});
     final first = AppController();
@@ -207,34 +341,35 @@ void main() {
     },
   );
 
-  test(
-    'map unlock finale toggle defaults off and persists when enabled',
-    () async {
-      SharedPreferences.setMockInitialValues({SaveIds.tutorialComplete: true});
-      final disabled = AppController();
-      await disabled.initialize();
-      await disabled.unlockEntireMap(ContentIds.originArc);
-      expect(disabled.fullMapUnlocked, isTrue);
-      expect(disabled.isFinaleUnlocked(ContentIds.originArc), isFalse);
-      await disabled.flushPersistence();
-      disabled.dispose();
+  test('map unlock opens the final boss but not the finale', () async {
+    SharedPreferences.setMockInitialValues({SaveIds.tutorialComplete: true});
+    final controller = AppController();
+    await controller.initialize();
+    final arc = controller.originArc!;
+    final finalBoss = arc.catalog.byId(arc.chapters.last.boss.puzzleId);
 
-      final enabled = AppController(unlockFinaleWithGameBoard: true);
-      await enabled.initialize();
-      expect(enabled.fullMapUnlocked, isTrue);
-      expect(enabled.isFinaleUnlocked(ContentIds.originArc), isFalse);
-      await enabled.unlockEntireMap(ContentIds.originArc);
-      expect(enabled.fullMapUnlocked, isTrue);
-      expect(enabled.isFinaleUnlocked(ContentIds.originArc), isTrue);
-      await enabled.flushPersistence();
-      enabled.dispose();
+    await controller.unlockEntireMap(arc.id);
+    expect(controller.isMapUnlocked(arc.id), isTrue);
+    expect(controller.canOpenPuzzle(finalBoss), isTrue);
+    expect(controller.isFinaleUnlocked(arc.id), isFalse);
+    expect(
+      controller.unlockedContentIds,
+      isNot(contains(arc.unlockIds.finale)),
+    );
+    await controller.flushPersistence();
+    controller.dispose();
 
-      final restored = AppController();
-      await restored.initialize();
-      addTearDown(restored.dispose);
-      expect(restored.isFinaleUnlocked(ContentIds.originArc), isTrue);
-    },
-  );
+    final restored = AppController();
+    await restored.initialize();
+    addTearDown(restored.dispose);
+    final restoredArc = restored.originArc!;
+    final restoredFinalBoss = restoredArc.catalog.byId(
+      restoredArc.chapters.last.boss.puzzleId,
+    );
+    expect(restored.isMapUnlocked(restoredArc.id), isTrue);
+    expect(restored.canOpenPuzzle(restoredFinalBoss), isTrue);
+    expect(restored.isFinaleUnlocked(restoredArc.id), isFalse);
+  });
 
   test(
     'the 12x12 finale validates uniquely and completes by the core rules',

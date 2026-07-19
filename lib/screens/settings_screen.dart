@@ -250,10 +250,7 @@ class StoryArcSettingsScreen extends StatelessWidget {
   final AppController controller;
   final StoryArc arc;
 
-  bool get _unlockActionComplete =>
-      controller.isMapUnlocked(arc.id) &&
-      (!controller.unlockFinaleWithGameBoard ||
-          controller.isFinaleUnlocked(arc.id));
+  bool get _unlockActionComplete => controller.isMapUnlocked(arc.id);
 
   Future<void> _unlockEntireMap(BuildContext context) async {
     final unlock = await showDialog<bool>(
@@ -270,9 +267,8 @@ class StoryArcSettingsScreen extends StatelessWidget {
             title: Text('Unlock ${arc.title} map?'),
             content: Text(
               'Every puzzle and chapter landmark in ${arc.title} will become '
-              'available immediately. '
-              '${controller.unlockFinaleWithGameBoard ? 'The finale will also unlock immediately. ' : ''}'
-              'Other story arcs are not affected.',
+              'available immediately. The finale remains locked until the '
+              'final boss is defeated. Other story arcs are not affected.',
             ),
             actions: [
               TextButton(
@@ -364,9 +360,10 @@ class StoryArcSettingsScreen extends StatelessWidget {
                       Text(
                         controller.isMapUnlocked(arc.id)
                             ? 'Every puzzle and chapter landmark in this arc is available.'
-                                '${controller.isFinaleUnlocked(arc.id) ? ' The finale is unlocked.' : ''}'
+                                '${controller.isFinaleUnlocked(arc.id) ? ' The final boss has fallen, and the finale is unlocked.' : ' Defeat the final boss to unlock the finale.'}'
                             : 'Open this arc’s puzzles and landmarks without '
-                                'finishing them in order.',
+                                'finishing them in order. The finale will stay '
+                                'locked until the final boss is defeated.',
                       ),
                       const SizedBox(height: 12),
                       OutlinedButton.icon(
@@ -389,8 +386,6 @@ class StoryArcSettingsScreen extends StatelessWidget {
                         label: Text(
                           _unlockActionComplete
                               ? 'This arc’s map is unlocked'
-                              : controller.isMapUnlocked(arc.id)
-                              ? 'Unlock this arc’s finale'
                               : 'Unlock this arc’s map',
                         ),
                       ),

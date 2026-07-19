@@ -1,8 +1,8 @@
 # Content authoring and releases
 
 Queen’s Regalia treats every story arc as an independently loadable content
-package. The web/GitHub Pages edition contains exactly the origin arc and
-“Just Puzzle!”. Paid-platform editions may package more arcs and grant them
+package. The web/GitHub Pages edition contains the origin arc, the system
+Academy, and “Just Puzzle!”. Paid-platform editions may package more arcs and grant them
 through the entitlement boundary; no arc is unlocked merely because its files
 are present.
 
@@ -143,9 +143,10 @@ composition are covered by animation and golden tests.
 
 `ContentEntitlementPolicy` is the storefront-neutral boundary. Web policy admits
 only the origin arc, requires its descriptor to include the `web` channel, and
-grants the base origin and Just Puzzle entitlements. Paid-platform policy also
-grants the base content, then accepts explicit purchased entitlement IDs
-supplied by the native store/receipt layer.
+grants the base origin and Just Puzzle entitlements. The bundled Academy is
+system content shared by both editions rather than an arc entitlement.
+Paid-platform policy also grants the base content, then accepts explicit
+purchased entitlement IDs supplied by the native store/receipt layer.
 
 UI code should read `ContentRegistry.availabilityFor(arcId)` and distinguish:
 
@@ -164,6 +165,19 @@ column. It must not show unentitled, excluded, missing, or invalid packages as
 playable tiles. “Just Puzzle!” remains independently visible whenever its own
 feature entitlement is available, including when no story package can load.
 
+## Academy lessons
+
+The ordered curriculum lives in `assets/academy/lessons.json`. Each lesson has
+a stable `regalia:lesson/academy/*` ID, concise teaching copy, a configured
+visual example, a `DeductionTechnique`, and a `sourcePuzzleId`. At load time the
+source grid is cloned to a separate `regalia:puzzle/academy/*` ID, so practice
+marks and completions never enter an arc's boards, records, or frontier.
+
+Lesson order is consecutive and controls unlocking: lesson one is always open,
+then each lesson unlocks when its predecessor is completed. A source puzzle
+must remain in the packaged origin catalog and its human-solver trace must
+contain the lesson's declared technique; controller tests enforce both rules.
+
 ## Settings ownership
 
 Master settings is opened from the home screen and owns preferences that apply
@@ -177,11 +191,11 @@ Always pass the target arc ID to the controller. An arc reset removes only IDs
 owned by that namespace and must preserve master preferences, tutorial state,
 Just Puzzle runs, entitlements, and progress in every other arc.
 
-`GameConfiguration.unlockFinaleWithGameBoard` controls whether the map-unlock
-action also grants the declared finale unlock. Its release build define is
-`REGALIA_UNLOCK_FINALE_WITH_GAME_BOARD`; it defaults to `false`, preserving the
-map-only behavior. Set it to `true` with `--dart-define` when a distribution
-should expose the finale from Settings immediately.
+Unlock Game Board is deliberately map-only: it opens every puzzle and chapter
+landmark, including direct access to the final boss, but never exposes the
+finale. The finale becomes available only after the final boss has a saved
+clean or assisted completion record. On startup, stored finale unlock IDs are
+reconciled with that record so legacy overrides cannot bypass the boss.
 
 Catalog upgrades retain boards and completion records whose immutable puzzle
 IDs and sizes still exist. A changed grid must therefore receive a new puzzle

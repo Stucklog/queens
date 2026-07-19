@@ -56,6 +56,7 @@ flutter:
   # App-owned icons use the custom PixelGlyph system in lib/widgets/pixel_ui.dart.
   uses-material-design: true
   assets:
+    - assets/academy/
     - assets/art/
     - assets/art/backgrounds/
     - assets/art/combat/

@@ -10,8 +10,8 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## Gameplay and progression
 
-- [ ] **P1 — Reduce puzzles per story arc to six per difficulty–size combination.**
-  - Set the arc progression target to six puzzles for each difficulty and board-size combination.
+- [x] **P1 — Set story arcs to nine puzzles per difficulty–size combination.**
+  - Set the arc progression target to nine puzzles for each difficulty and board-size combination.
   - Ensure players can move through the current story arc faster and reach the next story arc sooner.
   - Update chapter progression, unlock thresholds, map display, puzzle catalogs, and completion tracking to use the reduced counts.
   - Confirm the shorter arc still has a satisfying difficulty curve and enough variety.
@@ -33,13 +33,13 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Ensure missing or unavailable future arcs fail gracefully and do not affect the origin story or puzzle-only mode.
   - Document the content packaging and release process so adding a new arc is a seamless update.
 
-- [x] **P1 — Optionally unlock the final scene from the Settings “Unlock Game Board” action.**
-  - When enabled, make the existing unlock-game-board button also unlock access to the final scene.
-  - Add a clearly named code/configuration toggle so this behavior can be turned on or off later without reworking the UI.
-  - Keep the current board-unlock behavior unchanged when the toggle is disabled.
-  - Verify that the final scene becomes available immediately when enabled and that normal progression is unaffected.
+- [x] **P1 — Unlock the finale cutscene when the final boss is defeated.**
+  - Make defeating the last boss the only gameplay requirement for viewing the finale.
+  - Allow the finale to be viewed even if none of the other puzzles have been solved.
+  - Ensure the final-boss completion state is saved and reliably unlocks the finale across sessions.
+  - Keep the finale locked until the last boss is defeated, while leaving the existing board-unlock behavior unchanged.
 
-- [ ] **P1 — Add an Academy for learning deductive techniques.**
+- [x] **P1 — Add an Academy for learning deductive techniques.**
   - Create a dedicated area where players can study the game’s solving logic and deduction techniques.
   - Explain each technique with a short lesson, visual example, and an interactive practice puzzle.
   - Start with fundamentals and unlock more advanced techniques as lessons are completed.
@@ -62,7 +62,14 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## Combat animation and boss presentation
 
-- [ ] **P1 — Add short animated enemy-encounter cutscenes.**
+- [x] **P1 — Present each boss-defeating special move as a cutscene.**
+  - Play the knight’s final special move in a dedicated cutscene when a boss puzzle is solved.
+  - Use a presentation similar to the enemy encounter cutscene, including the split-screen composition and animated blurred background where appropriate.
+  - Clearly show the boss reacting to the special move and being defeated before returning to the chapter-completion flow.
+  - Make the cutscene reusable for every chapter boss, with configurable timing, sprites, effects, and increasingly impressive special moves.
+  - Ensure it does not trigger for ordinary puzzle completion or interrupt the wrong puzzle state.
+
+- [x] **P1 — Add short animated enemy-encounter cutscenes.**
   - Create approximately two-second encounter introductions for optional enemy fights.
   - Show both the knight and enemy sprites in the cutscene.
   - Use a split-screen composition inspired by creature-battle introductions, with each character clearly framed on opposite sides.
@@ -110,6 +117,12 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## Map and visual assets
 
+- [x] ~~**P1 — Create distinct hopeful art for the “Finale Awaits” segment.**~~ *(Cancelled — no implementation required.)*
+  - ~~Replace the current Empyrean Citadel artwork used for “Finale Awaits.”~~
+  - ~~Create a hopeful scene suggesting the queen is waiting for the knight’s arrival.~~
+  - ~~Keep the new artwork visually distinct from the Empyrean Citadel chapter art while matching the game’s established style.~~
+  - ~~Check the composition at the map tile’s display size and update visual regression assets as needed.~~
+
 - [x] **P2 — Add a small replayable intro tile at the top of the map.**
   - Place a compact tile above the chapter path that lets players rewatch the intro scene.
   - Make the tile visually distinct from playable chapters while fitting the map layout.
@@ -138,7 +151,7 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Keep hit areas, text layout, contrast, and accessibility behavior unchanged.
   - Apply the treatment consistently without making important controls or puzzle boundaries unclear.
   - Update visual regression tests or golden assets for the affected components.
-  - Final direction: use clean, old-game rounded corners with straight edges rather than wiggly outlines.
+  - Final direction: use clean, old-game rounded corners with subtly pixel-stepped curves and straight edges rather than wiggly outlines.
 
 ## UI and naming
 
@@ -164,13 +177,13 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## Bugs and regression coverage
 
-- [ ] **P0 — Fix puzzle recoil under the top banner during pull-down scrolling.**
+- [x] **P0 — Fix puzzle recoil under the top banner during pull-down scrolling.**
   - Confirmed issue: the bounce/overscroll recoil on puzzle screens moves the board underneath the top banner, partially hiding it.
   - Constrain the scrollable puzzle content so recoil respects the banner’s safe area and visible bounds.
   - Verify the puzzle remains fully visible after pulling down and releasing at different scroll positions.
   - Add a regression test or visual test covering the overscroll and recoil behavior.
 
-- [ ] **P0 — Fix dragging “X” marks on puzzle boards.**
+- [x] **P0 — Fix dragging “X” marks on puzzle boards.**
   - Confirmed issue: horizontal dragging works, but vertical dragging is intercepted or confused by page scrolling.
   - Prevent the puzzle board’s vertical drag gesture from being treated as page scrolling while the player is marking cells.
   - Restore reliable drag-to-place and drag-to-remove behavior for `X`s in both directions.
@@ -180,7 +193,7 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## Verification checklist
 
-- [ ] Play through every chapter from a fresh start and confirm the boss puzzle appears at the correct point.
+- [x] Play through every chapter from a fresh start and confirm the boss puzzle appears at the correct point.
 - [x] Confirm all boss and in-chapter enemy animations finish cleanly without desynchronizing from puzzle completion.
 - [x] Confirm story scenes display the intended text without clipping, overflow, or unreadable pacing.
 - [x] Confirm the final map tile and all updated art pass visual regression checks.

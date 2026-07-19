@@ -8,6 +8,7 @@ import '../content/content_models.dart';
 import '../widgets/crown_mark.dart';
 import '../widgets/pixel_art.dart';
 import '../widgets/pixel_ui.dart';
+import 'academy_screen.dart';
 import 'challenge_screen.dart';
 import 'journey_screen.dart';
 import 'settings_screen.dart';
@@ -58,6 +59,10 @@ class HomeScreen extends StatelessWidget {
     MaterialPageRoute(builder: (_) => ChallengeScreen(controller: controller)),
   );
 
+  void _openAcademy(BuildContext context) => Navigator.of(context).push(
+    MaterialPageRoute(builder: (_) => AcademyScreen(controller: controller)),
+  );
+
   void _openMasterSettings(BuildContext context) => Navigator.of(context).push(
     MaterialPageRoute(builder: (_) => SettingsScreen(controller: controller)),
   );
@@ -81,6 +86,13 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         actions: [
+          if (controller.academyAvailable)
+            PixelIconButton(
+              key: const ValueKey('open-academy'),
+              glyph: PixelGlyph.book,
+              tooltip: 'Academy',
+              onPressed: () => _openAcademy(context),
+            ),
           PixelIconButton(
             key: const ValueKey('open-master-settings'),
             glyph: PixelGlyph.gear,
@@ -128,11 +140,82 @@ class HomeScreen extends StatelessWidget {
               ),
               label: const Text('Master settings'),
             ),
+            if (controller.academyAvailable) ...[
+              const SizedBox(height: 16),
+              _AcademyTile(
+                completed: controller.academyCompletedCount,
+                total: controller.academyLessons.length,
+                onPressed: () => _openAcademy(context),
+              ),
+            ],
           ],
         ),
       ),
     );
   }
+}
+
+class _AcademyTile extends StatelessWidget {
+  const _AcademyTile({
+    required this.completed,
+    required this.total,
+    required this.onPressed,
+  });
+
+  final int completed;
+  final int total;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => PixelPanel(
+    padding: EdgeInsets.zero,
+    borderColor: Theme.of(context).colorScheme.secondary,
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        key: const ValueKey('open-academy-home'),
+        onTap: onPressed,
+        customBorder: const PixelOrganicBorder(),
+        child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Row(
+            children: [
+              PixelIcon(
+                PixelGlyph.book,
+                color: Theme.of(context).colorScheme.secondary,
+                size: 32,
+                excludeFromSemantics: true,
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Academy',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      completed == total
+                          ? 'All techniques mastered · replay anytime'
+                          : '$completed of $total lessons mastered',
+                    ),
+                  ],
+                ),
+              ),
+              PixelIcon(
+                PixelGlyph.arrowRight,
+                color: Theme.of(context).colorScheme.secondary,
+                size: 24,
+                excludeFromSemantics: true,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 class _StoryArcTile extends StatelessWidget {

@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/app/theme.dart';
 import 'package:regalia/content/content_ids.dart';
+import 'package:regalia/core/models.dart';
 import 'package:regalia/screens/challenge_screen.dart';
 import 'package:regalia/screens/game_screen.dart';
 import 'package:regalia/screens/journey_screen.dart';
@@ -229,7 +230,8 @@ void main() {
     await controller.markStoryBeatSeen(arc.openingScene.id);
     await controller.markStoryBeatSeen(arc.chapters.first.sceneId);
     await controller.unlockEntireMap(arc.id);
-    controller.unlockedContentIds.add(arc.unlockIds.finale);
+    controller.records[arc.chapters.last.boss.puzzleId] =
+        const CompletionRecord(status: CompletionStatus.cleanSolved);
     _resetViewAfterTest(tester);
 
     for (final size in const [_narrow, _wide]) {

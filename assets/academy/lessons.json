@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "lessons": [
+    {
+      "id": "regalia:lesson/academy/crowns-reach",
+      "order": 1,
+      "title": "A Crown’s Reach",
+      "technique": "directExclusion",
+      "summary": "Turn every placed crown into useful exclusions.",
+      "explanation": "A crown claims its entire row, column, and region. Its eight neighboring cells are also unavailable, including the diagonals.",
+      "steps": [
+        "Find every row, column, and region touched by the crown.",
+        "Mark those cells with Xs so only real candidates remain."
+      ],
+      "sourcePuzzleId": "regalia:puzzle/origin/easy-001",
+      "example": {
+        "size": 4,
+        "regions": [[0, 0, 1, 1], [0, 2, 2, 1], [3, 2, 2, 1], [3, 3, 3, 1]],
+        "crowns": [[1, 1]],
+        "crosses": [[0, 0], [0, 1], [0, 2], [1, 0], [1, 2], [1, 3], [2, 0], [2, 1], [2, 2], [3, 1]],
+        "sources": [[1, 1]],
+        "targets": [[0, 2], [2, 0], [2, 2]],
+        "caption": "The crown at B2 rules out its row, column, region, and every touching cell. Gold cells call out diagonal exclusions."
+      }
+    },
+    {
+      "id": "regalia:lesson/academy/last-square",
+      "order": 2,
+      "title": "Last Square Standing",
+      "technique": "singleRemaining",
+      "summary": "When a unit has one candidate left, crown it.",
+      "explanation": "Every row, column, and colored region needs exactly one crown. If exclusions leave just one open square in any of them, that square is forced.",
+      "steps": [
+        "Scan each row, column, and region for open cells.",
+        "Crown the only candidate, then apply its new exclusions."
+      ],
+      "sourcePuzzleId": "regalia:puzzle/origin/easy-002",
+      "example": {
+        "size": 4,
+        "regions": [[0, 0, 1, 1], [0, 2, 2, 1], [3, 2, 2, 1], [3, 3, 3, 1]],
+        "crowns": [],
+        "crosses": [[2, 0], [2, 1], [2, 3]],
+        "sources": [[2, 0], [2, 1], [2, 3]],
+        "targets": [[2, 2]],
+        "caption": "Row 3 has only C3 open, so C3 must hold its crown. The gold square is the forced placement."
+      }
+    },
+    {
+      "id": "regalia:lesson/academy/locked-intersections",
+      "order": 3,
+      "title": "Locked Intersections",
+      "technique": "lockedIntersection",
+      "summary": "Use the overlap between a region and a line.",
+      "explanation": "If every candidate for a region lies in one row or column, that line’s crown must belong to the region. Other cells on the same line can be excluded.",
+      "steps": [
+        "Find a region whose candidates share one row or column.",
+        "Keep those candidates and cross out the rest of that line."
+      ],
+      "sourcePuzzleId": "regalia:puzzle/origin/medium-001",
+      "example": {
+        "size": 4,
+        "regions": [[0, 0, 1, 1], [0, 2, 2, 1], [3, 2, 2, 1], [3, 3, 3, 1]],
+        "crowns": [],
+        "crosses": [[0, 1]],
+        "sources": [[0, 0], [1, 0]],
+        "targets": [[2, 0], [3, 0]],
+        "caption": "Region 1 can only use column A. Its crown claims that column, so A3 and A4 can be crossed out."
+      }
+    },
+    {
+      "id": "regalia:lesson/academy/adjacent-support",
+      "order": 4,
+      "title": "Adjacent-Row Support",
+      "technique": "adjacentRowSupport",
+      "summary": "Let one row’s candidates reshape the next row.",
+      "explanation": "A crown in the neighboring row cannot touch your chosen crown. If a square would touch every candidate in that row, the square is impossible.",
+      "steps": [
+        "Locate a row with candidates clustered in nearby columns.",
+        "In the adjacent row, exclude cells touching every candidate."
+      ],
+      "sourcePuzzleId": "regalia:puzzle/origin/medium-004",
+      "example": {
+        "size": 4,
+        "regions": [[0, 0, 1, 1], [0, 2, 2, 1], [3, 2, 2, 1], [3, 3, 3, 1]],
+        "crowns": [],
+        "crosses": [[0, 0], [0, 3]],
+        "sources": [[0, 1], [0, 2]],
+        "targets": [[1, 1], [1, 2]],
+        "caption": "Row 1 must crown B1 or C1. B2 and C2 touch both possibilities, so neither can hold row 2’s crown."
+      }
+    },
+    {
+      "id": "regalia:lesson/academy/royal-pairs",
+      "order": 5,
+      "title": "Royal Pairs",
+      "technique": "hallPair",
+      "summary": "Reserve two columns for two constrained rows.",
+      "explanation": "When two rows can place their crowns only in the same two columns, those columns are reserved. Every other row can exclude both columns.",
+      "steps": [
+        "Find two rows whose candidates occupy the same two columns.",
+        "Cross those columns out in every other unfinished row."
+      ],
+      "sourcePuzzleId": "regalia:puzzle/origin/hard-001",
+      "example": {
+        "size": 4,
+        "regions": [[0, 0, 1, 1], [0, 2, 2, 1], [3, 2, 2, 1], [3, 3, 3, 1]],
+        "crowns": [],
+        "crosses": [[0, 0], [0, 3], [1, 0], [1, 3]],
+        "sources": [[0, 1], [0, 2], [1, 1], [1, 2]],
+        "targets": [[2, 1], [2, 2], [3, 1], [3, 2]],
+        "caption": "Rows 1 and 2 must use columns B and C between them. Those columns are unavailable to rows 3 and 4."
+      }
+    },
+    {
+      "id": "regalia:lesson/academy/contradiction",
+      "order": 6,
+      "title": "Proof by Contradiction",
+      "technique": "oneStepContradiction",
+      "summary": "Test a candidate and follow its consequences.",
+      "explanation": "When direct deductions stall, suppose a candidate were crowned. If that assumption leaves a row, column, or region with no possible crown, the candidate must be excluded.",
+      "steps": [
+        "Choose one candidate and temporarily treat it as a crown.",
+        "Apply only certain deductions. If a unit becomes impossible, reject the assumption."
+      ],
+      "sourcePuzzleId": "regalia:puzzle/origin/expert-001",
+      "example": {
+        "size": 4,
+        "regions": [[0, 0, 1, 1], [0, 2, 2, 1], [3, 2, 2, 1], [3, 3, 3, 1]],
+        "crowns": [],
+        "crosses": [[1, 0], [1, 2], [1, 3]],
+        "sources": [[0, 0]],
+        "targets": [[0, 0]],
+        "caption": "Assuming A1 is a crown would also exclude B2. Row 2 would have nowhere left, so A1 must be crossed out."
+      }
+    }
+  ]
+}

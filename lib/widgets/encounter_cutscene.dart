@@ -58,6 +58,11 @@ class EncounterCutscene extends StatefulWidget {
     required this.onFinished,
     this.knightName = 'CROWN-BEARER',
     this.encounterLabel = 'ENEMY ENCOUNTER',
+    this.knightEyebrow = 'THE REGALIA ANSWERS',
+    this.enemyEyebrow,
+    this.centerBadgeLabel = 'VS',
+    this.semanticLabel,
+    this.foreground,
     this.timing = EncounterCutsceneTiming.standard,
     this.accentColor,
     this.energyColor,
@@ -69,6 +74,14 @@ class EncounterCutscene extends StatefulWidget {
   final String knightName;
   final String enemyName;
   final String encounterLabel;
+  final String knightEyebrow;
+  final String? enemyEyebrow;
+  final String centerBadgeLabel;
+  final String? semanticLabel;
+
+  /// An optional crisp layer above the blurred background and below the two
+  /// combatant panels. Finishers use this for impact flashes and particles.
+  final Widget? foreground;
   final EncounterCutsceneTiming timing;
   final Color? accentColor;
   final Color? energyColor;
@@ -153,6 +166,7 @@ class _EncounterCutsceneState extends State<EncounterCutscene>
         namesRoute: true,
         liveRegion: true,
         label:
+            widget.semanticLabel ??
             '${widget.encounterLabel}. ${widget.knightName} versus ${widget.enemyName}.',
         child: ExcludeSemantics(
           child: AbsorbPointer(
@@ -173,6 +187,10 @@ class _EncounterCutsceneState extends State<EncounterCutscene>
                     knightName: widget.knightName,
                     enemyName: widget.enemyName,
                     encounterLabel: widget.encounterLabel,
+                    knightEyebrow: widget.knightEyebrow,
+                    enemyEyebrow: widget.enemyEyebrow ?? widget.encounterLabel,
+                    centerBadgeLabel: widget.centerBadgeLabel,
+                    foreground: widget.foreground,
                     accent: accent,
                     energy: energy,
                   );
@@ -197,6 +215,10 @@ class _EncounterCutsceneFrame extends StatelessWidget {
     required this.knightName,
     required this.enemyName,
     required this.encounterLabel,
+    required this.knightEyebrow,
+    required this.enemyEyebrow,
+    required this.centerBadgeLabel,
+    required this.foreground,
     required this.accent,
     required this.energy,
   });
@@ -210,6 +232,10 @@ class _EncounterCutsceneFrame extends StatelessWidget {
   final String knightName;
   final String enemyName;
   final String encounterLabel;
+  final String knightEyebrow;
+  final String enemyEyebrow;
+  final String centerBadgeLabel;
+  final Widget? foreground;
   final Color accent;
   final Color energy;
 
@@ -279,6 +305,11 @@ class _EncounterCutsceneFrame extends StatelessWidget {
             ),
           ),
           const ColoredBox(color: Color(0x52000000)),
+          if (foreground != null)
+            RepaintBoundary(
+              key: const ValueKey('encounter-cutscene-foreground'),
+              child: IgnorePointer(child: foreground),
+            ),
           Positioned(
             left: 0,
             right: 0,
@@ -297,7 +328,7 @@ class _EncounterCutsceneFrame extends StatelessWidget {
                     artKey: const ValueKey('encounter-cutscene-enemy-art'),
                     art: enemyArt,
                     name: enemyName,
-                    eyebrow: encounterLabel,
+                    eyebrow: enemyEyebrow,
                     enemySide: true,
                     accent: accent,
                   ),
@@ -323,7 +354,7 @@ class _EncounterCutsceneFrame extends StatelessWidget {
                     artKey: const ValueKey('encounter-cutscene-knight-art'),
                     art: knightArt,
                     name: knightName,
-                    eyebrow: 'THE REGALIA ANSWERS',
+                    eyebrow: knightEyebrow,
                     enemySide: false,
                     accent: accent,
                   ),
@@ -346,7 +377,7 @@ class _EncounterCutsceneFrame extends StatelessWidget {
               opacity: dividerOpacity,
               child: Transform.scale(
                 scale: .7 + entrance * .3,
-                child: _VersusBadge(accent: accent),
+                child: _VersusBadge(accent: accent, label: centerBadgeLabel),
               ),
             ),
           ),
@@ -464,9 +495,10 @@ class _EncounterCombatantPanel extends StatelessWidget {
 }
 
 class _VersusBadge extends StatelessWidget {
-  const _VersusBadge({required this.accent});
+  const _VersusBadge({required this.accent, required this.label});
 
   final Color accent;
+  final String label;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -482,7 +514,7 @@ class _VersusBadge extends StatelessWidget {
       ],
     ),
     child: Text(
-      'VS',
+      label,
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
         color: accent,
         fontWeight: FontWeight.w700,
