@@ -64,7 +64,8 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 - [x] **P1 — Present each boss-defeating special move as a cutscene.**
   - Play the knight’s final special move in a dedicated cutscene when a boss puzzle is solved.
-  - Use a presentation similar to the enemy encounter cutscene, including the split-screen composition and animated blurred background where appropriate.
+  - Show the knight’s complete final move full-screen, pan to the boss for its defeat animation, then pan back to the knight’s victory stance.
+  - Keep the boss finisher distinct from the split-screen enemy-introduction composition while retaining the cinematic moving background.
   - Clearly show the boss reacting to the special move and being defeated before returning to the chapter-completion flow.
   - Make the cutscene reusable for every chapter boss, with configurable timing, sprites, effects, and increasingly impressive special moves.
   - Ensure it does not trigger for ordinary puzzle completion or interrupt the wrong puzzle state.

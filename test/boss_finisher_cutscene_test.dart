@@ -30,11 +30,36 @@ void main() {
       expect(presentation.spectacleLevel, index + 1);
       expect(presentation.effectLevel, index + 1);
       expect(
-        presentation.timing.hold,
-        greaterThan(
-          presentation.finisher.presentationDuration +
-              presentation.finisher.postRoll,
-        ),
+        presentation.timing.finalMove,
+        greaterThan(presentation.finisher.presentationDuration),
+      );
+      expect(
+        presentation.timing.bossDefeat,
+        greaterThan(presentation.finisher.presentationDuration),
+      );
+      expect(
+        presentation.timing.victory,
+        greaterThan(KnightAnimation.special.presentationDuration),
+      );
+      expect(
+        presentation.timing.phaseAt(Duration.zero),
+        BossFinisherPhase.finalMove,
+      );
+      expect(
+        presentation.timing.phaseAt(presentation.timing.finalMove),
+        BossFinisherPhase.panToBoss,
+      );
+      expect(
+        presentation.timing.phaseAt(presentation.timing.bossDefeatStart),
+        BossFinisherPhase.bossDefeat,
+      );
+      expect(
+        presentation.timing.phaseAt(presentation.timing.panToKnightStart),
+        BossFinisherPhase.panToKnight,
+      );
+      expect(
+        presentation.timing.phaseAt(presentation.timing.victoryStart),
+        BossFinisherPhase.victory,
       );
       if (index == 0) continue;
       expect(
@@ -48,16 +73,19 @@ void main() {
     }
   });
 
-  testWidgets('finisher waits for reveal then animates both combatants once', (
+  testWidgets('finisher uses full-screen move, defeat, and victory shots', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(400, 800);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
-    const timing = EncounterCutsceneTiming(
-      entrance: Duration(milliseconds: 100),
-      hold: Duration(milliseconds: 900),
+    const timing = BossFinisherTiming(
+      finalMove: Duration(milliseconds: 200),
+      panToBoss: Duration(milliseconds: 100),
+      bossDefeat: Duration(milliseconds: 200),
+      panToKnight: Duration(milliseconds: 100),
+      victory: Duration(milliseconds: 200),
       exit: Duration(milliseconds: 100),
       reducedMotion: Duration(milliseconds: 50),
     );
@@ -86,19 +114,29 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.byKey(const ValueKey('encounter-cutscene-enemy-panel')),
+      find.byKey(const ValueKey('boss-finisher-phase-final-move')),
       findsOneWidget,
+    );
+    expect(find.byType(EncounterCutscene), findsNothing);
+    expect(
+      find.byKey(const ValueKey('encounter-cutscene-enemy-panel')),
+      findsNothing,
     );
     expect(
       find.byKey(const ValueKey('encounter-cutscene-knight-panel')),
-      findsOneWidget,
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey('encounter-cutscene-versus')),
+      findsNothing,
     );
     expect(find.text('CROWN SLASH'), findsOneWidget);
     expect(find.text(_testBoss.name), findsOneWidget);
-    expect(find.text('K.O.'), findsOneWidget);
+    expect(find.text('K.O.'), findsNothing);
     expect(
       find.bySemanticsLabel(
-        'Boss finisher. Crown Slash. ${_testBoss.name} is defeated.',
+        'Boss finisher. Crown Slash. ${_testBoss.name} is defeated. '
+        'The crown-bearer is victorious.',
       ),
       findsOneWidget,
     );
@@ -108,33 +146,6 @@ void main() {
             find.byKey(const ValueKey('boss-finisher-knight-sprite')),
           )
           .animation,
-      KnightAnimation.bounce,
-    );
-    expect(
-      tester
-          .widget<PixelEnemySprite>(
-            find.byKey(const ValueKey('boss-finisher-boss-sprite')),
-          )
-          .stimulus,
-      KnightAnimation.bounce,
-    );
-    expect(
-      tester
-          .widget<CombatSpecialEffects>(
-            find.byKey(const ValueKey('boss-finisher-special-effects')),
-          )
-          .active,
-      isFalse,
-    );
-
-    await tester.pump(timing.entrance);
-
-    expect(
-      tester
-          .widget<PixelKnightSprite>(
-            find.byKey(const ValueKey('boss-finisher-knight-sprite')),
-          )
-          .animation,
       KnightAnimation.crownSlash,
     );
     expect(
@@ -143,7 +154,15 @@ void main() {
             find.byKey(const ValueKey('boss-finisher-boss-sprite')),
           )
           .stimulus,
-      KnightAnimation.crownSlash,
+      KnightAnimation.bounce,
+    );
+    expect(
+      tester
+          .widget<PixelEnemySprite>(
+            find.byKey(const ValueKey('boss-finisher-boss-sprite')),
+          )
+          .frame,
+      0,
     );
     expect(
       tester
@@ -153,8 +172,108 @@ void main() {
           .active,
       isTrue,
     );
+    expect(
+      tester
+          .widget<Positioned>(
+            find.byKey(const ValueKey('boss-finisher-knight-shot')),
+          )
+          .left,
+      0,
+    );
 
-    await tester.pump(timing.hold + timing.exit);
+    await tester.pump(timing.finalMove + timing.panToBoss ~/ 2);
+
+    expect(
+      find.byKey(const ValueKey('boss-finisher-phase-pan-to-boss')),
+      findsOneWidget,
+    );
+    final knightPanLeft =
+        tester
+            .widget<Positioned>(
+              find.byKey(const ValueKey('boss-finisher-knight-shot')),
+            )
+            .left!;
+    final bossPanLeft =
+        tester
+            .widget<Positioned>(
+              find.byKey(const ValueKey('boss-finisher-boss-shot')),
+            )
+            .left!;
+    expect(knightPanLeft, inExclusiveRange(-250, -150));
+    expect(bossPanLeft, inExclusiveRange(150, 250));
+    expect(bossPanLeft - knightPanLeft, closeTo(400, 0.1));
+    expect(
+      find.byKey(const ValueKey('boss-finisher-special-effects')),
+      findsNothing,
+    );
+
+    await tester.pump(timing.panToBoss ~/ 2);
+    expect(
+      find.byKey(const ValueKey('boss-finisher-phase-boss-defeat')),
+      findsOneWidget,
+    );
+    expect(
+      tester
+          .widget<PixelEnemySprite>(
+            find.byKey(const ValueKey('boss-finisher-boss-sprite')),
+          )
+          .stimulus,
+      KnightAnimation.crownSlash,
+    );
+    expect(
+      tester
+          .widget<PixelEnemySprite>(
+            find.byKey(const ValueKey('boss-finisher-boss-sprite')),
+          )
+          .frame,
+      0,
+    );
+
+    await tester.pump(timing.bossDefeat ~/ 2);
+    expect(
+      tester
+          .widget<PixelEnemySprite>(
+            find.byKey(const ValueKey('boss-finisher-boss-sprite')),
+          )
+          .frame,
+      2,
+    );
+    expect(find.text('THE FINAL BLOW LANDS'), findsOneWidget);
+    expect(find.text('DEFEATED'), findsNothing);
+
+    await tester.pump(timing.bossDefeat ~/ 2);
+    expect(
+      find.byKey(const ValueKey('boss-finisher-phase-pan-to-knight')),
+      findsOneWidget,
+    );
+    expect(
+      tester
+          .widget<PixelKnightSprite>(
+            find.byKey(const ValueKey('boss-finisher-knight-sprite')),
+          )
+          .animation,
+      KnightAnimation.crownSlash,
+    );
+    expect(find.text('DEFEATED'), findsOneWidget);
+
+    await tester.pump(timing.panToKnight);
+    expect(
+      find.byKey(const ValueKey('boss-finisher-phase-victory')),
+      findsOneWidget,
+    );
+    expect(
+      tester
+          .widget<PixelKnightSprite>(
+            find.byKey(const ValueKey('boss-finisher-knight-sprite')),
+          )
+          .animation,
+      KnightAnimation.special,
+    );
+    expect(find.text('VICTORY'), findsOneWidget);
+    expect(find.text('CROWN-BEARER'), findsOneWidget);
+    expect(completions, 0);
+
+    await tester.pump(timing.victory + timing.exit);
     expect(completions, 1);
     await tester.pump(const Duration(seconds: 1));
     expect(completions, 1);
@@ -186,7 +305,7 @@ void main() {
             find.byKey(const ValueKey('boss-finisher-knight-sprite')),
           )
           .animation,
-      KnightAnimation.regaliaNova,
+      KnightAnimation.special,
     );
     expect(
       tester
@@ -198,11 +317,21 @@ void main() {
     );
     expect(
       tester
-          .widget<CombatSpecialEffects>(
-            find.byKey(const ValueKey('boss-finisher-special-effects')),
+          .widget<PixelEnemySprite>(
+            find.byKey(const ValueKey('boss-finisher-boss-sprite')),
           )
-          .active,
-      isTrue,
+          .frame,
+      3,
+    );
+    expect(
+      find.byKey(const ValueKey('boss-finisher-phase-victory')),
+      findsOneWidget,
+    );
+    expect(find.text('VICTORY'), findsOneWidget);
+    expect(find.byType(EncounterCutscene), findsNothing);
+    expect(
+      find.byKey(const ValueKey('boss-finisher-special-effects')),
+      findsNothing,
     );
 
     await tester.pump(
@@ -211,6 +340,54 @@ void main() {
     expect(completions, 0);
     await tester.pump(const Duration(milliseconds: 1));
     expect(completions, 1);
+  });
+
+  testWidgets('custom boss art restarts when the defeat shot begins', (
+    tester,
+  ) async {
+    const timing = BossFinisherTiming(
+      finalMove: Duration(milliseconds: 100),
+      panToBoss: Duration(milliseconds: 50),
+      bossDefeat: Duration(milliseconds: 100),
+      panToKnight: Duration(milliseconds: 50),
+      victory: Duration(milliseconds: 100),
+      exit: Duration(milliseconds: 50),
+      reducedMotion: Duration(milliseconds: 50),
+    );
+    const presentation = BossFinisherPresentation(
+      spectacleLevel: 1,
+      finisher: KnightAnimation.crownSlash,
+      specialMoveName: 'Crown Slash',
+      timing: timing,
+      effectLevel: 1,
+    );
+    var mounts = 0;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: BossFinisherCutscene(
+          boss: _testBoss,
+          presentation: presentation,
+          background: const ColoredBox(color: Color(0xff20385f)),
+          bossArt: _MountProbe(onMount: () => mounts++),
+          onFinished: () {},
+        ),
+      ),
+    );
+
+    expect(mounts, 1);
+    expect(
+      find.byKey(const ValueKey('boss-finisher-custom-boss-waiting')),
+      findsOneWidget,
+    );
+
+    await tester.pump(timing.finalMove + timing.panToBoss);
+    expect(mounts, 2);
+    expect(
+      find.byKey(const ValueKey('boss-finisher-custom-boss-defeat')),
+      findsOneWidget,
+    );
+    await tester.pumpWidget(const SizedBox.shrink());
   });
 
   testWidgets('solving a boss gates completion behind its finisher cutscene', (
@@ -328,6 +505,26 @@ class _TimerlessController extends AppController {
 
   @override
   void stopTimer() {}
+}
+
+class _MountProbe extends StatefulWidget {
+  const _MountProbe({required this.onMount});
+
+  final VoidCallback onMount;
+
+  @override
+  State<_MountProbe> createState() => _MountProbeState();
+}
+
+class _MountProbeState extends State<_MountProbe> {
+  @override
+  void initState() {
+    super.initState();
+    widget.onMount();
+  }
+
+  @override
+  Widget build(BuildContext context) => const SizedBox.square(dimension: 80);
 }
 
 const _testBoss = ChapterBoss(

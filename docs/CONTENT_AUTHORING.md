@@ -130,6 +130,10 @@ The knight's eight production finisher tracks live in
 Crown Slash, Twin Sigil, Skybreak, Tidal Aegis, Cinderfall, Brass Judgment,
 Moonlit Sever, and Regalia Nova. Regular encounters use Crown Slash; chapter
 bosses use their numbered row, reserving Regalia Nova for the final boss.
+Boss-completion cinematics use three full-screen camera beats: the complete
+knight finisher, a pan to the boss's four-frame defeat, and a pan back before
+the knight's victory animation begins. The split-screen composition is reserved
+for encounter introductions and must not be reused for a boss defeat.
 
 The code-painted enemy silhouettes in `lib/widgets/combat_presentation.dart`
 are error fallbacks only. They are placeholder art and must not appear when a
