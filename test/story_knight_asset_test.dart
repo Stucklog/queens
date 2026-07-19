@@ -79,6 +79,13 @@ void main() {
     expect(find.byType(PixelStoryKnightSprite), findsNothing);
     expect(find.byType(PixelKnightSprite), findsNothing);
     expect(find.byType(PixelQueenSprite), findsNothing);
+    final chapterArtwork = tester.widget<Image>(
+      find.descendant(
+        of: find.byType(PixelStoryScene),
+        matching: find.byType(Image),
+      ),
+    );
+    expect(chapterArtwork.fit, BoxFit.contain);
 
     await tester.pumpWidget(
       MaterialApp(

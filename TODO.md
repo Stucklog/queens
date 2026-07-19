@@ -10,6 +10,20 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## Gameplay and progression
 
+- [ ] **P1 — Reduce puzzles per story arc to six per difficulty–size combination.**
+  - Set the arc progression target to six puzzles for each difficulty and board-size combination.
+  - Ensure players can move through the current story arc faster and reach the next story arc sooner.
+  - Update chapter progression, unlock thresholds, map display, puzzle catalogs, and completion tracking to use the reduced counts.
+  - Confirm the shorter arc still has a satisfying difficulty curve and enough variety.
+  - Preserve access to additional puzzles through “Just Puzzle!” or another replay path where appropriate.
+  - Update tests, balancing data, and any progress migration needed for existing players.
+
+- [ ] **P1 — Add 12×12 puzzles to “Just Puzzle!”.**
+  - Include 12×12 boards in the puzzle-only challenge pool.
+  - Confirm generation, rendering, marking, validation, hints, completion, and reset behavior work at this size.
+  - Balance the available 12×12 puzzles so they provide an appropriate range of difficulty.
+  - Add coverage for selecting and completing a 12×12 puzzle in “Just Puzzle!”.
+
 - [x] **P1 — Future-proof the app for additional story arcs and platform-specific content.**
   - Treat the current story as the self-contained origin arc, with story content organized so future arcs can be added as separate modules.
   - Keep chapter, map, puzzle, scene, unlock, and save-data identifiers namespaced or otherwise extensible so new arcs do not conflict with existing progress.
@@ -47,6 +61,14 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Establish which puzzles trigger each encounter and how encounters affect presentation or rewards.
 
 ## Combat animation and boss presentation
+
+- [ ] **P1 — Add short animated enemy-encounter cutscenes.**
+  - Create approximately two-second encounter introductions for optional enemy fights.
+  - Show both the knight and enemy sprites in the cutscene.
+  - Use a split-screen composition inspired by creature-battle introductions, with each character clearly framed on opposite sides.
+  - Add an animated, blurred background to create energy and movement without distracting from the sprites.
+  - Make the transition into and out of the puzzle smooth and ensure the cutscene does not block input longer than intended.
+  - Provide a reusable encounter-cutscene component so different chapters and enemies can share the same presentation with configurable art and timing.
 
 - [x] **P1 — Remove the knight’s dance animation everywhere.**
   - Do not play the dance animation when a puzzle is completed.

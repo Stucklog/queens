@@ -196,6 +196,8 @@ void main() {
       expect(find.text('Empyrean Citadel'), findsOneWidget);
       expect(find.byType(PixelStoryKnightSprite), findsNothing);
       expect(find.byType(PixelKnightSprite), findsNothing);
+      final chapterArtSize = tester.getSize(find.byType(PixelStoryScene));
+      expect(chapterArtSize.width, closeTo(chapterArtSize.height, .01));
       _expectNoLayoutException(
         tester,
         reason: 'chapter story text at ${size.width}x${size.height}',

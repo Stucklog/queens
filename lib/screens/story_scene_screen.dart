@@ -187,7 +187,7 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: artHeight, child: _art(chapter, page)),
+              SizedBox(height: artHeight, child: _artPanel(chapter, page)),
               const SizedBox(height: 22),
               _narrative(context, page),
             ],
@@ -210,7 +210,7 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(flex: 11, child: _art(chapter, page)),
+            Expanded(flex: 11, child: _artPanel(chapter, page)),
             const SizedBox(width: 30),
             Expanded(
               flex: 9,
@@ -232,6 +232,12 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
         semanticLabel: page.semanticLabel,
         assetPath: widget.scene.artAsset,
       );
+
+  Widget _artPanel(JourneyChapter chapter, StoryScenePageContent page) {
+    final art = _art(chapter, page);
+    if (widget.scene.role != StorySceneRole.chapter) return art;
+    return Align(child: AspectRatio(aspectRatio: 1, child: art));
+  }
 
   Widget _narrative(BuildContext context, StoryScenePageContent page) {
     final pages = widget.scene.pages;

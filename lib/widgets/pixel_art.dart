@@ -104,6 +104,7 @@ class PixelLandscape extends StatelessWidget {
     this.placement = PixelArtPlacement.story,
     this.frame = 0,
     this.assetPath,
+    this.fit = BoxFit.cover,
   });
 
   final JourneyChapter chapter;
@@ -112,6 +113,7 @@ class PixelLandscape extends StatelessWidget {
   final PixelArtPlacement placement;
   final int frame;
   final String? assetPath;
+  final BoxFit fit;
 
   String get _assetPath => resolveAssetPath(
     chapter: chapter,
@@ -155,21 +157,24 @@ class PixelLandscape extends StatelessWidget {
     );
     return ClipRect(
       child: RepaintBoundary(
-        child: Image.asset(
-          _assetPath,
-          fit: BoxFit.cover,
-          alignment: _alignment,
-          filterQuality: FilterQuality.none,
-          gaplessPlayback: true,
-          excludeFromSemantics: true,
-          frameBuilder: (context, child, imageFrame, wasLoaded) {
-            if (wasLoaded || imageFrame != null) return child;
-            return ColoredBox(
-              key: const ValueKey('pixel-landscape-loading'),
-              color: chapter.palette.background,
-            );
-          },
-          errorBuilder: (context, error, stackTrace) => fallback,
+        child: ColoredBox(
+          color: chapter.palette.background,
+          child: Image.asset(
+            _assetPath,
+            fit: fit,
+            alignment: _alignment,
+            filterQuality: FilterQuality.none,
+            gaplessPlayback: true,
+            excludeFromSemantics: true,
+            frameBuilder: (context, child, imageFrame, wasLoaded) {
+              if (wasLoaded || imageFrame != null) return child;
+              return ColoredBox(
+                key: const ValueKey('pixel-landscape-loading'),
+                color: chapter.palette.background,
+              );
+            },
+            errorBuilder: (context, error, stackTrace) => fallback,
+          ),
         ),
       ),
     );
@@ -250,6 +255,10 @@ class _PixelStorySceneState extends State<PixelStoryScene>
                       placement: widget.placement,
                       frame: frame,
                       assetPath: widget.assetPath,
+                      fit:
+                          widget.kind == PixelSceneKind.chapter
+                              ? BoxFit.contain
+                              : BoxFit.cover,
                     ),
                     if (widget.kind == PixelSceneKind.opening) ...[
                       Align(
