@@ -234,12 +234,7 @@ class _PixelStorySceneState extends State<PixelStoryScene>
             final frame = still ? 0 : (_animation.value * 6).floor() % 6;
             return DecoratedBox(
               decoration: ShapeDecoration(
-                shape: PixelOrganicBorder(
-                  side: BorderSide(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    width: 4,
-                  ),
-                ),
+                shape: const PixelOrganicBorder(),
                 shadows: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: .22),

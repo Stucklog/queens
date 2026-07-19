@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/widgets/pixel_ui.dart';
 
 void main() {
-  test('organic border keeps straight edges and stable rounded corners', () {
+  test('organic border keeps straight edges and pixel-stepped corners', () {
     const border = PixelOrganicBorder(side: BorderSide(width: 2));
     const rect = Rect.fromLTWH(0, 0, 100, 48);
 
@@ -12,6 +12,10 @@ void main() {
 
     expect(outer.getBounds(), rect);
     expect(outer.contains(const Offset(.5, .5)), isFalse);
+    expect(outer.contains(const Offset(6.5, .5)), isTrue);
+    expect(outer.contains(const Offset(4.5, .5)), isFalse);
+    expect(outer.contains(const Offset(4.5, 2.5)), isTrue);
+    expect(outer.contains(const Offset(2.5, 2.5)), isFalse);
     expect(outer.contains(rect.center), isTrue);
     expect(inner.getBounds(), const Rect.fromLTWH(2, 2, 96, 44));
     expect(border.copyWith(), border);

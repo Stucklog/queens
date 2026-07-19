@@ -33,9 +33,9 @@ enum PixelGlyph {
 
 /// A clean, code-native rounded outline inspired by classic game UI panels.
 ///
-/// The edges remain straight and the corners render without antialiasing so the
-/// silhouette feels at home beside the pixel art. [compact] is intended for
-/// controls whose shortest side is below roughly 56 logical pixels.
+/// The edges remain straight while each corner uses a short pixel staircase
+/// instead of a smooth curve. [compact] is intended for controls whose shortest
+/// side is below roughly 56 logical pixels.
 class PixelOrganicBorder extends OutlinedBorder {
   const PixelOrganicBorder({super.side, this.radius = 8}) : assert(radius >= 0);
 
@@ -111,7 +111,7 @@ class PixelOrganicBorder extends OutlinedBorder {
     canvas.drawPath(
       outline,
       side.toPaint()
-        ..strokeJoin = StrokeJoin.round
+        ..strokeJoin = StrokeJoin.miter
         ..isAntiAlias = false,
     );
   }
@@ -134,9 +134,46 @@ Path _pixelRoundedPath(Rect rect, double requestedRadius) {
     math.min(rect.width, rect.height) / 2,
   );
   if (radius < 1) return Path()..addRect(rect);
-  return Path()..addRRect(
-    RRect.fromRectAndRadius(rect, Radius.circular(radius.roundToDouble())),
-  );
+
+  final unit = math.max(1.0, (radius / 4).floorToDouble());
+  final extent = unit * 4;
+  final path = Path()..moveTo(rect.left + extent, rect.top);
+
+  path.lineTo(rect.right - extent, rect.top);
+  for (var step = 1; step <= 4; step++) {
+    path
+      ..lineTo(rect.right - extent + unit * (step - 1), rect.top + unit * step)
+      ..lineTo(rect.right - extent + unit * step, rect.top + unit * step);
+  }
+
+  path.lineTo(rect.right, rect.bottom - extent);
+  for (var step = 1; step <= 4; step++) {
+    path
+      ..lineTo(
+        rect.right - unit * (step - 1),
+        rect.bottom - extent + unit * step,
+      )
+      ..lineTo(rect.right - unit * step, rect.bottom - extent + unit * step);
+  }
+
+  path.lineTo(rect.left + extent, rect.bottom);
+  for (var step = 1; step <= 4; step++) {
+    path
+      ..lineTo(
+        rect.left + extent - unit * step,
+        rect.bottom - unit * (step - 1),
+      )
+      ..lineTo(rect.left + extent - unit * step, rect.bottom - unit * step);
+  }
+
+  path.lineTo(rect.left, rect.top + extent);
+  for (var step = 1; step <= 4; step++) {
+    path
+      ..lineTo(rect.left + unit * (step - 1), rect.top + extent - unit * step)
+      ..lineTo(rect.left + unit * step, rect.top + extent - unit * step);
+  }
+
+  return path..close();
 }
 
 /// A hard-edged, code-native icon drawn on a 16-by-16 logical pixel grid.
