@@ -1941,7 +1941,7 @@ class _PixelKnightSpriteState extends State<PixelKnightSprite>
   }
 }
 
-enum _KnightAtlasKind { common, finisher }
+enum _KnightAtlasKind { legacy, finisher }
 
 class _KnightAnimationSpec {
   const _KnightAnimationSpec({
@@ -1951,7 +1951,7 @@ class _KnightAnimationSpec {
     this.restFrame = 0,
     this.frameCount = 4,
     this.impactFraction = .56,
-    this.atlas = _KnightAtlasKind.common,
+    this.atlas = _KnightAtlasKind.legacy,
   });
 
   final int row;
@@ -1972,36 +1972,36 @@ const _knightAnimationSpecs = <KnightAnimation, _KnightAnimationSpec>{
     frameDuration: Duration(milliseconds: 145),
   ),
   KnightAnimation.bounce: _KnightAnimationSpec(
-    row: 1,
-    firstColumn: 0,
+    row: 0,
+    firstColumn: 4,
     frameDuration: Duration(milliseconds: 190),
   ),
   KnightAnimation.attack: _KnightAnimationSpec(
-    row: 2,
+    row: 1,
     firstColumn: 0,
     frameDuration: Duration(milliseconds: 125),
     restFrame: 2,
   ),
   KnightAnimation.defend: _KnightAnimationSpec(
-    row: 3,
-    firstColumn: 0,
+    row: 1,
+    firstColumn: 4,
     frameDuration: Duration(milliseconds: 170),
     restFrame: 1,
   ),
   KnightAnimation.damage: _KnightAnimationSpec(
-    row: 4,
+    row: 2,
     firstColumn: 0,
     frameDuration: Duration(milliseconds: 155),
     restFrame: 3,
   ),
   KnightAnimation.special: _KnightAnimationSpec(
-    row: 5,
-    firstColumn: 0,
+    row: 2,
+    firstColumn: 4,
     frameDuration: Duration(milliseconds: 180),
     restFrame: 2,
   ),
   KnightAnimation.surprised: _KnightAnimationSpec(
-    row: 6,
+    row: 3,
     firstColumn: 0,
     frameDuration: Duration(milliseconds: 185),
     restFrame: 2,
@@ -2135,8 +2135,22 @@ class _KnightAtlasPainter extends CustomPainter {
     required this.column,
   });
 
-  static const _columns = 4;
-  static const _rows = 7;
+  static const _xBoundaries = <double>[
+    0,
+    240,
+    490,
+    685,
+    900,
+    1110,
+    1310,
+    1520,
+    1774,
+  ];
+  static const _anchors = <double>[130, 350, 575, 790, 1000, 1200, 1405, 1620];
+  static const _yBoundaries = <double>[0, 220, 415, 605, 887];
+  static const _baselines = <double>[190, 390, 580, 780];
+  static const _referenceHeight = 200.0;
+  static const _targetBaseline = .88;
 
   final ui.Image image;
   final int row;
@@ -2144,22 +2158,21 @@ class _KnightAtlasPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final cellWidth = image.width / _columns;
-    final cellHeight = image.height / _rows;
-    final source = Rect.fromLTWH(
-      column * cellWidth,
-      row * cellHeight,
-      cellWidth,
-      cellHeight,
-    );
-    // Preserve the old height-driven scale at narrow decorative call sites;
-    // transparent cell gutters absorb the horizontal clipping while puzzle
-    // stages provide enough width to show the complete authored silhouette.
-    final destination = Rect.fromLTWH(
-      (size.width - size.height) / 2,
-      0,
-      size.height,
-      size.height,
+    final left = _xBoundaries[column];
+    final right = _xBoundaries[column + 1];
+    final top = _yBoundaries[row];
+    final bottom = _yBoundaries[row + 1];
+    final anchor = _anchors[column];
+    final baseline = _baselines[row];
+    final scale = size.height / _referenceHeight;
+    final destinationAnchor = (size.width / 2).roundToDouble();
+    final destinationBaseline = (size.height * _targetBaseline).roundToDouble();
+    final source = Rect.fromLTRB(left, top, right, bottom);
+    final destination = Rect.fromLTRB(
+      destinationAnchor - (anchor - left) * scale,
+      destinationBaseline - (baseline - top) * scale,
+      destinationAnchor + (right - anchor) * scale,
+      destinationBaseline + (bottom - baseline) * scale,
     );
     canvas.save();
     canvas.clipRect(Offset.zero & size);

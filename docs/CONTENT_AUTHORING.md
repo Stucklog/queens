@@ -110,16 +110,6 @@ Review the final 192 px cells as well as their 74 px in-game render before
 accepting an atlas. Every origin boss and in-chapter enemy has its own
 production atlas under `assets/art/combat/opponents/`.
 
-The common knight atlas at `assets/art/knight_animations.png` uses the same
-192 px cell contract: four columns and seven rows, ordered walk, ready bounce,
-attack, defend, damage, special, and surprised. The knight faces right toward
-opponents, while opponents face left. Every common frame uses hard alpha,
-retains the same eight-pixel transparent gutter, keeps the full character and
-equipment in bounds, and contains no chroma-key remnants. The puzzle header
-renders the knight from one fixed top-left stage origin in combat and
-non-combat puzzles; encounters add the enemy immediately to the knight's right
-without moving the knight.
-
 The knight's eight production finisher tracks live in
 `assets/art/combat/knight_finishers.png`: six columns and eight rows, ordered
 Crown Slash, Twin Sigil, Skybreak, Tidal Aegis, Cinderfall, Brass Judgment,
