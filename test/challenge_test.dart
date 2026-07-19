@@ -44,6 +44,21 @@ void main() {
     expect(mixed, DifficultyTier.values.toSet());
   });
 
+  test('extreme challenge specs always use expert 12x12 boards', () {
+    for (final seed in [0, 1, 42, 0x7fffffff]) {
+      for (var number = 1; number <= 16; number++) {
+        final spec = challengeSpec(
+          mode: ChallengeMode.extreme,
+          sessionSeed: seed,
+          number: number,
+        );
+
+        expect(spec.tier, DifficultyTier.expert);
+        expect(spec.size, 12);
+      }
+    }
+  });
+
   test('default challenge factory generates a unique offline board', () async {
     final spec = challengeSpec(
       mode: ChallengeMode.easy,

@@ -640,6 +640,7 @@ class PuzzleGenerator {
         random,
         max(4, minimumStoryBoundaryDistance ~/ 2 + attempt % 3),
         requireAllChanges: true,
+        deferExactCheck: size == 12,
       );
       if (exact == null) {
         diagnostics['could not retain unique solution'] =
@@ -958,6 +959,7 @@ class PuzzleGenerator {
     Random random,
     int desiredChanges, {
     bool requireAllChanges = false,
+    bool deferExactCheck = false,
   }) {
     final size = grid.length;
     final protected = solution.toSet();
@@ -1011,6 +1013,10 @@ class PuzzleGenerator {
             _regionConnected(grid, oldRegion) &&
             _regionConnected(grid, target) &&
             !_hasHole(definition)) {
+          if (deferExactCheck) {
+            changes++;
+            break;
+          }
           final result = exactSolver.solve(
             definition,
             limit: 2,
@@ -1030,8 +1036,31 @@ class PuzzleGenerator {
         grid[cell.row][cell.column] = oldRegion;
       }
     }
-    return changes > 0 && (!requireAllChanges || changes >= desiredChanges)
-        ? latestExact
+    if (changes == 0 || (requireAllChanges && changes < desiredChanges)) {
+      return null;
+    }
+    if (!deferExactCheck) return latestExact;
+
+    // Large boards make checking uniqueness after every boundary move
+    // needlessly expensive. The intended crown cells are protected above, so
+    // they remain a valid solution; verify uniqueness once after the complete
+    // batch instead.
+    final flat = grid.expand((row) => row).toList();
+    final definition = PuzzleDefinition(
+      id: 'regalia:puzzle/system/generation-variant',
+      order: 0,
+      size: size,
+      tier: DifficultyTier.easy,
+      regions: flat,
+      schemaVersion: 2,
+      contentHash: PuzzleDefinition.stableHash(size, flat),
+      difficultyScore: 0,
+    );
+    final result = exactSolver.solve(definition, limit: 2, nodeLimit: 100000);
+    return result.searchComplete &&
+            result.solutionCount == 1 &&
+            result.solutions.single.toSet().containsAll(solution)
+        ? result
         : null;
   }
 

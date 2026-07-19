@@ -18,7 +18,7 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Preserve access to additional puzzles through “Just Puzzle!” or another replay path where appropriate.
   - Update tests, balancing data, and any progress migration needed for existing players.
 
-- [ ] **P1 — Add 12×12 puzzles to “Just Puzzle!”.**
+- [x] **P1 — Add 12×12 puzzles to “Just Puzzle!”.**
   - Include 12×12 boards in the puzzle-only challenge pool.
   - Confirm generation, rendering, marking, validation, hints, completion, and reset behavior work at this size.
   - Balance the available 12×12 puzzles so they provide an appropriate range of difficulty.

@@ -101,6 +101,101 @@ void main() {
     controllerDisposed = true;
   });
 
+  testWidgets(
+    'extreme mode plays, resets, hints, and completes a 12x12 board',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      SharedPreferences.setMockInitialValues({
+        'regalia.tutorialComplete': true,
+        'regalia.journeySchemaVersion': 1,
+      });
+      late AppController controller;
+      controller = AppController(
+        challengePuzzleFactory:
+            (spec, _) async => challengeFixtureForSpec(controller, spec),
+      );
+      await tester.runAsync(controller.initialize);
+      addTearDown(controller.dispose);
+      await tester.pumpWidget(
+        MaterialApp(home: ChallengeScreen(controller: controller)),
+      );
+      await tester.pump();
+
+      final extreme = find.byKey(const ValueKey('challenge-mode-extreme'));
+      await tester.scrollUntilVisible(
+        extreme,
+        300,
+        scrollable: find.byType(Scrollable),
+      );
+      await tester.tap(extreme);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 950));
+
+      expect(find.byType(GameScreen), findsOneWidget);
+      expect(controller.challengeSession?.mode, ChallengeMode.extreme);
+      final puzzle = controller.challengeSession!.currentPuzzle;
+      final board = controller.boardFor(puzzle);
+      expect(puzzle.tier, DifficultyTier.expert);
+      expect(puzzle.size, 12);
+      expect(board.cells, hasLength(144));
+      expect(find.text('Extreme · 12 × 12'), findsOneWidget);
+      expect(find.text('Expert · 12 × 12'), findsNothing);
+
+      final edgeCell = find.byKey(const ValueKey('cell-11-11'));
+      expect(edgeCell, findsOneWidget);
+      await tester.tap(edgeCell);
+      await tester.pump();
+      expect(board.at(const Cell(11, 11)), ManualCellState.cross);
+
+      final reset = find.byTooltip('Reset');
+      await tester.ensureVisible(reset);
+      await tester.tap(reset);
+      await tester.pump();
+      expect(find.text('Reset this attempt?'), findsOneWidget);
+      await tester.tap(find.widgetWithText(FilledButton, 'Reset'));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(board.cells, everyElement(ManualCellState.empty));
+      expect(board.elapsedSeconds, 0);
+
+      final hint = find.text('Hint');
+      await tester.ensureVisible(hint);
+      await tester.tap(hint);
+      await tester.pump();
+      expect(board.hintCount, 1);
+      expect(board.assisted, isTrue);
+      expect(
+        find.byKey(const ValueKey('puzzle-feedback-message')),
+        findsOneWidget,
+      );
+
+      final solution =
+          const ExactSolver().solve(puzzle, limit: 1).solutions.single;
+      for (final cell in solution.take(solution.length - 1)) {
+        controller.setCell(puzzle, cell, ManualCellState.crown);
+      }
+      final last = solution.last;
+      final lastCell = find.byKey(ValueKey('cell-${last.row}-${last.column}'));
+      await tester.ensureVisible(lastCell);
+      await tester.tap(lastCell);
+      await tester.pump();
+      await tester.tap(lastCell);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 900));
+      await tester.pumpAndSettle();
+
+      expect(controller.challengeSession?.currentCompleted, isTrue);
+      expect(controller.challengeSession?.completedCount, 1);
+      expect(controller.challengeSession?.assistedCount, 1);
+      expect(find.text('Next puzzle'), findsOneWidget);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.runAsync(controller.flushPersistence);
+    },
+  );
+
   testWidgets('a slot-two generation never disables the ready next board', (
     tester,
   ) async {

@@ -3,7 +3,7 @@ import '../core/generator.dart';
 import '../content/content_ids.dart';
 import 'journey.dart';
 
-enum ChallengeMode { easy, medium, hard, expert, mixed }
+enum ChallengeMode { easy, medium, hard, expert, extreme, mixed }
 
 extension ChallengeModeDetails on ChallengeMode {
   String get label => switch (this) {
@@ -11,6 +11,7 @@ extension ChallengeModeDetails on ChallengeMode {
     ChallengeMode.medium => 'Medium',
     ChallengeMode.hard => 'Hard',
     ChallengeMode.expert => 'Expert',
+    ChallengeMode.extreme => 'Extreme',
     ChallengeMode.mixed => 'Mixed',
   };
 
@@ -19,7 +20,8 @@ extension ChallengeModeDetails on ChallengeMode {
     ChallengeMode.medium => 'A steady run of 7 × 7 and 8 × 8 boards.',
     ChallengeMode.hard => 'A demanding run of 8 × 8 and 9 × 9 boards.',
     ChallengeMode.expert => 'The deepest 9 × 9 and 10 × 10 deductions.',
-    ChallengeMode.mixed => 'All four difficulties in a changing sequence.',
+    ChallengeMode.extreme => 'Towering 12 × 12 boards for the ultimate test.',
+    ChallengeMode.mixed => 'Easy through Expert in a changing sequence.',
   };
 
   DifficultyTier tierFor(int seed, int number) => switch (this) {
@@ -27,9 +29,13 @@ extension ChallengeModeDetails on ChallengeMode {
     ChallengeMode.medium => DifficultyTier.medium,
     ChallengeMode.hard => DifficultyTier.hard,
     ChallengeMode.expert => DifficultyTier.expert,
+    ChallengeMode.extreme => DifficultyTier.expert,
     ChallengeMode.mixed =>
       DifficultyTier.values[((seed & 0x7fffffff) + number - 1) % 4],
   };
+
+  String difficultyLabelFor(DifficultyTier tier) =>
+      this == ChallengeMode.extreme ? label : tier.label;
 }
 
 class ChallengeGenerationSpec {
@@ -73,12 +79,15 @@ ChallengeGenerationSpec challengeSpec({
 }) {
   final tier = mode.tierFor(sessionSeed, number);
   final larger = ((sessionSeed >> (number % 16)) + number).isOdd;
-  final size = switch (tier) {
-    DifficultyTier.easy => larger ? 7 : 6,
-    DifficultyTier.medium => larger ? 8 : 7,
-    DifficultyTier.hard => larger ? 9 : 8,
-    DifficultyTier.expert => larger ? 10 : 9,
-  };
+  final size =
+      mode == ChallengeMode.extreme
+          ? 12
+          : switch (tier) {
+            DifficultyTier.easy => larger ? 7 : 6,
+            DifficultyTier.medium => larger ? 8 : 7,
+            DifficultyTier.hard => larger ? 9 : 8,
+            DifficultyTier.expert => larger ? 10 : 9,
+          };
   return ChallengeGenerationSpec(
     sessionSeed: sessionSeed,
     number: number,

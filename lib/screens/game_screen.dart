@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../app/app_controller.dart';
+import '../app/challenge.dart';
 import '../app/journey.dart';
 import '../app/theme.dart';
 import '../core/human_solver.dart';
@@ -103,6 +104,14 @@ class _GameScreenState extends State<GameScreen> {
         board,
       )) ...[conflict.first, conflict.second],
     };
+    final challengeMode =
+        widget.playMode == PuzzlePlayMode.challenge &&
+                widget.controller.challengeSession?.currentPuzzle.id ==
+                    puzzle.id
+            ? widget.controller.challengeSession!.mode
+            : null;
+    final difficultyLabel =
+        challengeMode?.difficultyLabelFor(puzzle.tier) ?? puzzle.tier.label;
     final visualChapter =
         widget.playMode == PuzzlePlayMode.challenge
             ? widget.controller.challengeVisualChapter(
@@ -141,7 +150,7 @@ class _GameScreenState extends State<GameScreen> {
                               (declaredEncounter?.isBoss == false
                                   ? declaredEncounter!.name
                                   : null) ??
-                              '${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}',
+                              '$difficultyLabel · ${puzzle.size} × ${puzzle.size}',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         Text(
