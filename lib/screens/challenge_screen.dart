@@ -408,7 +408,7 @@ class _ChallengeRun extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              '${session.currentPuzzle.tier.label} · ${session.currentPuzzle.size} × ${session.currentPuzzle.size} · ${session.mode.label} run',
+              '${session.mode.difficultyLabelFor(session.currentPuzzle.tier)} · ${session.currentPuzzle.size} × ${session.currentPuzzle.size} · ${session.mode.label} run',
             ),
             const SizedBox(height: 14),
             FilledButton.icon(

@@ -25,6 +25,7 @@ void main() {
       (tier: DifficultyTier.hard, size: 9, seed: 7302),
       (tier: DifficultyTier.expert, size: 9, seed: 7303),
       (tier: DifficultyTier.expert, size: 10, seed: 7304),
+      (tier: DifficultyTier.expert, size: 12, seed: 7305),
     ];
 
     for (final testCase in cases) {
