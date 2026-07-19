@@ -243,25 +243,67 @@ void main() {
     timeout: const Timeout(Duration(minutes: 2)),
   );
 
-  testWidgets('final boss finisher resolves cleanly in narrow layout', (
+  testWidgets('final boss finisher attack fills the narrow layout', (
     tester,
   ) async {
     await _goldenFinalBossFinisher(
       tester,
       finalBoss: allOpponents.where((enemy) => enemy.isBoss).last,
       size: const Size(390, 844),
-      file: 'goldens/boss_finisher_narrow_midnight.png',
+      beat: _BossFinisherGoldenBeat.attack,
+      file: 'goldens/boss_finisher_narrow_attack_midnight.png',
     );
   });
 
-  testWidgets('final boss finisher resolves cleanly in wide layout', (
+  testWidgets('final boss defeat fills the narrow layout', (tester) async {
+    await _goldenFinalBossFinisher(
+      tester,
+      finalBoss: allOpponents.where((enemy) => enemy.isBoss).last,
+      size: const Size(390, 844),
+      beat: _BossFinisherGoldenBeat.defeat,
+      file: 'goldens/boss_finisher_narrow_defeat_midnight.png',
+    );
+  });
+
+  testWidgets('final boss victory fills the narrow layout', (tester) async {
+    await _goldenFinalBossFinisher(
+      tester,
+      finalBoss: allOpponents.where((enemy) => enemy.isBoss).last,
+      size: const Size(390, 844),
+      beat: _BossFinisherGoldenBeat.victory,
+      file: 'goldens/boss_finisher_narrow_victory_midnight.png',
+    );
+  });
+
+  testWidgets('final boss finisher attack fills the wide layout', (
     tester,
   ) async {
     await _goldenFinalBossFinisher(
       tester,
       finalBoss: allOpponents.where((enemy) => enemy.isBoss).last,
       size: const Size(1180, 800),
-      file: 'goldens/boss_finisher_wide_midnight.png',
+      beat: _BossFinisherGoldenBeat.attack,
+      file: 'goldens/boss_finisher_wide_attack_midnight.png',
+    );
+  });
+
+  testWidgets('final boss defeat fills the wide layout', (tester) async {
+    await _goldenFinalBossFinisher(
+      tester,
+      finalBoss: allOpponents.where((enemy) => enemy.isBoss).last,
+      size: const Size(1180, 800),
+      beat: _BossFinisherGoldenBeat.defeat,
+      file: 'goldens/boss_finisher_wide_defeat_midnight.png',
+    );
+  });
+
+  testWidgets('final boss victory fills the wide layout', (tester) async {
+    await _goldenFinalBossFinisher(
+      tester,
+      finalBoss: allOpponents.where((enemy) => enemy.isBoss).last,
+      size: const Size(1180, 800),
+      beat: _BossFinisherGoldenBeat.victory,
+      file: 'goldens/boss_finisher_wide_victory_midnight.png',
     );
   });
 
@@ -322,6 +364,7 @@ Future<void> _goldenFinalBossFinisher(
   WidgetTester tester, {
   required CombatEncounter finalBoss,
   required Size size,
+  required _BossFinisherGoldenBeat beat,
   required String file,
 }) async {
   tester.view.physicalSize = size;
@@ -329,12 +372,19 @@ Future<void> _goldenFinalBossFinisher(
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
   final chapter = journeyChapters.last;
+  final presentation = BossFinisherPresentation.forSpectacle(
+    chapter.boss.spectacleLevel,
+  );
   await _precacheOpponents(tester, [finalBoss]);
+  final precacheContext = tester.element(find.byType(Scaffold).first);
+  await tester.runAsync(
+    () => precacheImage(AssetImage(chapter.artAsset), precacheContext),
+  );
   await tester.pumpWidget(
     MaterialApp(
       theme: RegaliaTheme.forChapter(chapter),
       home: MediaQuery(
-        data: MediaQueryData(size: size, disableAnimations: true),
+        data: MediaQueryData(size: size),
         child: RepaintBoundary(
           key: const ValueKey('boss-finisher-golden'),
           child: BossFinisherCutscene(
@@ -352,12 +402,26 @@ Future<void> _goldenFinalBossFinisher(
       ),
     ),
   );
-  await tester.pumpAndSettle();
+  switch (beat) {
+    case _BossFinisherGoldenBeat.attack:
+      await tester.pump(presentation.finisher.presentationDuration * .58);
+    case _BossFinisherGoldenBeat.defeat:
+      await tester.pump(
+        presentation.timing.bossDefeatStart +
+            presentation.timing.bossDefeat * .82,
+      );
+    case _BossFinisherGoldenBeat.victory:
+      await tester.pump(presentation.timing.victoryStart);
+      await tester.pump(KnightAnimation.special.presentationDuration * .52);
+  }
   await expectLater(
     find.byKey(const ValueKey('boss-finisher-golden')),
     matchesGoldenFile(file),
   );
+  await tester.pumpWidget(const SizedBox.shrink());
 }
+
+enum _BossFinisherGoldenBeat { attack, defeat, victory }
 
 class _OpponentReactionCard extends StatelessWidget {
   const _OpponentReactionCard({required this.encounter});

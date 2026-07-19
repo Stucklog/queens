@@ -251,7 +251,6 @@ void main() {
     final presentation = BossFinisherPresentation.forSpectacle(
       boss.spectacleLevel,
     );
-    await tester.pump(presentation.timing.entrance);
     expect(
       tester
           .widget<PixelKnightSprite>(
@@ -266,9 +265,13 @@ void main() {
             find.byKey(const ValueKey('boss-finisher-boss-sprite')),
           )
           .stimulus,
-      KnightAnimation.regaliaNova,
+      KnightAnimation.bounce,
     );
-    expect(find.text('K.O.'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('boss-finisher-phase-final-move')),
+      findsOneWidget,
+    );
+    expect(find.text('K.O.'), findsNothing);
     expect(
       find.byKey(const ValueKey('boss-finisher-special-effects')),
       findsOneWidget,
@@ -276,15 +279,67 @@ void main() {
     expect(find.byKey(const ValueKey('completion-knight')), findsNothing);
 
     await tester.pump(
-      KnightAnimation.regaliaNova.presentationDuration -
+      presentation.timing.finalMove + presentation.timing.panToBoss,
+    );
+    expect(
+      find.byKey(const ValueKey('boss-finisher-phase-boss-defeat')),
+      findsOneWidget,
+    );
+    expect(
+      tester
+          .widget<PixelEnemySprite>(
+            find.byKey(const ValueKey('boss-finisher-boss-sprite')),
+          )
+          .stimulus,
+      KnightAnimation.regaliaNova,
+    );
+    expect(find.byKey(const ValueKey('completion-knight')), findsNothing);
+
+    await tester.pump(presentation.timing.bossDefeat);
+    expect(
+      find.byKey(const ValueKey('boss-finisher-phase-pan-to-knight')),
+      findsOneWidget,
+    );
+    expect(
+      tester
+          .widget<PixelEnemySprite>(
+            find.byKey(const ValueKey('boss-finisher-boss-sprite')),
+          )
+          .frame,
+      3,
+    );
+    expect(
+      tester
+          .widget<PixelKnightSprite>(
+            find.byKey(const ValueKey('boss-finisher-knight-sprite')),
+          )
+          .animation,
+      KnightAnimation.regaliaNova,
+    );
+
+    await tester.pump(presentation.timing.panToKnight);
+    expect(
+      find.byKey(const ValueKey('boss-finisher-phase-victory')),
+      findsOneWidget,
+    );
+    expect(
+      tester
+          .widget<PixelKnightSprite>(
+            find.byKey(const ValueKey('boss-finisher-knight-sprite')),
+          )
+          .animation,
+      KnightAnimation.special,
+    );
+    expect(find.byKey(const ValueKey('completion-knight')), findsNothing);
+
+    await tester.pump(
+      presentation.timing.victory +
+          presentation.timing.exit -
           const Duration(milliseconds: 1),
     );
     expect(find.byKey(const ValueKey('completion-knight')), findsNothing);
-    await tester.pump(const Duration(milliseconds: 20));
-    await tester.pump(
-      KnightAnimation.regaliaNova.postRoll + const Duration(milliseconds: 20),
-    );
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pump();
     expect(find.byKey(const ValueKey('completion-knight')), findsOneWidget);
   });
 }
