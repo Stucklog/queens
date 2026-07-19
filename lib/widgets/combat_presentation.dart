@@ -55,8 +55,8 @@ class CombatPresentationBar extends StatelessWidget {
   static const double height = 126;
   static const double preferredHeight = height + 8;
 
-  static const double knightWidth = 120;
-  static const double knightHeight = 105;
+  static const double knightWidth = 90;
+  static const double knightHeight = 79;
   static const double enemyWidth = 111;
   static const double enemyHeight = 114;
   static const double combatantOverlap = 24;

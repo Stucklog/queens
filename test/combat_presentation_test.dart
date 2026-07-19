@@ -49,7 +49,7 @@ void main() {
   );
 
   testWidgets(
-    'puzzle stage pins the enlarged knight and places the enemy beside her',
+    'puzzle stage pins the scaled knight and places the enemy beside her',
     (tester) async {
       tester.view.physicalSize = const Size(390, 180);
       tester.view.devicePixelRatio = 1;
@@ -91,8 +91,8 @@ void main() {
         find.byKey(const ValueKey('puzzle-knight-sprite')),
       );
       final soloKnightOffset = soloKnightRect.topLeft - soloStageRect.topLeft;
-      expect(soloKnightRect.size, const Size(120, 105));
-      expect(soloStageRect.size, const Size(120, 114));
+      expect(soloKnightRect.size, const Size(90, 79));
+      expect(soloStageRect.size, const Size(90, 114));
 
       await pumpBar(_layoutTestEncounter);
       final combatStageRect = tester.getRect(
@@ -110,9 +110,9 @@ void main() {
         combatKnightRect.topLeft - combatStageRect.topLeft,
         soloKnightOffset,
       );
-      expect(combatKnightRect.size, const Size(120, 105));
+      expect(combatKnightRect.size, const Size(90, 79));
       expect(enemyRect.size, const Size(111, 114));
-      expect(combatStageRect.size, const Size(207, 114));
+      expect(combatStageRect.size, const Size(177, 114));
       expect(enemyRect.left, combatKnightRect.right - 24);
       expect(enemyRect.bottom, combatKnightRect.bottom);
       expect(enemyRect.bottom, combatStageRect.bottom);
