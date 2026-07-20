@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/app/challenge.dart';
+import 'package:regalia/app/journey.dart';
 import 'package:regalia/content/content_ids.dart';
 import 'package:regalia/content/content_models.dart';
 import 'package:regalia/content/content_repository.dart';
@@ -118,6 +119,11 @@ void main() {
       expect(
         arc.sceneById(arc.chapters.last.sceneId).artAsset,
         arc.chapters.last.artAsset,
+      );
+      expect(
+        arc.chapters.map((chapter) => chapter.caption),
+        orderedEquals(journeyChapters.map((chapter) => chapter.caption)),
+        reason: 'packaged chapter copy and offline fallback must stay in sync',
       );
     },
   );

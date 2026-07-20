@@ -73,12 +73,16 @@ does not write story or progression state. The scene-level `artAsset` is shared
 by its pages, and opening/finale cinematics retain the principal character
 sprites while chapter-start cinematics show environment art alone.
 
-Visible narrative copy should be scene-led rather than read like a quest log:
-give each page a concrete sensory image, an immediate choice or threat, and a
-distinct emotional turn. Avoid repeating a place/problem/jewel/boss summary
-from chapter to chapter. Keep the separate `semanticLabel` literal and concise
-so the more lyrical visible prose never makes the artwork description less
-useful to assistive technology.
+Visible narrative copy should use clear, scene-led fantasy prose rather than
+read like either a quest log or a lore poem. Describe magical events as plainly
+as historical events: establish where the character is, what physically
+happens, why it matters, and what choice or threat follows. Give each paragraph
+one restrained sensory detail, but do not hide cause and effect behind stacked
+metaphors, personification, or unexplained invented terms. A reader should
+understand each page on the first pass using only facts established by earlier
+scenes. Avoid repeating the same place/problem/jewel/boss summary from chapter
+to chapter. Keep the separate `semanticLabel` literal and concise for assistive
+technology.
 
 ## Origin chapter bosses
 

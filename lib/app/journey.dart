@@ -216,7 +216,7 @@ const journeyChapters = <JourneyChapter>[
     visualIndex: 0,
     title: 'Asterfall Vale',
     caption:
-        'Where heaven struck the earth, the fallen Regalia chooses its bearer.',
+        'The Regalia fell in Asterfall Vale, where the Starfall Stag guards the shrine that can restore its first jewel.',
     startOrder: 1,
     endOrder: 9,
     difficulty: DifficultyTier.easy,
@@ -245,7 +245,8 @@ const journeyChapters = <JourneyChapter>[
     artAsset: 'assets/art/backgrounds/chapter_whisperwood.webp',
     visualIndex: 1,
     title: 'Myrrhveil Wilds',
-    caption: 'Ancient roots part for the crown—and wake what sleeps below.',
+    caption:
+        'A hidden path through Myrrhveil leads to the Elderroot Wyrm and the power needed to restore the second jewel.',
     startOrder: 10,
     endOrder: 18,
     difficulty: DifficultyTier.easy,
@@ -275,7 +276,7 @@ const journeyChapters = <JourneyChapter>[
     visualIndex: 2,
     title: 'Skyglass Reach',
     caption:
-        'Ancient wind arches awaken, carrying the bearer beyond the storm.',
+        'The Tempest Roc has trapped Skyglass Reach in a storm and cut off its floating islands.',
     startOrder: 19,
     endOrder: 27,
     difficulty: DifficultyTier.medium,
@@ -305,7 +306,7 @@ const journeyChapters = <JourneyChapter>[
     visualIndex: 3,
     title: 'Nacre Basilica',
     caption:
-        'Beneath the drowned bells, a forgotten covenant opens the deep road.',
+        'The flooded city’s silent bell tower holds the power needed to restore the fourth jewel.',
     startOrder: 28,
     endOrder: 36,
     difficulty: DifficultyTier.medium,
@@ -334,7 +335,8 @@ const journeyChapters = <JourneyChapter>[
     artAsset: 'assets/art/backgrounds/chapter_emberbell_caverns.webp',
     visualIndex: 4,
     title: 'Pyreheart Caldera',
-    caption: 'At the world’s molten heart, living crystal answers the crown.',
+    caption:
+        'The Cindermaw Behemoth blocks the ancient forge where the fifth jewel can be restored.',
     startOrder: 37,
     endOrder: 45,
     difficulty: DifficultyTier.hard,
@@ -363,7 +365,8 @@ const journeyChapters = <JourneyChapter>[
     artAsset: 'assets/art/backgrounds/chapter_goblin_underkeep.webp',
     visualIndex: 5,
     title: 'Brasswake Arsenal',
-    caption: 'The old empire’s last war-engine wakes to bar the ascent.',
+    caption:
+        'The Gilded War Colossus guards the sixth jewel’s power and the only lift to the upper realms.',
     startOrder: 46,
     endOrder: 54,
     difficulty: DifficultyTier.hard,
@@ -393,7 +396,7 @@ const journeyChapters = <JourneyChapter>[
     visualIndex: 6,
     title: 'Pale Moon Necropolis',
     caption:
-        'Seven fallen queens rise beneath the pale moon to judge the bearer.',
+        'The spirits of seven former queens test the knight’s right to carry the Regalia.',
     startOrder: 55,
     endOrder: 63,
     difficulty: DifficultyTier.expert,
@@ -422,7 +425,8 @@ const journeyChapters = <JourneyChapter>[
     artAsset: 'assets/art/backgrounds/chapter_crownspire_final.png',
     visualIndex: 7,
     title: 'Empyrean Citadel',
-    caption: 'Above the clouds, the vacant throne waits beneath a dying sun.',
+    caption:
+        'The Hollow Star has trapped the Queen inside the deserted citadel and kept the final jewel dark.',
     startOrder: 64,
     endOrder: 72,
     difficulty: DifficultyTier.expert,
