@@ -10,6 +10,20 @@ void main() {
     expect(atlas.width, 1776);
     expect(atlas.height, 2368);
     _expectAnimatedAtlas(atlas, columns: 6, rows: 8);
+    _expectTransparentCellGutters(
+      atlas,
+      columns: 6,
+      rows: 8,
+      gutter: 24,
+      reason: 'knight finisher atlas',
+    );
+    _expectNoLongVerticalContentEdges(
+      atlas,
+      columns: 6,
+      rows: 8,
+      maxRun: 56,
+      reason: 'knight finisher atlas',
+    );
   });
 
   test('every declared opponent has a complete six-reaction atlas', () {
@@ -167,4 +181,81 @@ void _expectTransparentCellGutters(
     reason:
         '${reason ?? 'atlas'} crosses a cell gutter: ${offenders.join(', ')}',
   );
+}
+
+void _expectNoLongVerticalContentEdges(
+  image_lib.Image atlas, {
+  required int columns,
+  required int rows,
+  required int maxRun,
+  String? reason,
+}) {
+  final cellWidth = atlas.width ~/ columns;
+  final cellHeight = atlas.height ~/ rows;
+  final offenders = <String>[];
+  for (var row = 0; row < rows; row++) {
+    for (var column = 0; column < columns; column++) {
+      var left = cellWidth;
+      var right = -1;
+      var top = cellHeight;
+      var bottom = -1;
+      for (var y = 0; y < cellHeight; y++) {
+        for (var x = 0; x < cellWidth; x++) {
+          final pixel = atlas.getPixel(
+            column * cellWidth + x,
+            row * cellHeight + y,
+          );
+          if (pixel.a < 16) continue;
+          left = left < x ? left : x;
+          right = right > x ? right : x;
+          top = top < y ? top : y;
+          bottom = bottom > y ? bottom : y;
+        }
+      }
+      if (right < left || bottom < top) continue;
+      final leftRun = _longestAlphaRun(
+        atlas,
+        x: column * cellWidth + left,
+        top: row * cellHeight + top,
+        bottom: row * cellHeight + bottom,
+      );
+      final rightRun = _longestAlphaRun(
+        atlas,
+        x: column * cellWidth + right,
+        top: row * cellHeight + top,
+        bottom: row * cellHeight + bottom,
+      );
+      if (leftRun > maxRun || rightRun > maxRun) {
+        offenders.add(
+          'row $row frame $column (left $leftRun, right $rightRun)',
+        );
+      }
+    }
+  }
+  expect(
+    offenders,
+    isEmpty,
+    reason:
+        '${reason ?? 'atlas'} contains a likely pre-cropped vertical effect: '
+        '${offenders.join(', ')}',
+  );
+}
+
+int _longestAlphaRun(
+  image_lib.Image atlas, {
+  required int x,
+  required int top,
+  required int bottom,
+}) {
+  var longest = 0;
+  var current = 0;
+  for (var y = top; y <= bottom; y++) {
+    if (atlas.getPixel(x, y).a >= 16) {
+      current++;
+      if (current > longest) longest = current;
+    } else {
+      current = 0;
+    }
+  }
+  return longest;
 }
