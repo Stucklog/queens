@@ -1,0 +1,550 @@
+import 'package:flutter/material.dart';
+
+import '../app/app_controller.dart';
+import '../app/bestiary.dart';
+import '../app/journey.dart';
+import '../app/theme.dart';
+import '../content/content_models.dart';
+import '../widgets/combat_presentation.dart';
+import '../widgets/pixel_ui.dart';
+
+class BestiaryScreen extends StatelessWidget {
+  const BestiaryScreen({super.key, required this.controller});
+
+  final AppController controller;
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      leading: const PixelBackButton(),
+      title: const Text('Bestiary'),
+    ),
+    body: SafeArea(
+      top: false,
+      child: AnimatedBuilder(
+        animation: controller,
+        builder: (context, _) {
+          final arcs = [
+            for (final arc in controller.availableStoryArcs)
+              BestiaryArcProgress.derive(
+                arc: arc,
+                recordFor: controller.recordFor,
+              ),
+          ];
+          final total = arcs.fold<int>(
+            0,
+            (value, arc) => value + arc.totalCount,
+          );
+          final defeated = arcs.fold<int>(
+            0,
+            (value, arc) => value + arc.defeatedCount,
+          );
+          return ListView(
+            key: const ValueKey('bestiary-list'),
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
+            children: [
+              _BestiaryHeader(defeated: defeated, total: total),
+              const SizedBox(height: 18),
+              if (arcs.isEmpty)
+                const PixelPanel(
+                  child: Text(
+                    'No story bestiary is available in this edition.',
+                  ),
+                )
+              else
+                for (final arc in arcs) ...[
+                  _ArcBestiarySection(progress: arc),
+                  const SizedBox(height: 20),
+                ],
+            ],
+          );
+        },
+      ),
+    ),
+  );
+}
+
+class _BestiaryHeader extends StatelessWidget {
+  const _BestiaryHeader({required this.defeated, required this.total});
+
+  final int defeated;
+  final int total;
+
+  @override
+  Widget build(BuildContext context) => PixelPanel(
+    borderColor: Theme.of(context).colorScheme.secondary,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'The Crown-Bearer’s Bestiary',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'Defeat story foes to reveal them, then study every movement in their battle atlas.',
+        ),
+        const SizedBox(height: 16),
+        PixelProgressBar(
+          value: total == 0 ? 0 : defeated / total,
+          segments: total == 0 ? 1 : total,
+          semanticLabel: 'Bestiary progress',
+          semanticValue: '$defeated of $total foes defeated',
+        ),
+        const SizedBox(height: 8),
+        Text(
+          '$defeated / $total foes revealed',
+          key: const ValueKey('bestiary-total-progress'),
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ],
+    ),
+  );
+}
+
+class _ArcBestiarySection extends StatelessWidget {
+  const _ArcBestiarySection({required this.progress});
+
+  final BestiaryArcProgress progress;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    key: ValueKey('bestiary-arc-${progress.arc.id}'),
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Expanded(
+            child: Text(
+              progress.arc.title,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Text(
+            '${progress.defeatedCount} / ${progress.totalCount}',
+            key: ValueKey('bestiary-arc-progress-${progress.arc.id}'),
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 12),
+      LayoutBuilder(
+        builder: (context, constraints) {
+          const spacing = 12.0;
+          final twoColumns = constraints.maxWidth >= 520;
+          final cardWidth =
+              twoColumns
+                  ? (constraints.maxWidth - spacing) / 2
+                  : constraints.maxWidth;
+          return Wrap(
+            spacing: spacing,
+            runSpacing: spacing,
+            children: [
+              for (final chapter in progress.chapters)
+                SizedBox(
+                  width: cardWidth,
+                  child: _ChapterBestiaryPanel(
+                    arc: progress.arc,
+                    progress: chapter,
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+    ],
+  );
+}
+
+class _ChapterBestiaryPanel extends StatelessWidget {
+  const _ChapterBestiaryPanel({required this.arc, required this.progress});
+
+  final StoryArc arc;
+  final BestiaryChapterProgress progress;
+
+  @override
+  Widget build(BuildContext context) {
+    final chapter = progress.chapter;
+    return PixelPanel(
+      key: ValueKey('bestiary-chapter-${chapter.id}'),
+      padding: const EdgeInsets.all(12),
+      borderColor: chapter.palette.secondary,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  chapter.title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                '${progress.defeatedCount}/${progress.foes.length}',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: chapter.palette.secondary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          for (var index = 0; index < progress.foes.length; index++) ...[
+            _FoeSlot(
+              slotKey: ValueKey(
+                'bestiary-slot-${arc.id}-${chapter.visualIndex}-$index',
+              ),
+              chapter: chapter,
+              entry: progress.foes[index],
+            ),
+            if (index + 1 < progress.foes.length) const SizedBox(height: 8),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _FoeSlot extends StatelessWidget {
+  const _FoeSlot({
+    required this.slotKey,
+    required this.chapter,
+    required this.entry,
+  });
+
+  final Key slotKey;
+  final JourneyChapter chapter;
+  final BestiaryFoeEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!entry.defeated) {
+      return Semantics(
+        key: slotKey,
+        container: true,
+        label: 'Undiscovered foe. Defeat this story encounter to reveal it.',
+        child: ExcludeSemantics(
+          child: Container(
+            constraints: const BoxConstraints(minHeight: 72),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: ShapeDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerLow,
+              shape: PixelOrganicBorder.compact(
+                side: BorderSide(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                  width: 2,
+                ),
+              ),
+            ),
+            child: Row(
+              children: [
+                PixelIcon(
+                  PixelGlyph.lock,
+                  size: 32,
+                  color: Theme.of(context).colorScheme.outline,
+                  excludeFromSemantics: true,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '???',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const Text('Undiscovered foe'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    final encounter = entry.encounter;
+    return Semantics(
+      key: slotKey,
+      button: true,
+      excludeSemantics: true,
+      label:
+          '${encounter.isBoss ? 'Boss' : 'Enemy'} ${encounter.name}. Open animation study.',
+      child: Material(
+        color: Colors.transparent,
+        shape: PixelOrganicBorder.compact(
+          side: BorderSide(color: chapter.palette.secondary, width: 2),
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: InkWell(
+          key: ValueKey('open-bestiary-foe-${encounter.id}'),
+          onTap:
+              () => Navigator.of(context).push<void>(
+                MaterialPageRoute(
+                  builder:
+                      (_) => BestiaryFoeScreen(
+                        encounter: encounter,
+                        chapter: chapter,
+                      ),
+                ),
+              ),
+          customBorder: const PixelOrganicBorder.compact(),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 5, 10, 5),
+            child: Row(
+              children: [
+                PixelEnemySprite.preview(
+                  key: ValueKey('bestiary-thumbnail-${encounter.id}'),
+                  encounter: encounter,
+                  reaction: EnemyReaction.idle,
+                  frame: 0,
+                  width: 62,
+                  height: 62,
+                ),
+                const SizedBox(width: 9),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        encounter.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        encounter.isBoss ? 'Boss · Defeated' : 'Foe · Defeated',
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: chapter.palette.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 6),
+                PixelIcon(
+                  PixelGlyph.arrowRight,
+                  color: chapter.palette.secondary,
+                  size: 24,
+                  excludeFromSemantics: true,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BestiaryFoeScreen extends StatefulWidget {
+  const BestiaryFoeScreen({
+    super.key,
+    required this.encounter,
+    required this.chapter,
+  });
+
+  final CombatEncounter encounter;
+  final JourneyChapter chapter;
+
+  @override
+  State<BestiaryFoeScreen> createState() => _BestiaryFoeScreenState();
+}
+
+class _BestiaryFoeScreenState extends State<BestiaryFoeScreen> {
+  EnemyReaction _reaction = EnemyReaction.idle;
+  int _restartToken = 0;
+
+  void _replay(EnemyReaction reaction) {
+    setState(() {
+      _reaction = reaction;
+      _restartToken++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => Theme(
+    data: RegaliaTheme.forChapter(widget.chapter),
+    child: Builder(
+      builder:
+          (context) => Scaffold(
+            appBar: AppBar(
+              leading: const PixelBackButton(),
+              title: Text(widget.encounter.name),
+            ),
+            body: SafeArea(
+              top: false,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final wide = constraints.maxWidth >= 520;
+                  final stage = _ReactionStage(
+                    encounter: widget.encounter,
+                    reaction: _reaction,
+                    restartToken: _restartToken,
+                  );
+                  final controls = _ReactionControls(
+                    selected: _reaction,
+                    onReplay: _replay,
+                  );
+                  return SingleChildScrollView(
+                    key: const ValueKey('bestiary-foe-scroll'),
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 760),
+                        child:
+                            wide
+                                ? Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(child: stage),
+                                    const SizedBox(width: 16),
+                                    Expanded(child: controls),
+                                  ],
+                                )
+                                : Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    stage,
+                                    const SizedBox(height: 16),
+                                    controls,
+                                  ],
+                                ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+    ),
+  );
+}
+
+class _ReactionStage extends StatelessWidget {
+  const _ReactionStage({
+    required this.encounter,
+    required this.reaction,
+    required this.restartToken,
+  });
+
+  final CombatEncounter encounter;
+  final EnemyReaction reaction;
+  final int restartToken;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    container: true,
+    liveRegion: true,
+    label: '${encounter.name}. ${reaction.replayLabel} animation.',
+    child: ExcludeSemantics(
+      child: PixelPanel(
+        key: const ValueKey('bestiary-reaction-stage'),
+        borderColor: Theme.of(context).colorScheme.secondary,
+        child: Column(
+          children: [
+            Text(
+              encounter.isBoss ? 'DEFEATED BOSS' : 'DEFEATED FOE',
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              encounter.name,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 208,
+              child: Center(
+                child: PixelEnemySprite.preview(
+                  key: const ValueKey('bestiary-replay-sprite'),
+                  encounter: encounter,
+                  reaction: reaction,
+                  restartToken: restartToken,
+                  width: 196,
+                  height: 196,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              reaction.label,
+              key: const ValueKey('bestiary-reaction-label'),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+class _ReactionControls extends StatelessWidget {
+  const _ReactionControls({required this.selected, required this.onReplay});
+
+  final EnemyReaction selected;
+  final ValueChanged<EnemyReaction> onReplay;
+
+  @override
+  Widget build(BuildContext context) => PixelPanel(
+    key: const ValueKey('bestiary-reaction-controls'),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'Replay animations',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: 6),
+        const Text('Choose a movement. Tap it again to replay from frame one.'),
+        const SizedBox(height: 14),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            const spacing = 8.0;
+            final buttonWidth = (constraints.maxWidth - spacing) / 2;
+            return Wrap(
+              spacing: spacing,
+              runSpacing: spacing,
+              children: [
+                for (final reaction in EnemyReaction.values)
+                  SizedBox(
+                    width: buttonWidth,
+                    child:
+                        reaction == selected
+                            ? FilledButton(
+                              key: ValueKey(
+                                'bestiary-reaction-${reaction.name}',
+                              ),
+                              onPressed: () => onReplay(reaction),
+                              child: Text(reaction.replayLabel),
+                            )
+                            : OutlinedButton(
+                              key: ValueKey(
+                                'bestiary-reaction-${reaction.name}',
+                              ),
+                              onPressed: () => onReplay(reaction),
+                              child: Text(reaction.replayLabel),
+                            ),
+                  ),
+              ],
+            );
+          },
+        ),
+      ],
+    ),
+  );
+}

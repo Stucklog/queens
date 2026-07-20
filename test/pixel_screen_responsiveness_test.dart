@@ -142,7 +142,7 @@ void main() {
     expect(find.byKey(const ValueKey('puzzle-enemy-sprite')), findsOneWidget);
     expect(
       tester.getRect(find.byKey(const ValueKey('puzzle-knight-sprite'))).size,
-      const Size(90, 79),
+      const Size(104, 79),
     );
     expect(
       tester.getRect(find.byKey(const ValueKey('puzzle-enemy-sprite'))).size,

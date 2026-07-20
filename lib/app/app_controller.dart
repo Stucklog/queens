@@ -84,6 +84,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   final Map<String, BoardState> boards = {};
   final Map<String, CompletionRecord> records = {};
   final Set<String> seenStoryBeatIds = {};
+  final Set<String> supportPromptedChapterIds = {};
   final Set<String> unlockedContentIds = {};
   final Set<String> completedAcademyLessonIds = {};
   ChallengeSession? challengeSession;
@@ -200,6 +201,14 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     }
     unlockedContentIds.addAll(
       _preferences.getStringList(SaveIds.unlockedContentIds) ?? const [],
+    );
+    final packagedChapterIds = {
+      for (final arc in availableStoryArcs)
+        for (final chapter in arc.chapters) chapter.id,
+    };
+    supportPromptedChapterIds.addAll(
+      (_preferences.getStringList(SaveIds.supportPromptedChapters) ?? const [])
+          .where(packagedChapterIds.contains),
     );
     if (_preferences.getInt('regalia.journeySchemaVersion') !=
         journeySchemaVersion) {
@@ -979,6 +988,33 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     );
   }
 
+  /// Claims the one-time web support prompt after the puzzle immediately
+  /// before a chapter boss. Returning a chapter means the caller owns showing
+  /// that prompt; the claim is persisted before UI is presented.
+  Future<JourneyChapter?> claimSupportPromptAfter(
+    StoryArc arc,
+    PuzzleDefinition puzzle,
+  ) async {
+    if (contentPolicy.channel != ReleaseChannel.web ||
+        arcForPuzzle(puzzle)?.id != arc.id) {
+      return null;
+    }
+    final status = recordFor(puzzle.id).status;
+    if (status != CompletionStatus.cleanSolved &&
+        status != CompletionStatus.assistedSolved) {
+      return null;
+    }
+    final chapter = arc.chapterForOrder(puzzle.order);
+    if (chapter.endOrder <= chapter.startOrder ||
+        puzzle.order != chapter.endOrder - 1 ||
+        !supportPromptedChapterIds.add(chapter.id)) {
+      return null;
+    }
+    notifyListeners();
+    await _save();
+    return chapter;
+  }
+
   CompletionStatus statusFor(PuzzleDefinition puzzle) =>
       hasActiveBoard(puzzle)
           ? CompletionStatus.inProgress
@@ -1276,6 +1312,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     boards.removeWhere((id, _) => belongs(id, 'puzzle'));
     records.removeWhere((id, _) => belongs(id, 'puzzle'));
     seenStoryBeatIds.removeWhere((id) => belongs(id, 'scene'));
+    supportPromptedChapterIds.removeWhere((id) => belongs(id, 'chapter'));
     unlockedContentIds.removeWhere((id) => belongs(id, 'unlock'));
     if (lastPuzzleId != null && belongs(lastPuzzleId!, 'puzzle')) {
       lastPuzzleId = null;
@@ -1312,6 +1349,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     boards.clear();
     records.clear();
     seenStoryBeatIds.clear();
+    supportPromptedChapterIds.clear();
     completedAcademyLessonIds.clear();
     tutorialComplete = false;
     unlockedContentIds.clear();
@@ -1389,6 +1427,10 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         _preferences.setStringList(
           SaveIds.unlockedContentIds,
           unlockedContentIds.toList()..sort(),
+        ),
+        _preferences.setStringList(
+          SaveIds.supportPromptedChapters,
+          supportPromptedChapterIds.toList()..sort(),
         ),
         if (challengeJson == null)
           _preferences.remove(SaveIds.justPuzzleSession)

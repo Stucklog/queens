@@ -144,12 +144,12 @@ class BossFinisherPresentation {
   );
 }
 
-/// A full-screen, three-shot boss finisher.
+/// A full-screen, three-shot encounter victory.
 ///
-/// The camera begins on the knight's complete special move, pans to the boss
-/// for its defeat animation, then returns to the knight's victory stance. Only
-/// one combatant owns the screen at a time; this intentionally does not reuse
-/// the split-screen encounter-introduction composition.
+/// The camera begins on the knight's complete special move, pans to the
+/// opponent for its defeat animation, then returns to the knight's victory
+/// stance. Only one combatant owns the screen at a time; this intentionally
+/// does not reuse the split-screen encounter-introduction composition.
 class BossFinisherCutscene extends StatefulWidget {
   BossFinisherCutscene({
     super.key,
@@ -167,7 +167,9 @@ class BossFinisherCutscene extends StatefulWidget {
            presentation ??
            BossFinisherPresentation.forSpectacle(boss.spectacleLevel);
 
-  final ChapterBoss boss;
+  /// The defeated opponent. Regular chapter enemies use the same authored
+  /// sequence as bosses, while their labels remain encounter-specific.
+  final CombatEncounter boss;
   final Widget background;
   final VoidCallback onFinished;
   final BossFinisherPresentation presentation;
@@ -263,7 +265,8 @@ class _BossFinisherCutsceneState extends State<BossFinisherCutscene>
         namesRoute: true,
         liveRegion: true,
         label:
-            'Boss finisher. ${widget.presentation.specialMoveName}. '
+            '${widget.boss.isBoss ? 'Boss finisher' : 'Encounter victory'}. '
+            '${widget.presentation.specialMoveName}. '
             '${widget.boss.name} is defeated. The crown-bearer is victorious.',
         child: ExcludeSemantics(
           child: AbsorbPointer(
@@ -315,7 +318,7 @@ class _BossFinisherFrame extends StatelessWidget {
   final double progress;
   final bool reducedMotion;
   final BossFinisherPresentation presentation;
-  final ChapterBoss boss;
+  final CombatEncounter boss;
   final Widget background;
   final Widget? knightArt;
   final Widget? victoryArt;
@@ -368,8 +371,11 @@ class _BossFinisherFrame extends StatelessWidget {
         key: const ValueKey('boss-finisher-knight-sprite'),
         animation: isVictory ? KnightAnimation.special : presentation.finisher,
         restartToken: restartToken,
-        width: 300,
-        height: 276,
+        // Legacy victory frames are wider than they are tall. This viewport
+        // preserves their complete authored canvas before the outer shot fits
+        // it to the available screen space.
+        width: 420,
+        height: 320,
       );
       final activeKnightArt =
           isVictory
@@ -450,11 +456,14 @@ class _BossFinisherFrame extends StatelessWidget {
             width: width,
             height: height,
             child: _BossFinisherFocus(
+              focusId: 'knight',
               art: activeKnightArt,
               eyebrow:
                   isVictory
                       ? 'VICTORY'
-                      : 'REGALIA SPECIAL · ${presentation.spectacleLevel}/8',
+                      : boss.isBoss
+                      ? 'REGALIA SPECIAL · ${presentation.spectacleLevel}/8'
+                      : 'ENCOUNTER SPECIAL',
               title:
                   isVictory
                       ? 'CROWN-BEARER'
@@ -474,8 +483,10 @@ class _BossFinisherFrame extends StatelessWidget {
             width: width,
             height: height,
             child: _BossFinisherFocus(
+              focusId: 'opponent',
               art: activeBossArt,
-              eyebrow: 'BOSS · FINAL STAND',
+              eyebrow:
+                  boss.isBoss ? 'BOSS · FINAL STAND' : 'ENEMY · FINAL STAND',
               title: boss.name,
               footer:
                   defeatProgress >= .75 ? 'DEFEATED' : 'THE FINAL BLOW LANDS',
@@ -556,6 +567,7 @@ class _BossFinisherFrame extends StatelessWidget {
 
 class _BossFinisherFocus extends StatelessWidget {
   const _BossFinisherFocus({
+    required this.focusId,
     required this.art,
     required this.eyebrow,
     required this.title,
@@ -568,6 +580,7 @@ class _BossFinisherFocus extends StatelessWidget {
     this.defeatedProgress = 0,
   });
 
+  final String focusId;
   final Widget art;
   final String eyebrow;
   final String title;
@@ -582,9 +595,6 @@ class _BossFinisherFocus extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
-      final artExtent = math
-          .min(constraints.maxWidth * .78, constraints.maxHeight * .62)
-          .clamp(220.0, 520.0);
       final titleStyle = Theme.of(context).textTheme.headlineMedium?.copyWith(
         fontWeight: FontWeight.w800,
         height: .95,
@@ -598,90 +608,102 @@ class _BossFinisherFocus extends StatelessWidget {
       );
       return SafeArea(
         minimum: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-        child: Stack(
-          fit: StackFit.expand,
+        child: Column(
           children: [
-            if (showVictoryAura)
-              Center(
-                child: Opacity(
-                  opacity: emphasis.clamp(0.0, 1.0),
-                  child: Container(
-                    width: artExtent * 1.25,
-                    height: artExtent * 1.25,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        colors: [
-                          energy.withValues(alpha: .28),
-                          accent.withValues(alpha: .1),
-                          Colors.transparent,
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            Align(
-              alignment: const Alignment(0, -.08),
-              child: Transform.scale(
-                scale: emphasis.clamp(.82, 1.08),
-                child: SizedBox.square(
-                  dimension: artExtent,
-                  child: FittedBox(fit: BoxFit.contain, child: art),
-                ),
-              ),
-            ),
             Opacity(
               opacity: labelOpacity,
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  eyebrow,
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: labelStyle,
-                ),
+              child: Text(
+                eyebrow,
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                style: labelStyle,
               ),
             ),
-            Opacity(
-              opacity: labelOpacity,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: const Color(0xc7080d20),
-                    border: Border.all(color: accent, width: 2),
-                    boxShadow: const [
-                      BoxShadow(color: Color(0xaa000000), offset: Offset(5, 5)),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(18, 10, 18, 9),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          title,
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: titleStyle,
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          footer,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: labelStyle?.copyWith(
-                            color:
-                                defeatedProgress > 0
-                                    ? energy
-                                    : labelStyle.color,
+            const SizedBox(height: 10),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, artConstraints) {
+                  final artExtent = math
+                      .min(
+                        artConstraints.maxWidth * .94,
+                        artConstraints.maxHeight * .98,
+                      )
+                      .clamp(80.0, 560.0);
+                  return Stack(
+                    key: ValueKey('boss-finisher-$focusId-art-viewport'),
+                    fit: StackFit.expand,
+                    clipBehavior: Clip.none,
+                    children: [
+                      if (showVictoryAura)
+                        Center(
+                          child: Opacity(
+                            opacity: emphasis.clamp(0.0, 1.0),
+                            child: Container(
+                              width: artExtent * 1.25,
+                              height: artExtent * 1.25,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: RadialGradient(
+                                  colors: [
+                                    energy.withValues(alpha: .28),
+                                    accent.withValues(alpha: .1),
+                                    Colors.transparent,
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ],
-                    ),
+                      Center(
+                        child: Transform.scale(
+                          scale: emphasis.clamp(.82, 1.08),
+                          child: SizedBox.square(
+                            dimension: artExtent,
+                            child: FittedBox(fit: BoxFit.contain, child: art),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 10),
+            Opacity(
+              opacity: labelOpacity,
+              child: DecoratedBox(
+                key: ValueKey('boss-finisher-$focusId-caption'),
+                decoration: BoxDecoration(
+                  color: const Color(0xc7080d20),
+                  border: Border.all(color: accent, width: 2),
+                  boxShadow: const [
+                    BoxShadow(color: Color(0xaa000000), offset: Offset(5, 5)),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 10, 18, 9),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        title,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: titleStyle,
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        footer,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: labelStyle?.copyWith(
+                          color:
+                              defeatedProgress > 0 ? energy : labelStyle.color,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

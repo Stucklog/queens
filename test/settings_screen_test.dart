@@ -6,6 +6,7 @@ import 'package:regalia/content/content_ids.dart';
 import 'package:regalia/core/models.dart';
 import 'package:regalia/main.dart';
 import 'package:regalia/screens/settings_screen.dart';
+import 'package:regalia/widgets/support_developer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -207,6 +208,105 @@ void main() {
     await tester.pump();
 
     expect(find.text('Welcome to Queen’s Regalia'), findsOneWidget);
+  });
+
+  testWidgets('master and story arc settings expose the support link', (
+    tester,
+  ) async {
+    final controller = await _controller(tester);
+    final launched = <Uri>[];
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: RegaliaTheme.midnight(),
+        home: SettingsScreen(
+          controller: controller,
+          externalUrlLauncher: (uri) async {
+            launched.add(uri);
+            return true;
+          },
+        ),
+      ),
+    );
+
+    final masterSupport = find.byKey(const ValueKey('master-settings-support'));
+    await tester.scrollUntilVisible(
+      masterSupport,
+      300,
+      scrollable: _settingsScroll(),
+    );
+    await tester.tap(
+      find.descendant(
+        of: masterSupport,
+        matching: find.byKey(const ValueKey('open-buy-me-a-coffee')),
+      ),
+    );
+    await tester.pump();
+    expect(launched, [buyMeACoffeeUri]);
+
+    final arcSettings = find.byKey(
+      const ValueKey('story-arc-settings-regalia:arc/origin'),
+    );
+    await tester.scrollUntilVisible(
+      arcSettings,
+      -300,
+      scrollable: _settingsScroll(),
+    );
+    await tester.tap(arcSettings);
+    await tester.pumpAndSettle();
+
+    final arcSupport = find.byKey(
+      const ValueKey('story-arc-settings-support-regalia:arc/origin'),
+    );
+    await tester.scrollUntilVisible(
+      arcSupport,
+      300,
+      scrollable: find.byType(Scrollable),
+    );
+    final arcSupportButton = find.descendant(
+      of: arcSupport,
+      matching: find.byKey(const ValueKey('open-buy-me-a-coffee')),
+    );
+    await tester.scrollUntilVisible(
+      arcSupportButton,
+      100,
+      scrollable: find.byType(Scrollable),
+    );
+    await tester.ensureVisible(arcSupportButton);
+    await tester.pump();
+    await tester.tap(arcSupportButton);
+    await tester.pump();
+    expect(launched, [buyMeACoffeeUri, buyMeACoffeeUri]);
+  });
+
+  testWidgets('support launch failure is nonfatal and explained', (
+    tester,
+  ) async {
+    final controller = await _controller(tester);
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: RegaliaTheme.midnight(),
+        home: SettingsScreen(
+          controller: controller,
+          externalUrlLauncher: (_) async => false,
+        ),
+      ),
+    );
+    final support = find.byKey(const ValueKey('master-settings-support'));
+    await tester.scrollUntilVisible(
+      support,
+      300,
+      scrollable: _settingsScroll(),
+    );
+    await tester.tap(
+      find.descendant(
+        of: support,
+        matching: find.byKey(const ValueKey('open-buy-me-a-coffee')),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text('Could not open the support page.'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 }
 

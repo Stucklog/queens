@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/origin",
-  "contentVersion": 6,
+  "contentVersion": 7,
   "title": "Queen’s Regalia: Origin Story",
   "mapId": "regalia:map/origin/pilgrimage",
   "puzzleCatalogAsset": "assets/puzzles/catalog.json",
@@ -363,8 +363,8 @@
         {
           "title": "The Stolen Dawn",
           "paragraphs": [
-            "The Queen’s crown is called the Regalia. Each of its eight jewels carries the light of one realm. Together, the jewels keep the sun shining and the roads between the realms open.",
-            "One morning, the Hollow Star appears above the Empyrean Citadel. It blocks the sun, traps the Queen inside the palace, and begins spreading darkness across the land."
+            "At every sunrise, the eight jewels of the Queen’s Regalia answered the realms below: green for root and meadow, blue for wind and tide, silver for gear and moon, gold for forge-fire and dawn. Their light kept the old roads open and the morning faithful.",
+            "Then a ninth shape opened above the Empyrean Citadel—a star with no light of its own. Day folded around it. The palace doors sealed, birds fell silent in the sky, and shadow went racing down every road at once."
           ],
           "semanticLabel": "The Hollow Star blocks the sun above the Empyrean Citadel while darkness spreads across the realms.",
           "actionLabel": "See what happened"
@@ -372,8 +372,8 @@
         {
           "title": "The Falling Crown",
           "paragraphs": [
-            "Before she is trapped, the Queen uses the last of her magic to send the Regalia away. The crown falls from the citadel, and all eight of its jewels go dark.",
-            "The Regalia lands in Asterfall Vale, where a traveling knight finds it. When the knight touches the crown, it shows them the trapped Queen, the eight realms, and the Hollow Star."
+            "Behind the closing dark, the Queen spent her last free breath on one spell. She cast the Regalia through a splinter of sky; it fell from the citadel like a small, stubborn sunrise while every jewel dimmed in turn.",
+            "It struck Asterfall Vale hard enough to wake the sheep and leave glass in the grass. A road-worn knight found the crown warm in the crater. At their touch, eight wounded realms flashed behind their eyes—and one Queen, still waiting in the dark."
           ],
           "semanticLabel": "The Regalia falls from the darkened citadel and lands near a lone knight in Asterfall Vale.",
           "actionLabel": "Follow the crown"
@@ -381,8 +381,8 @@
         {
           "title": "The Knight’s Choice",
           "paragraphs": [
-            "The crown’s message is simple: restore the eight jewels, return to the citadel, and defeat the Hollow Star. Each realm holds the power needed to light one jewel again.",
-            "The knight has no title and no army, but chooses to help. They take the Regalia and begin the journey in Asterfall Vale."
+            "The vision offered no prophecy and promised no triumph. It showed only a road through eight realms, eight sleeping jewels, and the Hollow Star tightening around the throne whenever the knight looked away.",
+            "They could have left the crown beneath the cooling grass. Instead, the knight set it above a travel-scarred brow, tightened one fraying strap, and faced the first darkened road. Somewhere far above, a single jewel gave one answering spark."
           ],
           "semanticLabel": "The knight lifts the darkened Regalia and prepares to travel through the eight realms.",
           "actionLabel": "Begin the journey"
@@ -397,8 +397,8 @@
         {
           "title": "Asterfall Vale",
           "paragraphs": [
-            "Asterfall Vale is where the Regalia landed. Its people are hiding from creatures changed by the Hollow Star, and the road out of the valley is closed.",
-            "The first jewel can be restored at the valley’s old shrine. The Starfall Stag guards that shrine, so the knight must cross the vale and defeat it."
+            "The Regalia’s crater still breathed warmth into Asterfall’s grass, but no lantern burned in the cottages nearby. Families watched from shutter cracks while thorn-creatures worried at their doors and silver dust drifted from a sunless noon.",
+            "Beyond the abandoned fields, the valley shrine pulsed beneath the hooves of the Starfall Stag. The first jewel tugged toward that buried light. The knight stepped over the creature’s burning hoofprints and raised their shield."
           ],
           "semanticLabel": "The knight enters Asterfall Vale, where the Regalia fell and the first jewel can be restored.",
           "actionLabel": "Enter Asterfall"
@@ -413,8 +413,8 @@
         {
           "title": "Myrrhveil Wilds",
           "paragraphs": [
-            "When the first jewel lights up, the Regalia opens a path into Myrrhveil Wilds. The Hollow Star has twisted the forest’s roots, and the trees now block every road.",
-            "The second jewel can be restored at the oldest tree in the forest. The Elderroot Wyrm has wrapped itself around that tree and will not let the knight pass."
+            "The first jewel lit a path where no path had been: a green seam between the trunks of Myrrhveil. Inside, roots shifted under every footstep, and the forest whispered the knight’s name in voices borrowed from people left behind.",
+            "At the wilds’ heart stood the first tree, strangled by the sleeping coils of the Elderroot Wyrm. Sap shone like trapped moonlight beneath its bark. When the second jewel answered it, one vast wooden eye opened."
           ],
           "semanticLabel": "The knight enters a dark forest where twisted roots guard the power of the second jewel.",
           "actionLabel": "Enter Myrrhveil"
@@ -429,8 +429,8 @@
         {
           "title": "Skyglass Reach",
           "paragraphs": [
-            "The second jewel opens the wind gates to Skyglass Reach. This realm is made of floating islands connected by bridges that only work when the winds are calm.",
-            "The Hollow Star has trapped the islands inside a violent storm. The knight must restore the third jewel and defeat the Tempest Roc to make the bridges safe again."
+            "With two jewels awake, the wind gates tore open and flung the knight onto the lowest isle of Skyglass Reach. Bridges of singing glass leapt between clouds, appearing for a heartbeat before the storm ripped them apart again.",
+            "High in the thunder, the Tempest Roc caged the realm’s wind-heart in lightning, leaving the Regalia’s third jewel cold. The knight waited for the space between two thunderclaps, then ran onto a bridge that had not yet decided to exist."
           ],
           "semanticLabel": "The knight approaches floating islands and broken wind bridges beneath a powerful storm.",
           "actionLabel": "Enter Skyglass"
@@ -445,10 +445,10 @@
         {
           "title": "Nacre Basilica",
           "paragraphs": [
-            "The wind road carries the knight to Nacre Basilica, a city that is now half underwater. Its great bells once controlled the tides, but the Hollow Star has made them silent.",
-            "The fourth jewel lies inside the main bell tower. The knight must reach it and defeat the Abyssal Bellkeeper before the water rises over the city."
+            "The last sky-bridge ended at a staircase descending into the sea. Below it, Nacre Basilica gleamed through green water; mosaics watched from drowned walls, and the city’s great bells swayed without making a sound.",
+            "Each silent swing pulled the tide higher. A note that could wake the fourth jewel rang faintly from the tallest flooded tower, where the Abyssal Bellkeeper hauled on a rope woven from wrecked ships. The knight drew breath and followed it downward."
           ],
-          "semanticLabel": "The knight enters a flooded city where the fourth jewel waits inside a silent bell tower.",
+          "semanticLabel": "The knight enters a flooded city where a silent bell holds the note that can wake the fourth jewel.",
           "actionLabel": "Enter Nacre Basilica"
         }
       ],
@@ -461,8 +461,8 @@
         {
           "title": "Pyreheart Caldera",
           "paragraphs": [
-            "A tunnel below the basilica leads to Pyreheart Caldera. The Regalia was made in this ancient forge, but the Hollow Star has caused its lava and machines to run out of control.",
-            "The fifth jewel can be restored at the center of the forge. The Cindermaw Behemoth guards it, and the knight must defeat the creature to stop the eruptions."
+            "A furnace door beneath the basilica recognized the Regalia and opened after centuries of rust. Pyreheart Caldera waited beyond—part mountain, part workshop—where empty hammers still struck sparks in time with the knight’s pulse.",
+            "The fifth jewel had once been cut at the central anvil, and only that forge could wake it again. Now the Cindermaw Behemoth slept across the anvil, drinking its fire and coughing eruptions into the roof. The old machines bowed—and the beast rose."
           ],
           "semanticLabel": "The knight enters the ancient forge where the Regalia was made and the fifth jewel can be restored.",
           "actionLabel": "Enter Pyreheart"
@@ -477,10 +477,10 @@
         {
           "title": "Brasswake Arsenal",
           "paragraphs": [
-            "The road from the forge leads to Brasswake Arsenal, a factory built to defend the kingdom. With the Queen gone, its machines now attack everyone who enters.",
-            "The sixth jewel powers a lift to the upper realms. The Gilded War Colossus controls the lift, so the knight must shut it down and take back the jewel."
+            "Pyreheart’s cooling rails carried the knight into Brasswake Arsenal. Trumpets announced an army that had vanished generations ago, while brass sentries marched from dust-filled alcoves under orders no living voice had given.",
+            "The charge that could wake the sixth jewel burned in the chest of the Gilded War Colossus, powering the only lift to the upper realms. It called the knight an intruder in the Queen’s own name. The Regalia flared, and the dead empire’s last soldier lowered its spear."
           ],
-          "semanticLabel": "The knight enters a large factory where dangerous machines guard the sixth jewel and the only lift upward.",
+          "semanticLabel": "The knight enters a large factory where dangerous machines guard the charge that can wake the sixth jewel and the only lift upward.",
           "actionLabel": "Enter Brasswake"
         }
       ],
@@ -493,10 +493,10 @@
         {
           "title": "Pale Moon Necropolis",
           "paragraphs": [
-            "The lift reaches Pale Moon Necropolis, where seven former queens are buried. Their spirits want to know why the knight carries the Regalia and whether it will be returned.",
-            "The Hollow Star has joined their fear into the Sevenfold Wraith. Defeating it will restore the seventh jewel and open the final road to the citadel."
+            "The lift opened beneath a moon too pale to cast a shadow. Seven stone queens watched the knight cross their necropolis, and at each tomb the Regalia grew heavier, as if every former wearer had placed a questioning hand upon it.",
+            "Their whispers gathered around one fear: that another stranger had come to claim what was never theirs. The Hollow Star braided that doubt into the Sevenfold Wraith. Seven voices asked the knight to kneel; one steady hand reached for the seventh jewel."
           ],
-          "semanticLabel": "The knight walks through the tombs of seven queens while their spirits guard the seventh jewel.",
+          "semanticLabel": "The knight walks through the tombs of seven queens while their spirits test whether the knight is worthy to wake the seventh jewel.",
           "actionLabel": "Enter the Necropolis"
         }
       ],
@@ -509,10 +509,10 @@
         {
           "title": "Empyrean Citadel",
           "paragraphs": [
-            "With seven jewels restored, the Regalia carries the knight to the Empyrean Citadel. The city is empty, the Queen is still trapped, and the sun is almost completely dark.",
-            "The Hollow Star holds the eighth jewel above the throne. The knight must cross the citadel, defeat the Star, and free the Queen before the last light disappears."
+            "Seven awakened jewels lifted the knight through the cloud gate. The Empyrean Citadel should have thundered with bells and banners; instead, their boots rang alone across white courtyards while the final rim of sun thinned overhead.",
+            "In the throne hall, the Queen stood motionless behind a wall of night. Above her, the Hollow Star hoarded the dawn that could wake the eighth jewel. The Regalia trembled—not with fear, the knight realized, but recognition. They raised the crown into the last light."
           ],
-          "semanticLabel": "The knight reaches the empty citadel where the Hollow Star guards the Queen and the eighth jewel.",
+          "semanticLabel": "The knight reaches the empty citadel where the Hollow Star guards the Queen and hoards the dawn that can wake the eighth jewel.",
           "actionLabel": "Enter the Citadel"
         }
       ],
@@ -525,8 +525,8 @@
         {
           "title": "The Hollow Star Falls",
           "paragraphs": [
-            "The knight defeats the Hollow Star and restores the eighth jewel. With all eight jewels shining again, the Regalia breaks the darkness above the citadel.",
-            "The sun rises for the first time since the attack. The Queen is freed from the palace, and the roads between the eight realms open again."
+            "The final blow passed through the Hollow Star without a sound. For one terrible heartbeat, nothing changed. Then the eighth jewel woke inside the Regalia, and every color the realms had given the knight blazed together.",
+            "Darkness cracked across the throne hall like ice on a spring river. Sunlight poured through the fracture, found the Queen’s outstretched hand, and kept going—down the cloud road, through every gate, all the way to Asterfall’s waiting windows."
           ],
           "semanticLabel": "The knight stands in the citadel as the Hollow Star breaks apart and sunlight returns.",
           "actionLabel": "See the dawn return"
@@ -534,8 +534,8 @@
         {
           "title": "The Crown Returns",
           "paragraphs": [
-            "The knight brings the restored Regalia to the Queen. They could keep the powerful crown, but the journey was always about saving the Queen and the people of the realms.",
-            "The knight returns the crown without asking for a reward. When the Queen puts it on, its light reaches every realm and drives away the remaining darkness."
+            "The Queen stepped from the broken spell, older and wearier than the figure from the crown’s first vision. The knight approached with eight realms burning above their brow, then knelt and offered the Regalia in both hands.",
+            "For a moment the Queen did not take it. ‘It chose a bearer,’ she said. ‘And the bearer chose the road,’ the knight answered. When she finally lifted the crown, its light carried no command—only the warmth of every place that had helped restore it."
           ],
           "semanticLabel": "The knight returns the restored Regalia to the Queen while the sun rises behind them.",
           "actionLabel": "Return the crown"
@@ -543,8 +543,8 @@
         {
           "title": "The First Morning",
           "paragraphs": [
-            "The Queen and her people begin repairing the damage caused by the Hollow Star. The forests recover, the storms clear, the floods fall, and the old roads become safe again.",
-            "The knight does not ask for a title. They choose to keep traveling and helping where they can. The eight realms remember them as the knight who brought back the dawn."
+            "Morning reached the realms at different speeds. It flashed first on Skyglass bridges, then warmed the bells beneath Nacre’s falling tide, touched green buds in Myrrhveil, and at last turned Asterfall’s crater from a wound into a pool of gold.",
+            "At the citadel gate, the Queen offered the knight a place beside the throne. The knight looked instead toward the newly opened roads, where distant lanterns were already moving. By noon, only a set of travel-worn footprints remained—and eight realms knew who had brought the dawn home."
           ],
           "semanticLabel": "The Queen and the knight look over the restored realms from the citadel at sunrise.",
           "actionLabel": "Finish the story"

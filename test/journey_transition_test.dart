@@ -4,7 +4,9 @@ import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/app/journey.dart';
 import 'package:regalia/core/exact_solver.dart';
 import 'package:regalia/core/models.dart';
+import 'package:regalia/content/entitlements.dart';
 import 'package:regalia/screens/journey_screen.dart';
+import 'package:regalia/widgets/support_developer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -138,11 +140,86 @@ void main() {
       expect(find.textContaining('tap to skip'), findsNothing);
     },
   );
+
+  testWidgets('web offers support once after the puzzle before a boss', (
+    tester,
+  ) async {
+    final controller = await _seededController(
+      tester,
+      completed: 7,
+      contentPolicy: const ContentEntitlementPolicy.web(),
+    );
+    Uri? launchedUri;
+    await _pumpReducedJourney(
+      tester,
+      controller,
+      externalUrlLauncher: (uri) async {
+        launchedUri = uri;
+        return true;
+      },
+    );
+
+    await _solveFrontier(tester, controller);
+    expect(controller.frontierPuzzle?.order, 9);
+    await tester.tap(find.text('Advance'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Support the developer?'), findsOneWidget);
+    expect(
+      controller.supportPromptedChapterIds,
+      contains(controller.originArc!.chapters.first.id),
+    );
+    await tester.tap(find.byKey(const ValueKey('support-prompt-open-coffee')));
+    await tester.pumpAndSettle();
+    expect(launchedUri, buyMeACoffeeUri);
+
+    final eighth = controller.catalog!.puzzles[7];
+    final node = find.byKey(const ValueKey('puzzle-node-8'));
+    await tester.ensureVisible(node);
+    await tester.tap(node);
+    await tester.pumpAndSettle();
+    await _solveOpenPuzzle(tester, controller, eighth);
+    await tester.tap(find.text('Return to journey'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Support the developer?'), findsNothing);
+    expect(controller.supportPromptedChapterIds, hasLength(1));
+  });
+
+  testWidgets('map-unlocked pre-boss completion still returns for web prompt', (
+    tester,
+  ) async {
+    final controller = await _seededController(
+      tester,
+      completed: 0,
+      contentPolicy: const ContentEntitlementPolicy.web(),
+    );
+    await controller.unlockEntireMap(controller.originArc!.id);
+    await _pumpReducedJourney(tester, controller);
+
+    final preBoss = controller.catalog!.puzzles[7];
+    final node = find.byKey(const ValueKey('puzzle-node-8'));
+    await tester.ensureVisible(node);
+    await tester.tap(node);
+    await tester.pumpAndSettle();
+    await _solveOpenPuzzle(tester, controller, preBoss);
+
+    expect(find.text('Return to journey'), findsOneWidget);
+    await tester.tap(find.text('Return to journey'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Support the developer?'), findsOneWidget);
+    expect(controller.frontierPuzzle?.order, 1);
+    await tester.tap(find.text('Not now'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('tap to skip'), findsNothing);
+  });
 }
 
 Future<AppController> _seededController(
   WidgetTester tester, {
   required int completed,
+  ContentEntitlementPolicy? contentPolicy,
 }) async {
   final reachedOrder = completed >= 72 ? 72 : completed + 1;
   final chapter = chapterForOrder(reachedOrder);
@@ -154,7 +231,7 @@ Future<AppController> _seededController(
       chapter.storyBeatId,
     ],
   });
-  final controller = _TimerlessController();
+  final controller = _TimerlessController(contentPolicy: contentPolicy);
   await tester.runAsync(controller.initialize);
   addTearDown(controller.dispose);
   for (final puzzle in controller.catalog!.puzzles.take(completed)) {
@@ -167,8 +244,9 @@ Future<AppController> _seededController(
 
 Future<void> _pumpReducedJourney(
   WidgetTester tester,
-  AppController controller,
-) async {
+  AppController controller, {
+  ExternalUrlLauncher? externalUrlLauncher,
+}) async {
   await tester.pumpWidget(
     MaterialApp(
       builder: (context, child) {
@@ -178,7 +256,10 @@ Future<void> _pumpReducedJourney(
           child: child!,
         );
       },
-      home: JourneyScreen(controller: controller),
+      home: JourneyScreen(
+        controller: controller,
+        externalUrlLauncher: externalUrlLauncher,
+      ),
     ),
   );
   await tester.pump();
@@ -218,6 +299,8 @@ Future<void> _solveOpenPuzzle(
 }
 
 class _TimerlessController extends AppController {
+  _TimerlessController({super.contentPolicy});
+
   @override
   void startTimer(String puzzleId) {}
 

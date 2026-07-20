@@ -279,6 +279,71 @@ void main() {
     expect(completions, 1);
   });
 
+  testWidgets('special-move art never sits beneath the opaque caption', (
+    tester,
+  ) async {
+    for (final size in [const Size(390, 844), const Size(844, 390)]) {
+      tester.view.physicalSize = size;
+      tester.view.devicePixelRatio = 1;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MediaQuery(
+            data: MediaQueryData(size: size, disableAnimations: true),
+            child: BossFinisherCutscene(
+              boss: _testBoss,
+              background: const ColoredBox(color: Color(0xff20385f)),
+              onFinished: () {},
+            ),
+          ),
+        ),
+      );
+
+      final art = tester.getRect(
+        find.byKey(const ValueKey('boss-finisher-knight-art-viewport')),
+      );
+      final caption = tester.getRect(
+        find.byKey(const ValueKey('boss-finisher-knight-caption')),
+      );
+      expect(
+        art.bottom,
+        lessThanOrEqualTo(caption.top),
+        reason: 'special-move art and caption at ${size.width}x${size.height}',
+      );
+      expect(art.left, greaterThanOrEqualTo(0));
+      expect(art.right, lessThanOrEqualTo(size.width));
+      await tester.pumpWidget(const SizedBox.shrink());
+    }
+    tester.view.resetPhysicalSize();
+    tester.view.resetDevicePixelRatio();
+  });
+
+  testWidgets('regular enemies receive encounter-specific victory framing', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: BossFinisherCutscene(
+          boss: _testEnemy,
+          background: const ColoredBox(color: Color(0xff20385f)),
+          onFinished: () {},
+        ),
+      ),
+    );
+
+    expect(find.text('ENCOUNTER SPECIAL'), findsOneWidget);
+    expect(find.text('ENEMY · FINAL STAND'), findsOneWidget);
+    expect(find.text('BOSS · FINAL STAND'), findsNothing);
+    expect(
+      find.bySemanticsLabel(
+        'Encounter victory. Crown Slash. ${_testEnemy.name} is defeated. '
+        'The crown-bearer is victorious.',
+      ),
+      findsOneWidget,
+    );
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   testWidgets('reduced motion shows the resolved blow on its short deadline', (
     tester,
   ) async {
@@ -455,6 +520,61 @@ void main() {
     expect(find.byKey(const ValueKey('completion-knight')), findsOneWidget);
   });
 
+  testWidgets('solving a regular encounter plays the full victory cutscene', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({SaveIds.tutorialComplete: true});
+    final controller = _TimerlessController();
+    await tester.runAsync(controller.initialize);
+    addTearDown(controller.dispose);
+    await controller.unlockEntireMap(ContentIds.originArc);
+    final arc = controller.originArc!;
+    final encounter = arc.chapters.first.encounters.first;
+    final puzzle = arc.catalog.byId(encounter.puzzleId);
+    final solution =
+        const ExactSolver().solve(puzzle, limit: 1).solutions.single;
+    for (final cell in solution.take(solution.length - 1)) {
+      controller.setCell(puzzle, cell, ManualCellState.crown);
+    }
+    expect(controller.openPuzzle(puzzle), isTrue);
+
+    await tester.pumpWidget(
+      MaterialApp(home: GameScreen(controller: controller, puzzle: puzzle)),
+    );
+    await tester.pump();
+    final finalCell = find.byKey(
+      ValueKey('cell-${solution.last.row}-${solution.last.column}'),
+    );
+    await tester.ensureVisible(finalCell);
+    await tester.tap(finalCell);
+    await tester.pump();
+    await tester.tap(finalCell);
+    await tester.pump();
+
+    final presentation = BossFinisherPresentation.forSpectacle(
+      encounter.spectacleLevel,
+    );
+    expect(
+      find.byKey(const ValueKey('boss-finisher-cutscene')),
+      findsOneWidget,
+    );
+    expect(find.text('ENCOUNTER SPECIAL'), findsOneWidget);
+    expect(find.byKey(const ValueKey('completion-knight')), findsNothing);
+    expect(
+      tester
+          .widget<PixelEnemySprite>(
+            find.byKey(const ValueKey('boss-finisher-boss-sprite')),
+          )
+          .encounter,
+      same(encounter),
+    );
+
+    await tester.pump(presentation.timing.total);
+    await tester.pump();
+    expect(find.byKey(const ValueKey('boss-finisher-cutscene')), findsNothing);
+    expect(find.byKey(const ValueKey('completion-knight')), findsOneWidget);
+  });
+
   testWidgets('ordinary puzzle completion never mounts a boss finisher', (
     tester,
   ) async {
@@ -537,4 +657,12 @@ const _testBoss = ChapterBoss(
   size: 5,
   targetDifficulty: DifficultyTier.easy,
   unlockTargetId: 'regalia:chapter/test/two',
+);
+
+const _testEnemy = ChapterEnemy(
+  id: 'regalia:enemy/origin/test-enemy',
+  name: 'Clockwork Warden',
+  puzzleId: 'regalia:puzzle/origin/easy-003',
+  spriteFamily: EnemySpriteFamily.clockwork,
+  spriteAsset: 'assets/art/combat/opponents/gear-goblin.png',
 );

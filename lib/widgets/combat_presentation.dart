@@ -20,7 +20,7 @@ EnemyReaction enemyReactionFor(KnightAnimation animation) {
   };
 }
 
-extension on EnemyReaction {
+extension EnemyReactionPresentation on EnemyReaction {
   String get label => switch (this) {
     EnemyReaction.idle => 'WATCHING',
     EnemyReaction.staggered => 'STAGGERED',
@@ -28,6 +28,15 @@ extension on EnemyReaction {
     EnemyReaction.pressing => 'PRESSES',
     EnemyReaction.exposed => 'EXPOSED',
     EnemyReaction.defeated => 'DEFEATED',
+  };
+
+  String get replayLabel => switch (this) {
+    EnemyReaction.idle => 'Idle',
+    EnemyReaction.staggered => 'Stagger',
+    EnemyReaction.striking => 'Strike',
+    EnemyReaction.pressing => 'Press',
+    EnemyReaction.exposed => 'Exposed',
+    EnemyReaction.defeated => 'Defeat',
   };
 }
 
@@ -56,7 +65,10 @@ class CombatPresentationBar extends StatelessWidget {
   static const double height = 126;
   static const double preferredHeight = height + 8;
 
-  static const double knightWidth = 90;
+  /// The legacy attack atlas reaches just under 104 logical pixels wide when
+  /// rendered at [knightHeight]. Keep that full transparent viewport reserved
+  /// so sword trails are not cut off by the adjacent status surface.
+  static const double knightWidth = 104;
   static const double knightHeight = 79;
   static const double enemyWidth = 111;
   static const double enemyHeight = 114;
@@ -119,6 +131,7 @@ class CombatPresentationBar extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Expanded(
+                      key: const ValueKey('combat-presentation-status'),
                       child:
                           activeEncounter == null
                               ? _KnightStatus(line: knightLine)
@@ -162,7 +175,11 @@ class _CombatantStage extends StatelessWidget {
               : CombatPresentationBar.encounterStageWidth,
       height: CombatPresentationBar.enemyHeight,
       child: Stack(
-        clipBehavior: Clip.hardEdge,
+        key: const ValueKey('puzzle-combatant-stage-stack'),
+        // Every combatant remains inside the reserved stage geometry. Avoid a
+        // second clip at the knight/status boundary; the outer organic panel
+        // still clips content to its visible border.
+        clipBehavior: Clip.none,
         children: [
           Positioned(
             left: 0,
@@ -309,14 +326,39 @@ class PixelEnemySprite extends StatefulWidget {
     this.restartToken = 0,
     this.width = 72,
     this.height = 76,
-  });
+  }) : previewReaction = null,
+       previewDuration = null;
+
+  /// Plays one enemy-atlas row directly, without inventing a knight stimulus.
+  ///
+  /// Combat should continue using the default constructor so its timing stays
+  /// synchronized with the knight. Collection and art-preview surfaces can use
+  /// this constructor to replay any authored enemy reaction independently.
+  const PixelEnemySprite.preview({
+    super.key,
+    required this.encounter,
+    required EnemyReaction reaction,
+    this.frame,
+    this.restartToken = 0,
+    this.width = 72,
+    this.height = 76,
+    Duration duration = const Duration(milliseconds: 720),
+  }) : assert(duration > Duration.zero),
+       stimulus = KnightAnimation.bounce,
+       previewReaction = reaction,
+       previewDuration = duration;
 
   final CombatEncounter encounter;
   final KnightAnimation stimulus;
+  final EnemyReaction? previewReaction;
+  final Duration? previewDuration;
   final int? frame;
   final int restartToken;
   final double width;
   final double height;
+
+  EnemyReaction get resolvedReaction =>
+      previewReaction ?? enemyReactionFor(stimulus);
 
   @override
   State<PixelEnemySprite> createState() => _PixelEnemySpriteState();
@@ -328,7 +370,9 @@ class _PixelEnemySpriteState extends State<PixelEnemySprite>
   bool _reduceMotion = false;
   bool _tickerEnabled = true;
 
-  EnemyReaction get _reaction => enemyReactionFor(widget.stimulus);
+  EnemyReaction get _reaction => widget.resolvedReaction;
+  Duration get _duration =>
+      widget.previewDuration ?? widget.stimulus.presentationDuration;
 
   @override
   void didChangeDependencies() {
@@ -347,6 +391,8 @@ class _PixelEnemySpriteState extends State<PixelEnemySprite>
   void didUpdateWidget(PixelEnemySprite oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.stimulus != widget.stimulus ||
+        oldWidget.previewReaction != widget.previewReaction ||
+        oldWidget.previewDuration != widget.previewDuration ||
         oldWidget.restartToken != widget.restartToken ||
         oldWidget.frame != widget.frame ||
         oldWidget.encounter.id != widget.encounter.id) {
@@ -357,11 +403,11 @@ class _PixelEnemySpriteState extends State<PixelEnemySprite>
   void _restart() {
     _controller
       ..stop()
-      ..duration = widget.stimulus.presentationDuration
+      ..duration = _duration
       ..value = 0;
     if (widget.frame != null || _reduceMotion || !_tickerEnabled) return;
     if (_reaction == EnemyReaction.idle) {
-      _controller.repeat(period: widget.stimulus.presentationDuration);
+      _controller.repeat(period: _duration);
       return;
     }
     _controller.forward();
@@ -376,7 +422,7 @@ class _PixelEnemySpriteState extends State<PixelEnemySprite>
           : (_reaction.index == 0 ? 0 : 2);
     }
     var progress = _controller.value;
-    if (_reaction == EnemyReaction.defeated) {
+    if (_reaction == EnemyReaction.defeated && widget.previewReaction == null) {
       final impact = widget.stimulus.impactFraction;
       if (progress < impact) return 0;
       progress = ((progress - impact) / (1 - impact)).clamp(0, 1);
@@ -423,6 +469,7 @@ class _PixelEnemySpriteState extends State<PixelEnemySprite>
     return Align(
       alignment: Alignment.bottomCenter,
       child: SizedBox.square(
+        key: ValueKey('enemy-atlas-frame-${_reaction.name}-$frame'),
         dimension: side,
         child: ClipRect(
           child: Stack(

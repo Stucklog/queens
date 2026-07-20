@@ -4,10 +4,16 @@ import '../app/app_controller.dart';
 import '../app/branding.dart';
 import '../content/content_models.dart';
 import '../widgets/pixel_ui.dart';
+import '../widgets/support_developer.dart';
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key, required this.controller});
+  const SettingsScreen({
+    super.key,
+    required this.controller,
+    this.externalUrlLauncher,
+  });
   final AppController controller;
+  final ExternalUrlLauncher? externalUrlLauncher;
 
   Future<void> _resetEntireGame(BuildContext context) async {
     final continueToFinalWarning = await showDialog<bool>(
@@ -155,6 +161,7 @@ class SettingsScreen extends StatelessWidget {
                               (_) => StoryArcSettingsScreen(
                                 controller: controller,
                                 arc: arc,
+                                externalUrlLauncher: externalUrlLauncher,
                               ),
                         ),
                       ),
@@ -204,6 +211,11 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
+            SupportDeveloperPanel(
+              key: const ValueKey('master-settings-support'),
+              externalUrlLauncher: externalUrlLauncher,
+            ),
+            const SizedBox(height: 8),
             PixelPanel(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,10 +257,12 @@ class StoryArcSettingsScreen extends StatelessWidget {
     super.key,
     required this.controller,
     required this.arc,
+    this.externalUrlLauncher,
   });
 
   final AppController controller;
   final StoryArc arc;
+  final ExternalUrlLauncher? externalUrlLauncher;
 
   bool get _unlockActionComplete => controller.isMapUnlocked(arc.id);
 
@@ -429,6 +443,10 @@ class StoryArcSettingsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+              ),
+              SupportDeveloperPanel(
+                key: ValueKey('story-arc-settings-support-${arc.id}'),
+                externalUrlLauncher: externalUrlLauncher,
               ),
             ],
           ),

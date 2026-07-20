@@ -123,6 +123,8 @@ abstract final class SaveIds {
   static const migrationVersion = 'regalia:save/global/migration-version';
   static const settings = 'regalia:save/global/settings';
   static const tutorialComplete = 'regalia:save/global/tutorial-complete';
+  static const supportPromptedChapters =
+      'regalia:save/global/support-prompted-chapters';
   static const unlockedContentIds = 'regalia:save/global/unlocks';
   static const originBoards = 'regalia:save/origin/boards';
   static const originRecords = 'regalia:save/origin/records';

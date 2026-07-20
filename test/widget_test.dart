@@ -72,7 +72,17 @@ void main() {
     );
     await tester.pump();
 
+    RegaliaBoard visibleBoard() =>
+        tester.widget<RegaliaBoard>(find.byType(RegaliaBoard));
+
+    expect(visibleBoard().selected, isNull);
+    await tester.tap(find.byKey(const ValueKey('cell-0-0')));
+    await tester.pump();
+    expect(visibleBoard().selected, isNull);
+
     await tester.sendKeyEvent(LogicalKeyboardKey.arrowRight);
+    await tester.pump();
+    expect(visibleBoard().selected, const Cell(0, 1));
     await tester.sendKeyEvent(LogicalKeyboardKey.keyX);
     expect(
       controller.boardFor(puzzle).at(const Cell(0, 1)),
@@ -90,6 +100,10 @@ void main() {
       controller.boardFor(puzzle).at(const Cell(0, 1)),
       ManualCellState.empty,
     );
+
+    await tester.tap(find.byKey(const ValueKey('cell-1-1')));
+    await tester.pump();
+    expect(visibleBoard().selected, isNull);
 
     await tester.pumpWidget(const SizedBox.shrink());
   });

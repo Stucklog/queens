@@ -5,6 +5,7 @@ import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/app/challenge.dart';
 import 'package:regalia/app/journey.dart';
 import 'package:regalia/content/content_ids.dart';
+import 'package:regalia/content/entitlements.dart';
 import 'package:regalia/core/exact_solver.dart';
 import 'package:regalia/core/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -506,6 +507,9 @@ void main() {
     );
     await controller.markStoryBeatSeen('opening');
     await controller.unlockEntireMap(ContentIds.originArc);
+    controller.supportPromptedChapterIds.add(
+      controller.originArc!.chapters.first.id,
+    );
 
     await controller.resetGame();
 
@@ -517,10 +521,92 @@ void main() {
     expect(controller.boards, isEmpty);
     expect(controller.records, isEmpty);
     expect(controller.seenStoryBeatIds, isEmpty);
+    expect(controller.supportPromptedChapterIds, isEmpty);
     expect(controller.lastPuzzleId, isNull);
     expect(controller.canOpenPuzzle(controller.catalog!.puzzles[1]), isFalse);
     final preferences = await SharedPreferences.getInstance();
     expect(preferences.getKeys(), isEmpty);
+    controller.dispose();
+  });
+
+  test(
+    'web support prompt claims persist once per chapter and reset by arc',
+    () async {
+      SharedPreferences.setMockInitialValues({SaveIds.tutorialComplete: true});
+      final first = AppController(
+        contentPolicy: const ContentEntitlementPolicy.web(),
+      );
+      await first.initialize();
+      final arc = first.originArc!;
+      final chapter = arc.chapters.first;
+      final preBoss = arc.catalog.puzzles[chapter.endOrder - 2];
+      final ordinary = arc.catalog.puzzles[chapter.endOrder - 3];
+      first.records[preBoss.id] = const CompletionRecord(
+        status: CompletionStatus.cleanSolved,
+      );
+      first.records[ordinary.id] = const CompletionRecord(
+        status: CompletionStatus.cleanSolved,
+      );
+
+      expect(await first.claimSupportPromptAfter(arc, ordinary), isNull);
+      expect(await first.claimSupportPromptAfter(arc, preBoss), chapter);
+      expect(await first.claimSupportPromptAfter(arc, preBoss), isNull);
+      await first.flushPersistence();
+      first.dispose();
+
+      final preferences = await SharedPreferences.getInstance();
+      await preferences.setStringList(SaveIds.supportPromptedChapters, [
+        chapter.id,
+        'regalia:chapter/origin/not-installed',
+      ]);
+
+      final restored = AppController(
+        contentPolicy: const ContentEntitlementPolicy.web(),
+      );
+      await restored.initialize();
+      final restoredArc = restored.originArc!;
+      final restoredPreBoss =
+          restoredArc.catalog.puzzles[restoredArc.chapters.first.endOrder - 2];
+      expect(
+        restored.supportPromptedChapterIds,
+        contains(restoredArc.chapters.first.id),
+      );
+      expect(
+        restored.supportPromptedChapterIds,
+        isNot(contains('regalia:chapter/origin/not-installed')),
+      );
+      expect(
+        await restored.claimSupportPromptAfter(restoredArc, restoredPreBoss),
+        isNull,
+      );
+
+      await restored.resetStoryArc(restoredArc.id);
+      expect(restored.supportPromptedChapterIds, isEmpty);
+      restored.records[restoredPreBoss.id] = const CompletionRecord(
+        status: CompletionStatus.assistedSolved,
+      );
+      expect(
+        await restored.claimSupportPromptAfter(restoredArc, restoredPreBoss),
+        restoredArc.chapters.first,
+      );
+      restored.dispose();
+    },
+  );
+
+  test('paid releases never claim the automatic support prompt', () async {
+    SharedPreferences.setMockInitialValues({SaveIds.tutorialComplete: true});
+    final controller = AppController(
+      contentPolicy: const ContentEntitlementPolicy.paidPlatform(),
+    );
+    await controller.initialize();
+    final arc = controller.originArc!;
+    final preBoss = arc.catalog.puzzles[arc.chapters.first.endOrder - 2];
+    controller.records[preBoss.id] = const CompletionRecord(
+      status: CompletionStatus.cleanSolved,
+    );
+
+    expect(await controller.claimSupportPromptAfter(arc, preBoss), isNull);
+    expect(controller.supportPromptedChapterIds, isEmpty);
     controller.dispose();
   });
 }
