@@ -279,19 +279,25 @@ void main() {
     expect(completions, 1);
   });
 
-  testWidgets('special-move art never sits beneath the opaque caption', (
+  testWidgets('combatant art stays clear of opaque cutscene edges', (
     tester,
   ) async {
-    for (final size in [const Size(390, 844), const Size(844, 390)]) {
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    for (final size in [const Size(390, 844), const Size(1180, 800)]) {
       tester.view.physicalSize = size;
       tester.view.devicePixelRatio = 1;
+      final presentation = BossFinisherPresentation.forSpectacle(
+        _testBoss.spectacleLevel,
+      );
 
       await tester.pumpWidget(
         MaterialApp(
           home: MediaQuery(
-            data: MediaQueryData(size: size, disableAnimations: true),
+            data: MediaQueryData(size: size),
             child: BossFinisherCutscene(
               boss: _testBoss,
+              presentation: presentation,
               background: const ColoredBox(color: Color(0xff20385f)),
               onFinished: () {},
             ),
@@ -299,23 +305,41 @@ void main() {
         ),
       );
 
-      final art = tester.getRect(
-        find.byKey(const ValueKey('boss-finisher-knight-art-viewport')),
+      _expectCombatantClearOfOpaqueEdges(
+        tester,
+        spriteKey: 'boss-finisher-knight-sprite',
+        captionKey: 'boss-finisher-knight-caption',
+        size: size,
+        phase: 'final move',
       );
-      final caption = tester.getRect(
-        find.byKey(const ValueKey('boss-finisher-knight-caption')),
+
+      await tester.pump(
+        presentation.timing.bossDefeatStart +
+            presentation.timing.bossDefeat * .7,
       );
-      expect(
-        art.bottom,
-        lessThanOrEqualTo(caption.top),
-        reason: 'special-move art and caption at ${size.width}x${size.height}',
+      _expectCombatantClearOfOpaqueEdges(
+        tester,
+        spriteKey: 'boss-finisher-boss-sprite',
+        captionKey: 'boss-finisher-opponent-caption',
+        size: size,
+        phase: 'defeat',
       );
-      expect(art.left, greaterThanOrEqualTo(0));
-      expect(art.right, lessThanOrEqualTo(size.width));
+
+      await tester.pump(
+        presentation.timing.victoryStart -
+            (presentation.timing.bossDefeatStart +
+                presentation.timing.bossDefeat * .7) +
+            presentation.timing.victory * .9,
+      );
+      _expectCombatantClearOfOpaqueEdges(
+        tester,
+        spriteKey: 'boss-finisher-knight-sprite',
+        captionKey: 'boss-finisher-knight-caption',
+        size: size,
+        phase: 'victory',
+      );
       await tester.pumpWidget(const SizedBox.shrink());
     }
-    tester.view.resetPhysicalSize();
-    tester.view.resetDevicePixelRatio();
   });
 
   testWidgets('regular enemies receive encounter-specific victory framing', (
@@ -617,6 +641,30 @@ void main() {
       KnightAnimation.special,
     );
   });
+}
+
+void _expectCombatantClearOfOpaqueEdges(
+  WidgetTester tester, {
+  required String spriteKey,
+  required String captionKey,
+  required Size size,
+  required String phase,
+}) {
+  final sprite = tester.getRect(find.byKey(ValueKey(spriteKey)));
+  final caption = tester.getRect(find.byKey(ValueKey(captionKey)));
+  final cutscene = tester.getRect(
+    find.byKey(const ValueKey('boss-finisher-cutscene')),
+  );
+  final reason = '$phase at ${size.width}x${size.height}';
+
+  expect(sprite.left, greaterThanOrEqualTo(cutscene.left), reason: reason);
+  expect(sprite.top, greaterThanOrEqualTo(cutscene.top), reason: reason);
+  expect(sprite.right, lessThanOrEqualTo(cutscene.right), reason: reason);
+  expect(
+    sprite.bottom,
+    lessThanOrEqualTo(caption.top),
+    reason: '$reason must remain above the opaque caption',
+  );
 }
 
 class _TimerlessController extends AppController {

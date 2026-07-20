@@ -137,6 +137,12 @@ The knight's eight production finisher tracks live in
 Crown Slash, Twin Sigil, Skybreak, Tidal Aegis, Cinderfall, Brass Judgment,
 Moonlit Sever, and Regalia Nova. Regular encounters use Crown Slash; chapter
 bosses use their numbered row, reserving Regalia Nova for the final boss.
+Each 296 px finisher cell keeps the complete pose and effect inside a genuine
+24 px transparent safety gutter. Pack frames at the transparent gaps between
+complete poses rather than slicing a generated strip into equal sixths; equal
+slices can sever a slash, flame, spectral trail, or aura before padding is
+added. Long straight alpha runs at a content edge are treated as a failed
+export unless they are an intentional ground-contact baseline.
 Every enemy-completion cinematic uses three full-screen camera beats: the
 complete knight finisher, a pan to the opponent's four-frame defeat, and a pan
 back before the knight's victory animation begins. The artwork viewport and

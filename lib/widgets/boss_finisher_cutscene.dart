@@ -624,12 +624,19 @@ class _BossFinisherFocus extends StatelessWidget {
             Expanded(
               child: LayoutBuilder(
                 builder: (context, artConstraints) {
-                  final artExtent = math
-                      .min(
-                        artConstraints.maxWidth * .94,
-                        artConstraints.maxHeight * .98,
-                      )
-                      .clamp(80.0, 560.0);
+                  // Leave room for the authored emphasis transform. Without
+                  // this reserve, a scaled frame can reach the full-screen
+                  // camera clip on short landscape viewports even though its
+                  // untransformed layout box fits.
+                  const maxArtScale = 1.08;
+                  final availableExtent = math.min(
+                    artConstraints.maxWidth * .94,
+                    artConstraints.maxHeight * .98,
+                  );
+                  final artExtent = math.min(
+                    availableExtent / maxArtScale,
+                    560.0,
+                  );
                   return Stack(
                     key: ValueKey('boss-finisher-$focusId-art-viewport'),
                     fit: StackFit.expand,
