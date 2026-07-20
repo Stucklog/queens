@@ -357,6 +357,7 @@ void main() {
     );
     for (final saveId in const [
       SaveIds.settings,
+      SaveIds.supportPromptedChapters,
       SaveIds.originBoards,
       SaveIds.justPuzzleSession,
     ]) {

@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../app/app_controller.dart';
+import '../app/bestiary.dart';
 import '../app/branding.dart';
 import '../content/content_models.dart';
 import '../widgets/crown_mark.dart';
 import '../widgets/pixel_art.dart';
 import '../widgets/pixel_ui.dart';
 import 'academy_screen.dart';
+import 'bestiary_screen.dart';
 import 'challenge_screen.dart';
 import 'journey_screen.dart';
 import 'settings_screen.dart';
@@ -63,6 +65,10 @@ class HomeScreen extends StatelessWidget {
     MaterialPageRoute(builder: (_) => AcademyScreen(controller: controller)),
   );
 
+  void _openBestiary(BuildContext context) => Navigator.of(context).push(
+    MaterialPageRoute(builder: (_) => BestiaryScreen(controller: controller)),
+  );
+
   void _openMasterSettings(BuildContext context) => Navigator.of(context).push(
     MaterialPageRoute(builder: (_) => SettingsScreen(controller: controller)),
   );
@@ -70,6 +76,18 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final arcs = controller.availableStoryArcs.toList(growable: false);
+    final bestiaryProgress = [
+      for (final arc in arcs)
+        BestiaryArcProgress.derive(arc: arc, recordFor: controller.recordFor),
+    ];
+    final bestiaryTotal = bestiaryProgress.fold<int>(
+      0,
+      (total, arc) => total + arc.totalCount,
+    );
+    final bestiaryDefeated = bestiaryProgress.fold<int>(
+      0,
+      (total, arc) => total + arc.defeatedCount,
+    );
     return Scaffold(
       appBar: AppBar(
         title: const Row(
@@ -140,6 +158,14 @@ class HomeScreen extends StatelessWidget {
               ),
               label: const Text('Master settings'),
             ),
+            if (arcs.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              _BestiaryTile(
+                defeated: bestiaryDefeated,
+                total: bestiaryTotal,
+                onPressed: () => _openBestiary(context),
+              ),
+            ],
             if (controller.academyAvailable) ...[
               const SizedBox(height: 16),
               _AcademyTile(
@@ -153,6 +179,70 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class _BestiaryTile extends StatelessWidget {
+  const _BestiaryTile({
+    required this.defeated,
+    required this.total,
+    required this.onPressed,
+  });
+
+  final int defeated;
+  final int total;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => PixelPanel(
+    padding: EdgeInsets.zero,
+    borderColor: Theme.of(context).colorScheme.secondary,
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        key: const ValueKey('open-bestiary-home'),
+        onTap: onPressed,
+        customBorder: const PixelOrganicBorder(),
+        child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Row(
+            children: [
+              PixelIcon(
+                PixelGlyph.shield,
+                color: Theme.of(context).colorScheme.secondary,
+                size: 32,
+                excludeFromSemantics: true,
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Bestiary',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      defeated == total && total > 0
+                          ? 'All $total foes defeated · replay their animations'
+                          : '$defeated of $total foes defeated',
+                      key: const ValueKey('home-bestiary-progress'),
+                    ),
+                  ],
+                ),
+              ),
+              PixelIcon(
+                PixelGlyph.arrowRight,
+                color: Theme.of(context).colorScheme.secondary,
+                size: 24,
+                excludeFromSemantics: true,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 class _AcademyTile extends StatelessWidget {

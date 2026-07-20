@@ -6,14 +6,22 @@ The bundled **Queen’s Regalia: Origin Story** arc contains 72 deterministic, u
 
 Puzzle actions also drive a synchronized combat stage: chapter bosses react to
 the knight’s existing moves and fall to increasingly elaborate chapter-ending
-specials, while selected in-chapter puzzles can show presentation-only enemies
-that may be left without affecting route progress or rewards.
+specials, while selected in-chapter puzzles feature regular enemies. Completing
+any encounter now opens the full-screen final-move, opponent-defeat, and
+knight-victory sequence. Defeated foes are collected in the home-screen
+Bestiary, organized by arc and chapter, where all six reaction animations can
+be replayed without changing story progress.
 
 “Just Puzzle!” is a separate endless run of puzzles generated and verified entirely on the device. Players can choose Easy, Medium, Hard, Expert, 12×12 Extreme, or a rotating Mixed run; the next board is prepared while the current one is played. Its boards, marks, elapsed time, assistance, and run statistics resume after relaunch without changing any story frontier.
 
 After the tutorial, the home screen lists every available story arc in a single metadata-driven column and keeps the Academy, “Just Puzzle!”, and master settings at the top level. Selecting an arc opens its own opening scene when needed and then that arc’s map. The GitHub Pages/web edition includes the complete origin arc, the deduction Academy, and “Just Puzzle!”. Paid-platform builds use the same package manifest with a separate entitlement policy for future optional arcs. Missing, corrupt, unentitled, or edition-excluded optional packages do not prevent the origin arc, Academy, or puzzle-only mode from loading.
 
-It has no backend, accounts, analytics, ads, or runtime network services. Story progress, puzzle-only runs, story scenes, and preferences stay in platform-local storage. Legacy origin and puzzle-only saves are migrated to namespaced IDs without resetting valid progress.
+It has no backend, accounts, analytics, ads, or automatic runtime network
+services. Story progress, puzzle-only runs, story scenes, Bestiary discoveries,
+support-prompt history, and preferences stay in platform-local storage. A
+clearly labeled support action can open the project’s external Buy Me a Coffee
+page only after a player chooses it. Legacy origin and puzzle-only saves are
+migrated to namespaced IDs without resetting valid progress.
 
 See [Content authoring and releases](docs/CONTENT_AUTHORING.md) for the ID contract, package format, entitlement integration, validation, and release checklist.
 

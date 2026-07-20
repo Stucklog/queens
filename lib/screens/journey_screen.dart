@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../app/app_controller.dart';
 import '../app/branding.dart';
@@ -15,15 +14,12 @@ import '../widgets/crown_mark.dart';
 import '../widgets/encounter_cutscene.dart';
 import '../widgets/pixel_art.dart';
 import '../widgets/pixel_ui.dart';
+import '../widgets/support_developer.dart';
 import 'challenge_screen.dart';
 import 'game_screen.dart';
 import 'rules_screen.dart';
 import 'settings_screen.dart';
 import 'story_scene_screen.dart';
-
-final Uri buyMeACoffeeUri = Uri.https('buymeacoffee.com', '/philosophyforge');
-
-typedef ExternalUrlLauncher = Future<bool> Function(Uri uri);
 
 class JourneyScreen extends StatefulWidget {
   const JourneyScreen({
@@ -136,11 +132,65 @@ class _JourneyScreenState extends State<JourneyScreen> {
         },
       ),
     );
-    if (!mounted || outcome == null || !outcome.advancedJourney) {
+    if (!mounted || outcome == null) {
+      if (mounted) setState(() {});
+      return;
+    }
+    await _maybeShowSupportPrompt(outcome);
+    if (!mounted || !outcome.advancedJourney) {
       if (mounted) setState(() {});
       return;
     }
     await _moveAfter(outcome);
+  }
+
+  Future<void> _maybeShowSupportPrompt(PuzzleCompletionOutcome outcome) async {
+    final chapter = await widget.controller.claimSupportPromptAfter(
+      _arc,
+      outcome.puzzle,
+    );
+    if (!mounted || chapter == null) return;
+    await showDialog<void>(
+      context: context,
+      builder:
+          (dialogContext) => PixelDialog(
+            semanticLabel: 'Support the developer before the chapter boss',
+            icon: PixelIcon(
+              PixelGlyph.cup,
+              color: Theme.of(dialogContext).colorScheme.secondary,
+              size: 32,
+              excludeFromSemantics: true,
+            ),
+            title: const Text('Support the developer?'),
+            content: Text(
+              'The road through ${chapter.title} has nearly reached its boss. '
+              'If you’re enjoying the journey, you can help fund more puzzles, '
+              'art, and story chapters.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: const Text('Not now'),
+              ),
+              FilledButton.icon(
+                key: const ValueKey('support-prompt-open-coffee'),
+                onPressed: () {
+                  // Keep the external open inside the click call stack. Web
+                  // browsers may block a new tab if launch waits until after
+                  // the dialog route's Future has completed.
+                  unawaited(_openSupportPage());
+                  Navigator.pop(dialogContext);
+                },
+                icon: const PixelIcon(
+                  PixelGlyph.cup,
+                  size: 16,
+                  excludeFromSemantics: true,
+                ),
+                label: const Text('Buy me a coffee'),
+              ),
+            ],
+          ),
+    );
   }
 
   Future<void> _moveAfter(PuzzleCompletionOutcome outcome) async {
@@ -332,17 +382,9 @@ class _JourneyScreenState extends State<JourneyScreen> {
   );
 
   Future<void> _openSupportPage() async {
-    var opened = false;
-    try {
-      opened = await (widget.externalUrlLauncher ?? _launchExternalUrl)(
-        buyMeACoffeeUri,
-      );
-    } on Object {
-      opened = false;
-    }
-    if (!mounted || opened) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Could not open the support page.')),
+    await openSupportPage(
+      context,
+      externalUrlLauncher: widget.externalUrlLauncher,
     );
   }
 
@@ -410,6 +452,8 @@ class _JourneyScreenState extends State<JourneyScreen> {
                                 (_) => StoryArcSettingsScreen(
                                   controller: widget.controller,
                                   arc: _arc,
+                                  externalUrlLauncher:
+                                      widget.externalUrlLauncher,
                                 ),
                           ),
                         ),
@@ -545,12 +589,6 @@ class _JourneyScreenState extends State<JourneyScreen> {
     );
   }
 }
-
-Future<bool> _launchExternalUrl(Uri uri) => launchUrl(
-  uri,
-  mode: LaunchMode.externalApplication,
-  webOnlyWindowName: '_blank',
-);
 
 class _OpeningLandmark extends StatelessWidget {
   const _OpeningLandmark({required this.arc, required this.onReplay});

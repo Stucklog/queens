@@ -192,6 +192,42 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Verify behavior across the full board, including edges, corners, vertical drags, and quick drag gestures.
   - Add a regression test so dragging `X`s cannot silently break again.
 
+## Victory, story, support, and collection follow-up
+
+- [x] **P0 — Keep complete knight animations visible.**
+  - Reserve the full authored sprite width in the puzzle header, including on
+    non-encounter puzzles.
+  - Give full-screen victory artwork and opaque captions separate layout regions
+    so special moves stay unobscured in portrait and landscape.
+
+- [x] **P1 — Give the story a more vivid narrative voice.**
+  - Replace matter-of-fact quest summaries with scene-led prose, concrete
+    imagery, and a distinct emotional beat for every cinematic page.
+  - Preserve literal artwork descriptions for assistive technology.
+
+- [x] **P1 — Add developer support links and a restrained web prompt.**
+  - Put the approved Buy Me a Coffee action on every settings page.
+  - On web only, offer support at most once per chapter after the puzzle directly
+    before its boss, with the choice persisted across sessions and replays.
+
+- [x] **P1 — Hide the board cursor until keyboard input.**
+  - Keep touch-only play visually unselected while preserving board focus for an
+    attached keyboard.
+  - Reveal the cursor on a handled keyboard command and hide it again when the
+    player returns to touch or pointer input.
+
+- [x] **P1 — Add an arc-organized Bestiary.**
+  - Place the Bestiary on the home screen and derive discoveries from durable
+    clean or assisted encounter-puzzle completions.
+  - Keep undefeated identities hidden, organize entries by story arc and
+    chapter, and let players replay all six authored foe reactions.
+
+- [x] **P1 — Give regular enemies the full victory cutscene.**
+  - Route ordinary chapter encounters through the same full-screen final move,
+    opponent defeat, and knight victory sequence used for bosses.
+  - Keep non-encounter, Academy, and Just Puzzle completions on their existing
+    lightweight completion path.
+
 ## Verification checklist
 
 - [x] Play through every chapter from a fresh start and confirm the boss puzzle appears at the correct point.

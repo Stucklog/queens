@@ -73,6 +73,13 @@ does not write story or progression state. The scene-level `artAsset` is shared
 by its pages, and opening/finale cinematics retain the principal character
 sprites while chapter-start cinematics show environment art alone.
 
+Visible narrative copy should be scene-led rather than read like a quest log:
+give each page a concrete sensory image, an immediate choice or threat, and a
+distinct emotional turn. Avoid repeating a place/problem/jewel/boss summary
+from chapter to chapter. Keep the separate `semanticLabel` literal and concise
+so the more lyrical visible prose never makes the artwork description less
+useful to assistive technology.
+
 ## Origin chapter bosses
 
 Boss sizes preview the next realm’s board size and difficulty. The last map
@@ -130,10 +137,12 @@ The knight's eight production finisher tracks live in
 Crown Slash, Twin Sigil, Skybreak, Tidal Aegis, Cinderfall, Brass Judgment,
 Moonlit Sever, and Regalia Nova. Regular encounters use Crown Slash; chapter
 bosses use their numbered row, reserving Regalia Nova for the final boss.
-Boss-completion cinematics use three full-screen camera beats: the complete
-knight finisher, a pan to the boss's four-frame defeat, and a pan back before
-the knight's victory animation begins. The split-screen composition is reserved
-for encounter introductions and must not be reused for a boss defeat.
+Every enemy-completion cinematic uses three full-screen camera beats: the
+complete knight finisher, a pan to the opponent's four-frame defeat, and a pan
+back before the knight's victory animation begins. The artwork viewport and
+opaque caption occupy separate layout regions so no move can disappear behind
+the caption on portrait or landscape screens. The split-screen composition is
+reserved for encounter introductions and must not be reused for a defeat.
 
 The code-painted enemy silhouettes in `lib/widgets/combat_presentation.dart`
 are error fallbacks only. They are placeholder art and must not appear when a
@@ -169,6 +178,13 @@ column. It must not show unentitled, excluded, missing, or invalid packages as
 playable tiles. “Just Puzzle!” remains independently visible whenever its own
 feature entitlement is available, including when no story package can load.
 
+The home Bestiary follows that same manifest order, then chapter and encounter
+order within each arc. A foe is revealed only when its encounter puzzle has a
+durable clean or assisted completion record; map unlocks and in-progress
+replays do not reveal or temporarily hide entries. Locked slots must not load
+the foe asset or expose its name through text or semantics. Revealed entries
+may preview all six authored atlas reactions without changing story state.
+
 ## Academy lessons
 
 The ordered curriculum lives in `assets/academy/lessons.json`. Each lesson has
@@ -188,6 +204,15 @@ Master settings is opened from the home screen and owns preferences that apply
 across the app and the full-game reset. The full reset erases every arc,
 tutorial and Just Puzzle data, and all preferences, so its UI must retain two
 separate warning confirmations.
+
+Every master or story-arc settings page includes the same explicit “Support the
+developer” action. The approved Buy Me a Coffee page is the only external URL
+and always opens through a user action. On web only, completing the puzzle
+immediately before a chapter boss may show the same choice once for that
+chapter. Claim the namespaced chapter ID before displaying the prompt, persist
+it across sessions, and never show the prompt in Academy, Just Puzzle, or paid
+platform builds. An arc reset begins that arc's prompt history again; a full
+reset clears all prompt history.
 
 Map unlock and progress reset actions belong in an arc’s own settings screen.
 The gear on a story map opens that selected arc’s settings, not master settings.

@@ -45,6 +45,7 @@ class _GameScreenState extends State<GameScreen> {
     debugLabel: 'board keyboard focus',
   );
   Cell _selected = const Cell(0, 0);
+  bool _showBoardCursor = false;
   Map<Cell, BoardCue> _cues = {};
   Set<Cell> _conflicts = {};
   KnightAnimation _knightAnimation = KnightAnimation.bounce;
@@ -141,144 +142,159 @@ class _GameScreenState extends State<GameScreen> {
                 autofocus: true,
                 focusNode: _keyboardFocus,
                 onKeyEvent: _onKey,
-                child: Scaffold(
-                  appBar: AppBar(
-                    leading: const PixelBackButton(),
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.playMode == PuzzlePlayMode.academy
-                              ? widget.controller
-                                  .academyLessonForPuzzle(puzzle)!
-                                  .title
-                              : boss?.name ??
-                                  (declaredEncounter?.isBoss == false
-                                      ? declaredEncounter!.name
-                                      : null) ??
-                                  '$difficultyLabel · ${puzzle.size} × ${puzzle.size}',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        Text(
-                          widget.playMode == PuzzlePlayMode.academy
-                              ? 'Academy practice · ${puzzle.size} × ${puzzle.size}'
-                              : widget.playMode == PuzzlePlayMode.challenge
-                              ? 'Just Puzzle! ${widget.challengeNumber ?? puzzle.order}'
-                              : boss != null
-                              ? 'Chapter boss · ${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'
-                              : declaredEncounter != null
-                              ? 'Enemy encounter · ${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'
-                              : 'Puzzle ${puzzle.order} of ${storyArc!.catalog.puzzles.length}',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
-                    actions: [
-                      if (widget.controller.settings.showTimer)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Center(
-                            child: Text(
-                              CompletionDialog.formatTime(board.elapsedSeconds),
-                              style: const TextStyle(
-                                fontFeatures: [FontFeature.tabularFigures()],
+                child: Listener(
+                  behavior: HitTestBehavior.translucent,
+                  onPointerDown: (_) => _hideBoardCursor(),
+                  child: Scaffold(
+                    appBar: AppBar(
+                      leading: const PixelBackButton(),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.playMode == PuzzlePlayMode.academy
+                                ? widget.controller
+                                    .academyLessonForPuzzle(puzzle)!
+                                    .title
+                                : boss?.name ??
+                                    (declaredEncounter?.isBoss == false
+                                        ? declaredEncounter!.name
+                                        : null) ??
+                                    '$difficultyLabel · ${puzzle.size} × ${puzzle.size}',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          Text(
+                            widget.playMode == PuzzlePlayMode.academy
+                                ? 'Academy practice · ${puzzle.size} × ${puzzle.size}'
+                                : widget.playMode == PuzzlePlayMode.challenge
+                                ? 'Just Puzzle! ${widget.challengeNumber ?? puzzle.order}'
+                                : boss != null
+                                ? 'Chapter boss · ${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'
+                                : declaredEncounter != null
+                                ? 'Enemy encounter · ${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'
+                                : 'Puzzle ${puzzle.order} of ${storyArc!.catalog.puzzles.length}',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        if (widget.controller.settings.showTimer)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Center(
+                              child: Text(
+                                CompletionDialog.formatTime(
+                                  board.elapsedSeconds,
+                                ),
+                                style: const TextStyle(
+                                  fontFeatures: [FontFeature.tabularFigures()],
+                                ),
                               ),
                             ),
                           ),
+                        PixelIconButton(
+                          tooltip: 'Rules',
+                          onPressed: _openRules,
+                          glyph: PixelGlyph.book,
                         ),
-                      PixelIconButton(
-                        tooltip: 'Rules',
-                        onPressed: _openRules,
-                        glyph: PixelGlyph.book,
-                      ),
-                    ],
-                    bottom: PreferredSize(
-                      preferredSize: const Size.fromHeight(
-                        CombatPresentationBar.preferredHeight,
-                      ),
-                      child: RepaintBoundary(
-                        key: const ValueKey('puzzle-knight-companion-surface'),
-                        child: CombatPresentationBar(
-                          key: const ValueKey('puzzle-knight-companion'),
-                          animation: activeKnightAnimation,
-                          restartToken: activeKnightRestartToken,
-                          knightLine: _knightLine(activeKnightAnimation),
-                          encounter: encounter,
-                          onKnightCompleted:
-                              () => _completeKnightReaction(
-                                activeKnightAnimation,
-                                activeKnightRestartToken,
-                              ),
+                      ],
+                      bottom: PreferredSize(
+                        preferredSize: const Size.fromHeight(
+                          CombatPresentationBar.preferredHeight,
+                        ),
+                        child: RepaintBoundary(
+                          key: const ValueKey(
+                            'puzzle-knight-companion-surface',
+                          ),
+                          child: CombatPresentationBar(
+                            key: const ValueKey('puzzle-knight-companion'),
+                            animation: activeKnightAnimation,
+                            restartToken: activeKnightRestartToken,
+                            knightLine: _knightLine(activeKnightAnimation),
+                            encounter: encounter,
+                            onKnightCompleted:
+                                () => _completeKnightReaction(
+                                  activeKnightAnimation,
+                                  activeKnightRestartToken,
+                                ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  body: SafeArea(
-                    child: AbsorbPointer(
-                      absorbing: _pendingCompletion != null,
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          final wide = constraints.maxWidth >= 850;
-                          final boardWidget = ConstrainedBox(
-                            constraints: BoxConstraints(
-                              maxWidth: wide ? 650 : 620,
-                              maxHeight: wide ? 650 : 620,
-                            ),
-                            child: RegaliaBoard(
-                              puzzle: puzzle,
+                    body: SafeArea(
+                      child: AbsorbPointer(
+                        absorbing: _pendingCompletion != null,
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            final wide = constraints.maxWidth >= 850;
+                            final boardWidget = ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth: wide ? 650 : 620,
+                                maxHeight: wide ? 650 : 620,
+                              ),
+                              child: RegaliaBoard(
+                                puzzle: puzzle,
+                                board: board,
+                                automaticExclusions: automatic,
+                                conflicts: {
+                                  ...directConflictCells,
+                                  ..._conflicts,
+                                },
+                                cues: _cues,
+                                selected: _showBoardCursor ? _selected : null,
+                                onCellPressed: _pressCell,
+                                onCellDragged: _dragCell,
+                                onExclusionDragStarted: _beginExclusionDrag,
+                                onExclusionDragEnded: _endExclusionDrag,
+                              ),
+                            );
+                            final controls = _Controls(
                               board: board,
-                              automaticExclusions: automatic,
-                              conflicts: {
-                                ...directConflictCells,
-                                ..._conflicts,
-                              },
-                              cues: _cues,
-                              selected: _selected,
-                              onCellPressed: _pressCell,
-                              onCellDragged: _dragCell,
-                              onExclusionDragStarted: _beginExclusionDrag,
-                              onExclusionDragEnded: _endExclusionDrag,
-                            ),
-                          );
-                          final controls = _Controls(
-                            board: board,
-                            onUndo: board.undoStack.isEmpty ? null : _undo,
-                            onRedo: board.redoStack.isEmpty ? null : _redo,
-                            onReset: _confirmReset,
-                            onCheck: _check,
-                            onHint: _hint,
-                          );
-                          if (wide) {
-                            return Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(24),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                              onUndo: board.undoStack.isEmpty ? null : _undo,
+                              onRedo: board.redoStack.isEmpty ? null : _redo,
+                              onReset: _confirmReset,
+                              onCheck: _check,
+                              onHint: _hint,
+                            );
+                            if (wide) {
+                              return Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(24),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Center(child: boardWidget),
+                                      ),
+                                      const SizedBox(width: 36),
+                                      SizedBox(width: 276, child: controls),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                            return ClipRect(
+                              key: const ValueKey('puzzle-scroll-safe-area'),
+                              child: SingleChildScrollView(
+                                key: const ValueKey('puzzle-scroll-view'),
+                                physics: const ClampingScrollPhysics(),
+                                padding: const EdgeInsets.fromLTRB(
+                                  16,
+                                  8,
+                                  16,
+                                  28,
+                                ),
+                                child: Column(
                                   children: [
-                                    Expanded(child: Center(child: boardWidget)),
-                                    const SizedBox(width: 36),
-                                    SizedBox(width: 276, child: controls),
+                                    boardWidget,
+                                    const SizedBox(height: 18),
+                                    controls,
                                   ],
                                 ),
                               ),
                             );
-                          }
-                          return ClipRect(
-                            key: const ValueKey('puzzle-scroll-safe-area'),
-                            child: SingleChildScrollView(
-                              key: const ValueKey('puzzle-scroll-view'),
-                              physics: const ClampingScrollPhysics(),
-                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
-                              child: Column(
-                                children: [
-                                  boardWidget,
-                                  const SizedBox(height: 18),
-                                  controls,
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -300,6 +316,7 @@ class _GameScreenState extends State<GameScreen> {
     });
     final outcome = widget.controller.cycle(widget.puzzle, cell);
     _reactToMutation(cell, before, board.at(cell), outcome);
+    _restoreKeyboardListenerFocus();
   }
 
   void _dragCell(Cell cell, ManualCellState targetState) {
@@ -345,49 +362,62 @@ class _GameScreenState extends State<GameScreen> {
         HardwareKeyboard.instance.isMetaPressed) {
       if (key == LogicalKeyboardKey.keyZ &&
           HardwareKeyboard.instance.isShiftPressed) {
+        _showKeyboardCursor();
         _redo();
       } else if (key == LogicalKeyboardKey.keyZ) {
+        _showKeyboardCursor();
         _undo();
       } else if (key == LogicalKeyboardKey.keyY) {
+        _showKeyboardCursor();
         _redo();
       }
       return;
     }
     if (key == LogicalKeyboardKey.arrowUp) {
-      setState(
-        () =>
-            _selected = Cell(
-              (_selected.row - 1 + size) % size,
-              _selected.column,
-            ),
-      );
+      setState(() {
+        _showBoardCursor = true;
+        _selected = Cell((_selected.row - 1 + size) % size, _selected.column);
+      });
     } else if (key == LogicalKeyboardKey.arrowDown) {
-      setState(
-        () => _selected = Cell((_selected.row + 1) % size, _selected.column),
-      );
+      setState(() {
+        _showBoardCursor = true;
+        _selected = Cell((_selected.row + 1) % size, _selected.column);
+      });
     } else if (key == LogicalKeyboardKey.arrowLeft) {
-      setState(
-        () =>
-            _selected = Cell(
-              _selected.row,
-              (_selected.column - 1 + size) % size,
-            ),
-      );
+      setState(() {
+        _showBoardCursor = true;
+        _selected = Cell(_selected.row, (_selected.column - 1 + size) % size);
+      });
     } else if (key == LogicalKeyboardKey.arrowRight) {
-      setState(
-        () => _selected = Cell(_selected.row, (_selected.column + 1) % size),
-      );
+      setState(() {
+        _showBoardCursor = true;
+        _selected = Cell(_selected.row, (_selected.column + 1) % size);
+      });
     } else if (key == LogicalKeyboardKey.space ||
         key == LogicalKeyboardKey.enter) {
+      _showKeyboardCursor();
       _pressCell(_selected);
     } else if (key == LogicalKeyboardKey.keyX) {
+      _showKeyboardCursor();
       _setSelected(ManualCellState.cross);
     } else if (key == LogicalKeyboardKey.keyC) {
+      _showKeyboardCursor();
       _setSelected(ManualCellState.crown);
     } else if (key == LogicalKeyboardKey.delete ||
         key == LogicalKeyboardKey.backspace) {
+      _showKeyboardCursor();
       _setSelected(ManualCellState.empty);
     }
+  }
+
+  void _showKeyboardCursor() {
+    if (_showBoardCursor || !mounted) return;
+    setState(() => _showBoardCursor = true);
+  }
+
+  void _hideBoardCursor() {
+    if (!_showBoardCursor || !mounted) return;
+    setState(() => _showBoardCursor = false);
   }
 
   void _check() {
@@ -591,6 +621,7 @@ class _GameScreenState extends State<GameScreen> {
       widget.controller.startTimer(widget.puzzle.id);
       setState(() {
         _selected = const Cell(0, 0);
+        _showBoardCursor = false;
         _cues = {};
         _conflicts = {};
         _pendingCompletion = null;
@@ -600,9 +631,13 @@ class _GameScreenState extends State<GameScreen> {
     } else if (action == 'next') {
       widget.controller.stopTimer();
       if (!mounted) return;
-      Navigator.of(
-        context,
-      ).pop(outcome.isChallenge || outcome.advancedJourney ? outcome : null);
+      Navigator.of(context).pop(
+        outcome.isChallenge ||
+                outcome.advancedJourney ||
+                widget.playMode == PuzzlePlayMode.journey
+            ? outcome
+            : null,
+      );
     }
   }
 
@@ -614,6 +649,15 @@ class _GameScreenState extends State<GameScreen> {
   void _endExclusionDrag() {
     _exclusionDragReacted = false;
     widget.controller.endCellBatch(widget.puzzle);
+    _restoreKeyboardListenerFocus();
+  }
+
+  void _restoreKeyboardListenerFocus() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && !_keyboardFocus.hasFocus) {
+        _keyboardFocus.requestFocus();
+      }
+    });
   }
 
   void _undo() {
@@ -712,21 +756,20 @@ class _GameScreenState extends State<GameScreen> {
 
   void _beginCompletionSequence(PuzzleCompletionOutcome outcome) {
     final arc = widget.controller.arcForPuzzle(widget.puzzle);
-    final boss =
+    final encounter =
         widget.playMode == PuzzlePlayMode.journey
-            ? arc?.bossForPuzzle(widget.puzzle)
+            ? arc?.encounterForPuzzle(widget.puzzle)
             : null;
-    final encounter = arc?.encounterForPuzzle(widget.puzzle);
-    if (boss != null) {
-      final finisher = finisherForSpectacle(boss.spectacleLevel);
+    if (encounter != null) {
+      final finisher = finisherForSpectacle(encounter.spectacleLevel);
       setState(() {
         _pendingCompletion = outcome;
         _knightAnimation = finisher;
         _knightRestartToken++;
       });
       unawaited(
-        _showBossFinisher(
-          boss,
+        _showEncounterVictory(
+          encounter,
           arc!.chapterForOrder(widget.puzzle.order),
           outcome,
         ),
@@ -734,11 +777,7 @@ class _GameScreenState extends State<GameScreen> {
       return;
     }
     _pendingCompletion = outcome;
-    _playKnightAnimation(
-      encounter == null
-          ? KnightAnimation.special
-          : finisherForSpectacle(encounter.spectacleLevel),
-    );
+    _playKnightAnimation(KnightAnimation.special);
     if (MediaQuery.maybeOf(context)?.disableAnimations ?? false) {
       final token = _knightRestartToken;
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -747,15 +786,15 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
-  Future<void> _showBossFinisher(
-    ChapterBoss boss,
+  Future<void> _showEncounterVictory(
+    CombatEncounter encounter,
     JourneyChapter chapter,
     PuzzleCompletionOutcome outcome,
   ) async {
     final theme = RegaliaTheme.forChapter(chapter);
     await Navigator.of(context).push<void>(
       PageRouteBuilder<void>(
-        settings: RouteSettings(name: 'boss-finisher/${boss.id}'),
+        settings: RouteSettings(name: 'encounter-victory/${encounter.id}'),
         opaque: true,
         transitionDuration: Duration.zero,
         reverseTransitionDuration: Duration.zero,
@@ -765,7 +804,7 @@ class _GameScreenState extends State<GameScreen> {
               child: PopScope(
                 canPop: false,
                 child: BossFinisherCutscene(
-                  boss: boss,
+                  boss: encounter,
                   background: PixelLandscape(
                     chapter: chapter,
                     brightness: theme.brightness,

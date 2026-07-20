@@ -50,6 +50,64 @@ void main() {
   );
 
   testWidgets(
+    'direct enemy preview selects a row immediately and can restart it',
+    (tester) async {
+      Widget preview({required int restartToken, bool reducedMotion = false}) =>
+          MaterialApp(
+            home: MediaQuery(
+              data: MediaQueryData(disableAnimations: reducedMotion),
+              child: Scaffold(
+                body: PixelEnemySprite.preview(
+                  key: const ValueKey('direct-enemy-preview'),
+                  encounter: _layoutTestEncounter,
+                  reaction: EnemyReaction.defeated,
+                  duration: const Duration(milliseconds: 400),
+                  restartToken: restartToken,
+                ),
+              ),
+            ),
+          );
+
+      await tester.pumpWidget(preview(restartToken: 0));
+      await tester.pump();
+      var sprite = tester.widget<PixelEnemySprite>(
+        find.byKey(const ValueKey('direct-enemy-preview')),
+      );
+      expect(sprite.resolvedReaction, EnemyReaction.defeated);
+      expect(sprite.stimulus, KnightAnimation.bounce);
+      expect(
+        find.byKey(const ValueKey('enemy-atlas-frame-defeated-0')),
+        findsOneWidget,
+      );
+
+      // Direct previews advance from frame zero without a knight-impact hold.
+      await tester.pump(const Duration(milliseconds: 110));
+      expect(
+        find.byKey(const ValueKey('enemy-atlas-frame-defeated-1')),
+        findsOneWidget,
+      );
+
+      await tester.pumpWidget(preview(restartToken: 1));
+      await tester.pump();
+      sprite = tester.widget<PixelEnemySprite>(
+        find.byKey(const ValueKey('direct-enemy-preview')),
+      );
+      expect(sprite.restartToken, 1);
+      expect(
+        find.byKey(const ValueKey('enemy-atlas-frame-defeated-0')),
+        findsOneWidget,
+      );
+
+      await tester.pumpWidget(preview(restartToken: 2, reducedMotion: true));
+      await tester.pump();
+      expect(
+        find.byKey(const ValueKey('enemy-atlas-frame-defeated-3')),
+        findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets(
     'puzzle stage pins the scaled knight and places the enemy beside her',
     (tester) async {
       tester.view.physicalSize = const Size(390, 180);
@@ -92,8 +150,21 @@ void main() {
         find.byKey(const ValueKey('puzzle-knight-sprite')),
       );
       final soloKnightOffset = soloKnightRect.topLeft - soloStageRect.topLeft;
-      expect(soloKnightRect.size, const Size(90, 79));
-      expect(soloStageRect.size, const Size(90, 114));
+      expect(
+        CombatPresentationBar.knightWidth,
+        greaterThanOrEqualTo(104),
+        reason: 'the widest legacy attack frame needs its full viewport',
+      );
+      expect(soloKnightRect.size, const Size(104, 79));
+      expect(soloStageRect.size, const Size(104, 114));
+      expect(
+        tester
+            .widget<Stack>(
+              find.byKey(const ValueKey('puzzle-combatant-stage-stack')),
+            )
+            .clipBehavior,
+        Clip.none,
+      );
 
       await pumpBar(_layoutTestEncounter);
       final combatStageRect = tester.getRect(
@@ -111,12 +182,21 @@ void main() {
         combatKnightRect.topLeft - combatStageRect.topLeft,
         soloKnightOffset,
       );
-      expect(combatKnightRect.size, const Size(90, 79));
+      expect(combatKnightRect.size, const Size(104, 79));
       expect(enemyRect.size, const Size(111, 114));
-      expect(combatStageRect.size, const Size(177, 114));
+      expect(combatStageRect.size, const Size(191, 114));
       expect(enemyRect.left, combatKnightRect.right - 24);
       expect(enemyRect.bottom, combatKnightRect.bottom);
       expect(enemyRect.bottom, combatStageRect.bottom);
+      expect(
+        tester
+            .getSize(find.byKey(const ValueKey('combat-presentation-status')))
+            .width,
+        greaterThanOrEqualTo(150),
+        reason: 'encounter status must remain readable at 390 logical pixels',
+      );
+      expect(find.text(_layoutTestEncounter.name), findsOneWidget);
+      expect(tester.takeException(), isNull);
     },
   );
 
@@ -157,7 +237,7 @@ void main() {
   });
 
   testWidgets(
-    'in-chapter encounters end with the reusable Crown Slash finisher',
+    'in-chapter encounters receive the full-screen Crown Slash victory',
     (tester) async {
       SharedPreferences.setMockInitialValues({SaveIds.tutorialComplete: true});
       final controller = _TimerlessController();
@@ -188,9 +268,13 @@ void main() {
       await tester.pump();
 
       expect(
+        find.byKey(const ValueKey('boss-finisher-cutscene')),
+        findsOneWidget,
+      );
+      expect(
         tester
             .widget<PixelKnightSprite>(
-              find.byKey(const ValueKey('puzzle-knight-sprite')),
+              find.byKey(const ValueKey('boss-finisher-knight-sprite')),
             )
             .animation,
         KnightAnimation.crownSlash,
@@ -198,12 +282,13 @@ void main() {
       expect(
         tester
             .widget<PixelEnemySprite>(
-              find.byKey(const ValueKey('puzzle-enemy-sprite')),
+              find.byKey(const ValueKey('boss-finisher-boss-sprite')),
             )
-            .stimulus,
-        KnightAnimation.crownSlash,
+            .encounter,
+        same(encounter),
       );
-      expect(find.text('DEFEATED'), findsOneWidget);
+      expect(find.text('ENCOUNTER SPECIAL'), findsOneWidget);
+      expect(find.byKey(const ValueKey('completion-knight')), findsNothing);
     },
   );
 
