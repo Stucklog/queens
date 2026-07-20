@@ -370,6 +370,17 @@ class _BestiaryFoeScreenState extends State<BestiaryFoeScreen> {
     });
   }
 
+  void _resumeIdle(EnemyReaction completedReaction, int restartToken) {
+    if (!mounted ||
+        completedReaction == EnemyReaction.idle ||
+        completedReaction == EnemyReaction.defeated ||
+        _reaction != completedReaction ||
+        _restartToken != restartToken) {
+      return;
+    }
+    setState(() => _reaction = EnemyReaction.idle);
+  }
+
   @override
   Widget build(BuildContext context) => Theme(
     data: RegaliaTheme.forChapter(widget.chapter),
@@ -389,6 +400,7 @@ class _BestiaryFoeScreenState extends State<BestiaryFoeScreen> {
                     encounter: widget.encounter,
                     reaction: _reaction,
                     restartToken: _restartToken,
+                    onCompleted: _resumeIdle,
                   );
                   final controls = _ReactionControls(
                     selected: _reaction,
@@ -435,11 +447,13 @@ class _ReactionStage extends StatelessWidget {
     required this.encounter,
     required this.reaction,
     required this.restartToken,
+    required this.onCompleted,
   });
 
   final CombatEncounter encounter;
   final EnemyReaction reaction;
   final int restartToken;
+  final void Function(EnemyReaction reaction, int restartToken) onCompleted;
 
   @override
   Widget build(BuildContext context) => Semantics(
@@ -473,6 +487,10 @@ class _ReactionStage extends StatelessWidget {
                   encounter: encounter,
                   reaction: reaction,
                   restartToken: restartToken,
+                  onCompleted:
+                      reaction == EnemyReaction.defeated
+                          ? null
+                          : () => onCompleted(reaction, restartToken),
                   width: 196,
                   height: 196,
                 ),
@@ -510,7 +528,9 @@ class _ReactionControls extends StatelessWidget {
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 6),
-        const Text('Choose a movement. Tap it again to replay from frame one.'),
+        const Text(
+          'Moves play once, then idle resumes. Defeat holds on its last frame.',
+        ),
         const SizedBox(height: 14),
         LayoutBuilder(
           builder: (context, constraints) {

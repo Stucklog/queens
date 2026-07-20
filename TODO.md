@@ -221,6 +221,8 @@ This is the working backlog for the remaining gameplay, story, presentation, and
     clean or assisted encounter-puzzle completions.
   - Keep undefeated identities hidden, organize entries by story arc and
     chapter, and let players replay all six authored foe reactions.
+  - Resume the idle loop after every non-defeat reaction, hold defeat on its
+    final frame, and restart looping when another reaction is chosen.
 
 - [x] **P1 — Give regular enemies the full victory cutscene.**
   - Route ordinary chapter encounters through the same full-screen final move,
