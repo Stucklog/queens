@@ -10,7 +10,8 @@ specials, while selected in-chapter puzzles feature regular enemies. Completing
 any encounter now opens the full-screen final-move, opponent-defeat, and
 knight-victory sequence. Defeated foes are collected in the home-screen
 Bestiary, organized by arc and chapter, where all six reaction animations can
-be replayed without changing story progress.
+be replayed without changing story progress. Reaction studies play once inside
+the idle loop and return to idle; defeat alone holds on its final frame.
 
 “Just Puzzle!” is a separate endless run of puzzles generated and verified entirely on the device. Players can choose Easy, Medium, Hard, Expert, 12×12 Extreme, or a rotating Mixed run; the next board is prepared while the current one is played. Its boards, marks, elapsed time, assistance, and run statistics resume after relaunch without changing any story frontier.
 

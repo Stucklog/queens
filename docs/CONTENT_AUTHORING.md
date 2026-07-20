@@ -184,6 +184,10 @@ durable clean or assisted completion record; map unlocks and in-progress
 replays do not reveal or temporarily hide entries. Locked slots must not load
 the foe asset or expose its name through text or semantics. Revealed entries
 may preview all six authored atlas reactions without changing story state.
+Idle repeats continuously. Stagger, strike, press, and exposed are one-shot
+interruptions that return to the idle loop when their authored row completes.
+Defeat alone holds on its final frame; choosing idle or another reaction after
+defeat restarts playback, with transient reactions again returning to idle.
 
 ## Academy lessons
 

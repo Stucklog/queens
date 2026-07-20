@@ -107,6 +107,37 @@ void main() {
     },
   );
 
+  testWidgets('direct enemy preview reports each completed playback once', (
+    tester,
+  ) async {
+    var completions = 0;
+
+    Widget preview(int restartToken) => MaterialApp(
+      home: Scaffold(
+        body: PixelEnemySprite.preview(
+          key: const ValueKey('completing-enemy-preview'),
+          encounter: _layoutTestEncounter,
+          reaction: EnemyReaction.staggered,
+          duration: const Duration(milliseconds: 400),
+          restartToken: restartToken,
+          onCompleted: () => completions++,
+        ),
+      ),
+    );
+
+    await tester.pumpWidget(preview(0));
+    await tester.pump(const Duration(milliseconds: 399));
+    expect(completions, 0);
+    await tester.pump(const Duration(milliseconds: 2));
+    expect(completions, 1);
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(completions, 1);
+
+    await tester.pumpWidget(preview(1));
+    await tester.pump(const Duration(milliseconds: 401));
+    expect(completions, 2);
+  });
+
   testWidgets(
     'puzzle stage pins the scaled knight and places the enemy beside her',
     (tester) async {

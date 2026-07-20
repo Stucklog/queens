@@ -327,7 +327,8 @@ class PixelEnemySprite extends StatefulWidget {
     this.width = 72,
     this.height = 76,
   }) : previewReaction = null,
-       previewDuration = null;
+       previewDuration = null,
+       onCompleted = null;
 
   /// Plays one enemy-atlas row directly, without inventing a knight stimulus.
   ///
@@ -343,6 +344,7 @@ class PixelEnemySprite extends StatefulWidget {
     this.width = 72,
     this.height = 76,
     Duration duration = const Duration(milliseconds: 720),
+    this.onCompleted,
   }) : assert(duration > Duration.zero),
        stimulus = KnightAnimation.bounce,
        previewReaction = reaction,
@@ -352,6 +354,7 @@ class PixelEnemySprite extends StatefulWidget {
   final KnightAnimation stimulus;
   final EnemyReaction? previewReaction;
   final Duration? previewDuration;
+  final VoidCallback? onCompleted;
   final int? frame;
   final int restartToken;
   final double width;
@@ -366,9 +369,11 @@ class PixelEnemySprite extends StatefulWidget {
 
 class _PixelEnemySpriteState extends State<PixelEnemySprite>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(vsync: this);
+  late final AnimationController _controller = AnimationController(vsync: this)
+    ..addStatusListener(_handleStatus);
   bool _reduceMotion = false;
   bool _tickerEnabled = true;
+  bool _completionDelivered = false;
 
   EnemyReaction get _reaction => widget.resolvedReaction;
   Duration get _duration =>
@@ -401,6 +406,7 @@ class _PixelEnemySpriteState extends State<PixelEnemySprite>
   }
 
   void _restart() {
+    _completionDelivered = false;
     _controller
       ..stop()
       ..duration = _duration
@@ -411,6 +417,12 @@ class _PixelEnemySpriteState extends State<PixelEnemySprite>
       return;
     }
     _controller.forward();
+  }
+
+  void _handleStatus(AnimationStatus status) {
+    if (status != AnimationStatus.completed || _completionDelivered) return;
+    _completionDelivered = true;
+    widget.onCompleted?.call();
   }
 
   int get _frame {

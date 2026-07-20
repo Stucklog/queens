@@ -143,6 +143,116 @@ void main() {
     expect(replayed.restartToken, expectedToken + 1);
   });
 
+  testWidgets('one-shot reactions resume idle while defeat holds', (
+    tester,
+  ) async {
+    final controller = await _controller(tester);
+    addTearDown(controller.dispose);
+    final chapter = controller.originArc!.chapters.first;
+    final encounter = chapter.encounters.first;
+    await _pumpApp(
+      tester,
+      size: const Size(600, 900),
+      home: BestiaryFoeScreen(encounter: encounter, chapter: chapter),
+      disableAnimations: false,
+    );
+
+    PixelEnemySprite sprite() => tester.widget<PixelEnemySprite>(
+      find.byKey(const ValueKey('bestiary-replay-sprite')),
+    );
+
+    expect(sprite().resolvedReaction, EnemyReaction.idle);
+    expect(
+      find.byKey(const ValueKey('enemy-atlas-frame-idle-0')),
+      findsOneWidget,
+    );
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(
+      find.byKey(const ValueKey('enemy-atlas-frame-idle-1')),
+      findsOneWidget,
+    );
+    await tester.pump(const Duration(milliseconds: 600));
+    expect(
+      find.byKey(const ValueKey('enemy-atlas-frame-idle-0')),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.byKey(const ValueKey('bestiary-reaction-staggered')));
+    await tester.pump();
+    expect(sprite().resolvedReaction, EnemyReaction.staggered);
+    expect(
+      find.byKey(const ValueKey('enemy-atlas-frame-staggered-0')),
+      findsOneWidget,
+    );
+    await tester.pump(const Duration(milliseconds: 540));
+    expect(
+      find.byKey(const ValueKey('enemy-atlas-frame-staggered-3')),
+      findsOneWidget,
+    );
+    await tester.pump(const Duration(milliseconds: 181));
+    expect(sprite().resolvedReaction, EnemyReaction.idle);
+    expect(find.text(EnemyReaction.idle.label), findsOneWidget);
+    expect(
+      tester.widget(find.byKey(const ValueKey('bestiary-reaction-idle'))),
+      isA<FilledButton>(),
+    );
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(
+      find.byKey(const ValueKey('enemy-atlas-frame-idle-1')),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.byKey(const ValueKey('bestiary-reaction-pressing')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 360));
+    await tester.tap(find.byKey(const ValueKey('bestiary-reaction-pressing')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 361));
+    expect(sprite().resolvedReaction, EnemyReaction.pressing);
+    await tester.pump(const Duration(milliseconds: 360));
+    expect(sprite().resolvedReaction, EnemyReaction.idle);
+
+    await tester.tap(find.byKey(const ValueKey('bestiary-reaction-defeated')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 721));
+    expect(sprite().resolvedReaction, EnemyReaction.defeated);
+    expect(
+      find.byKey(const ValueKey('enemy-atlas-frame-defeated-3')),
+      findsOneWidget,
+    );
+    await tester.pump(const Duration(milliseconds: 900));
+    expect(sprite().resolvedReaction, EnemyReaction.defeated);
+    expect(
+      find.byKey(const ValueKey('enemy-atlas-frame-defeated-3')),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.byKey(const ValueKey('bestiary-reaction-idle')));
+    await tester.pump();
+    expect(sprite().resolvedReaction, EnemyReaction.idle);
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(
+      find.byKey(const ValueKey('enemy-atlas-frame-idle-1')),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.byKey(const ValueKey('bestiary-reaction-defeated')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 721));
+    expect(sprite().resolvedReaction, EnemyReaction.defeated);
+
+    await tester.tap(find.byKey(const ValueKey('bestiary-reaction-striking')));
+    await tester.pump();
+    expect(sprite().resolvedReaction, EnemyReaction.striking);
+    await tester.pump(const Duration(milliseconds: 721));
+    expect(sprite().resolvedReaction, EnemyReaction.idle);
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(
+      find.byKey(const ValueKey('enemy-atlas-frame-idle-1')),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('chapter collection reflows at the screen breakpoint', (
     tester,
   ) async {
@@ -220,6 +330,7 @@ Future<void> _pumpApp(
   required Size size,
   required Widget home,
   double textScaleFactor = 1,
+  bool disableAnimations = true,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
@@ -232,7 +343,7 @@ Future<void> _pumpApp(
         final media = MediaQuery.of(context);
         return MediaQuery(
           data: media.copyWith(
-            disableAnimations: true,
+            disableAnimations: disableAnimations,
             textScaler: TextScaler.linear(textScaleFactor),
           ),
           child: child!,
