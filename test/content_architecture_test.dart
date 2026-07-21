@@ -291,6 +291,7 @@ void main() {
         await File('assets/content/arcs/origin/arc.json').readAsString();
     final originCatalog =
         await File('assets/puzzles/catalog.json').readAsString();
+    final tutorial = await File('assets/puzzles/tutorial.json').readAsString();
     final futureMetadata = originMetadata
         .replaceAll(ContentIds.originArc, futureArc)
         .replaceAll('/origin/', '/moon-court/')
@@ -307,6 +308,7 @@ void main() {
 
     Future<String> read(String path) async {
       if (path == 'assets/puzzles/catalog.json') return assets['catalog.json']!;
+      if (path == 'assets/puzzles/tutorial.json') return tutorial;
       if (assets[path] case final value?) return value;
       throw StateError('$path not found');
     }
@@ -394,6 +396,7 @@ void main() {
     final catalog = PuzzleCatalog.fromJsonString(
       await File('assets/puzzles/catalog.json').readAsString(),
     );
+    final tutorial = await File('assets/puzzles/tutorial.json').readAsString();
     final manifest = jsonEncode({
       'schemaVersion': 1,
       'features': [ContentIds.justPuzzleFeature],
@@ -415,6 +418,7 @@ void main() {
       contentPolicy: const ContentEntitlementPolicy.web(),
       contentAssetReader: (path) async {
         if (path == 'manifest.json') return manifest;
+        if (path == 'assets/puzzles/tutorial.json') return tutorial;
         throw StateError('$path not found');
       },
       contentManifestAsset: 'manifest.json',

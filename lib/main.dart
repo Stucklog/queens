@@ -7,6 +7,7 @@ import 'app/app_controller.dart';
 import 'app/branding.dart';
 import 'app/theme.dart';
 import 'screens/home_screen.dart';
+import 'screens/tutorial_screen.dart';
 import 'widgets/crown_mark.dart';
 import 'widgets/pixel_art.dart';
 import 'widgets/pixel_ui.dart';
@@ -117,6 +118,9 @@ class RegaliaApp extends StatelessWidget {
                   ? _StartupError(error: startupError!)
                   : !controller.isReady
                   ? const _LoadingScreen()
+                  : controller.tutorialPuzzle != null &&
+                      !controller.tutorialComplete
+                  ? TutorialScreen(controller: controller)
                   : HomeScreen(
                     controller: controller,
                     externalUrlLauncher: externalUrlLauncher,

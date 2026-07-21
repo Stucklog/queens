@@ -75,6 +75,7 @@ flutter:
         - paid
     - assets/fonts/PixelifySans_LICENSE.txt
     - assets/puzzles/catalog.json
+    - assets/puzzles/tutorial.json
   fonts:
     - family: RegaliaPixel
       fonts:

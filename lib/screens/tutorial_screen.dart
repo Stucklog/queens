@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 
 import '../app/app_controller.dart';
 import '../app/branding.dart';
+import '../core/models.dart';
 import '../widgets/crown_mark.dart';
 import '../widgets/pixel_ui.dart';
+import '../widgets/regalia_board.dart';
 
 class TutorialScreen extends StatefulWidget {
   const TutorialScreen({super.key, required this.controller});
@@ -17,13 +19,16 @@ class TutorialScreen extends StatefulWidget {
 
 class _TutorialScreenState extends State<TutorialScreen> {
   late final PageController _pages;
+  late final PuzzleDefinition _puzzle;
+  late final BoardState _board;
   int _page = 0;
-  bool _finishing = false;
 
   @override
   void initState() {
     super.initState();
     _pages = PageController();
+    _puzzle = widget.controller.tutorialPuzzle!;
+    _board = BoardState(puzzleId: _puzzle.id, size: _puzzle.size);
   }
 
   @override
@@ -39,20 +44,23 @@ class _TutorialScreenState extends State<TutorialScreen> {
         children: [
           Align(
             alignment: Alignment.centerRight,
-            child: TextButton(onPressed: _finish, child: const Text('Skip')),
+            child: TextButton(
+              onPressed: widget.controller.finishTutorial,
+              child: const Text('Skip'),
+            ),
           ),
           Expanded(
             child: PageView(
               controller: _pages,
               onPageChanged: (value) => setState(() => _page = value),
-              children: [_intro(context), _rules(context)],
+              children: [_intro(context), _rules(context), _tryBoard(context)],
             ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
             child: Row(
               children: [
-                for (var index = 0; index < 2; index++)
+                for (var index = 0; index < 3; index++)
                   Container(
                     width: index == _page ? 24 : 8,
                     height: 8,
@@ -71,18 +79,16 @@ class _TutorialScreenState extends State<TutorialScreen> {
                       ),
                     ),
                   ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: FilledButton(
-                    onPressed: () {
-                      if (_page == 1) {
-                        _finish();
-                      } else {
-                        _pages.jumpToPage(_page + 1);
-                      }
-                    },
-                    child: Text(_page == 1 ? 'Continue to story' : 'Next'),
-                  ),
+                const Spacer(),
+                FilledButton(
+                  onPressed: () {
+                    if (_page == 2) {
+                      widget.controller.finishTutorial();
+                    } else {
+                      _pages.jumpToPage(_page + 1);
+                    }
+                  },
+                  child: Text(_page == 2 ? 'Begin journey' : 'Next'),
                 ),
               ],
             ),
@@ -140,7 +146,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Four rules to remember',
+                  'Three kinds of royalty',
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -169,13 +175,50 @@ class _TutorialScreenState extends State<TutorialScreen> {
     },
   );
 
-  Future<void> _finish() async {
-    if (_finishing) return;
-    _finishing = true;
-    await widget.controller.finishTutorial();
-    if (!mounted) return;
-    final navigator = Navigator.of(context);
-    if (navigator.canPop()) navigator.pop(true);
+  Widget _tryBoard(BuildContext context) => LayoutBuilder(
+    builder:
+        (context, constraints) => SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 28),
+          child: Column(
+            children: [
+              Text(
+                'Try the board',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(_practicePrompt, textAlign: TextAlign.center),
+              const SizedBox(height: 20),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth:
+                      constraints.maxWidth > 440 ? 440 : constraints.maxWidth,
+                ),
+                child: RegaliaBoard(
+                  puzzle: _puzzle,
+                  board: _board,
+                  automaticExclusions: widget.controller.ruleEngine
+                      .automaticExclusions(_puzzle, _board),
+                  onCellPressed: (cell) => setState(() => _board.cycle(cell)),
+                  onCellDragged: (cell, targetState) {
+                    if (_board.at(cell) != ManualCellState.crown) {
+                      setState(() => _board.set(cell, targetState));
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+  );
+
+  String get _practicePrompt {
+    if (_board.cells.contains(ManualCellState.crown)) {
+      return 'Crown placed — matching X marks show its automatic exclusions.';
+    }
+    if (_board.cells.contains(ManualCellState.cross)) {
+      return 'Good. Tap that X again to turn it into a crown.';
+    }
+    return 'Tap once, or drag across several cells, to mark them with X.';
   }
 }
 

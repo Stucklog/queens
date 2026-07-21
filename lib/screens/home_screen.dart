@@ -16,18 +16,16 @@ import '../widgets/support_developer.dart';
 import 'academy_screen.dart';
 import 'bestiary_screen.dart';
 import 'challenge_screen.dart';
-import 'guided_walkthrough_screen.dart';
 import 'journey_screen.dart';
 import 'settings_screen.dart';
 import 'story_scene_screen.dart';
-import 'tutorial_screen.dart';
 
 /// The stable entry point for installed content after the tutorial.
 ///
 /// Available packages open normally. The web edition also renders lightweight
 /// previews for manifest entries that intentionally belong to the paid apps;
 /// their full story packages are never loaded.
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
     required this.controller,
@@ -36,41 +34,6 @@ class HomeScreen extends StatefulWidget {
 
   final AppController controller;
   final ExternalUrlLauncher? externalUrlLauncher;
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  AppController get controller => widget.controller;
-  ExternalUrlLauncher? get externalUrlLauncher => widget.externalUrlLauncher;
-
-  bool _startupFlowAttempted = false;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _resumeFirstLaunch());
-  }
-
-  Future<void> _resumeFirstLaunch() async {
-    if (!mounted || _startupFlowAttempted) return;
-    _startupFlowAttempted = true;
-    if (!controller.tutorialComplete) {
-      final completed = await Navigator.of(context).push<bool>(
-        PageRouteBuilder<bool>(
-          settings: const RouteSettings(name: 'welcome'),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-          pageBuilder: (_, __, ___) => TutorialScreen(controller: controller),
-        ),
-      );
-      if (!mounted || completed != true) return;
-    }
-    final arc = controller.originArc;
-    if (!controller.originOnboardingPending || arc == null || !mounted) return;
-    await _openArc(context, arc);
-  }
 
   Future<void> _openArc(BuildContext context, StoryArc arc) async {
     final openingUnseen = !controller.hasSeenStoryBeat(arc.openingScene.id);
@@ -99,14 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!context.mounted) return;
     await Navigator.of(context).push<void>(
       MaterialPageRoute(
-        builder:
-            (_) => JourneyScreen(
-              controller: controller,
-              arc: arc,
-              autoStartGuidedWalkthrough:
-                  arc.id == controller.originArc?.id &&
-                  controller.originOnboardingPending,
-            ),
+        builder: (_) => JourneyScreen(controller: controller, arc: arc),
       ),
     );
   }
@@ -226,22 +182,6 @@ class _HomeScreenState extends State<HomeScreen> {
     MaterialPageRoute(builder: (_) => BestiaryScreen(controller: controller)),
   );
 
-  void _openRulesWalkthrough(BuildContext context) {
-    final arc = controller.originArc;
-    if (arc == null || arc.catalog.puzzles.isEmpty) return;
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        settings: const RouteSettings(name: 'rules-walkthrough'),
-        builder:
-            (_) => GuidedWalkthroughScreen(
-              controller: controller,
-              puzzle: arc.catalog.puzzles.first,
-              replay: true,
-            ),
-      ),
-    );
-  }
-
   void _openMasterSettings(BuildContext context) => Navigator.of(context).push(
     MaterialPageRoute(builder: (_) => SettingsScreen(controller: controller)),
   );
@@ -249,7 +189,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final arcs = controller.availableStoryArcs.toList(growable: false);
-    final originArc = controller.originArc;
     final storyEntries = controller.storyArcEntries
         .where(
           (entry) =>
@@ -322,12 +261,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 16),
               ],
-            if (originArc != null) ...[
-              _RulesWalkthroughTile(
-                onPressed: () => _openRulesWalkthrough(context),
-              ),
-              const SizedBox(height: 16),
-            ],
             if (controller.justPuzzleAvailable) ...[
               _JustPuzzleTile(
                 hasRun: controller.hasChallenge,
@@ -374,61 +307,6 @@ Future<bool> _launchExternalStoreUrl(Uri uri) => launchUrl(
   mode: LaunchMode.externalApplication,
   webOnlyWindowName: '_blank',
 );
-
-class _RulesWalkthroughTile extends StatelessWidget {
-  const _RulesWalkthroughTile({required this.onPressed});
-
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) => PixelPanel(
-    padding: EdgeInsets.zero,
-    borderColor: Theme.of(context).colorScheme.secondary,
-    child: Material(
-      color: Colors.transparent,
-      child: InkWell(
-        key: const ValueKey('open-rules-walkthrough-home'),
-        onTap: onPressed,
-        customBorder: const PixelOrganicBorder(),
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Row(
-            children: [
-              PixelIcon(
-                PixelGlyph.book,
-                color: Theme.of(context).colorScheme.secondary,
-                size: 32,
-                excludeFromSemantics: true,
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Rules walkthrough',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 4),
-                    const Text(
-                      'Practice on the first board without changing progress',
-                    ),
-                  ],
-                ),
-              ),
-              PixelIcon(
-                PixelGlyph.arrowRight,
-                color: Theme.of(context).colorScheme.secondary,
-                size: 24,
-                excludeFromSemantics: true,
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
 
 class _BestiaryTile extends StatelessWidget {
   const _BestiaryTile({

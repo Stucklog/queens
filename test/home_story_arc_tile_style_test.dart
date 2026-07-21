@@ -72,7 +72,6 @@ Future<AppController> _webControllerWithRealManifest(
 ) async {
   SharedPreferences.setMockInitialValues({
     SaveIds.tutorialComplete: true,
-    SaveIds.originOnboardingPending: false,
     'regalia.journeySchemaVersion': 1,
     SaveIds.originSeenScenes: [
       ContentIds.originOpeningScene,
