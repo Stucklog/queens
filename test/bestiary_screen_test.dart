@@ -32,8 +32,14 @@ void main() {
     await tester.pumpWidget(RegaliaApp(controller: controller));
     await tester.pump();
     final tile = find.byKey(const ValueKey('open-bestiary-home'));
-    await tester.ensureVisible(tile);
-    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      tile,
+      240,
+      scrollable: find.descendant(
+        of: find.byKey(const ValueKey('home-content-list')),
+        matching: find.byType(Scrollable),
+      ),
+    );
     expect(
       find.byKey(const ValueKey('home-bestiary-progress')),
       findsOneWidget,

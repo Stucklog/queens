@@ -5,6 +5,7 @@ import 'package:regalia/core/exact_solver.dart';
 import 'package:regalia/core/generator.dart';
 import 'package:regalia/core/human_solver.dart';
 import 'package:regalia/core/models.dart';
+import 'package:regalia/content/content_ids.dart';
 
 Future<void> main(List<String> arguments) async {
   final command = arguments.isEmpty ? 'report' : arguments.first;
@@ -14,7 +15,9 @@ Future<void> main(List<String> arguments) async {
     case 'generate':
       final seed = int.tryParse(_option(arguments, '--seed') ?? '') ?? 20260714;
       final plan =
-          arguments.contains('--smoke')
+          arguments.contains('--tutorial')
+              ? const [GenerationRequest(DifficultyTier.easy, 4, 1)]
+              : arguments.contains('--smoke')
               ? const [
                 GenerationRequest(DifficultyTier.easy, 6, 1),
                 GenerationRequest(DifficultyTier.easy, 7, 1),
@@ -154,9 +157,13 @@ Future<void> main(List<String> arguments) async {
     case 'validate':
       final catalog = await _loadCatalog(catalogPath);
       _validate(catalog);
-      _validateWalkthroughPuzzle(catalog);
+      final tutorial = PuzzleDefinition.fromJson(
+        jsonDecode(await File('assets/puzzles/tutorial.json').readAsString())
+            as Map<String, Object?>,
+      );
+      _validateTutorial(tutorial, catalog);
       stdout.writeln(
-        'Validated ${catalog.puzzles.length} puzzles; puzzle one is walkthrough-ready.',
+        'Validated ${catalog.puzzles.length} puzzles and the guided tutorial.',
       );
     case 'inspect':
       final id = arguments.length > 1 ? arguments[1] : '';
@@ -282,19 +289,28 @@ void _validate(PuzzleCatalog catalog) {
   }
 }
 
-void _validateWalkthroughPuzzle(PuzzleCatalog catalog) {
-  if (catalog.puzzles.isEmpty) {
-    throw StateError('The catalog needs a first puzzle for the walkthrough');
+void _validateTutorial(PuzzleDefinition tutorial, PuzzleCatalog catalog) {
+  const exact = ExactSolver();
+  const human = HumanSolver();
+  const generator = PuzzleGenerator();
+  if (tutorial.id != ContentIds.tutorialPuzzle ||
+      catalog.puzzles.any((puzzle) => puzzle.id == tutorial.id)) {
+    throw StateError('Tutorial must have a separate namespaced ID');
   }
-  final walkthrough = catalog.puzzles.first;
-  final report = const HumanSolver().analyze(walkthrough);
-  if (walkthrough.order != 1 ||
-      walkthrough.tier != DifficultyTier.easy ||
-      !report.solved ||
-      report.tier != DifficultyTier.easy) {
-    throw StateError(
-      '${walkthrough.id}: puzzle one must have an Easy walkthrough trace',
-    );
+  final issue = generator.validateRegionQuality(tutorial);
+  if (issue != null) throw StateError('${tutorial.id}: $issue');
+  if (exact.solve(tutorial, limit: 2).solutionCount != 1) {
+    throw StateError('${tutorial.id}: not uniquely solvable');
+  }
+  final report = human.analyze(tutorial);
+  if (!report.solved || report.tier != DifficultyTier.easy) {
+    throw StateError('${tutorial.id}: tutorial must have an Easy trace');
+  }
+  final tutorialFingerprint = generator.canonicalFingerprint(tutorial);
+  if (catalog.puzzles.any(
+    (puzzle) => generator.canonicalFingerprint(puzzle) == tutorialFingerprint,
+  )) {
+    throw StateError('${tutorial.id}: duplicates a catalog board');
   }
 }
 
