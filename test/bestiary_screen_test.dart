@@ -32,14 +32,8 @@ void main() {
     await tester.pumpWidget(RegaliaApp(controller: controller));
     await tester.pump();
     final tile = find.byKey(const ValueKey('open-bestiary-home'));
-    await tester.scrollUntilVisible(
-      tile,
-      240,
-      scrollable: find.descendant(
-        of: find.byKey(const ValueKey('home-content-list')),
-        matching: find.byType(Scrollable),
-      ),
-    );
+    await tester.ensureVisible(tile);
+    await tester.pumpAndSettle();
     expect(
       find.byKey(const ValueKey('home-bestiary-progress')),
       findsOneWidget,
@@ -82,6 +76,103 @@ void main() {
     );
     expect(find.bySemanticsLabel(RegExp(encounter.name)), findsNothing);
     semantics.dispose();
+  });
+
+  testWidgets('temporary unlock control is absent by default', (tester) async {
+    final controller = await _controller(tester);
+    addTearDown(controller.dispose);
+
+    await _pumpBestiary(tester, controller, const Size(390, 844));
+
+    expect(
+      find.byKey(const ValueKey('bestiary-debug-unlock-all')),
+      findsNothing,
+    );
+    expect(find.text('0 / 24 foes revealed'), findsOneWidget);
+  });
+
+  testWidgets('debug opt-in can reveal every foe for the current visit', (
+    tester,
+  ) async {
+    final controller = await _controller(tester);
+    addTearDown(controller.dispose);
+    final firstFoe = controller.originArc!.chapters.first.encounters.first;
+
+    await _pumpBestiary(
+      tester,
+      controller,
+      const Size(390, 844),
+      debugUnlockAllEnabledOverride: true,
+    );
+
+    final unlock = find.byKey(const ValueKey('bestiary-debug-unlock-all'));
+    expect(unlock, findsOneWidget);
+    expect(find.text(firstFoe.name), findsNothing);
+
+    await tester.tap(unlock);
+    await tester.pump();
+
+    expect(find.text('24 / 24 foes revealed'), findsOneWidget);
+    expect(find.text(firstFoe.name), findsOneWidget);
+    expect(find.text('All Foes Visible for This Visit'), findsOneWidget);
+  });
+
+  testWidgets('debug preview leaves records and preferences unchanged', (
+    tester,
+  ) async {
+    final controller = await _controller(tester);
+    addTearDown(controller.dispose);
+    final firstFoe = controller.originArc!.chapters.first.encounters.first;
+    controller.records[firstFoe.puzzleId] = const CompletionRecord(
+      status: CompletionStatus.assistedSolved,
+      bestAssistedSeconds: 42,
+      attemptCount: 2,
+    );
+    final recordsBefore = _recordSnapshot(controller);
+    final preferences = await SharedPreferences.getInstance();
+    final preferencesBefore = _preferenceSnapshot(preferences);
+
+    await _pumpBestiary(
+      tester,
+      controller,
+      const Size(390, 844),
+      debugUnlockAllEnabledOverride: true,
+    );
+    await tester.tap(find.byKey(const ValueKey('bestiary-debug-unlock-all')));
+    await tester.pump();
+    await tester.runAsync(controller.flushPersistence);
+
+    expect(_recordSnapshot(controller), recordsBefore);
+    expect(_preferenceSnapshot(preferences), preferencesBefore);
+  });
+
+  testWidgets('reopening normally hides the temporary discoveries', (
+    tester,
+  ) async {
+    final controller = await _controller(tester);
+    addTearDown(controller.dispose);
+    final firstFoe = controller.originArc!.chapters.first.encounters.first;
+
+    await _pumpBestiary(
+      tester,
+      controller,
+      const Size(390, 844),
+      debugUnlockAllEnabledOverride: true,
+    );
+    await tester.tap(find.byKey(const ValueKey('bestiary-debug-unlock-all')));
+    await tester.pump();
+    expect(find.text(firstFoe.name), findsOneWidget);
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump();
+    await _pumpBestiary(tester, controller, const Size(390, 844));
+
+    expect(
+      find.byKey(const ValueKey('bestiary-debug-unlock-all')),
+      findsNothing,
+    );
+    expect(find.text('0 / 24 foes revealed'), findsOneWidget);
+    expect(find.text(firstFoe.name), findsNothing);
   });
 
   testWidgets('clean and assisted victories reveal their exact foes', (
@@ -372,8 +463,25 @@ Future<AppController> _paidController(WidgetTester tester) async {
 Future<void> _pumpBestiary(
   WidgetTester tester,
   AppController controller,
-  Size size,
-) => _pumpApp(tester, size: size, home: BestiaryScreen(controller: controller));
+  Size size, {
+  bool? debugUnlockAllEnabledOverride,
+}) => _pumpApp(
+  tester,
+  size: size,
+  home: BestiaryScreen(
+    controller: controller,
+    debugUnlockAllEnabledOverride: debugUnlockAllEnabledOverride,
+  ),
+);
+
+Map<String, Map<String, Object?>> _recordSnapshot(AppController controller) => {
+  for (final entry in controller.records.entries)
+    entry.key: entry.value.toJson(),
+};
+
+Map<String, Object?> _preferenceSnapshot(SharedPreferences preferences) => {
+  for (final key in preferences.getKeys()) key: preferences.get(key),
+};
 
 Future<void> _pumpApp(
   WidgetTester tester, {

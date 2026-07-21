@@ -16,16 +16,18 @@ import '../widgets/support_developer.dart';
 import 'academy_screen.dart';
 import 'bestiary_screen.dart';
 import 'challenge_screen.dart';
+import 'guided_walkthrough_screen.dart';
 import 'journey_screen.dart';
 import 'settings_screen.dart';
 import 'story_scene_screen.dart';
+import 'tutorial_screen.dart';
 
 /// The stable entry point for installed content after the tutorial.
 ///
 /// Available packages open normally. The web edition also renders lightweight
 /// previews for manifest entries that intentionally belong to the paid apps;
 /// their full story packages are never loaded.
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
     required this.controller,
@@ -34,6 +36,41 @@ class HomeScreen extends StatelessWidget {
 
   final AppController controller;
   final ExternalUrlLauncher? externalUrlLauncher;
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  AppController get controller => widget.controller;
+  ExternalUrlLauncher? get externalUrlLauncher => widget.externalUrlLauncher;
+
+  bool _startupFlowAttempted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _resumeFirstLaunch());
+  }
+
+  Future<void> _resumeFirstLaunch() async {
+    if (!mounted || _startupFlowAttempted) return;
+    _startupFlowAttempted = true;
+    if (!controller.tutorialComplete) {
+      final completed = await Navigator.of(context).push<bool>(
+        PageRouteBuilder<bool>(
+          settings: const RouteSettings(name: 'welcome'),
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+          pageBuilder: (_, __, ___) => TutorialScreen(controller: controller),
+        ),
+      );
+      if (!mounted || completed != true) return;
+    }
+    final arc = controller.originArc;
+    if (!controller.originOnboardingPending || arc == null || !mounted) return;
+    await _openArc(context, arc);
+  }
 
   Future<void> _openArc(BuildContext context, StoryArc arc) async {
     final openingUnseen = !controller.hasSeenStoryBeat(arc.openingScene.id);
@@ -57,11 +94,19 @@ class HomeScreen extends StatelessWidget {
               ),
         ),
       );
+      if (!controller.hasSeenStoryBeat(arc.openingScene.id)) return;
     }
     if (!context.mounted) return;
     await Navigator.of(context).push<void>(
       MaterialPageRoute(
-        builder: (_) => JourneyScreen(controller: controller, arc: arc),
+        builder:
+            (_) => JourneyScreen(
+              controller: controller,
+              arc: arc,
+              autoStartGuidedWalkthrough:
+                  arc.id == controller.originArc?.id &&
+                  controller.originOnboardingPending,
+            ),
       ),
     );
   }
@@ -181,6 +226,22 @@ class HomeScreen extends StatelessWidget {
     MaterialPageRoute(builder: (_) => BestiaryScreen(controller: controller)),
   );
 
+  void _openRulesWalkthrough(BuildContext context) {
+    final arc = controller.originArc;
+    if (arc == null || arc.catalog.puzzles.isEmpty) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        settings: const RouteSettings(name: 'rules-walkthrough'),
+        builder:
+            (_) => GuidedWalkthroughScreen(
+              controller: controller,
+              puzzle: arc.catalog.puzzles.first,
+              replay: true,
+            ),
+      ),
+    );
+  }
+
   void _openMasterSettings(BuildContext context) => Navigator.of(context).push(
     MaterialPageRoute(builder: (_) => SettingsScreen(controller: controller)),
   );
@@ -188,6 +249,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final arcs = controller.availableStoryArcs.toList(growable: false);
+    final originArc = controller.originArc;
     final storyEntries = controller.storyArcEntries
         .where(
           (entry) =>
@@ -260,6 +322,12 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
               ],
+            if (originArc != null) ...[
+              _RulesWalkthroughTile(
+                onPressed: () => _openRulesWalkthrough(context),
+              ),
+              const SizedBox(height: 16),
+            ],
             if (controller.justPuzzleAvailable) ...[
               _JustPuzzleTile(
                 hasRun: controller.hasChallenge,
@@ -306,6 +374,61 @@ Future<bool> _launchExternalStoreUrl(Uri uri) => launchUrl(
   mode: LaunchMode.externalApplication,
   webOnlyWindowName: '_blank',
 );
+
+class _RulesWalkthroughTile extends StatelessWidget {
+  const _RulesWalkthroughTile({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => PixelPanel(
+    padding: EdgeInsets.zero,
+    borderColor: Theme.of(context).colorScheme.secondary,
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        key: const ValueKey('open-rules-walkthrough-home'),
+        onTap: onPressed,
+        customBorder: const PixelOrganicBorder(),
+        child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Row(
+            children: [
+              PixelIcon(
+                PixelGlyph.book,
+                color: Theme.of(context).colorScheme.secondary,
+                size: 32,
+                excludeFromSemantics: true,
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Rules walkthrough',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'Practice on the first board without changing progress',
+                    ),
+                  ],
+                ),
+              ),
+              PixelIcon(
+                PixelGlyph.arrowRight,
+                color: Theme.of(context).colorScheme.secondary,
+                size: 24,
+                excludeFromSemantics: true,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
 class _BestiaryTile extends StatelessWidget {
   const _BestiaryTile({
@@ -454,6 +577,10 @@ class _StoryArcTile extends StatelessWidget {
         ThemeData.estimateBrightnessForColor(tileBackground) == Brightness.dark
             ? Colors.white
             : Colors.black;
+    final textOutline =
+        ThemeData.estimateBrightnessForColor(foreground) == Brightness.dark
+            ? Colors.white
+            : Colors.black;
     return Semantics(
       button: true,
       label:
@@ -544,7 +671,12 @@ class _StoryArcTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _ArcTitle(title: storefront.title, color: foreground),
+                      _ArcTitle(
+                        key: ValueKey('story-arc-title-${descriptor.arcId}'),
+                        title: storefront.title,
+                        color: foreground,
+                        outlineColor: textOutline,
+                      ),
                       const SizedBox(height: 8),
                       Row(
                         children: [
@@ -555,9 +687,13 @@ class _StoryArcTile extends StatelessWidget {
                                   : storefront.tileSubtitle,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
+                              key: ValueKey(
+                                'story-arc-subtitle-${descriptor.arcId}',
+                              ),
                               style: TextStyle(
                                 color: foreground,
                                 fontWeight: FontWeight.w700,
+                                shadows: _pixelTextOutline(textOutline),
                               ),
                             ),
                           ),
@@ -615,10 +751,16 @@ class _StorefrontTileArt extends StatelessWidget {
 }
 
 class _ArcTitle extends StatelessWidget {
-  const _ArcTitle({required this.title, required this.color});
+  const _ArcTitle({
+    super.key,
+    required this.title,
+    required this.color,
+    required this.outlineColor,
+  });
 
   final String title;
   final Color color;
+  final Color outlineColor;
 
   @override
   Widget build(BuildContext context) {
@@ -626,7 +768,7 @@ class _ArcTitle extends StatelessWidget {
       color: color,
       fontWeight: FontWeight.w900,
       height: 1.02,
-      shadows: const [Shadow(color: Colors.black, offset: Offset(3, 3))],
+      shadows: _pixelTextOutline(outlineColor),
     );
     return Text(
       title,
@@ -636,6 +778,17 @@ class _ArcTitle extends StatelessWidget {
     );
   }
 }
+
+List<Shadow> _pixelTextOutline(Color color) => [
+  Shadow(color: color, offset: const Offset(-2, 0)),
+  Shadow(color: color, offset: const Offset(2, 0)),
+  Shadow(color: color, offset: const Offset(0, -2)),
+  Shadow(color: color, offset: const Offset(0, 2)),
+  Shadow(color: color, offset: const Offset(-1.5, -1.5)),
+  Shadow(color: color, offset: const Offset(1.5, -1.5)),
+  Shadow(color: color, offset: const Offset(-1.5, 1.5)),
+  Shadow(color: color, offset: const Offset(1.5, 1.5)),
+];
 
 class _JustPuzzleTile extends StatelessWidget {
   const _JustPuzzleTile({required this.hasRun, required this.onPressed});

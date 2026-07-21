@@ -6,9 +6,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/content/content_ids.dart';
 import 'package:regalia/content/entitlements.dart';
+import 'package:regalia/core/exact_solver.dart';
+import 'package:regalia/core/models.dart';
 import 'package:regalia/main.dart';
 import 'package:regalia/screens/challenge_screen.dart';
 import 'package:regalia/screens/home_screen.dart';
+import 'package:regalia/screens/guided_walkthrough_screen.dart';
 import 'package:regalia/screens/journey_screen.dart';
 import 'package:regalia/screens/settings_screen.dart';
 import 'package:regalia/screens/story_scene_screen.dart';
@@ -37,6 +40,16 @@ void main() {
       find.byKey(const ValueKey('home-story-main-character')),
       findsOneWidget,
     );
+    expect(
+      find.byKey(const ValueKey('open-rules-walkthrough-home')),
+      findsOneWidget,
+    );
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('open-just-puzzle-home')),
+      300,
+      scrollable: _homeScroll(),
+    );
+    await tester.pump();
     expect(find.text('Just Puzzle!'), findsOneWidget);
     expect(find.text('Master settings'), findsOneWidget);
 
@@ -87,18 +100,152 @@ void main() {
     await tester.pumpWidget(RegaliaApp(controller: controller));
     await tester.pump();
 
-    await tester.tap(find.byKey(const ValueKey('open-just-puzzle-home')));
+    final justPuzzle = find.byKey(const ValueKey('open-just-puzzle-home'));
+    await tester.scrollUntilVisible(justPuzzle, 300, scrollable: _homeScroll());
+    await tester.tap(justPuzzle);
     await _pumpFrames(tester);
     expect(find.byType(ChallengeScreen), findsOneWidget);
     expect(find.byType(JourneyScreen), findsNothing);
 
     await tester.tap(find.byType(PixelBackButton));
     await _pumpFrames(tester);
-    await tester.tap(
-      find.byKey(const ValueKey('story-arc-tile-regalia:arc/origin')),
+    final origin = find.byKey(
+      const ValueKey('story-arc-tile-regalia:arc/origin'),
     );
+    await tester.drag(_homeScroll(), const Offset(0, 1000));
+    await tester.pumpAndSettle();
+    await tester.tap(origin);
     await _pumpFrames(tester);
     expect(find.byType(JourneyScreen), findsOneWidget);
+  });
+
+  testWidgets('first prologue Back returns Home without changing story state', (
+    tester,
+  ) async {
+    final controller = await _controller(tester);
+    final recordsBefore = Map<String, CompletionRecord>.of(controller.records);
+    final scenesBefore = Set<String>.of(controller.seenStoryBeatIds);
+    final unlocksBefore = Set<String>.of(controller.unlockedContentIds);
+
+    await tester.pumpWidget(RegaliaApp(controller: controller));
+    await tester.pump();
+    final origin = find.byKey(
+      const ValueKey('story-arc-tile-regalia:arc/origin'),
+    );
+    await tester.tap(origin);
+    await _pumpFrames(tester);
+
+    expect(find.byType(StorySceneScreen), findsOneWidget);
+    expect(find.byKey(const ValueKey('story-prologue-back')), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('story-prologue-back')));
+    await _pumpFrames(tester);
+
+    expect(find.byType(HomeScreen), findsOneWidget);
+    expect(find.byType(JourneyScreen), findsNothing);
+    expect(controller.records, recordsBefore);
+    expect(controller.seenStoryBeatIds, scenesBefore);
+    expect(controller.unlockedContentIds, unlocksBefore);
+
+    await tester.tap(origin);
+    await _pumpFrames(tester);
+    expect(find.text('PROLOGUE · 1 of 3'), findsOneWidget);
+    expect(find.text('The Stolen Dawn'), findsOneWidget);
+  });
+
+  testWidgets('pending onboarding Back does not relaunch until another visit', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      SaveIds.tutorialComplete: true,
+      SaveIds.originOnboardingPending: true,
+      'regalia.journeySchemaVersion': 1,
+    });
+    final controller = AppController();
+    await tester.runAsync(controller.initialize);
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(RegaliaApp(controller: controller));
+    await _pumpFrames(tester);
+    expect(find.byType(StorySceneScreen), findsOneWidget);
+
+    expect(await tester.binding.handlePopRoute(), isTrue);
+    await _pumpFrames(tester);
+    expect(find.byType(HomeScreen), findsOneWidget);
+    expect(find.byType(StorySceneScreen), findsNothing);
+    expect(controller.originOnboardingPending, isTrue);
+
+    await _pumpFrames(tester);
+    expect(find.byType(StorySceneScreen), findsNothing);
+  });
+
+  testWidgets('Home walkthrough replay cannot mutate or persist progress', (
+    tester,
+  ) async {
+    final controller = await _controller(tester, openingSeen: true);
+    final first = controller.catalog!.puzzles.first;
+    expect(controller.openPuzzle(first), isTrue);
+    controller.cycle(first, const Cell(0, 0));
+    await controller.unlockEntireMap(ContentIds.originArc);
+    await controller.flushPersistence();
+    final preferences = await SharedPreferences.getInstance();
+    final boardsBefore = jsonEncode({
+      for (final entry in controller.boards.entries)
+        entry.key: entry.value.toJson(),
+    });
+    final recordsBefore = jsonEncode({
+      for (final entry in controller.records.entries)
+        entry.key: entry.value.toJson(),
+    });
+    final lastPuzzleBefore = controller.lastPuzzleId;
+    final scenesBefore = Set<String>.of(controller.seenStoryBeatIds);
+    final unlocksBefore = Set<String>.of(controller.unlockedContentIds);
+    final preferencesBefore = _preferencesSnapshot(preferences);
+
+    await tester.pumpWidget(RegaliaApp(controller: controller));
+    await tester.pump();
+    final tile = find.byKey(const ValueKey('open-rules-walkthrough-home'));
+    await tester.ensureVisible(tile);
+    await tester.tap(tile);
+    await _pumpFrames(tester);
+    expect(find.byType(GuidedWalkthroughScreen), findsOneWidget);
+    expect(find.textContaining('progress stays unchanged'), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('guided-walkthrough-continue')));
+    await tester.pump();
+    final solution =
+        const ExactSolver().solve(first, limit: 1).solutions.single;
+    for (final cell in solution) {
+      final target = find.byKey(ValueKey('cell-${cell.row}-${cell.column}'));
+      await tester.ensureVisible(target);
+      await tester.tap(target);
+      await tester.tap(target);
+      await tester.pump();
+    }
+    await tester.pumpAndSettle();
+    expect(find.text('Return Home'), findsOneWidget);
+    await tester.tap(find.text('Return Home'));
+    await _pumpFrames(tester);
+    await controller.flushPersistence();
+
+    expect(
+      jsonEncode({
+        for (final entry in controller.boards.entries)
+          entry.key: entry.value.toJson(),
+      }),
+      boardsBefore,
+    );
+    expect(
+      jsonEncode({
+        for (final entry in controller.records.entries)
+          entry.key: entry.value.toJson(),
+      }),
+      recordsBefore,
+    );
+    expect(controller.lastPuzzleId, lastPuzzleBefore);
+    expect(controller.seenStoryBeatIds, scenesBefore);
+    expect(controller.unlockedContentIds, unlocksBefore);
+    expect(_preferencesSnapshot(preferences), preferencesBefore);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets(
@@ -202,9 +349,11 @@ void main() {
       expect(find.byType(StorySceneScreen), findsOneWidget);
       expect(find.text('A Moonless Welcome'), findsOneWidget);
 
+      await tester.ensureVisible(find.text('Continue'));
       await tester.tap(find.text('Continue'));
       await _pumpFrames(tester);
       expect(find.text('Behind the Silver Gate'), findsOneWidget);
+      await tester.ensureVisible(find.text('View the apps'));
       await tester.tap(find.text('View the apps'));
       await _pumpFrames(tester);
 
@@ -255,6 +404,15 @@ Future<void> _pumpFrames(WidgetTester tester) async {
     await tester.pump(const Duration(milliseconds: 100));
   }
 }
+
+Map<String, Object?> _preferencesSnapshot(SharedPreferences preferences) => {
+  for (final key in preferences.getKeys()) key: preferences.get(key),
+};
+
+Finder _homeScroll() => find.descendant(
+  of: find.byKey(const ValueKey('home-content-list')),
+  matching: find.byType(Scrollable),
+);
 
 Future<AppController> _controller(
   WidgetTester tester, {

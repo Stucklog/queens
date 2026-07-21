@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../app/app_controller.dart';
@@ -5,13 +6,60 @@ import '../app/bestiary.dart';
 import '../app/journey.dart';
 import '../app/theme.dart';
 import '../content/content_models.dart';
+import '../core/models.dart';
 import '../widgets/combat_presentation.dart';
 import '../widgets/pixel_ui.dart';
 
-class BestiaryScreen extends StatelessWidget {
-  const BestiaryScreen({super.key, required this.controller});
+const _debugBestiaryUnlockAllBuildFlag = bool.fromEnvironment(
+  'REGALIA_ENABLE_DEBUG_BESTIARY_UNLOCK_ALL',
+  defaultValue: false,
+);
+
+class BestiaryScreen extends StatefulWidget {
+  const BestiaryScreen({
+    super.key,
+    required this.controller,
+    this.debugUnlockAllEnabledOverride,
+  });
 
   final AppController controller;
+
+  /// Test seam for the temporary preview control.
+  ///
+  /// [kDebugMode] is still required, so this cannot enable the control in a
+  /// profile or release build.
+  @visibleForTesting
+  final bool? debugUnlockAllEnabledOverride;
+
+  @override
+  State<BestiaryScreen> createState() => _BestiaryScreenState();
+}
+
+class _BestiaryScreenState extends State<BestiaryScreen> {
+  bool _showAllFoesForThisVisit = false;
+
+  bool get _debugUnlockAllAvailable =>
+      kDebugMode &&
+      (widget.debugUnlockAllEnabledOverride ??
+          _debugBestiaryUnlockAllBuildFlag);
+
+  bool get _showAllFoes => _debugUnlockAllAvailable && _showAllFoesForThisVisit;
+
+  CompletionRecord _recordFor(String puzzleId) =>
+      _showAllFoes
+          ? const CompletionRecord(status: CompletionStatus.cleanSolved)
+          : widget.controller.recordFor(puzzleId);
+
+  void _unlockAllForThisVisit() {
+    if (!_debugUnlockAllAvailable || _showAllFoesForThisVisit) return;
+    setState(() => _showAllFoesForThisVisit = true);
+  }
+
+  @override
+  void didUpdateWidget(covariant BestiaryScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!_debugUnlockAllAvailable) _showAllFoesForThisVisit = false;
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -22,14 +70,11 @@ class BestiaryScreen extends StatelessWidget {
     body: SafeArea(
       top: false,
       child: AnimatedBuilder(
-        animation: controller,
+        animation: widget.controller,
         builder: (context, _) {
           final arcs = [
-            for (final arc in controller.availableStoryArcs)
-              BestiaryArcProgress.derive(
-                arc: arc,
-                recordFor: controller.recordFor,
-              ),
+            for (final arc in widget.controller.availableStoryArcs)
+              BestiaryArcProgress.derive(arc: arc, recordFor: _recordFor),
           ];
           final total = arcs.fold<int>(
             0,
@@ -43,7 +88,13 @@ class BestiaryScreen extends StatelessWidget {
             key: const ValueKey('bestiary-list'),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
             children: [
-              _BestiaryHeader(defeated: defeated, total: total),
+              _BestiaryHeader(
+                defeated: defeated,
+                total: total,
+                showDebugUnlockAll: _debugUnlockAllAvailable,
+                allFoesVisibleForThisVisit: _showAllFoes,
+                onDebugUnlockAll: _unlockAllForThisVisit,
+              ),
               const SizedBox(height: 18),
               if (arcs.isEmpty)
                 const PixelPanel(
@@ -65,10 +116,19 @@ class BestiaryScreen extends StatelessWidget {
 }
 
 class _BestiaryHeader extends StatelessWidget {
-  const _BestiaryHeader({required this.defeated, required this.total});
+  const _BestiaryHeader({
+    required this.defeated,
+    required this.total,
+    required this.showDebugUnlockAll,
+    required this.allFoesVisibleForThisVisit,
+    required this.onDebugUnlockAll,
+  });
 
   final int defeated;
   final int total;
+  final bool showDebugUnlockAll;
+  final bool allFoesVisibleForThisVisit;
+  final VoidCallback onDebugUnlockAll;
 
   @override
   Widget build(BuildContext context) => PixelPanel(
@@ -97,6 +157,29 @@ class _BestiaryHeader extends StatelessWidget {
           key: const ValueKey('bestiary-total-progress'),
           style: Theme.of(context).textTheme.bodySmall,
         ),
+        if (showDebugUnlockAll) ...[
+          const SizedBox(height: 16),
+          OutlinedButton.icon(
+            key: const ValueKey('bestiary-debug-unlock-all'),
+            onPressed: allFoesVisibleForThisVisit ? null : onDebugUnlockAll,
+            icon: PixelIcon(
+              allFoesVisibleForThisVisit ? PixelGlyph.check : PixelGlyph.lock,
+              color: Theme.of(context).colorScheme.secondary,
+              size: 24,
+              excludeFromSemantics: true,
+            ),
+            label: Text(
+              allFoesVisibleForThisVisit
+                  ? 'All Foes Visible for This Visit'
+                  : 'Unlock All Foes (Debug)',
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Temporary animation preview. Saved progress stays unchanged.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ],
       ],
     ),
   );

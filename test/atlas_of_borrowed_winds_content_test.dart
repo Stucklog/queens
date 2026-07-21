@@ -39,6 +39,14 @@ void main() {
       expect(availability.storefront, isNotNull);
       expect(availability.storefront!.title, 'The Atlas of Borrowed Winds');
       expect(availability.storefront!.prologuePreview.frames, hasLength(4));
+      final previewText = availability.storefront!.prologuePreview.frames
+          .expand((frame) => frame.narrative.paragraphs)
+          .join(' ');
+      expect(previewText, contains('family’s debt to the crown'));
+      expect(previewText, contains('caravan was trapped in a sandstorm'));
+      expect(previewText, contains('he could not refuse'));
+      expect(previewText, contains('move the water as well as the road'));
+      expect(previewText, contains('another community was losing its home'));
       expect(
         availability.storefront!.prologuePreview.frames.map(
           (frame) => frame.characterLayers.length,
@@ -65,6 +73,7 @@ void main() {
       final arc = availability.arc!;
 
       expect(arc.title, 'The Atlas of Borrowed Winds');
+      expect(arc.contentVersion, 2);
       expect(arc.chapters, hasLength(8));
       expect(arc.catalog.puzzles, hasLength(72));
       expect(arc.scenes, hasLength(10));
@@ -157,9 +166,15 @@ void main() {
       final finale = arc.finaleScene.frames;
       expect(
         finale.map((frame) => frame.characterLayers.length),
-        orderedEquals([3, 4, 3, 3, 3]),
+        orderedEquals([3, 4, 4, 3, 3]),
       );
       expect(finale[1].characterLayers.map((layer) => layer.id).toSet(), {
+        'nahla',
+        'samir',
+        'ilyun',
+        'rafi',
+      });
+      expect(finale[2].characterLayers.map((layer) => layer.id).toSet(), {
         'nahla',
         'samir',
         'ilyun',
@@ -232,6 +247,24 @@ void main() {
       atlasFingerprints.intersection(originFingerprints),
       isEmpty,
       reason: 'paid story arcs must not replay Origin boards under new IDs',
+    );
+  });
+
+  test('story guidance protects clarity without standardizing arc voice', () {
+    final guide = File('docs/CONTENT_AUTHORING.md').readAsStringSync();
+
+    expect(guide, contains('Clarity is a floor, not the voice of the game.'));
+    expect(guide, contains('do not turn the brief into a universal checklist'));
+    expect(guide, contains('earnest, measured rescue tale'));
+    expect(
+      RegExp(
+        r'warm, quick, and\s+wry about royal\s+bureaucracy',
+      ).hasMatch(guide),
+      isTrue,
+    );
+    expect(
+      RegExp(r'Future arcs may lean comic, horrific, romantic').hasMatch(guide),
+      isTrue,
     );
   });
 

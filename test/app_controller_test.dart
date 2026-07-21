@@ -13,6 +13,101 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  test(
+    'fresh welcome starts and persists resumable Origin onboarding',
+    () async {
+      SharedPreferences.setMockInitialValues({});
+      final controller = AppController();
+      await controller.initialize();
+
+      expect(controller.tutorialComplete, isFalse);
+      expect(controller.originOnboardingPending, isFalse);
+      await controller.finishTutorial();
+
+      expect(controller.tutorialComplete, isTrue);
+      expect(controller.originOnboardingPending, isTrue);
+      final preferences = await SharedPreferences.getInstance();
+      expect(preferences.getBool(SaveIds.tutorialComplete), isTrue);
+      expect(preferences.getBool(SaveIds.originOnboardingPending), isTrue);
+      controller.dispose();
+
+      final restored = AppController();
+      await restored.initialize();
+      expect(restored.tutorialComplete, isTrue);
+      expect(restored.originOnboardingPending, isTrue);
+      restored.dispose();
+    },
+  );
+
+  test('completed standalone-tutorial saves are grandfathered', () async {
+    SharedPreferences.setMockInitialValues({'regalia.tutorialComplete': true});
+    final controller = AppController();
+    await controller.initialize();
+
+    expect(controller.tutorialComplete, isTrue);
+    expect(controller.originOnboardingPending, isFalse);
+    controller.dispose();
+  });
+
+  test(
+    'completing real puzzle one clears pending onboarding durably',
+    () async {
+      SharedPreferences.setMockInitialValues({});
+      final controller = AppController();
+      await controller.initialize();
+      await controller.finishTutorial();
+      final puzzle = controller.catalog!.puzzles.first;
+      expect(controller.openPuzzle(puzzle), isTrue);
+      final solution =
+          const ExactSolver().solve(puzzle, limit: 1).solutions.single;
+
+      PuzzleCompletionOutcome? outcome;
+      for (final cell in solution) {
+        outcome = controller.setCell(puzzle, cell, ManualCellState.crown);
+      }
+      await controller.flushPersistence();
+
+      expect(outcome, isNotNull);
+      expect(controller.originOnboardingPending, isFalse);
+      final preferences = await SharedPreferences.getInstance();
+      expect(preferences.getBool(SaveIds.originOnboardingPending), isFalse);
+      controller.dispose();
+
+      final restored = AppController();
+      await restored.initialize();
+      expect(restored.originOnboardingPending, isFalse);
+      expect(
+        restored.recordFor(puzzle.id).status,
+        CompletionStatus.cleanSolved,
+      );
+      restored.dispose();
+    },
+  );
+
+  test(
+    'welcome does not re-arm onboarding after puzzle one is solved',
+    () async {
+      SharedPreferences.setMockInitialValues({});
+      final controller = AppController();
+      await controller.initialize();
+      final puzzle = controller.catalog!.puzzles.first;
+      expect(controller.openPuzzle(puzzle), isTrue);
+      final solution =
+          const ExactSolver().solve(puzzle, limit: 1).solutions.single;
+      for (final cell in solution) {
+        controller.setCell(puzzle, cell, ManualCellState.crown);
+      }
+
+      await controller.finishTutorial();
+
+      expect(controller.tutorialComplete, isTrue);
+      expect(controller.originOnboardingPending, isFalse);
+      final preferences = await SharedPreferences.getInstance();
+      expect(preferences.getBool(SaveIds.originOnboardingPending), isFalse);
+      controller.dispose();
+    },
+  );
+
   test('moves and settings persist and restore locally', () async {
     SharedPreferences.setMockInitialValues({'regalia.tutorialComplete': true});
     final first = AppController();
@@ -499,6 +594,8 @@ void main() {
     SharedPreferences.setMockInitialValues({'regalia.tutorialComplete': true});
     final controller = AppController();
     await controller.initialize();
+    await controller.finishTutorial();
+    expect(controller.originOnboardingPending, isTrue);
     final firstPuzzle = controller.catalog!.puzzles.first;
     controller.openPuzzle(firstPuzzle);
     controller.cycle(firstPuzzle, const Cell(0, 0));
@@ -515,6 +612,7 @@ void main() {
 
     expect(controller.gameGeneration, 1);
     expect(controller.tutorialComplete, isFalse);
+    expect(controller.originOnboardingPending, isFalse);
     expect(controller.fullMapUnlocked, isFalse);
     expect(controller.settings.showTimer, isTrue);
     expect(controller.settings.reducedMotion, isFalse);

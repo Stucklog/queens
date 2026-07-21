@@ -294,15 +294,42 @@ preview uses the same canonical opening but deliberately records no seen or
 progression state. Map replay entries must likewise use replay mode so
 revisiting a scene does not write story or progression state.
 
-Visible narrative copy should use clear, scene-led fantasy prose rather than
-read like either a quest log or a lore poem. Describe magical events as plainly
-as historical events: establish where the character is, what physically
-happens, why it matters, and what choice or threat follows. Give each paragraph
-one restrained sensory detail, but do not hide cause and effect behind stacked
-metaphors, personification, or unexplained invented terms. A reader should
-understand each page on the first pass using only facts established by earlier
-scenes. Avoid repeating the same place/problem/jewel/boss summary from chapter
-to chapter. Keep the separate `semanticLabel` literal and concise for assistive
+### Narrative clarity and per-arc voice
+
+Clarity is a floor, not the voice of the game. After reading a frame once, a
+player should be able to say who acted, what changed, why it matters, and what
+the immediate choice or danger is. If the plot depends on a magical rule or an
+invented term, establish its practical meaning through context when it first
+appears. Strange imagery is welcome; obscuring the event it describes is not.
+
+Those checks are an editing pass, not a prose formula. Do not impose a sensory
+detail quota, a fixed sentence rhythm, a required narrator distance, or one
+serious "fantasy" register on every arc. Humor, dialogue, irony, dread,
+romance, plain speech, and ornament can all belong when the individual story
+supports them. A page does not need to announce every fact in the same order,
+and different arcs should not sound as though one narrator wrote them from a
+template.
+
+Give each arc a short voice brief before drafting its scenes. Describe the
+story's attitude, character focus, range of humor, emotional limits, and a few
+concrete motifs; do not turn the brief into a universal checklist. The current
+arcs use deliberately different briefs:
+
+- **Queen's Regalia: Origin Story** is an earnest, measured rescue tale. Its
+  unnamed knight is defined through decisions, so the narration is serious and
+  restrained, with concrete magical detail and very little banter.
+- **The Atlas of Borrowed Winds** is a character-led desert adventure about
+  maps, power, and consent. It can be warm, quick, and wry about royal
+  bureaucracy; Nahla, Ilyun, and Samir may disagree or joke like people who
+  know one another. Scenes dealing with debt, coercion, displacement, or
+  consent become direct rather than flippant. Ink, brass, wells, wind, and
+  practical navigation give it texture, while map magic is explained by what
+  it visibly does to people and places.
+
+Future arcs may lean comic, horrific, romantic, mythic, or otherwise. Preserve
+their chosen voice while keeping the events intelligible on a first read.
+Avoid repeating the same place/problem/object/boss summary from chapter to
+chapter. Keep the separate `semanticLabel` literal and concise for assistive
 technology.
 
 ## Origin chapter bosses
@@ -492,11 +519,31 @@ then each lesson unlocks when its predecessor is completed. A source puzzle
 must remain in the packaged origin catalog and its human-solver trace must
 contain the lesson's declared technique; controller tests enforce both rules.
 
+## First-launch onboarding
+
+The first-launch sequence has three durable parts: the global welcome/rules
+slides, the Origin prologue and first chapter scene, and the first puzzle in the
+Origin catalog. The first puzzle is the walkthrough board; do not package a
+separate tutorial grid or assign a synthetic tutorial completion record.
+
+Finishing the welcome slides sets a global pending-onboarding flag. Seen-scene
+IDs resume past completed story pages, while the normal Origin board and record
+resume the walkthrough itself. Completing the real first puzzle clears the
+pending flag at the same time its completion record is written. A save from a
+release that predates the pending flag is treated as already onboarded when its
+legacy tutorial-complete value is true, so an upgrade never forces an existing
+player into the opening sequence.
+
+The Home rules walkthrough must use the same first-puzzle definition with an
+ephemeral board. It must not enter controller mutation, timer, or persistence
+paths; replaying or completing it cannot change arc boards, records, best
+times, the last-puzzle pointer, seen scenes, unlocks, or preferences.
+
 ## Settings ownership
 
 Master settings is opened from the home screen and owns preferences that apply
 across the app and the full-game reset. The full reset erases every arc,
-tutorial and Just Puzzle data, and all preferences, so its UI must retain two
+onboarding and Just Puzzle data, and all preferences, so its UI must retain two
 separate warning confirmations.
 
 Every master or story-arc settings page includes the same explicit “Support the
@@ -512,7 +559,7 @@ all prompt history.
 Map unlock and progress reset actions belong in an arc’s own settings screen.
 The gear on a story map opens that selected arc’s settings, not master settings.
 Always pass the target arc ID to the controller. An arc reset removes only IDs
-owned by that namespace and must preserve master preferences, tutorial state,
+owned by that namespace and must preserve master preferences, onboarding state,
 Just Puzzle runs, entitlements, and progress in every other arc.
 
 Unlock Game Board is deliberately map-only: it opens every puzzle and chapter
@@ -553,7 +600,7 @@ The web build must contain and list for service-worker offline availability:
 - every descriptor’s `tileArtAsset`, optional `tileForegroundAsset`, and every
   `assets/...` reference inside `prologuePreview`, including paid-only locked
   previews;
-- the system Academy, tutorial, Just Puzzle, font, and shared runtime assets.
+- the system Academy, Just Puzzle, font, and shared runtime assets.
 
 For a descriptor without the `web` channel, its `metadataAsset` and assets used
 only by that full package must not appear in the web build or its generated

@@ -312,6 +312,54 @@ void main() {
     );
   });
 
+  testWidgets('Drowned Acolyte keeps every reaction facing the knight', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(760, 1180);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final acolyte = allOpponents.singleWhere(
+      (enemy) => enemy.id == 'regalia:enemy/origin/drowned-acolyte',
+    );
+    await _precacheOpponents(tester, [acolyte]);
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: RegaliaTheme.midnight(),
+        home: Scaffold(
+          body: RepaintBoundary(
+            key: const ValueKey('drowned-acolyte-reactions'),
+            child: ColoredBox(
+              color: const Color(0xff091329),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text(
+                      'KNIGHT IS ON THE LEFT',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(child: _OpponentReactionCard(encounter: acolyte)),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await expectLater(
+      find.byKey(const ValueKey('drowned-acolyte-reactions')),
+      matchesGoldenFile('goldens/combat_drowned_acolyte_reactions.png'),
+    );
+  });
+
   testWidgets(
     'all opponent reaction frames face the knight and stay in bounds',
     (tester) async {

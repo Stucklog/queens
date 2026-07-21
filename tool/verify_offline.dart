@@ -113,9 +113,6 @@ Future<void> main(List<String> arguments) async {
   if (!pubspec.contains('assets/puzzles/catalog.json')) {
     failures.add('catalog is not declared as a bundled Flutter asset');
   }
-  if (!pubspec.contains('assets/puzzles/tutorial.json')) {
-    failures.add('tutorial is not declared as a bundled Flutter asset');
-  }
   if (!pubspec.contains('assets/content/') || !originArcFile.existsSync()) {
     failures.add('content manifest or origin arc metadata is not bundled');
   }
@@ -165,7 +162,6 @@ Future<void> main(List<String> arguments) async {
           'main.dart.js',
           'assets/assets/content/manifest.json',
           'assets/assets/puzzles/catalog.json',
-          'assets/assets/puzzles/tutorial.json',
           'assets/assets/fonts/PixelifySans-Variable.ttf',
           'assets/assets/fonts/PixelifySans_LICENSE.txt',
           'assets/assets/art/knight_animations.png',
@@ -187,7 +183,6 @@ Future<void> main(List<String> arguments) async {
           ...contentPolicy.webPackageAssets,
           ...contentPolicy.storefrontAssets,
           'assets/puzzles/catalog.json',
-          'assets/puzzles/tutorial.json',
           'assets/fonts/PixelifySans-Variable.ttf',
           'assets/fonts/PixelifySans_LICENSE.txt',
           'assets/art/knight_animations.png',
@@ -235,7 +230,6 @@ Future<void> main(List<String> arguments) async {
         final requiredNativeAssets = <String>{
           'assets/content/manifest.json',
           'assets/puzzles/catalog.json',
-          'assets/puzzles/tutorial.json',
           'assets/fonts/PixelifySans-Variable.ttf',
           'assets/fonts/PixelifySans_LICENSE.txt',
           'assets/art/knight_animations.png',

@@ -196,7 +196,7 @@ void main() {
     expect(controller.challengeSession, isNull);
   });
 
-  testWidgets('complete reset reloads an existing app at the tutorial', (
+  testWidgets('complete reset reloads an existing app at welcome', (
     tester,
   ) async {
     final controller = await _controller(tester);
@@ -205,6 +205,7 @@ void main() {
     expect(find.byTooltip('Master settings'), findsOneWidget);
 
     await tester.runAsync(controller.resetGame);
+    await tester.pump();
     await tester.pump();
 
     expect(find.text('Welcome to Queen’s Regalia'), findsOneWidget);

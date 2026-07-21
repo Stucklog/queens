@@ -84,7 +84,6 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   ContentRegistry? content;
   PuzzleCatalog? catalog;
   AcademyCatalog? academy;
-  PuzzleDefinition? tutorialPuzzle;
   AppSettings settings = const AppSettings();
   final Map<String, BoardState> boards = {};
   final Map<String, CompletionRecord> records = {};
@@ -97,6 +96,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   bool isPreparingChallenge = false;
   Object? challengeGenerationError;
   bool tutorialComplete = false;
+  bool originOnboardingPending = false;
   String? lastPuzzleId;
   Timer? _timer;
   String? _activePuzzleId;
@@ -147,18 +147,6 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     }
     _catalogFingerprint = _arcCatalogFingerprints[ContentIds.originArc];
     try {
-      final tutorialSource = await _contentAssetReader(
-        'assets/puzzles/tutorial.json',
-      );
-      tutorialPuzzle = PuzzleDefinition.fromJson(
-        jsonDecode(tutorialSource) as Map<String, Object?>,
-      );
-    } on Object catch (error) {
-      // The tutorial is system content, not a prerequisite for either an arc
-      // or Just Puzzle. A damaged optional asset must not brick the app.
-      debugPrint('Tutorial content is unavailable: $error');
-    }
-    try {
       final sourceCatalog = catalog;
       if (sourceCatalog != null) {
         academy = AcademyCatalog.fromJsonString(
@@ -181,6 +169,11 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     );
     _restoreChallengeGenerationState();
     tutorialComplete = _preferences.getBool(SaveIds.tutorialComplete) ?? false;
+    // This key did not exist in builds with the old standalone tutorial.
+    // Its absent default deliberately grandfathers those completed installs
+    // instead of forcing them through the new story onboarding.
+    originOnboardingPending =
+        _preferences.getBool(SaveIds.originOnboardingPending) ?? false;
     final academyLessonIds = academyLessons.map((lesson) => lesson.id).toSet();
     completedAcademyLessonIds.addAll(
       (_preferences.getStringList(SaveIds.academyCompletedLessons) ?? const [])
@@ -306,6 +299,10 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     for (final arc in availableStoryArcs) {
       if (arc.id == ContentIds.originArc) continue;
       await _restoreArcProgress(arc);
+    }
+    if (originOnboardingPending && _hasCompletedOriginWalkthrough) {
+      originOnboardingPending = false;
+      await _preferences.setBool(SaveIds.originOnboardingPending, false);
     }
     final reconciledFinaleUnlocks = _reconcileFinaleUnlocksWithBossRecords();
     if (reconciledFinaleUnlocks) {
@@ -1050,6 +1047,23 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         !ruleEngine.isComplete(puzzle, board);
   }
 
+  bool shouldGuideOriginPuzzle(PuzzleDefinition puzzle) {
+    final arc = originArc;
+    return originOnboardingPending &&
+        arc != null &&
+        arc.catalog.puzzles.isNotEmpty &&
+        arc.catalog.puzzles.first.id == puzzle.id;
+  }
+
+  bool get _hasCompletedOriginWalkthrough {
+    final arc = originArc;
+    if (arc == null || arc.catalog.puzzles.isEmpty) return false;
+    final firstPuzzle = arc.catalog.puzzles.first;
+    final status = recordFor(firstPuzzle.id).status;
+    return status == CompletionStatus.cleanSolved ||
+        status == CompletionStatus.assistedSolved;
+  }
+
   bool openPuzzle(PuzzleDefinition puzzle) {
     // Keep this guard before every mutation, including board creation and the
     // last-puzzle pointer. A locked node is a completely read-only action.
@@ -1155,6 +1169,10 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     records[puzzle.id] = recordFor(
       puzzle.id,
     ).complete(assisted: board.assisted, seconds: board.elapsedSeconds);
+    if (arc.id == ContentIds.originArc &&
+        arc.catalog.puzzles.first.id == puzzle.id) {
+      originOnboardingPending = false;
+    }
     stopTimer();
     final next = frontierPuzzleFor(arc);
     final currentChapter = arc.chapterForOrder(puzzle.order);
@@ -1360,6 +1378,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     supportPromptedChapterIds.clear();
     completedAcademyLessonIds.clear();
     tutorialComplete = false;
+    originOnboardingPending = false;
     unlockedContentIds.clear();
     lastPuzzleId = null;
     gameGeneration++;
@@ -1368,7 +1387,15 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
 
   Future<void> finishTutorial() async {
     tutorialComplete = true;
+    originOnboardingPending = hasOriginStory && !_hasCompletedOriginWalkthrough;
     notifyListeners();
+    // Persist the resumable phase first. If the process stops between these
+    // writes, the welcome may repeat, but the story walkthrough cannot be
+    // mistaken for a grandfathered pre-walkthrough save and skipped.
+    await _preferences.setBool(
+      SaveIds.originOnboardingPending,
+      originOnboardingPending,
+    );
     await _preferences.setBool(SaveIds.tutorialComplete, true);
   }
 
@@ -1389,6 +1416,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
           lesson.practicePuzzle.id: boards[lesson.practicePuzzle.id]!.toJson(),
     });
     final academyCompleted = completedAcademyLessonIds.toList()..sort();
+    final onboardingPending = originOnboardingPending;
     final arcSnapshots = {
       for (final arc in availableStoryArcs)
         arc.id: (
@@ -1439,6 +1467,10 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         _preferences.setStringList(
           SaveIds.supportPromptedChapters,
           supportPromptedChapterIds.toList()..sort(),
+        ),
+        _preferences.setBool(
+          SaveIds.originOnboardingPending,
+          onboardingPending,
         ),
         if (challengeJson == null)
           _preferences.remove(SaveIds.justPuzzleSession)

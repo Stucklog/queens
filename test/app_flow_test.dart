@@ -5,10 +5,11 @@ import 'package:regalia/core/exact_solver.dart';
 import 'package:regalia/core/models.dart';
 import 'package:regalia/main.dart';
 import 'package:regalia/screens/game_screen.dart';
+import 'package:regalia/screens/guided_walkthrough_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  testWidgets('tutorial to opening to puzzle one and map movement', (
+  testWidgets('welcome flows through story into guided puzzle one', (
     tester,
   ) async {
     SharedPreferences.setMockInitialValues({});
@@ -18,15 +19,14 @@ void main() {
     await tester.pump();
     expect(find.text('Welcome to Queen’s Regalia'), findsOneWidget);
 
-    await tester.tap(find.text('Skip'));
+    await tester.tap(find.text('Next'));
+    await tester.pump();
+    expect(find.text('Four rules to remember'), findsOneWidget);
+    await tester.tap(find.text('Continue to story'));
     await _pumpFrames(tester);
-    expect(find.text('Queen’s Regalia: Origin Story'), findsOneWidget);
-
-    await tester.tap(
-      find.byKey(const ValueKey('story-arc-tile-regalia:arc/origin')),
-    );
-    await _pumpFrames(tester);
+    expect(tester.takeException(), isNull);
     expect(find.text('The Stolen Dawn'), findsOneWidget);
+    expect(find.byKey(const ValueKey('story-prologue-back')), findsOneWidget);
 
     await tester.ensureVisible(find.text('See what happened'));
     await tester.tap(find.text('See what happened'));
@@ -37,23 +37,21 @@ void main() {
     await tester.ensureVisible(find.text('Begin the journey'));
     await tester.tap(find.text('Begin the journey'));
     await _pumpFrames(tester);
+    expect(tester.takeException(), isNull);
     expect(find.text('Asterfall Vale'), findsWidgets);
     expect(find.text('Enter Asterfall'), findsOneWidget);
 
     await tester.ensureVisible(find.text('Enter Asterfall'));
     await tester.tap(find.text('Enter Asterfall'));
     await _pumpFrames(tester);
-    expect(find.byKey(const ValueKey('puzzle-node-72')), findsOneWidget);
-
-    final firstNode = find.byKey(const ValueKey('puzzle-node-1'));
-    await tester.ensureVisible(firstNode);
-    await tester.tap(firstNode);
-    await _pumpFrames(tester);
-    final puzzle = controller.catalog!.puzzles.first;
+    expect(tester.takeException(), isNull);
+    expect(find.byType(GuidedWalkthroughScreen), findsOneWidget);
+    expect(find.text('Your first puzzle'), findsOneWidget);
     expect(
-      find.text('${puzzle.tier.label} · ${puzzle.size} × ${puzzle.size}'),
+      find.byKey(const ValueKey('guided-walkthrough-panel')),
       findsOneWidget,
     );
+    final puzzle = controller.catalog!.puzzles.first;
 
     final solution =
         const ExactSolver().solve(puzzle, limit: 1).solutions.single;
@@ -73,16 +71,20 @@ void main() {
     await tester.pump(const Duration(milliseconds: 800));
     await tester.pump(const Duration(milliseconds: 100));
     await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
     expect(find.text('A clean coronation'), findsOneWidget);
     expect(
       controller.recordFor(puzzle.id).status,
       CompletionStatus.cleanSolved,
     );
+    expect(controller.originOnboardingPending, isFalse);
 
     await tester.tap(find.text('Advance'));
     for (
       var frame = 0;
-      frame < 16 && find.byType(GameScreen).evaluate().isNotEmpty;
+      frame < 16 &&
+          (find.byType(GameScreen).evaluate().isNotEmpty ||
+              find.byType(GuidedWalkthroughScreen).evaluate().isNotEmpty);
       frame++
     ) {
       await tester.pump(const Duration(milliseconds: 50));
@@ -111,6 +113,7 @@ void main() {
     final restored = AppController();
     await tester.runAsync(restored.initialize);
     expect(restored.tutorialComplete, isTrue);
+    expect(restored.originOnboardingPending, isFalse);
     expect(restored.recordFor(puzzle.id).status, CompletionStatus.cleanSolved);
     expect(restored.frontierPuzzle?.order, 2);
     expect(restored.hasSeenStoryBeat('opening'), isTrue);
