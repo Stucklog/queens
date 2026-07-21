@@ -74,7 +74,6 @@ void main() {
             'Row 1, column C, region ${puzzle.regionAt(const Cell(0, 2)) + 1}',
         value: 'empty, hint says place a crown here, selected',
         isButton: true,
-        hasSelectedState: true,
         isSelected: true,
         isFocusable: true,
         hasTapAction: true,
