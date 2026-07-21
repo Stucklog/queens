@@ -26,48 +26,69 @@ void main() {
     );
   });
 
-  test('every declared opponent has a complete six-reaction atlas', () {
-    final metadata =
-        jsonDecode(
-              File('assets/content/arcs/origin/arc.json').readAsStringSync(),
-            )
-            as Map<String, Object?>;
-    final assets = <String>[];
-    for (final chapterValue in metadata['chapters']! as List<Object?>) {
-      final chapter = chapterValue! as Map<String, Object?>;
-      final boss = chapter['boss']! as Map<String, Object?>;
-      assets.add(boss['spriteAsset']! as String);
-      for (final encounterValue in chapter['encounters']! as List<Object?>) {
-        final encounter = encounterValue! as Map<String, Object?>;
-        assets.add(encounter['spriteAsset']! as String);
+  test('every story arc owns a distinct complete opponent roster', () {
+    final allAssets = <String>{};
+    final allImageSignatures = <int>{};
+    for (final metadataPath in [
+      'assets/content/arcs/origin/arc.json',
+      'assets/content/arcs/atlas-of-borrowed-winds/arc.json',
+    ]) {
+      final metadata =
+          jsonDecode(File(metadataPath).readAsStringSync())
+              as Map<String, Object?>;
+      final arcId = metadata['id']! as String;
+      final assets = <String>[];
+      for (final chapterValue in metadata['chapters']! as List<Object?>) {
+        final chapter = chapterValue! as Map<String, Object?>;
+        final boss = chapter['boss']! as Map<String, Object?>;
+        assets.add(boss['spriteAsset']! as String);
+        for (final encounterValue in chapter['encounters']! as List<Object?>) {
+          final encounter = encounterValue! as Map<String, Object?>;
+          assets.add(encounter['spriteAsset']! as String);
+        }
+      }
+
+      expect(assets, hasLength(24), reason: arcId);
+      expect(assets.toSet(), hasLength(24), reason: arcId);
+      expect(allAssets.intersection(assets.toSet()), isEmpty, reason: arcId);
+      allAssets.addAll(assets);
+      for (final asset in assets) {
+        expect(File(asset).existsSync(), isTrue, reason: asset);
+        final atlas = _decode(asset);
+        expect(atlas.width, 768, reason: asset);
+        expect(atlas.height, 1152, reason: asset);
+        final imageSignature = _expectCleanPixelArtAlpha(atlas, reason: asset);
+        expect(
+          allImageSignatures.add(imageSignature),
+          isTrue,
+          reason: '$asset duplicates another story arc opponent atlas',
+        );
+        _expectAnimatedAtlas(atlas, columns: 4, rows: 6, reason: asset);
+        _expectTransparentCellGutters(
+          atlas,
+          columns: 4,
+          rows: 6,
+          gutter: 8,
+          reason: asset,
+        );
       }
     }
-
-    expect(assets, hasLength(24));
-    expect(assets.toSet(), hasLength(24));
-    for (final asset in assets) {
-      expect(File(asset).existsSync(), isTrue, reason: asset);
-      final atlas = _decode(asset);
-      expect(atlas.width, 768, reason: asset);
-      expect(atlas.height, 1152, reason: asset);
-      _expectCleanPixelArtAlpha(atlas, reason: asset);
-      _expectAnimatedAtlas(atlas, columns: 4, rows: 6, reason: asset);
-      _expectTransparentCellGutters(
-        atlas,
-        columns: 4,
-        rows: 6,
-        gutter: 8,
-        reason: asset,
-      );
-    }
+    expect(allAssets, hasLength(48));
   });
 }
 
-void _expectCleanPixelArtAlpha(image_lib.Image atlas, {String? reason}) {
+int _expectCleanPixelArtAlpha(image_lib.Image atlas, {String? reason}) {
   var partialAlpha = 0;
   var chromaPixels = 0;
+  var signature = 0x811c9dc5;
   for (final pixel in atlas) {
     final alpha = pixel.a.toInt();
+    final rgba =
+        (pixel.r.toInt() << 24) |
+        (pixel.g.toInt() << 16) |
+        (pixel.b.toInt() << 8) |
+        alpha;
+    signature = ((signature ^ rgba) * 0x01000193) & 0x7fffffff;
     if (alpha != 0 && alpha != 255) partialAlpha++;
     if (alpha == 0) continue;
     final red = pixel.r.toInt();
@@ -87,6 +108,7 @@ void _expectCleanPixelArtAlpha(image_lib.Image atlas, {String? reason}) {
     0,
     reason: '${reason ?? 'atlas'} retains chroma-key pixels',
   );
+  return signature;
 }
 
 image_lib.Image _decode(String path) {

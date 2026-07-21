@@ -165,7 +165,11 @@ Every chapter scene ID must resolve within `scenes`. New metadata contains its
 chapter scenes and exactly one `finale`; the manifest supplies the one opening.
 Encounter puzzle IDs must be unique within the chapter, fall inside its order
 range, and differ from the boss puzzle. Boss and enemy sprite assets must be
-safe PNG paths under `assets/art/combat/opponents/`.
+safe PNG paths. Origin retains its legacy root at
+`assets/art/combat/opponents/`; every additional arc owns a namespaced roster
+under `assets/art/arcs/<arc-name>/combat/opponents/`. No two encounters in an
+arc may reference the same atlas, and no story arc may reuse another arc's
+opponent art.
 
 The loader validates namespace ownership, unique IDs, contiguous chapters and
 puzzles, required opening/finale scenes, catalog integrity, and package/manifest
@@ -415,7 +419,10 @@ remain stable through all four frames, and detached pixels are reserved for an
 intentional, readable impact or defeat effect rather than source-sheet debris.
 Review the final 192 px cells as well as their 74 px in-game render before
 accepting an atlas. Every origin boss and in-chapter enemy has its own
-production atlas under `assets/art/combat/opponents/`.
+production atlas under `assets/art/combat/opponents/`. Every later story arc
+must ship an equally distinct roster in its own paid/content package. Reusing
+an opponent family for animation timing is allowed; reusing its `spriteAsset`
+or merely renaming an existing creature is not.
 
 The knight's eight production finisher tracks live in
 `assets/art/combat/knight_finishers.png`: six columns and eight rows, ordered
@@ -615,6 +622,9 @@ Flutter asset mappings with an explicit paid flavor:
   flavors:
     - paid
 - path: assets/art/arcs/atlas-of-borrowed-winds/backgrounds/
+  flavors:
+    - paid
+- path: assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/
   flavors:
     - paid
 ```

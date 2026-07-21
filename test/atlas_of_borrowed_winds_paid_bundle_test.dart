@@ -31,7 +31,7 @@ void main() {
       paidArt.removeWhere(
         (path) =>
             path.startsWith('assets/storefront/') ||
-            path.startsWith('assets/art/combat/opponents/'),
+            path.contains('/combat/opponents/'),
       );
       expect(paidArt, hasLength(14));
       for (final path in paidArt) {

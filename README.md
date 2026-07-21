@@ -4,7 +4,7 @@ Queen’s Regalia is an original, offline Flutter implementation of the one-crow
 
 The bundled **Queen’s Regalia: Origin Story** arc contains 72 deterministic, uniquely solvable puzzles plus a separate guided tutorial. Each realm presents nine puzzles as a 3×3 route, with combat encounters at the end of every row. They form a linear prestige pixel-art pilgrimage across eight realms: each clean or assisted solve advances the Regalia’s unnamed bearer from Asterfall Vale toward the Empyrean Citadel. Completed puzzles remain replayable, while future route nodes stay visible and locked. Journey scenery, storyboard backgrounds, and principal character art are bundled as optimized production assets, with procedural art retained as an offline-safe fallback.
 
-The paid edition also includes **The Atlas of Borrowed Winds**, an eight-chapter desert fantasy with 72 distinct puzzles, configurable route layouts and light/dark chapter palettes, a four-frame prologue, sixteen chapter frames, and a five-frame ensemble finale. It ships bespoke high-resolution environments and character sprites while reusing the shared combat-animation system.
+The paid edition also includes **The Atlas of Borrowed Winds**, an eight-chapter desert fantasy with 72 distinct puzzles, configurable route layouts and light/dark chapter palettes, a three-frame prologue, one cinematic frame per chapter, and a two-frame ensemble finale. It ships bespoke high-resolution environments and character sprites while reusing the shared combat-animation system.
 
 Puzzle actions also drive a synchronized combat stage: chapter bosses react to
 the knight’s existing moves and fall to increasingly elaborate chapter-ending

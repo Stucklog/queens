@@ -73,7 +73,7 @@ void main() {
       final arc = availability.arc!;
 
       expect(arc.title, 'The Atlas of Borrowed Winds');
-      expect(arc.contentVersion, 3);
+      expect(arc.contentVersion, 4);
       expect(arc.chapters, hasLength(8));
       expect(arc.catalog.puzzles, hasLength(72));
       expect(arc.scenes, hasLength(10));
@@ -123,6 +123,19 @@ void main() {
       expect(
         arc.chapters.expand((chapter) => chapter.encounters),
         hasLength(16),
+      );
+      final opponentAssets =
+          arc.combatEncounters
+              .map((encounter) => encounter.spriteAsset)
+              .toSet();
+      expect(opponentAssets, hasLength(24));
+      expect(
+        opponentAssets.every(
+          (asset) => asset.startsWith(
+            'assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/',
+          ),
+        ),
+        isTrue,
       );
     },
   );
@@ -241,6 +254,25 @@ void main() {
       isEmpty,
       reason: 'paid story arcs must not replay Origin boards under new IDs',
     );
+  });
+
+  test('Atlas opponents never reuse Origin sprite art', () async {
+    final registry = await repository().load(
+      manifestAsset: 'assets/content/manifest.json',
+      policy: const ContentEntitlementPolicy.paidPlatform(),
+    );
+    final atlas = registry.arc(atlasArc)!;
+    final origin = registry.arc('regalia:arc/origin')!;
+
+    final atlasAssets =
+        atlas.combatEncounters
+            .map((encounter) => encounter.spriteAsset)
+            .toSet();
+    final originAssets =
+        origin.combatEncounters
+            .map((encounter) => encounter.spriteAsset)
+            .toSet();
+    expect(atlasAssets.intersection(originAssets), isEmpty);
   });
 
   test('story guidance protects clarity without standardizing arc voice', () {
