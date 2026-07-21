@@ -287,20 +287,34 @@ An asset character layer may also declare an evenly divided sprite-sheet
 `reducedMotion` behavior: `firstFrame`, `lastFrame`, `hideLayer`, or
 `{"behavior": "selectedFrame", "frame": 0}` using an in-range local frame.
 
-Chapter introductions normally use one frame with at least two paragraphs.
-Openings and finales may use several frames for paced prologues and epilogues;
-only completing the last frame records the scene as seen. The web locked
-preview uses the same canonical opening but deliberately records no seen or
-progression state. Map replay entries must likewise use replay mode so
-revisiting a scene does not write story or progression state.
+Chapter introductions normally use one frame with at least two short
+paragraphs. A prologue may use no more than three frames (pages). Use each
+frame to establish one clear turn: the problem, the immediate choice, or the
+consequence. Finales may use several frames when the ending needs room, but
+should still favor a small number of clear beats. Only completing the last
+frame records the scene as seen. The web locked preview uses the same canonical
+opening but deliberately records no seen or progression state. Map replay
+entries must likewise use replay mode so revisiting a scene does not write story
+or progression state.
 
 ### Narrative clarity and per-arc voice
 
 Clarity is a floor, not the voice of the game. After reading a frame once, a
 player should be able to say who acted, what changed, why it matters, and what
-the immediate choice or danger is. If the plot depends on a magical rule or an
-invented term, establish its practical meaning through context when it first
-appears. Strange imagery is welcome; obscuring the event it describes is not.
+the immediate choice or danger is. Keep the reader's mental load light: give
+each frame one main event and introduce only the detail needed to understand
+that event. Prefer a concrete person, place, action, and result over an
+abstract explanation of the setting's rules. If the plot depends on a magical
+rule or an invented term, state plainly what it does the first time it matters.
+For example, say that Nahla is a mapmaker and that the atlas can move water;
+do not make the reader infer either from metaphor or specialist vocabulary.
+Strange imagery is welcome; obscuring the event it describes is not.
+
+Write in short, direct sentences where they carry the story best. Do not stack
+multiple causes, exceptions, institutions, and invented terms into one
+paragraph. A scene may have depth, but the player should never need to decode
+the basic action before they can enjoy it. Revise for the simplest accurate
+wording, then add only the flavor that supports the scene.
 
 Those checks are an editing pass, not a prose formula. Do not impose a sensory
 detail quota, a fixed sentence rhythm, a required narrator distance, or one

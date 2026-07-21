@@ -12,7 +12,10 @@
       "arcId": "regalia:arc/origin",
       "metadataAsset": "assets/content/arcs/origin/arc.json",
       "entitlementId": "regalia:entitlement/base/origin",
-      "channels": ["web", "paidPlatform"],
+      "channels": [
+        "web",
+        "paidPlatform"
+      ],
       "storefront": {
         "title": "Queen’s Regalia: Origin Story",
         "tileSubtitle": "Begin in Asterfall Vale",
@@ -40,8 +43,14 @@
                   "type": "builtIn",
                   "character": "crownBearer"
                 },
-                "alignment": {"x": -0.48, "y": 0.62},
-                "size": {"width": 92, "height": 138},
+                "alignment": {
+                  "x": -0.48,
+                  "y": 0.62
+                },
+                "size": {
+                  "width": 92,
+                  "height": 138
+                },
                 "semanticLabel": "The crown-bearer"
               }
             ]
@@ -51,30 +60,30 @@
               "id": "stolen-dawn",
               "title": "The Stolen Dawn",
               "paragraphs": [
-                "For generations, the eight jewels of the Queen’s Regalia linked the crown to the eight realms. Each jewel carried the power of a different land, and together they kept the roads open and brought daylight to the kingdom.",
-                "One morning, a dark star appeared above the Empyrean Citadel and covered the sun. The palace sealed around the Queen, the birds fell silent, and darkness spread from the capital into every realm."
+                "The eight jewels of the Queen’s Regalia keep the roads open and daylight shining across the eight realms.",
+                "Then a dark star appears above the Empyrean Citadel. It traps the Queen and covers the kingdom in darkness."
               ],
-              "semanticLabel": "The Hollow Star blocks the sun above the Empyrean Citadel while darkness spreads across the realms.",
+              "semanticLabel": "The Hollow Star blocks the sun above the Empyrean Citadel.",
               "actionLabel": "See what happened"
             },
             {
               "id": "falling-crown",
               "title": "The Falling Crown",
               "paragraphs": [
-                "Before the darkness closed around her, the Queen used a spell to send the Regalia out of the citadel. The crown crossed the sky toward Asterfall Vale, and its eight jewels went dark one after another.",
-                "It struck a meadow and left a crater scattered with glassy earth. A knight traveling through the valley found the crown still warm. When they picked it up, they saw a vision of the eight troubled realms and the Queen trapped inside the darkened palace."
+                "Before the darkness closes around her, the Queen sends the Regalia away. The crown falls into Asterfall Vale, and its jewels go dark.",
+                "A traveling knight finds it in a meadow. When they touch the crown, they see the Queen trapped in the citadel."
               ],
-              "semanticLabel": "The Regalia falls from the darkened citadel and lands near a lone knight in Asterfall Vale.",
+              "semanticLabel": "The Regalia falls from the darkened citadel and lands near a knight.",
               "actionLabel": "Follow the crown"
             },
             {
               "id": "knights-choice",
               "title": "The Knight’s Choice",
               "paragraphs": [
-                "The vision gave the knight no promise of victory. It showed a route through the eight realms and made one thing clear: each jewel had to be restored before the Hollow Star could be challenged and the Queen could be freed.",
-                "The knight could have left the crown where it fell. Instead, they put it on, tightened the worn straps of their armor, and faced the first darkened road. As they started forward, the first jewel gave a faint spark."
+                "The vision shows one clear path: restore the eight jewels, defeat the Hollow Star, and free the Queen.",
+                "The knight puts on the crown and walks toward the first darkened road. The first jewel gives a small spark."
               ],
-              "semanticLabel": "The knight lifts the darkened Regalia and prepares to travel through the eight realms.",
+              "semanticLabel": "The knight puts on the darkened Regalia and begins the journey.",
               "actionLabel": "Begin the journey"
             }
           ]
@@ -85,8 +94,12 @@
       "arcId": "regalia:arc/atlas-of-borrowed-winds",
       "metadataAsset": "assets/content/arcs/atlas-of-borrowed-winds/arc.json",
       "entitlementId": "regalia:entitlement/paid/atlas-of-borrowed-winds",
-      "channels": ["paidPlatform"],
-      "lockedPreviewChannels": ["web"],
+      "channels": [
+        "paidPlatform"
+      ],
+      "lockedPreviewChannels": [
+        "web"
+      ],
       "storefront": {
         "title": "The Atlas of Borrowed Winds",
         "tileSubtitle": "Rewrite a desert of living roads",
@@ -111,14 +124,14 @@
           },
           "frames": [
             {
-              "id": "lines-that-never-moved",
-              "title": "Lines That Never Moved",
+              "id": "a-trapped-caravan",
+              "title": "A Trapped Caravan",
               "paragraphs": [
-                "Nahla Faris copied roads for Chief Surveyor Rafi Daran, though her family’s debt to the crown meant she was not free to travel any of them. Each week at the drafting table paid off part of the debt. New palace fees kept appearing, an arithmetic Rafi preferred not to discuss.",
-                "To Rafi, a road became real only when his office printed it. Reality was less cooperative. One afternoon, a brass signal plate struck the studio window: a caravan was trapped in a sandstorm on the western salt road, although the official chart showed clear weather there."
+                "Nahla Faris works in the royal map office to pay her family’s debt. A signal from the desert says a caravan is trapped in a sandstorm, even though the official map shows clear skies.",
+                "Looking for an old route, Nahla finds a locked atlas that Rafi told her never to open."
               ],
-              "semanticLabel": "Nahla and Chief Surveyor Rafi work in a royal cartography studio while a distant caravan signals through a supernatural storm.",
-              "actionLabel": "Follow the signal",
+              "semanticLabel": "Nahla receives a caravan’s distress signal in the royal map office.",
+              "actionLabel": "Open the atlas",
               "characters": [
                 {
                   "id": "nahla",
@@ -126,8 +139,14 @@
                     "type": "asset",
                     "asset": "assets/storefront/atlas-of-borrowed-winds/nahla_apprentice.png"
                   },
-                  "alignment": {"x": -0.52, "y": 0.68},
-                  "size": {"width": 112, "height": 168},
+                  "alignment": {
+                    "x": -0.52,
+                    "y": 0.68
+                  },
+                  "size": {
+                    "width": 112,
+                    "height": 168
+                  },
                   "semanticLabel": "Nahla Faris, apprentice cartographer",
                   "zOrder": 2
                 },
@@ -137,8 +156,14 @@
                     "type": "asset",
                     "asset": "assets/storefront/atlas-of-borrowed-winds/rafi_surveyor.png"
                   },
-                  "alignment": {"x": 0.55, "y": 0.66},
-                  "size": {"width": 116, "height": 174},
+                  "alignment": {
+                    "x": 0.55,
+                    "y": 0.66
+                  },
+                  "size": {
+                    "width": 116,
+                    "height": 174
+                  },
                   "mirrored": true,
                   "semanticLabel": "Rafi Daran, chief royal surveyor",
                   "zOrder": 1
@@ -146,14 +171,14 @@
               ]
             },
             {
-              "id": "the-atlas-that-breathed",
-              "title": "The Atlas That Breathed",
+              "id": "the-bound-jinn",
+              "title": "The Bound Jinn",
               "paragraphs": [
-                "Looking for an older chart of the western road, Nahla opened a cabinet Rafi had forbidden her to catalogue. Inside was an antique atlas locked under old survey seals. She set the distress plate on its cover, and the book opened with a rush of indigo wind.",
-                "The wind gathered into a man who called himself Ilyun, a jinn bound to the atlas. The book called any instruction from its holder an agreement, even when no one else had agreed. If the holder ordered a road, border, or waterway moved, Ilyun had to do it. He could warn about the cost, but he could not refuse or protect anyone the order forgot to mention."
+                "The atlas opens in a rush of wind and wakes Ilyun, a jinn bound to the book. Whoever holds it can tell him to move a road, a border, or water.",
+                "A wagon overturns in the storm. Nahla asks Ilyun for a safe road and water for the caravan. He warns her that someone else may lose that water."
               ],
-              "semanticLabel": "An antique atlas opens by itself as indigo wind and golden constellations rise into a humanlike form before Nahla.",
-              "actionLabel": "Hear Ilyun’s warning",
+              "semanticLabel": "Ilyun rises from the open atlas as Nahla sees the trapped caravan.",
+              "actionLabel": "Make the rescue",
               "characters": [
                 {
                   "id": "nahla",
@@ -161,31 +186,14 @@
                     "type": "asset",
                     "asset": "assets/storefront/atlas-of-borrowed-winds/nahla_apprentice.png"
                   },
-                  "alignment": {"x": -0.54, "y": 0.68},
-                  "size": {"width": 112, "height": 168},
-                  "semanticLabel": "Nahla before the breathing atlas",
-                  "zOrder": 2
-                }
-              ]
-            },
-            {
-              "id": "a-bargain-in-the-gale",
-              "title": "A Bargain in the Gale",
-              "paragraphs": [
-                "Across the open pages, Nahla saw the missing caravan caught in the storm. She asked Ilyun to give its wagons a safe road to the nearest water. He warned her that the water lay too far away: to save the caravan in time, the atlas would have to move the water as well as the road.",
-                "Another wagon overturned. Nahla could not see who lived beside that water, and there was no time to find out. “Move what you must,” she said. The seals on Ilyun’s wrists flared. Far to the west, the caravan’s brass plates turned, and a new road formed beneath its wheels."
-              ],
-              "semanticLabel": "Nahla and the bound jinn Ilyun face an atlas whose glowing route bends toward a caravan trapped in a sandstorm.",
-              "actionLabel": "See the road change",
-              "characters": [
-                {
-                  "id": "nahla",
-                  "source": {
-                    "type": "asset",
-                    "asset": "assets/storefront/atlas-of-borrowed-winds/nahla_apprentice.png"
+                  "alignment": {
+                    "x": -0.5,
+                    "y": 0.68
                   },
-                  "alignment": {"x": -0.50, "y": 0.68},
-                  "size": {"width": 112, "height": 168},
+                  "size": {
+                    "width": 112,
+                    "height": 168
+                  },
                   "semanticLabel": "Nahla making the urgent agreement",
                   "zOrder": 2
                 },
@@ -195,21 +203,27 @@
                     "type": "asset",
                     "asset": "assets/storefront/atlas-of-borrowed-winds/ilyun_bound.png"
                   },
-                  "alignment": {"x": 0.48, "y": 0.58},
-                  "size": {"width": 124, "height": 186},
+                  "alignment": {
+                    "x": 0.48,
+                    "y": 0.58
+                  },
+                  "size": {
+                    "width": 124,
+                    "height": 186
+                  },
                   "semanticLabel": "Ilyun bound by the atlas",
                   "zOrder": 1
                 }
               ]
             },
             {
-              "id": "the-price-on-the-horizon",
-              "title": "The Price on the Horizon",
+              "id": "the-cost-of-rescue",
+              "title": "The Cost of Rescue",
               "paragraphs": [
-                "The new road carried the wagons out of the storm, and the caravan stopped beside fresh water. Only then did Nahla see what the atlas had moved: the nearest oasis had been torn from its basin and dragged across the desert, taking its palms, gardens, wells, and soil with it. The travelers were safe because another community was losing its home.",
-                "Rafi entered as hidden routes lit across the studio floor. He ordered Nahla to surrender the atlas, arguing that such power belonged in royal hands. Nahla had just seen what happened when a powerful map ignored the people on it. She took the atlas and left with Ilyun to find the displaced community and return its water."
+                "The caravan reaches safety. Then Nahla sees an oasis torn from its basin and dragged across the desert. The town of Anbar has lost its water.",
+                "Rafi demands the atlas. Nahla takes it instead and leaves with Ilyun to put the oasis back."
               ],
-              "semanticLabel": "Nahla, Ilyun, and Rafi watch a distant oasis rise while new routes spread across the cartography studio floor.",
+              "semanticLabel": "Nahla, Ilyun, and Rafi watch a distant oasis move across the desert.",
               "actionLabel": "Begin the atlas journey",
               "characters": [
                 {
@@ -218,8 +232,14 @@
                     "type": "asset",
                     "asset": "assets/storefront/atlas-of-borrowed-winds/nahla_apprentice.png"
                   },
-                  "alignment": {"x": -0.66, "y": 0.72},
-                  "size": {"width": 94, "height": 141},
+                  "alignment": {
+                    "x": -0.66,
+                    "y": 0.72
+                  },
+                  "size": {
+                    "width": 94,
+                    "height": 141
+                  },
                   "semanticLabel": "Nahla holding the atlas",
                   "zOrder": 3
                 },
@@ -229,8 +249,14 @@
                     "type": "asset",
                     "asset": "assets/storefront/atlas-of-borrowed-winds/ilyun_bound.png"
                   },
-                  "alignment": {"x": 0.00, "y": 0.64},
-                  "size": {"width": 102, "height": 153},
+                  "alignment": {
+                    "x": 0.0,
+                    "y": 0.64
+                  },
+                  "size": {
+                    "width": 102,
+                    "height": 153
+                  },
                   "semanticLabel": "Ilyun beside the unbound atlas",
                   "zOrder": 2
                 },
@@ -240,8 +266,14 @@
                     "type": "asset",
                     "asset": "assets/storefront/atlas-of-borrowed-winds/rafi_surveyor.png"
                   },
-                  "alignment": {"x": 0.66, "y": 0.71},
-                  "size": {"width": 96, "height": 144},
+                  "alignment": {
+                    "x": 0.66,
+                    "y": 0.71
+                  },
+                  "size": {
+                    "width": 96,
+                    "height": 144
+                  },
                   "mirrored": true,
                   "semanticLabel": "Rafi claiming the atlas for the crown",
                   "zOrder": 1
