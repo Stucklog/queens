@@ -38,20 +38,20 @@ void main() {
       expect(availability.arc, isNull);
       expect(availability.storefront, isNotNull);
       expect(availability.storefront!.title, 'The Atlas of Borrowed Winds');
-      expect(availability.storefront!.prologuePreview.frames, hasLength(4));
+      expect(availability.storefront!.prologuePreview.frames, hasLength(3));
       final previewText = availability.storefront!.prologuePreview.frames
           .expand((frame) => frame.narrative.paragraphs)
           .join(' ');
-      expect(previewText, contains('family’s debt to the crown'));
-      expect(previewText, contains('caravan was trapped in a sandstorm'));
-      expect(previewText, contains('he could not refuse'));
-      expect(previewText, contains('move the water as well as the road'));
-      expect(previewText, contains('another community was losing its home'));
+      expect(previewText, contains('family’s debt'));
+      expect(previewText, contains('caravan is trapped in a sandstorm'));
+      expect(previewText, contains('bound to the book'));
+      expect(previewText, contains('someone else may lose that water'));
+      expect(previewText, contains('town of Anbar has lost its water'));
       expect(
         availability.storefront!.prologuePreview.frames.map(
           (frame) => frame.characterLayers.length,
         ),
-        orderedEquals([2, 1, 2, 3]),
+        orderedEquals([2, 2, 3]),
       );
       expect(reads.where((path) => path.startsWith(atlasPackage)), isEmpty);
     },
@@ -73,16 +73,16 @@ void main() {
       final arc = availability.arc!;
 
       expect(arc.title, 'The Atlas of Borrowed Winds');
-      expect(arc.contentVersion, 2);
+      expect(arc.contentVersion, 3);
       expect(arc.chapters, hasLength(8));
       expect(arc.catalog.puzzles, hasLength(72));
       expect(arc.scenes, hasLength(10));
-      expect(arc.openingScene.frames, hasLength(4));
-      expect(arc.finaleScene.frames, hasLength(5));
+      expect(arc.openingScene.frames, hasLength(3));
+      expect(arc.finaleScene.frames, hasLength(2));
       expect(
         arc.scenes
             .where((scene) => scene.role == StorySceneRole.chapter)
-            .every((scene) => scene.frames.length == 2),
+            .every((scene) => scene.frames.length == 1),
         isTrue,
       );
 
@@ -166,19 +166,12 @@ void main() {
       final finale = arc.finaleScene.frames;
       expect(
         finale.map((frame) => frame.characterLayers.length),
-        orderedEquals([3, 4, 4, 3, 3]),
+        orderedEquals([0, 3]),
       );
       expect(finale[1].characterLayers.map((layer) => layer.id).toSet(), {
         'nahla',
         'samir',
         'ilyun',
-        'rafi',
-      });
-      expect(finale[2].characterLayers.map((layer) => layer.id).toSet(), {
-        'nahla',
-        'samir',
-        'ilyun',
-        'rafi',
       });
       expect(
         finale

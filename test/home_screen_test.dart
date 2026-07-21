@@ -169,12 +169,11 @@ void main() {
 
       await tester.tap(find.byKey(const ValueKey('story-arc-tile-$arcId')));
       await _pumpFrames(tester);
-      expect(find.text('Lines That Never Moved'), findsOneWidget);
+      expect(find.text('A Trapped Caravan'), findsOneWidget);
 
       for (final transition in const [
-        ('Follow the signal', 'The Atlas That Breathed'),
-        ('Hear Ilyun’s warning', 'A Bargain in the Gale'),
-        ('See the road change', 'The Price on the Horizon'),
+        ('Open the atlas', 'The Bound Jinn'),
+        ('Make the rescue', 'The Cost of Rescue'),
       ]) {
         await tester.ensureVisible(find.text(transition.$1));
         await tester.tap(find.text(transition.$1));

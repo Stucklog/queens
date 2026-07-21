@@ -39,16 +39,12 @@ void main() {
     await tester.tap(find.text('Return to journey'));
     await tester.pumpAndSettle();
 
-    expect(find.text('The Hollow Star Falls'), findsOneWidget);
+    expect(find.text('Dawn Returns'), findsOneWidget);
     expect(controller.isJourneyComplete, isTrue);
-    await tester.ensureVisible(find.text('See the dawn return'));
-    await tester.tap(find.text('See the dawn return'));
+    await tester.ensureVisible(find.text('See the dawn'));
+    await tester.tap(find.text('See the dawn'));
     await tester.pumpAndSettle();
-    expect(find.text('The Crown Returns'), findsOneWidget);
-    await tester.ensureVisible(find.text('Return the crown'));
-    await tester.tap(find.text('Return the crown'));
-    await tester.pumpAndSettle();
-    expect(find.text('The First Morning'), findsOneWidget);
+    expect(find.text('The Knight’s Road'), findsOneWidget);
     await tester.ensureVisible(find.text('Finish the story'));
     await tester.tap(find.text('Finish the story'));
     await tester.pumpAndSettle();
