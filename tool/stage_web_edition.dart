@@ -1,18 +1,16 @@
 import 'dart:io';
 
-/// Creates an isolated native-build workspace whose paid asset declarations
-/// are unconditional.
+/// Creates an isolated web-build workspace with full story packages removed
+/// from Flutter's asset declarations.
 ///
-/// Flutter 3.29 can filter assets by flavor on Android, iOS, and macOS, but it
-/// cannot pass an asset flavor to Linux or Windows builds. Keeping the checked-
-/// in pubspec web-safe and materializing a native-only staging workspace gives
-/// every paid platform the same complete offline bundle without ever making a
-/// web build from the expanded declaration set.
+/// The checked-in source remains the complete native app. This temporary copy
+/// exists only so a web build does not ship assets it can never use.
 Future<void> main(List<String> arguments) async {
   final outputIndex = arguments.indexOf('--output');
   if (outputIndex < 0 || outputIndex + 1 >= arguments.length) {
     stderr.writeln(
-      'Usage: dart run tool/stage_paid_edition.dart --output <empty-directory>',
+      'Usage: dart run tool/stage_web_edition.dart '
+      '--output <empty-directory>',
     );
     exitCode = 64;
     return;
@@ -23,7 +21,7 @@ Future<void> main(List<String> arguments) async {
   if (_contains(source.path, output.path) ||
       _contains(output.path, source.path)) {
     stderr.writeln(
-      'The paid staging directory must be outside the source repository: '
+      'The web staging directory must be outside the source repository: '
       '${output.path}',
     );
     exitCode = 64;
@@ -31,7 +29,7 @@ Future<void> main(List<String> arguments) async {
   }
   if (output.existsSync() && output.listSync().isNotEmpty) {
     stderr.writeln(
-      'Refusing to overwrite a non-empty paid staging directory: '
+      'Refusing to overwrite a non-empty web staging directory: '
       '${output.path}',
     );
     exitCode = 73;
@@ -45,23 +43,26 @@ Future<void> main(List<String> arguments) async {
     '${output.path}${Platform.pathSeparator}pubspec.yaml',
   );
   final sourcePubspec = await stagedPubspec.readAsString();
-  final expandedPubspec = _expandPaidAssets(sourcePubspec);
-  if (sourcePubspec == expandedPubspec ||
-      expandedPubspec.contains(RegExp(r'^\s+flavors:', multiLine: true))) {
+  final (filteredPubspec, removedCount) = _removeWebExcludedAssets(
+    sourcePubspec,
+  );
+  if (removedCount == 0 || filteredPubspec.contains('# web-excluded')) {
     stderr.writeln(
-      'Could not materialize a fully expanded paid asset declaration set.',
+      'Could not remove the web-excluded Flutter asset declarations.',
     );
     exitCode = 65;
     return;
   }
-  await stagedPubspec.writeAsString(expandedPubspec, flush: true);
+  await stagedPubspec.writeAsString(filteredPubspec, flush: true);
 
-  stdout.writeln('Paid edition staged at ${output.path}');
   stdout.writeln(
-    'Verify it with: dart run tool/verify_offline.dart --paid-source',
+    'Restricted web source staged at ${output.path} '
+    '($removedCount asset roots excluded).',
   );
-  stdout.writeln('Run native Flutter build commands from that directory.');
-  stdout.writeln('Do not run flutter build web from a paid staging workspace.');
+  stdout.writeln(
+    'Build web only from this temporary directory; build every native target '
+    'from the checked-in source.',
+  );
 }
 
 bool _contains(String parent, String child) {
@@ -104,33 +105,16 @@ Future<void> _copyDirectory(Directory source, Directory destination) async {
   }
 }
 
-String _expandPaidAssets(String pubspec) {
-  final lines = pubspec.split('\n');
-  final output = <String>[];
-  for (var index = 0; index < lines.length; index++) {
-    final pathMatch = RegExp(
-      r'^    - path:\s+(.+?)\s*$',
-    ).firstMatch(lines[index]);
-    if (pathMatch == null) {
-      output.add(lines[index]);
+(String, int) _removeWebExcludedAssets(String pubspec) {
+  final marker = RegExp(r'^    -\s+.+?\s+# web-excluded\s*$');
+  var removedCount = 0;
+  final lines = <String>[];
+  for (final line in pubspec.split('\n')) {
+    if (marker.hasMatch(line)) {
+      removedCount++;
       continue;
     }
-
-    final block = <String>[lines[index]];
-    while (index + 1 < lines.length &&
-        !lines[index + 1].startsWith('    - ') &&
-        (lines[index + 1].startsWith('      ') ||
-            lines[index + 1].trim().isEmpty)) {
-      block.add(lines[++index]);
-    }
-    final flavors =
-        block
-            .map((line) => RegExp(r'^        -\s+(.+?)\s*$').firstMatch(line))
-            .whereType<RegExpMatch>()
-            .map((match) => match.group(1)!)
-            .toSet();
-    if (!flavors.contains('paid')) continue;
-    output.add('    - ${pathMatch.group(1)!}');
+    lines.add(line);
   }
-  return output.join('\n');
+  return (lines.join('\n'), removedCount);
 }

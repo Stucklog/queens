@@ -44,7 +44,10 @@ void main() {
       find.byKey(const ValueKey('home-bestiary-progress')),
       findsOneWidget,
     );
-    expect(find.text('1 of 24 foes defeated'), findsOneWidget);
+    expect(
+      find.text('1 of ${_foeCount(controller)} foes defeated'),
+      findsOneWidget,
+    );
 
     await tester.tap(tile);
     await _pumpRoute(tester);
@@ -53,7 +56,10 @@ void main() {
       find.byKey(const ValueKey('bestiary-total-progress')),
       findsOneWidget,
     );
-    expect(find.text('1 / 24 foes revealed'), findsOneWidget);
+    expect(
+      find.text('1 / ${_foeCount(controller)} foes revealed'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('undiscovered slots do not expose foe names or assets', (
@@ -96,7 +102,10 @@ void main() {
       find.byKey(const ValueKey('bestiary-debug-unlock-all')),
       findsOneWidget,
     );
-    expect(find.text('0 / 24 foes revealed'), findsOneWidget);
+    expect(
+      find.text('0 / ${_foeCount(controller)} foes revealed'),
+      findsOneWidget,
+    );
   });
 
   testWidgets(
@@ -140,7 +149,8 @@ void main() {
     await tester.tap(unlock);
     await tester.pump();
 
-    expect(find.text('24 / 24 foes revealed'), findsOneWidget);
+    final foeCount = _foeCount(controller);
+    expect(find.text('$foeCount / $foeCount foes revealed'), findsOneWidget);
     expect(find.text(firstFoe.name), findsOneWidget);
     expect(find.text('All Foes Visible for This Visit'), findsOneWidget);
   });
@@ -199,7 +209,10 @@ void main() {
       find.byKey(const ValueKey('bestiary-debug-unlock-all')),
       findsOneWidget,
     );
-    expect(find.text('0 / 24 foes revealed'), findsOneWidget);
+    expect(
+      find.text('0 / ${_foeCount(controller)} foes revealed'),
+      findsOneWidget,
+    );
     expect(find.text(firstFoe.name), findsNothing);
   });
 
@@ -227,7 +240,10 @@ void main() {
       findsOneWidget,
     );
     expect(find.text(arc.chapters.first.boss.name), findsNothing);
-    expect(find.text('2 / 24 foes revealed'), findsOneWidget);
+    expect(
+      find.text('2 / ${_foeCount(controller)} foes revealed'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('detail replays all six direct reactions and repeats a row', (
@@ -413,10 +429,10 @@ void main() {
     );
   });
 
-  testWidgets('paid story accents stay readable on the shared Bestiary theme', (
+  testWidgets('story accents stay readable on the shared Bestiary theme', (
     tester,
   ) async {
-    final controller = await _paidController(tester);
+    final controller = await _completeController(tester);
     addTearDown(controller.dispose);
     final arc = controller.content!.arc('regalia:arc/atlas-of-borrowed-winds')!;
 
@@ -474,7 +490,7 @@ Future<AppController> _controller(WidgetTester tester) async {
   return controller;
 }
 
-Future<AppController> _paidController(WidgetTester tester) async {
+Future<AppController> _completeController(WidgetTester tester) async {
   SharedPreferences.setMockInitialValues({
     SaveIds.tutorialComplete: true,
     'regalia.journeySchemaVersion': 1,
@@ -487,6 +503,10 @@ Future<AppController> _paidController(WidgetTester tester) async {
   await tester.runAsync(controller.initialize);
   return controller;
 }
+
+int _foeCount(AppController controller) => controller.availableStoryArcs
+    .expand((arc) => arc.chapters)
+    .fold(0, (total, chapter) => total + chapter.encounters.length + 1);
 
 Future<void> _pumpBestiary(
   WidgetTester tester,

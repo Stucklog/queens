@@ -4,7 +4,7 @@ Queen’s Regalia is an original, offline Flutter implementation of the one-crow
 
 The bundled **Queen’s Regalia: Origin Story** arc contains 72 deterministic, uniquely solvable puzzles plus a separate guided tutorial. Each realm presents nine puzzles as a 3×3 route, with combat encounters at the end of every row. They form a linear prestige pixel-art pilgrimage across eight realms: each clean or assisted solve advances the Regalia’s unnamed bearer from Asterfall Vale toward the Empyrean Citadel. Completed puzzles remain replayable, while future route nodes stay visible and locked. Journey scenery, storyboard backgrounds, and principal character art are bundled as optimized production assets, with procedural art retained as an offline-safe fallback.
 
-The paid edition also includes **The Atlas of Borrowed Winds**, an eight-chapter desert fantasy with 72 distinct puzzles, configurable route layouts and light/dark chapter palettes, a three-frame prologue, one cinematic frame per chapter, and a two-frame ensemble finale. It ships bespoke high-resolution environments and character sprites while reusing the shared combat-animation system.
+The installed app also includes **The Atlas of Borrowed Winds**, an eight-chapter desert fantasy with 72 distinct puzzles, configurable route layouts and light/dark chapter palettes, a three-frame prologue, one cinematic frame per chapter, and a two-frame ensemble finale. It ships bespoke high-resolution environments and character sprites while reusing the shared combat-animation system.
 
 Puzzle actions also drive a synchronized combat stage: chapter bosses react to
 the knight’s existing moves and fall to increasingly elaborate chapter-ending
@@ -17,7 +17,7 @@ the idle loop and return to idle; defeat alone holds on its final frame.
 
 “Just Puzzle!” is a separate endless run of puzzles generated and verified entirely on the device. Players can choose Easy, Medium, Hard, Expert, 12×12 Extreme, or a rotating Mixed run; the next board is prepared while the current one is played. Its boards, marks, elapsed time, assistance, and run statistics resume after relaunch without changing any story frontier.
 
-After the tutorial, the home screen lists every available story arc in a single metadata-driven column and keeps the Academy, “Just Puzzle!”, and master settings at the top level. Selecting an arc opens its own opening scene when needed and then that arc’s map. The GitHub Pages/web edition includes the complete Origin arc, the deduction Academy, and “Just Puzzle!”; it shows Atlas as a locked tile whose prologue is available without loading the paid package. Paid-platform builds include both complete arcs. Missing, corrupt, unentitled, or edition-excluded optional packages do not prevent Origin, Academy, or puzzle-only mode from loading.
+After the tutorial, the home screen lists every available story arc in a single metadata-driven column and keeps the Academy, “Just Puzzle!”, and master settings at the top level. Selecting an arc opens its own opening scene when needed and then that arc’s map. The GitHub Pages/web edition includes the complete Origin arc, the deduction Academy, and “Just Puzzle!”; it shows Atlas as a locked tile whose prologue is available without loading the full package. Every native build includes both complete arcs. Missing, corrupt, or web-excluded optional packages do not prevent Origin, Academy, or puzzle-only mode from loading.
 
 It has no backend, accounts, analytics, ads, or automatic runtime network
 services. Story progress, puzzle-only runs, story scenes, Bestiary discoveries,
@@ -35,13 +35,18 @@ flutter pub get
 flutter run -d chrome
 ```
 
-The checked-in workspace is the web-safe source. To run or build the complete
-paid edition on any native target, create the isolated staging workspace
-described in [Content authoring and releases](docs/CONTENT_AUTHORING.md#loading-and-web-bundle-boundary), run `flutter pub get` there, then use the normal `flutter run` or `flutter build` command. Flutter targets web, iOS, Android, macOS, Windows, and Linux. A release web build includes Flutter's generated service worker, which caches the app shell and bundled catalog for use after the first load.
+The checked-in workspace is the complete app source. Normal iOS, Android,
+macOS, Windows, and Linux `flutter run` and `flutter build` commands include
+every story; there is no paid flavor and no per-story purchase. Web runtime
+content is selected with Flutter's `kIsWeb`. The GitHub Pages workflow creates
+an untracked temporary copy and removes asset roots marked `# web-excluded`
+before building, so unused full-story art does not inflate the deployed site.
+A release web build includes Flutter's generated service worker, which caches
+the app shell and bundled catalog for use after the first load.
 
-For local macOS animation review, choose **Queen's Regalia — macOS
-full-content preview** in VS Code's Run and Debug view. It includes the
-complete Atlas package. In debug builds, the Bestiary also shows **Unlock All Foes (Debug)**;
+For local macOS animation review, choose **Queen's Regalia — macOS** in VS
+Code's Run and Debug view. It includes the complete Atlas package. In debug
+builds, the Bestiary also shows **Unlock All Foes (Debug)**;
 that preview lasts only for the current visit and never changes saved progress.
 
 ## Puzzle tooling
@@ -64,12 +69,15 @@ dart format --output=none --set-exit-if-changed lib test tool
 flutter analyze
 flutter test --exclude-tags=golden
 flutter test --tags=golden
-flutter test --flavor paid test/atlas_of_borrowed_winds_paid_bundle_test.dart
+flutter test test/atlas_of_borrowed_winds_bundle_test.dart
 dart run tool/generate_puzzles.dart validate
 dart run tool/generate_puzzles.dart validate --catalog assets/content/arcs/atlas-of-borrowed-winds/catalog.json
 dart run tool/verify_offline.dart
-flutter build web --release
-dart run tool/verify_offline.dart --web-build build/web
+web_stage="$(mktemp -d)"
+dart run tool/stage_web_edition.dart --output "$web_stage"
+(cd "$web_stage" && flutter pub get && dart run tool/verify_offline.dart --web-source)
+(cd "$web_stage" && flutter build web --release)
+(cd "$web_stage" && dart run tool/verify_offline.dart --web-source --web-build build/web)
 ```
 
 Unsigned web, Android APK/AAB, iOS, macOS, Windows, and Linux release

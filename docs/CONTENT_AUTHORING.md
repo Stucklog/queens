@@ -4,15 +4,14 @@ Queen’s Regalia treats every story arc as an independently loadable content
 package. The common manifest is also a lightweight storefront catalog. The
 web/GitHub Pages edition loads the origin package, the system Academy, and
 “Just Puzzle!”, while retaining manifest-only previews of arcs that are
-available in the paid apps. It must not bundle those arcs’ complete metadata,
-catalogs, or gameplay art.
+available in the installed apps. It must not deploy those arcs’ complete
+metadata, catalogs, or gameplay art.
 
 The iOS, Android, macOS, Windows, and Linux editions are one-time-purchase apps,
-not containers for per-arc in-app purchases. A paid-platform build grants the
-app edition as a whole and loads every valid, bundled arc whose descriptor has
-the `paidPlatform` channel. The descriptor `entitlementId` remains a required,
-stable content identifier and a boundary for possible future distribution
-models; it is not a separate SKU or receipt gate in the current paid apps.
+not containers for per-arc in-app purchases. Every ordinary native build loads
+every valid, bundled arc whose descriptor has the `paidPlatform` channel. The
+descriptor `entitlementId` remains a required stable content identifier for
+saves and validation; it is not a separate SKU or receipt gate.
 
 ## Identity contract
 
@@ -58,9 +57,10 @@ the arc, not chapter positions or display labels.
 4. Add arc-specific art/assets under edition-aware paths. Every runtime content
    read uses Flutter’s bundled asset system; remote metadata, downloadable
    catalogs, and runtime art downloads are unsupported. Declare the complete
-   package only in paid-build asset configuration. Declare the lightweight
-   storefront and preview assets in the web build as well.
-5. Add a descriptor to `assets/content/manifest.json`. A paid-only arc uses
+   package in the canonical asset list and mark its full-only roots
+   `# web-excluded`. Declare the lightweight storefront and preview assets in
+   the web build as well.
+5. Add a descriptor to `assets/content/manifest.json`. An installed-app-only arc uses
    `"channels": ["paidPlatform"]` and can opt into a locked web tile with
    `"lockedPreviewChannels": ["web"]`. Its descriptor remains in the common
    manifest so that preview can render without loading the package. Author all
@@ -76,7 +76,7 @@ the arc, not chapter positions or display labels.
 
 Every descriptor is parsed before any full arc package is considered, so its
 storefront data must be valid even in an edition that will not load the arc.
-Use this shape for a new paid-only arc:
+Use this shape for a new installed-app-only arc:
 
 ```json
 {
@@ -467,9 +467,8 @@ Paid-platform policy represents ownership of the one-time-purchase app itself.
 It admits every descriptor with the `paidPlatform` channel and treats every
 such descriptor’s entitlement as granted. Do not create per-arc products,
 receipt restore logic, or unlock prompts, and do not require
-`grantedEntitlementIds` for the standard paid build. That set remains part of
-the neutral policy API for tests or a future distribution model, but it does
-not narrow the current paid app’s content.
+`grantedEntitlementIds` for a normal native build. That set remains only for
+package-isolation tests and does not narrow the shipping app’s content.
 
 UI code should read `ContentRegistry.availabilityFor(arcId)` and distinguish:
 
@@ -553,7 +552,7 @@ the approved Buy Me a Coffee page is the only external URL; every external URL
 opens only through a user action. On web only, completing the puzzle immediately
 before a chapter boss may show the support choice once for that chapter. Claim
 the namespaced chapter ID before displaying the prompt, persist it across
-sessions, and never show the prompt in Academy, Just Puzzle, or paid platform
+sessions, and never show the prompt in Academy, Just Puzzle, or native app
 builds. An arc reset begins that arc's prompt history again; a full reset clears
 all prompt history.
 
@@ -588,7 +587,7 @@ download-on-demand package fallback.
 
 This runtime short-circuit is necessary but is not a packaging filter. Flutter
 copies declared assets into the web output whether or not Dart code reads them.
-Keep paid-only package files out of the web build’s asset declarations; merely
+Keep installed-app-only package files out of the web build’s asset declarations; merely
 using `"channels": ["paidPlatform"]` or omitting an arc from the manifest does
 not remove a declared file from `build/web`. A directory entry in
 `pubspec.yaml` includes its direct children, not arbitrary nested directories,
@@ -599,7 +598,7 @@ The web build must contain and list for service-worker offline availability:
 - the common manifest and every arc descriptor;
 - the complete origin metadata, catalog, and gameplay assets;
 - every descriptor’s `tileArtAsset`, optional `tileForegroundAsset`, and every
-  `assets/...` reference inside `prologuePreview`, including paid-only locked
+  `assets/...` reference inside `prologuePreview`, including app-only locked
   previews;
 - the system Academy, tutorial, Just Puzzle, font, and shared runtime assets.
 
@@ -609,48 +608,41 @@ service-worker resource list. This includes its catalog, chapter/scenery art,
 custom scene art, and opponent sprites. An asset shared by a web arc or
 explicitly referenced by the descriptor’s lightweight storefront preview is
 allowed. Keep storefront assets in an intentionally web-declared path and full
-paid content in separate, paid-only paths so this distinction stays
+story content in separate, web-excluded paths so this distinction stays
 reviewable.
 
-The checked-in `pubspec.yaml` is the secure, web-safe source of truth. Assets
-used by every edition have scalar declarations. Full paid-package roots use
-Flutter asset mappings with an explicit paid flavor:
+The checked-in `pubspec.yaml` is the complete native source of truth. Assets
+used by every edition have ordinary scalar declarations. Full story roots that
+web can never use carry a `# web-excluded` marker:
 
 ```yaml
 - assets/storefront/atlas-of-borrowed-winds/
-- path: assets/content/arcs/atlas-of-borrowed-winds/
-  flavors:
-    - paid
-- path: assets/art/arcs/atlas-of-borrowed-winds/backgrounds/
-  flavors:
-    - paid
-- path: assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/
-  flavors:
-    - paid
+- assets/content/arcs/atlas-of-borrowed-winds/ # web-excluded
+- assets/art/arcs/atlas-of-borrowed-winds/backgrounds/ # web-excluded
+- assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/ # web-excluded
 ```
 
-Do not add `default-flavor` to the canonical pubspec. An unflavored web build
-must exclude every flavored root. Flutter 3.29 can select flavored assets for
-tests and for platform projects with configured Android/Xcode flavors, but it
-cannot pass an asset flavor to Linux or Windows builds. For one consistent
-native release path, materialize an isolated paid workspace:
+Do not add `default-flavor` or a paid Flutter flavor. Native builds run directly
+from the checked-in source, so iOS and every other installed target receive all
+stories automatically. To keep the GitHub Pages deployment small, materialize
+an isolated temporary web workspace:
 
 ```sh
-paid_stage=/absolute/path/to/an/empty/staging-directory
-dart run tool/stage_paid_edition.dart --output "$paid_stage"
-cd "$paid_stage"
+web_stage=/absolute/path/to/an/empty/staging-directory
+dart run tool/stage_web_edition.dart --output "$web_stage"
+cd "$web_stage"
 flutter pub get
-dart run tool/verify_offline.dart --paid-source
-flutter build apk --release       # or appbundle, ios, macos, linux, windows
-dart run tool/verify_offline.dart --paid-source \
-  --native-build build/app/outputs/flutter-apk/app-release.apk
+dart run tool/verify_offline.dart --web-source
+flutter build web --release
+dart run tool/verify_offline.dart --web-source --web-build build/web
 ```
 
 The staging tool refuses a directory inside the repository and refuses to
 overwrite a non-empty directory. It copies neither `.git`, `.dart_tool`, nor
-`build`, then makes paid asset entries unconditional in the staged pubspec.
-Never run `flutter build web` from that expanded workspace; the paid-source
-verifier rejects combining its mode with `--web-build`.
+`build`, then removes marked asset declarations from the staged pubspec. This
+workspace is a disposable CI/build artifact, not a separately maintained Git
+branch or app edition. Never build a native target from it; the verifier rejects
+combining `--web-source` with `--native-build`.
 
 For every release:
 
@@ -659,18 +651,17 @@ For every release:
    represented object changed.
 2. Validate the common manifest and both store URLs. Confirm every referenced
    asset exists and is declared in each intended edition’s Flutter asset list.
-3. For web, keep the origin descriptor eligible for `web`. Keep each paid-only
+3. For web, keep the origin descriptor eligible for `web`. Keep each app-only
    descriptor limited to `paidPlatform` and add `web` only to its
    `lockedPreviewChannels` when a web preview is intended. Keep lightweight
    preview assets in the manifest and web bundle while excluding full packages.
    Build and inspect both the generated asset manifest and service-worker
    resource list; these assets may enter the cache on demand rather than at
    install time.
-4. For paid platforms, package every intended `paidPlatform` arc and all of its
-   referenced assets. Treat the store’s one-time app purchase as the entitlement
-   boundary; do not wire per-arc receipts to `grantedEntitlementIds`. Test a
-   fresh install, reinstall, and every packaged arc as valid, absent, and
-   corrupt.
+4. For native platforms, package every intended `paidPlatform` arc and all of
+   its referenced assets. The store’s one-time app purchase unlocks the entire
+   app; do not wire per-arc receipts to `grantedEntitlementIds`. Test a fresh
+   install, reinstall, and every packaged arc as valid, absent, and corrupt.
 5. Run:
 
    ```sh
@@ -678,19 +669,23 @@ For every release:
    flutter analyze
    flutter test --exclude-tags=golden
    flutter test --tags=golden
-   flutter test --flavor paid test/atlas_of_borrowed_winds_paid_bundle_test.dart
+   flutter test test/atlas_of_borrowed_winds_bundle_test.dart
    dart run tool/generate_puzzles.dart validate
    dart run tool/generate_puzzles.dart validate \
      --catalog assets/content/arcs/atlas-of-borrowed-winds/catalog.json
    dart run tool/verify_offline.dart
-   flutter build web --release
-   dart run tool/verify_offline.dart --web-build build/web
+   web_stage="$(mktemp -d)"
+   dart run tool/stage_web_edition.dart --output "$web_stage"
+   (cd "$web_stage" && flutter pub get && \
+     dart run tool/verify_offline.dart --web-source && \
+     flutter build web --release && \
+     dart run tool/verify_offline.dart --web-source --web-build build/web)
    ```
 
 6. Smoke-test origin from a fresh save and a migrated legacy save. Separately
    start/resume Just Puzzle with the origin package deliberately unavailable.
-   On web, play every locked prologue and confirm no full paid package is read.
-   In a paid build, confirm every valid packaged arc is available without a
+   On web, play every locked prologue and confirm no full story package is read.
+   In a native build, confirm every valid packaged arc is available without a
    per-arc purchase.
 
 The legacy migration writes all current values before deleting old keys. It

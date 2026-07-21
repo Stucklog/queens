@@ -462,6 +462,9 @@ class _SettingPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.only(bottom: 16, right: 4),
-    child: PixelPanel(padding: EdgeInsets.zero, child: child),
+    child: PixelPanel(
+      padding: EdgeInsets.zero,
+      child: Material(type: MaterialType.transparency, child: child),
+    ),
   );
 }

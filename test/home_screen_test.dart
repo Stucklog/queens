@@ -33,13 +33,25 @@ void main() {
       find.byKey(const ValueKey('story-arc-tile-regalia:arc/origin')),
       findsOneWidget,
     );
-    expect(find.byType(PixelLandscape), findsOneWidget);
+    expect(
+      find.byType(PixelLandscape),
+      findsNWidgets(controller.availableStoryArcs.length),
+    );
     expect(
       find.byKey(const ValueKey('home-story-main-character')),
-      findsOneWidget,
+      findsNWidgets(controller.availableStoryArcs.length),
+    );
+    expect(find.byKey(const ValueKey('open-master-settings')), findsOneWidget);
+    final homeScroll = find.descendant(
+      of: find.byKey(const ValueKey('home-content-list')),
+      matching: find.byType(Scrollable),
+    );
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('open-just-puzzle-home')),
+      240,
+      scrollable: homeScroll,
     );
     expect(find.text('Just Puzzle!'), findsOneWidget);
-    expect(find.text('Master settings'), findsOneWidget);
 
     await tester.tap(find.byTooltip('Master settings'));
     await tester.pumpAndSettle();
@@ -88,16 +100,42 @@ void main() {
     await tester.pumpWidget(RegaliaApp(controller: controller));
     await tester.pump();
 
-    await tester.tap(find.byKey(const ValueKey('open-just-puzzle-home')));
+    final puzzleOnly = find.byKey(const ValueKey('open-just-puzzle-home'));
+    await tester.scrollUntilVisible(
+      puzzleOnly,
+      240,
+      scrollable: find.descendant(
+        of: find.byKey(const ValueKey('home-content-list')),
+        matching: find.byType(Scrollable),
+      ),
+    );
+    await tester.tap(puzzleOnly);
     await _pumpFrames(tester);
     expect(find.byType(ChallengeScreen), findsOneWidget);
     expect(find.byType(JourneyScreen), findsNothing);
 
     await tester.tap(find.byType(PixelBackButton));
     await _pumpFrames(tester);
-    await tester.tap(
-      find.byKey(const ValueKey('story-arc-tile-regalia:arc/origin')),
+    final origin = find.byKey(
+      const ValueKey('story-arc-tile-regalia:arc/origin'),
     );
+    await tester.scrollUntilVisible(
+      origin,
+      -240,
+      scrollable: find.descendant(
+        of: find.byKey(const ValueKey('home-content-list')),
+        matching: find.byType(Scrollable),
+      ),
+    );
+    await tester.drag(
+      find.descendant(
+        of: find.byKey(const ValueKey('home-content-list')),
+        matching: find.byType(Scrollable),
+      ),
+      const Offset(0, 120),
+    );
+    await tester.pump();
+    await tester.tap(origin);
     await _pumpFrames(tester);
     expect(find.byType(JourneyScreen), findsOneWidget);
   });
@@ -136,7 +174,7 @@ void main() {
   });
 
   testWidgets(
-    'web previews the real Atlas arc without reading paid story data',
+    'web previews the real Atlas arc without reading full story data',
     (tester) async {
       final reads = <String>[];
       final launches = <Uri>[];

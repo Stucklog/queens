@@ -23,7 +23,7 @@ import 'story_scene_screen.dart';
 /// The stable entry point for installed content after the tutorial.
 ///
 /// Available packages open normally. The web edition also renders lightweight
-/// previews for manifest entries that intentionally belong to the paid apps;
+/// previews for manifest entries that intentionally belong to installed apps;
 /// their full story packages are never loaded.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
