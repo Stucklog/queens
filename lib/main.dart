@@ -11,6 +11,7 @@ import 'screens/tutorial_screen.dart';
 import 'widgets/crown_mark.dart';
 import 'widgets/pixel_art.dart';
 import 'widgets/pixel_ui.dart';
+import 'widgets/support_developer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,9 +62,15 @@ class _RegaliaBootstrapState extends State<RegaliaBootstrap> {
 }
 
 class RegaliaApp extends StatelessWidget {
-  const RegaliaApp({super.key, required this.controller, this.startupError});
+  const RegaliaApp({
+    super.key,
+    required this.controller,
+    this.startupError,
+    this.externalUrlLauncher,
+  });
   final AppController controller;
   final Object? startupError;
+  final ExternalUrlLauncher? externalUrlLauncher;
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
@@ -114,7 +121,10 @@ class RegaliaApp extends StatelessWidget {
                   : controller.tutorialPuzzle != null &&
                       !controller.tutorialComplete
                   ? TutorialScreen(controller: controller)
-                  : HomeScreen(controller: controller),
+                  : HomeScreen(
+                    controller: controller,
+                    externalUrlLauncher: externalUrlLauncher,
+                  ),
         ),
   );
 }

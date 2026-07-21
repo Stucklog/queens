@@ -60,15 +60,20 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     this.humanSolver = const HumanSolver(),
     this.challengePuzzleFactory = generateChallengePuzzle,
     ContentAssetReader? contentAssetReader,
+    ContentAssetExists? contentAssetExists,
     ContentEntitlementPolicy? contentPolicy,
     this.contentManifestAsset = 'assets/content/manifest.json',
-  }) : _contentAssetReader = contentAssetReader ?? rootBundle.loadString,
+  }) : _contentAssetReader = contentAssetReader ?? _bundledContentAssets.read,
+       _contentAssetExists =
+           contentAssetExists ??
+           (contentAssetReader == null ? _bundledContentAssets.contains : null),
        contentPolicy = contentPolicy ?? ContentEntitlementPolicy.current();
 
   final RuleEngine ruleEngine;
   final HumanSolver humanSolver;
   final ChallengePuzzleFactory challengePuzzleFactory;
   final ContentAssetReader _contentAssetReader;
+  final ContentAssetExists? _contentAssetExists;
   final ContentEntitlementPolicy contentPolicy;
   final String contentManifestAsset;
   static const journeySchemaVersion = 1;
@@ -109,6 +114,12 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   StoryArc? get originArc => content?.arc(ContentIds.originArc);
   Iterable<StoryArc> get availableStoryArcs =>
       content?.availableArcs ?? const <StoryArc>[];
+  Iterable<ArcAvailability> get storyArcEntries =>
+      content?.arcEntries ?? const <ArcAvailability>[];
+  StorefrontLinks? get storefrontLinks => content?.storefrontLinks;
+  bool showsLockedPreviewFor(ArcAvailability entry) =>
+      entry.descriptor?.lockedPreviewChannels.contains(contentPolicy.channel) ??
+      false;
   bool get hasOriginStory => originArc != null;
   bool get justPuzzleAvailable => content?.justPuzzleAvailable ?? false;
   bool get academyAvailable => academy?.lessons.isNotEmpty ?? false;
@@ -128,6 +139,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
         lifecycleState == null || lifecycleState == AppLifecycleState.resumed;
     content = await ContentRepository(
       readAsset: _contentAssetReader,
+      assetExists: _contentAssetExists,
     ).load(manifestAsset: contentManifestAsset, policy: contentPolicy);
     catalog = originArc?.catalog;
     for (final arc in availableStoryArcs) {
@@ -657,11 +669,7 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
   bool get hasChallenge => challengeSession != null;
 
   JourneyChapter challengeVisualChapter(DifficultyTier tier, int number) =>
-      challengeChapterFor(
-        tier,
-        number,
-        chapters: originArc?.chapters ?? journeyChapters,
-      );
+      challengeChapterFor(tier, number);
 
   Future<bool> startChallenge(ChallengeMode mode, {int? seed}) async {
     if (!justPuzzleAvailable || isStartingChallenge) return false;
@@ -1485,4 +1493,18 @@ class AppController extends ChangeNotifier with WidgetsBindingObserver {
     _timer?.cancel();
     super.dispose();
   }
+}
+
+final _bundledContentAssets = _BundledContentAssets();
+
+class _BundledContentAssets {
+  Future<Set<String>>? _assetPaths;
+
+  Future<bool> contains(String assetPath) async =>
+      (await (_assetPaths ??= AssetManifest.loadFromAssetBundle(
+            rootBundle,
+          ).then((manifest) => manifest.listAssets().toSet())))
+          .contains(assetPath);
+
+  Future<String> read(String assetPath) => rootBundle.loadString(assetPath);
 }

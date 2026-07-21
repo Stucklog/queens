@@ -1,12 +1,33 @@
 @Tags(['golden'])
 library;
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/journey.dart';
 import 'package:regalia/widgets/pixel_art.dart';
 
 void main() {
+  late List<JourneyChapter> originChapters;
+
+  setUpAll(() async {
+    final metadata =
+        jsonDecode(
+              await rootBundle.loadString(
+                'assets/content/arcs/origin/arc.json',
+              ),
+            )
+            as Map<String, Object?>;
+    originChapters = (metadata['chapters']! as List<Object?>)
+        .map(
+          (chapter) =>
+              JourneyChapter.fromJson(chapter! as Map<String, Object?>),
+        )
+        .toList(growable: false);
+  });
+
   testWidgets('all eight chapter landscapes retain high-detail midnight art', (
     tester,
   ) async {
@@ -34,7 +55,7 @@ void main() {
                             if (column > 0) const SizedBox(width: 8),
                             Expanded(
                               child: _ChapterTile(
-                                chapter: journeyChapters[row * 2 + column],
+                                chapter: originChapters[row * 2 + column],
                               ),
                             ),
                           ],
@@ -55,7 +76,7 @@ void main() {
     await tester.runAsync(
       () => precachePixelArtAssets(
         atlasContext,
-        journeyChapters.map((chapter) => chapter.artAsset),
+        originChapters.map((chapter) => chapter.artAsset),
       ),
     );
     await tester.pumpAndSettle();

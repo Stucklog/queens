@@ -8,7 +8,7 @@ void main() {
   testWidgets(
     'production art never exposes procedural fallbacks while loading',
     (tester) async {
-      final chapter = journeyChapters.first;
+      final chapter = challengeVisualChapters.first;
       final encounter = chapter.boss;
 
       await tester.pumpWidget(
@@ -83,7 +83,7 @@ void main() {
           width: 180,
           height: 90,
           child: PixelLandscape(
-            chapter: journeyChapters.first,
+            chapter: challengeVisualChapters.first,
             brightness: Brightness.light,
             assetPath: 'assets/art/backgrounds/not-packaged.webp',
           ),

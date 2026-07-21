@@ -1,0 +1,1021 @@
+{
+  "schemaVersion": 1,
+  "id": "regalia:arc/atlas-of-borrowed-winds",
+  "contentVersion": 1,
+  "title": "The Atlas of Borrowed Winds",
+  "theme": {
+    "brightness": "light",
+    "backgroundColor": "#F2D6A2",
+    "surfaceColor": "#FFF1D2",
+    "surfaceLowColor": "#E6C486",
+    "surfaceContainerHighColor": "#FFF7E5",
+    "surfaceHighColor": "#FFE6B8",
+    "foregroundColor": "#352114",
+    "mutedForegroundColor": "#6F543F",
+    "outlineColor": "#8F6C45",
+    "outlineVariantColor": "#C6A978",
+    "inkColor": "#1A110D",
+    "dangerColor": "#9E3344"
+  },
+  "mapId": "regalia:map/atlas-of-borrowed-winds/caravan-road",
+  "puzzleCatalogAsset": "assets/content/arcs/atlas-of-borrowed-winds/catalog.json",
+  "unlocks": {
+    "fullMap": "regalia:unlock/atlas-of-borrowed-winds/full-map",
+    "finale": "regalia:unlock/atlas-of-borrowed-winds/finale"
+  },
+  "chapters": [
+    {
+      "id": "regalia:chapter/atlas-of-borrowed-winds/unbound-page",
+      "mapId": "regalia:map/atlas-of-borrowed-winds/caravan-road",
+      "sceneId": "regalia:scene/atlas-of-borrowed-winds/unbound-page",
+      "artKey": "unbound-page",
+      "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_01_unbound_page.jpg",
+      "visualIndex": 0,
+      "title": "The Unbound Page",
+      "caption": "Nahla saves a caravan with one sentence—and discovers that the atlas always moves a burden somewhere else.",
+      "startOrder": 1,
+      "endOrder": 9,
+      "difficulty": "easy",
+      "size": 6,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/atlas-of-borrowed-winds/compass-roc",
+        "name": "Compass Roc",
+        "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/compass-roc",
+        "spriteFamily": "winged",
+        "spriteAsset": "assets/art/combat/opponents/tempest-roc.png",
+        "spectacleLevel": 1,
+        "finisher": {
+          "track": "crownSlash",
+          "moveName": "Compass Cut",
+          "effectLevel": 1
+        },
+        "size": 7,
+        "targetDifficulty": "easy",
+        "unlocks": "regalia:chapter/atlas-of-borrowed-winds/missing-water"
+      },
+      "encounters": [
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/plate-cutter-kite",
+          "name": "Plate-Cutter Kite",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/easy-003",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/combat/opponents/gale-harrier.png"
+        },
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/sky-ink-wisp",
+          "name": "Sky-Ink Wisp",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/easy-006",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/combat/opponents/skyglass-wisp.png"
+        }
+      ],
+      "primaryColor": "#C46A4A",
+      "secondaryColor": "#075F63"
+    },
+    {
+      "id": "regalia:chapter/atlas-of-borrowed-winds/missing-water",
+      "mapId": "regalia:map/atlas-of-borrowed-winds/caravan-road",
+      "sceneId": "regalia:scene/atlas-of-borrowed-winds/missing-water",
+      "artKey": "missing-water",
+      "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_02_missing_water.jpg",
+      "visualIndex": 1,
+      "title": "The Missing Water",
+      "caption": "At the dry basin of Anbar, remembered wells and buried channels offer a route the royal survey never recorded.",
+      "startOrder": 10,
+      "endOrder": 18,
+      "difficulty": "easy",
+      "size": 7,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/atlas-of-borrowed-winds/dryroot-wyrm",
+        "name": "Dryroot Wyrm",
+        "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/dryroot-wyrm",
+        "spriteFamily": "rootbound",
+        "spriteAsset": "assets/art/combat/opponents/elderroot-wyrm.png",
+        "spectacleLevel": 2,
+        "finisher": {
+          "track": "tidalAegis",
+          "moveName": "Wellspring Ward",
+          "effectLevel": 2
+        },
+        "size": 7,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/atlas-of-borrowed-winds/grammar-of-borders"
+      },
+      "encounters": [
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/salt-thornling",
+          "name": "Salt Thornling",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/easy-023",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/combat/opponents/vale-thornling.png"
+        },
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/lostwater-hart",
+          "name": "Lostwater Hart",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/easy-026",
+          "spriteFamily": "antlered",
+          "spriteAsset": "assets/art/combat/opponents/star-touched-hart.png"
+        }
+      ],
+      "primaryColor": "#2D7B5C",
+      "secondaryColor": "#704600"
+    },
+    {
+      "id": "regalia:chapter/atlas-of-borrowed-winds/grammar-of-borders",
+      "mapId": "regalia:map/atlas-of-borrowed-winds/caravan-road",
+      "sceneId": "regalia:scene/atlas-of-borrowed-winds/grammar-of-borders",
+      "artKey": "grammar-of-borders",
+      "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_03_grammar_of_borders.jpg",
+      "visualIndex": 2,
+      "title": "Grammar of Borders",
+      "caption": "Ilyun teaches Nahla the atlas’s true syntax: every shortcut must name the people who will pay for it.",
+      "startOrder": 19,
+      "endOrder": 27,
+      "difficulty": "medium",
+      "size": 7,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/atlas-of-borrowed-winds/gilded-arbiter",
+        "name": "Gilded Arbiter",
+        "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/gilded-arbiter",
+        "spriteFamily": "clockwork",
+        "spriteAsset": "assets/art/combat/opponents/gilded-war-colossus.png",
+        "spectacleLevel": 3,
+        "finisher": {
+          "track": "twinSigil",
+          "moveName": "Fourfold Accord",
+          "effectLevel": 3
+        },
+        "size": 8,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/atlas-of-borrowed-winds/road-unprinted"
+      },
+      "encounters": [
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/brass-clause",
+          "name": "Brass Clause",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/medium-003",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/combat/opponents/brass-sentry.png"
+        },
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/redline-imp",
+          "name": "Redline Imp",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/medium-006",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/combat/opponents/gear-goblin.png"
+        }
+      ],
+      "primaryColor": "#245A92",
+      "secondaryColor": "#654000"
+    },
+    {
+      "id": "regalia:chapter/atlas-of-borrowed-winds/road-unprinted",
+      "mapId": "regalia:map/atlas-of-borrowed-winds/caravan-road",
+      "sceneId": "regalia:scene/atlas-of-borrowed-winds/road-unprinted",
+      "artKey": "road-unprinted",
+      "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_04_road_unprinted.jpg",
+      "visualIndex": 3,
+      "title": "The Road Unprinted",
+      "caption": "Samir follows knots, stars, and spoken landmarks through gates that recognize only the crown’s destinations.",
+      "startOrder": 28,
+      "endOrder": 36,
+      "difficulty": "medium",
+      "size": 8,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/atlas-of-borrowed-winds/sevenfold-gate",
+        "name": "The Sevenfold Gate",
+        "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/sevenfold-gate",
+        "spriteFamily": "spectral",
+        "spriteAsset": "assets/art/combat/opponents/sevenfold-wraith.png",
+        "spectacleLevel": 4,
+        "finisher": {
+          "track": "moonlitSever",
+          "moveName": "Unprinted Passage",
+          "effectLevel": 4
+        },
+        "size": 8,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/atlas-of-borrowed-winds/surveyors-trap"
+      },
+      "encounters": [
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/unprinted-shade",
+          "name": "Unprinted Shade",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/medium-013",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/combat/opponents/pale-shade.png"
+        },
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/moonroad-hound",
+          "name": "Moonroad Hound",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/medium-016",
+          "spriteFamily": "antlered",
+          "spriteAsset": "assets/art/combat/opponents/moonbone-hound.png"
+        }
+      ],
+      "primaryColor": "#5A3F86",
+      "secondaryColor": "#D4713C",
+      "theme": {
+        "brightness": "dark",
+        "backgroundColor": "#1E1934",
+        "surfaceColor": "#32274C",
+        "surfaceLowColor": "#251E3D",
+        "surfaceContainerHighColor": "#3D3059",
+        "surfaceHighColor": "#493867",
+        "foregroundColor": "#FFF0D0",
+        "mutedForegroundColor": "#D1C1D6",
+        "outlineColor": "#A18AAE",
+        "outlineVariantColor": "#625173",
+        "inkColor": "#0D0916",
+        "dangerColor": "#E25C68"
+      }
+    },
+    {
+      "id": "regalia:chapter/atlas-of-borrowed-winds/surveyors-trap",
+      "mapId": "regalia:map/atlas-of-borrowed-winds/caravan-road",
+      "sceneId": "regalia:scene/atlas-of-borrowed-winds/surveyors-trap",
+      "artKey": "surveyors-trap",
+      "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_05_surveyors_trap.jpg",
+      "visualIndex": 4,
+      "title": "The Surveyor’s Trap",
+      "caption": "Rafi turns an ambiguity into a cage, binds Ilyun, and seals Nahla inside an archive where false maps become walls.",
+      "startOrder": 37,
+      "endOrder": 45,
+      "difficulty": "hard",
+      "size": 8,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/atlas-of-borrowed-winds/archive-behemoth",
+        "name": "Archive Behemoth",
+        "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/archive-behemoth",
+        "spriteFamily": "volcanic",
+        "spriteAsset": "assets/art/combat/opponents/cindermaw-behemoth.png",
+        "spectacleLevel": 5,
+        "finisher": {
+          "track": "brassJudgment",
+          "moveName": "Surveyor’s Reversal",
+          "effectLevel": 5
+        },
+        "size": 9,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/atlas-of-borrowed-winds/erased-home"
+      },
+      "encounters": [
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/ember-seal",
+          "name": "Ember Seal",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/hard-003",
+          "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/combat/opponents/cinderling.png"
+        },
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/basalt-indexer",
+          "name": "Basalt Indexer",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/hard-006",
+          "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/combat/opponents/basalt-brute.png"
+        }
+      ],
+      "primaryColor": "#8F3548",
+      "secondaryColor": "#B88B2D",
+      "theme": {
+        "brightness": "dark",
+        "backgroundColor": "#211815",
+        "surfaceColor": "#3A2521",
+        "surfaceLowColor": "#2C1D1A",
+        "surfaceContainerHighColor": "#49302A",
+        "surfaceHighColor": "#56382F",
+        "foregroundColor": "#FFF0D0",
+        "mutedForegroundColor": "#D9BBA9",
+        "outlineColor": "#B48870",
+        "outlineVariantColor": "#6F5144",
+        "inkColor": "#110908",
+        "dangerColor": "#F05A5A"
+      }
+    },
+    {
+      "id": "regalia:chapter/atlas-of-borrowed-winds/erased-home",
+      "mapId": "regalia:map/atlas-of-borrowed-winds/caravan-road",
+      "sceneId": "regalia:scene/atlas-of-borrowed-winds/erased-home",
+      "artKey": "erased-home",
+      "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_06_erased_home.jpg",
+      "visualIndex": 5,
+      "title": "The Erased Home",
+      "caption": "With her hometown removed from every official route, Nahla rebuilds its coordinates from wells, stars, and shared memory.",
+      "startOrder": 46,
+      "endOrder": 54,
+      "difficulty": "hard",
+      "size": 9,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/atlas-of-borrowed-winds/silent-bellkeeper",
+        "name": "Silent Bellkeeper",
+        "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/silent-bellkeeper",
+        "spriteFamily": "abyssal",
+        "spriteAsset": "assets/art/combat/opponents/abyssal-bellkeeper.png",
+        "spectacleLevel": 6,
+        "finisher": {
+          "track": "cinderfall",
+          "moveName": "Burn the Blank",
+          "effectLevel": 6
+        },
+        "size": 9,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/atlas-of-borrowed-winds/ownerless-lands"
+      },
+      "encounters": [
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/canal-husk",
+          "name": "Canal Husk",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/hard-023",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/combat/opponents/coral-husk.png"
+        },
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/drowned-waykeeper",
+          "name": "Drowned Waykeeper",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/hard-026",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/combat/opponents/drowned-acolyte.png"
+        }
+      ],
+      "primaryColor": "#2B7C7E",
+      "secondaryColor": "#693B24"
+    },
+    {
+      "id": "regalia:chapter/atlas-of-borrowed-winds/ownerless-lands",
+      "mapId": "regalia:map/atlas-of-borrowed-winds/caravan-road",
+      "sceneId": "regalia:scene/atlas-of-borrowed-winds/ownerless-lands",
+      "artKey": "ownerless-lands",
+      "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_07_ownerless_lands.jpg",
+      "visualIndex": 6,
+      "title": "The Ownerless Lands",
+      "caption": "As Rafi’s continent-wide redrawing tears borders loose, many peoples layer their unprinted routes into one common corridor.",
+      "startOrder": 55,
+      "endOrder": 63,
+      "difficulty": "expert",
+      "size": 9,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/atlas-of-borrowed-winds/hollow-meridian",
+        "name": "The Hollow Meridian",
+        "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/hollow-meridian",
+        "spriteFamily": "cosmic",
+        "spriteAsset": "assets/art/combat/opponents/hollow-star.png",
+        "spectacleLevel": 7,
+        "finisher": {
+          "track": "skybreak",
+          "moveName": "Common Horizon",
+          "effectLevel": 7
+        },
+        "size": 10,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/atlas-of-borrowed-winds/voluntary-compacts"
+      },
+      "encounters": [
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/royal-meridian",
+          "name": "Royal Meridian",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/expert-003",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/combat/opponents/starbound-sentinel.png"
+        },
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/eclipse-drake",
+          "name": "Eclipse Drake",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/expert-006",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/combat/opponents/eclipse-drake.png"
+        }
+      ],
+      "primaryColor": "#6B447C",
+      "secondaryColor": "#D99B3D",
+      "theme": {
+        "brightness": "dark",
+        "backgroundColor": "#25152D",
+        "surfaceColor": "#3B2345",
+        "surfaceLowColor": "#2E1B37",
+        "surfaceContainerHighColor": "#493054",
+        "surfaceHighColor": "#573760",
+        "foregroundColor": "#FFF0D0",
+        "mutedForegroundColor": "#D7BDD5",
+        "outlineColor": "#A889AD",
+        "outlineVariantColor": "#6D5274",
+        "inkColor": "#120A17",
+        "dangerColor": "#F16A68"
+      }
+    },
+    {
+      "id": "regalia:chapter/atlas-of-borrowed-winds/voluntary-compacts",
+      "mapId": "regalia:map/atlas-of-borrowed-winds/caravan-road",
+      "sceneId": "regalia:scene/atlas-of-borrowed-winds/voluntary-compacts",
+      "artKey": "voluntary-compacts",
+      "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_08_voluntary_compacts.jpg",
+      "visualIndex": 7,
+      "title": "Voluntary Compacts",
+      "caption": "Nahla and Ilyun attempt the atlas’s first agreement written by every affected voice—and owned by none.",
+      "startOrder": 64,
+      "endOrder": 72,
+      "difficulty": "expert",
+      "size": 10,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/atlas-of-borrowed-winds/meridian-hart",
+        "name": "The Meridian Hart",
+        "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/meridian-hart",
+        "spriteFamily": "antlered",
+        "spriteAsset": "assets/art/combat/opponents/starfall-stag.png",
+        "spectacleLevel": 8,
+        "finisher": {
+          "track": "regaliaNova",
+          "moveName": "Twelvefold Compact",
+          "effectLevel": 8
+        },
+        "size": 12,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:unlock/atlas-of-borrowed-winds/finale"
+      },
+      "encounters": [
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/consent-thorn",
+          "name": "Consent Thorn",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/expert-013",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/combat/opponents/briar-imp.png"
+        },
+        {
+          "id": "regalia:enemy/atlas-of-borrowed-winds/dawn-lantern",
+          "name": "Dawn Lantern",
+          "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/expert-016",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/combat/opponents/lantern-moth.png"
+        }
+      ],
+      "primaryColor": "#2D6F5A",
+      "secondaryColor": "#2D5F9A"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "regalia:scene/atlas-of-borrowed-winds/unbound-page",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_01_unbound_page.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "the-road-that-rose",
+          "title": "The Road That Rose",
+          "paragraphs": [
+            "By the time Nahla reached the caravan, her bargain had already become geography. Brass wind plates spun above the wagons, and the road climbed into the air like a golden ribbon. Every traveler stood unharmed beside cool water.",
+            "On the northern horizon, an oasis was lifting from its basin—palms, wells, gardens, and all. Ilyun could not undo an agreed boundary with a wish. He could only help Nahla trace where its cost had landed."
+          ],
+          "semanticLabel": "A caravan stands safe beneath spinning wind plates while a distant oasis rises from the desert.",
+          "actionLabel": "Trace the cost"
+        },
+        {
+          "id": "the-atlas-rule",
+          "title": "The Atlas’s Rule",
+          "paragraphs": [
+            "The atlas showed nine knots along the changed road. Each knot held a fragment of the bargain: a traveler protected, a mile shortened, a current redirected. Nahla would have to settle them in order before the displaced water could be followed.",
+            "Above the final knot circled a Compass Roc, a creature made fierce by the broken navigation plates. Defeating it would not erase Nahla’s mistake. It would open the first honest route toward repairing it."
+          ],
+          "semanticLabel": "A glowing road winds through a long caravan toward a floating oasis ringed by brass wind plates.",
+          "actionLabel": "Enter the changed road"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/atlas-of-borrowed-winds/missing-water",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_02_missing_water.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "the-dry-basin",
+          "title": "The Dry Basin",
+          "paragraphs": [
+            "Anbar had survived droughts, raids, and two dynasties by sharing one deep aquifer. Now white roots clawed through an empty basin while royal milestones insisted the oasis had never stood there.",
+            "Samir Qad met Nahla at the first dry well. He did not ask whether she meant to cause the loss. He asked whose memory of the water she had written into her repair. Nahla had written none."
+          ],
+          "semanticLabel": "The exposed roots of a vanished oasis surround a dry town whose official milestones deny the water ever existed.",
+          "actionLabel": "Listen to Anbar"
+        },
+        {
+          "id": "a-river-borrowed-back",
+          "title": "A River Borrowed Back",
+          "paragraphs": [
+            "Families marked old flood levels on their doors. Gardeners named the order in which channels used to fill. Children remembered where the stones stayed cool at noon. Laid together, those accounts revealed a buried lattice no palace map contained.",
+            "Nahla proposed a temporary current, bounded by time and renewed only by Anbar’s consent. The water answered—but the atlas warned that a Dryroot Wyrm had nested around the deepest valve."
+          ],
+          "semanticLabel": "Remembered landmarks illuminate a hidden water lattice beneath the dry basin as a temporary stream returns.",
+          "actionLabel": "Restore the channels"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/atlas-of-borrowed-winds/grammar-of-borders",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_03_grammar_of_borders.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "a-language-of-consequence",
+          "title": "A Language of Consequence",
+          "paragraphs": [
+            "At the Four-Way Court, Ilyun taught Nahla what his binders had hidden. The atlas did not speak in wishes. It spoke in agreements: subject, boundary, beneficiary, burden, duration, and a voice for every place the sentence could change.",
+            "Royal surveyors had removed the final clause generations ago. Without it, the atlas treated silence as permission—and Ilyun was compelled to obey whoever held the pen."
+          ],
+          "semanticLabel": "Four routes converge on a lapis contract court beneath constellations aligned with every settlement.",
+          "actionLabel": "Learn the lost clause"
+        },
+        {
+          "id": "the-four-way-promise",
+          "title": "The Four-Way Promise",
+          "paragraphs": [
+            "Four towns needed the same trade road and feared being bypassed. Nahla refused to choose a winner. With Samir carrying questions between them and Ilyun testing every term, they drafted a route that shifted by season and could be refused at each gate.",
+            "The crown’s Gilded Arbiter descended before the compact could settle. Its brass law recognized only permanent roads and a single authority. Nahla opened the atlas to a sentence no machine had been built to parse."
+          ],
+          "semanticLabel": "Four luminous roads link a circular lapis court with four distant desert cities beneath a charted sky.",
+          "actionLabel": "Defend the compact"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/atlas-of-borrowed-winds/road-unprinted",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_04_road_unprinted.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "gates-without-destinations",
+          "title": "Gates Without Destinations",
+          "paragraphs": [
+            "Beyond the court stood seven monumental gates. Each would open only for a destination stamped into the royal atlas. Villages without tax offices, seasonal camps, and wells kept by no governor did not exist to the locks.",
+            "Samir ignored the gates. He followed route-knots tied beneath the lintels, then matched their colors to stars reflected in black glass. A road appeared exactly where the official map showed empty stone."
+          ],
+          "semanticLabel": "Sealed white-stone gates face an unmarked trail revealed by route-knots and reflected stars.",
+          "actionLabel": "Take the unprinted road"
+        },
+        {
+          "id": "the-capitals-funnel",
+          "title": "The Capital’s Funnel",
+          "paragraphs": [
+            "From the canyon rim, Nahla finally saw Rafi’s design. Highways that appeared independent on separate sheets all bent toward Qasr, forcing grain, medicine, and travelers through tolls controlled by the palace.",
+            "The Sevenfold Gate guarded the one pass that could prove the pattern. Its seven spectral faces recited the same decree in different voices: a route not printed was a route no one had the right to travel."
+          ],
+          "semanticLabel": "Every official highway bends toward the distant capital while a hidden star road crosses the canyon below.",
+          "actionLabel": "Break the royal funnel"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/atlas-of-borrowed-winds/surveyors-trap",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_05_surveyors_trap.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "the-omitted-pronoun",
+          "title": "The Omitted Pronoun",
+          "paragraphs": [
+            "Rafi welcomed Nahla back to the archive as though she were still his apprentice. He praised the seasonal compact, then read aloud one word she had left undefined: we. The atlas answered to the royal office that had witnessed the sentence, not the towns that had shaped it.",
+            "Brass seals closed around Ilyun’s wrists. Shelves rotated into walls, red borders rose from false maps, and Rafi lifted the atlas from Nahla’s hands. He called the trap a lesson in precision."
+          ],
+          "semanticLabel": "Red map-walls divide a royal archive while a many-armed survey instrument clamps the atlas at its center.",
+          "actionLabel": "Find the ambiguity"
+        },
+        {
+          "id": "maps-that-cast-no-stars",
+          "title": "Maps That Cast No Stars",
+          "paragraphs": [
+            "Every chart in the prison showed a plausible desert. Only the black floor betrayed the forgeries: true wells reflected the stars used to find them; manufactured borders reflected nothing at all.",
+            "Nahla crossed by stepping on remembered coordinates, freed Samir from a sealed index room, and reached the Archive Behemoth feeding false maps into the braziers. Ilyun remained bound, but one honest route was enough to escape."
+          ],
+          "semanticLabel": "A line of reflected stars marks the only true path through burning false maps and geometric red walls.",
+          "actionLabel": "Escape the archive"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/atlas-of-borrowed-winds/erased-home",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_06_erased_home.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "absent-by-decree",
+          "title": "Absent by Decree",
+          "paragraphs": [
+            "At the archive’s edge, one coordinate shivered through the brass seal on Nahla’s compass. Ilyun had forced it past his bindings before Rafi carried him and the atlas away. The coordinate pointed home—but Rafi’s answer had arrived before Nahla did. Dar Sifr had been scraped from every recognized map.",
+            "The people had not vanished. They stood inside an administrative blank, visible to memory and unreachable to law. Nahla’s family lit lamps along streets the atlas refused to name."
+          ],
+          "semanticLabel": "A luminous blank interrupts roads and milestones while the remembered outlines of a desert town remain within it.",
+          "actionLabel": "Name what remains"
+        },
+        {
+          "id": "coordinates-of-memory",
+          "title": "Coordinates of Memory",
+          "paragraphs": [
+            "Nahla began with facts no decree could own: the angle from the winter star to the oldest well, the time afternoon shade touched the baker’s door, the order of blue tiles in the school courtyard. Hundreds of memories intersected at one undeniable place.",
+            "The blank filled with light. To reconnect Dar Sifr, Nahla still had to silence the Bellkeeper that erased each spoken coordinate before it reached the atlas. When the whole town spoke together, their chorus traveled back along Ilyun’s hidden coordinate and cracked the first of Rafi’s binding seals."
+          ],
+          "semanticLabel": "Wells, doorways, tile patterns, and constellations overlap as glowing coordinates that rebuild an erased hometown.",
+          "actionLabel": "Restore Dar Sifr"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/atlas-of-borrowed-winds/ownerless-lands",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_07_ownerless_lands.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "no-flag-holds-the-wind",
+          "title": "No Flag Holds the Wind",
+          "paragraphs": [
+            "Unable to erase every dissenting place, Rafi locked the atlas into the palace survey engine and redrew the entire desert at once. Claimed borders tore loose as burning chains. The atlas tried to reconcile thousands of imposed lines, and the contradiction became a sandstorm wide enough to swallow the continent.",
+            "Palace roads shifted first. Samir’s unprinted routes endured longer because they belonged to practice, not decree—but no single tradition could cross the whole storm."
+          ],
+          "semanticLabel": "A violet sandstorm tears glowing border chains from the earth as royal roads fracture below.",
+          "actionLabel": "Gather the living routes"
+        },
+        {
+          "id": "the-common-corridor",
+          "title": "The Common Corridor",
+          "paragraphs": [
+            "Caravan leaders named shelter by wind. Farmers traced buried canals. Pilgrims sang distances in breaths. River people mapped the taste of wells. Nahla layered every account without forcing one to replace another.",
+            "Their routes braided into a corridor through land no ruler could honestly claim. At its center waited the Hollow Meridian, the palace engine’s outer defense against every route it could not reduce to one obedient line. Beyond it, Nahla could see Ilyun holding the failing seals apart from inside the storm."
+          ],
+          "semanticLabel": "Many differently colored oral routes braid into one stable corridor through an enormous sandstorm.",
+          "actionLabel": "Cross the ownerless lands"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/atlas-of-borrowed-winds/voluntary-compacts",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_08_voluntary_compacts.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "every-voice-on-the-page",
+          "title": "Every Voice on the Page",
+          "paragraphs": [
+            "When the Hollow Meridian fell, the living routes tore open the palace engine. Ilyun stepped from the storm with fractured seals still fastened around his wrists, then set the atlas on the map court’s common table rather than returning it to any owner. Delegates followed the corridor; with no chamber large enough for every voice, testimony traveled by mirrored light, route-cord, drumbeat, and runners.",
+            "Nahla did not ask for unanimous borders. She asked for a process: limited terms, visible burdens, the right to refuse, and a path to revise every agreement without binding Ilyun—or anyone—to silence."
+          ],
+          "semanticLabel": "Restored roads from many communities converge on open circular plazas as dawn begins beyond the storm.",
+          "actionLabel": "Write the shared terms"
+        },
+        {
+          "id": "the-meridian-hart",
+          "title": "The Meridian Hart",
+          "paragraphs": [
+            "The old atlas defended its deepest command by taking the shape of a many-antlered Meridian Hart. Every tine carried a border enforced without consent; every hoofbeat tried to stamp the new voices back into one royal route.",
+            "Nahla and Ilyun could not defeat that history by becoming its next owners. They had to open all twelve measures of the final compact and leave the atlas capable of saying no—even to them."
+          ],
+          "semanticLabel": "An open atlas overlooks gardens, waterways, circular plazas, and many roads converging beneath a clear sunrise.",
+          "actionLabel": "Challenge the old command"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/atlas-of-borrowed-winds/finale",
+      "role": "finale",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/finale_storm.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "the-last-imposed-line",
+          "title": "The Last Imposed Line",
+          "paragraphs": [
+            "The Meridian Hart shattered into twelve measures of living script. Rafi seized the first before it could settle and drove his compass staff through the map court. One final red line rose around the capital, offering safety to everyone inside and abandonment to everyone beyond it.",
+            "He called it the only responsible choice. Nahla saw the old lesson beneath his fear: if one hand could draw the world quickly enough, no other hand needed to be heard."
+          ],
+          "semanticLabel": "Nahla and a bound Ilyun face Rafi across a storm-lashed map court divided by a final red boundary.",
+          "actionLabel": "Refuse the final line",
+          "characters": [
+            {
+              "id": "nahla",
+              "source": {
+                "type": "asset",
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/nahla_free_cartographer.png"
+              },
+              "alignment": {"x": -0.58, "y": 0.69},
+              "size": {"width": 116, "height": 174},
+              "semanticLabel": "Nahla Faris",
+              "zOrder": 2
+            },
+            {
+              "id": "ilyun",
+              "source": {
+                "type": "asset",
+                "asset": "assets/storefront/atlas-of-borrowed-winds/ilyun_bound.png"
+              },
+              "alignment": {"x": -0.08, "y": 0.61},
+              "size": {"width": 124, "height": 186},
+              "semanticLabel": "Ilyun, still bound",
+              "zOrder": 1
+            },
+            {
+              "id": "rafi",
+              "source": {
+                "type": "asset",
+                "asset": "assets/storefront/atlas-of-borrowed-winds/rafi_surveyor.png"
+              },
+              "alignment": {"x": 0.58, "y": 0.67},
+              "size": {"width": 118, "height": 177},
+              "mirrored": true,
+              "semanticLabel": "Rafi Daran",
+              "zOrder": 3
+            }
+          ]
+        },
+        {
+          "id": "the-map-cannot-consent",
+          "title": "What the Map Cannot Consent To",
+          "paragraphs": [
+            "Samir arrived carrying the route-cords of communities that could not reach the court. Together they spoke the missing clause: no map could consent on behalf of the people it described, and no emergency could make permanent owners of temporary guardians.",
+            "The red wall paused. For the first time, the atlas asked Ilyun whether he accepted the command written across his body. He answered no."
+          ],
+          "semanticLabel": "Nahla, Samir, a bound Ilyun, and Rafi stand over a storm-lit city-map crossed by glowing red boundaries.",
+          "actionLabel": "Hear Ilyun’s answer",
+          "characters": [
+            {
+              "id": "nahla",
+              "source": {
+                "type": "asset",
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/nahla_free_cartographer.png"
+              },
+              "alignment": {"x": -0.72, "y": 0.72},
+              "size": {"width": 94, "height": 141},
+              "semanticLabel": "Nahla Faris",
+              "zOrder": 2
+            },
+            {
+              "id": "samir",
+              "source": {
+                "type": "asset",
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/samir_mediator.png"
+              },
+              "alignment": {"x": -0.28, "y": 0.68},
+              "size": {"width": 96, "height": 144},
+              "semanticLabel": "Samir Qad",
+              "zOrder": 1
+            },
+            {
+              "id": "ilyun",
+              "source": {
+                "type": "asset",
+                "asset": "assets/storefront/atlas-of-borrowed-winds/ilyun_bound.png"
+              },
+              "alignment": {"x": 0.20, "y": 0.61},
+              "size": {"width": 102, "height": 153},
+              "semanticLabel": "Ilyun refusing the atlas",
+              "zOrder": 3
+            },
+            {
+              "id": "rafi",
+              "source": {
+                "type": "asset",
+                "asset": "assets/storefront/atlas-of-borrowed-winds/rafi_surveyor.png"
+              },
+              "alignment": {"x": 0.70, "y": 0.70},
+              "size": {"width": 94, "height": 141},
+              "mirrored": true,
+              "semanticLabel": "Rafi Daran",
+              "zOrder": 2
+            }
+          ]
+        },
+        {
+          "id": "the-spoken-compact",
+          "title": "The Spoken Compact",
+          "paragraphs": [
+            "Once Ilyun’s refusal was possible, the rest of the sentence changed. Every affected community gained the same right. Agreements became invitations with end dates, public costs, and many routes of appeal. The atlas’s binding split; the storm began to write itself harmlessly into rain.",
+            "Rafi released his staff when the capital’s wall opened. He had wanted certainty more than cruelty, but certainty enforced by one office had become cruelty all the same. The new compact gave him one voice—no more and no less than anyone else."
+          ],
+          "semanticLabel": "Nahla, Samir, and an unbound Ilyun stand before a storm-lit city-map crossed by glowing red boundaries.",
+          "actionLabel": "Open every route",
+          "characters": [
+            {
+              "id": "nahla",
+              "source": {
+                "type": "asset",
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/nahla_free_cartographer.png"
+              },
+              "alignment": {"x": -0.55, "y": 0.69},
+              "size": {"width": 112, "height": 168},
+              "semanticLabel": "Nahla Faris",
+              "zOrder": 2
+            },
+            {
+              "id": "samir",
+              "source": {
+                "type": "asset",
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/samir_mediator.png"
+              },
+              "alignment": {"x": 0.00, "y": 0.67},
+              "size": {"width": 106, "height": 159},
+              "semanticLabel": "Samir Qad",
+              "zOrder": 1
+            },
+            {
+              "id": "ilyun",
+              "source": {
+                "type": "asset",
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/ilyun_unbound.png"
+              },
+              "alignment": {"x": 0.52, "y": 0.59},
+              "size": {"width": 126, "height": 189},
+              "semanticLabel": "Ilyun unbound",
+              "zOrder": 3
+            }
+          ]
+        },
+        {
+          "id": "a-border-that-opens",
+          "title": "A Border That Opens",
+          "paragraphs": [
+            "At sunrise, Anbar’s displaced soil, palms, wells, and gardens settled into their old basin, and its water returned without leaving the rescued caravan thirsty. Dar Sifr reappeared on courier routes. The compact canceled hereditary survey debts; for the first time, Nahla’s family owed no weeks of their lives to the palace.",
+            "Ilyun stepped beyond the atlas for the first time without carrying an order. He chose to stay beside Nahla—not as a servant of her pen, but as a witness who could challenge every line she drew."
+          ],
+          "semanticLabel": "Nahla, Ilyun, and Samir overlook open roads, restored water, and repurposed border markers at sunrise.",
+          "actionLabel": "Walk the open road",
+          "background": {
+            "asset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/finale_dawn.jpg",
+            "fit": "cover"
+          },
+          "characters": [
+            {
+              "id": "nahla",
+              "source": {
+                "type": "asset",
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/nahla_free_cartographer.png"
+              },
+              "alignment": {"x": -0.48, "y": 0.69},
+              "size": {"width": 116, "height": 174},
+              "semanticLabel": "Nahla Faris",
+              "zOrder": 2
+            },
+            {
+              "id": "ilyun",
+              "source": {
+                "type": "asset",
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/ilyun_unbound.png"
+              },
+              "alignment": {"x": 0.12, "y": 0.60},
+              "size": {"width": 128, "height": 192},
+              "semanticLabel": "Ilyun walking freely",
+              "zOrder": 3
+            },
+            {
+              "id": "samir",
+              "source": {
+                "type": "asset",
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/samir_mediator.png"
+              },
+              "alignment": {"x": 0.62, "y": 0.70},
+              "size": {"width": 108, "height": 162},
+              "mirrored": true,
+              "semanticLabel": "Samir Qad",
+              "zOrder": 1
+            }
+          ]
+        },
+        {
+          "id": "the-first-honest-map",
+          "title": "The First Honest Map",
+          "paragraphs": [
+            "Nahla declined Rafi’s former office. Instead, she founded a traveling school whose maps were copied in erasable ink and carried blank space for corrections from the road. Samir taught mediation; Ilyun taught students where language hides a burden.",
+            "The atlas remained open on a common table. Its final page held no kingdom, crown, or owner—only a question written in wind: Who has not yet been heard?"
+          ],
+          "semanticLabel": "Nahla, Ilyun, and Samir stand beside an open atlas overlooking bright roads, waterways, towns, and gardens.",
+          "actionLabel": "Return to the stories",
+          "background": {
+            "asset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/finale_dawn.jpg",
+            "fit": "cover"
+          },
+          "characters": [
+            {
+              "id": "nahla",
+              "source": {
+                "type": "asset",
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/nahla_free_cartographer.png"
+              },
+              "alignment": {"x": -0.54, "y": 0.69},
+              "size": {"width": 114, "height": 171},
+              "semanticLabel": "Nahla Faris, free cartographer",
+              "zOrder": 2
+            },
+            {
+              "id": "ilyun",
+              "source": {
+                "type": "asset",
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/ilyun_unbound.png"
+              },
+              "alignment": {"x": 0.10, "y": 0.60},
+              "size": {"width": 126, "height": 189},
+              "semanticLabel": "Ilyun, teacher of boundaries",
+              "zOrder": 3
+            },
+            {
+              "id": "samir",
+              "source": {
+                "type": "asset",
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/samir_mediator.png"
+              },
+              "alignment": {"x": 0.64, "y": 0.70},
+              "size": {"width": 106, "height": 159},
+              "mirrored": true,
+              "semanticLabel": "Samir Qad, route mediator",
+              "zOrder": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

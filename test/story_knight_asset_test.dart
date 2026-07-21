@@ -17,7 +17,7 @@ void main() {
           width: 430,
           height: 600,
           child: PixelStoryScene(
-            chapter: journeyChapters.first,
+            chapter: challengeVisualChapters.first,
             kind: PixelSceneKind.finale,
             semanticLabel: 'Finale artwork',
           ),
@@ -48,7 +48,7 @@ void main() {
           width: 430,
           height: 600,
           child: PixelStoryScene(
-            chapter: journeyChapters.first,
+            chapter: challengeVisualChapters.first,
             kind: PixelSceneKind.opening,
             semanticLabel: 'Opening artwork',
           ),
@@ -67,7 +67,7 @@ void main() {
           width: 430,
           height: 600,
           child: PixelStoryScene(
-            chapter: journeyChapters.first,
+            chapter: challengeVisualChapters.first,
             kind: PixelSceneKind.chapter,
             semanticLabel: 'Chapter artwork',
           ),
@@ -94,7 +94,7 @@ void main() {
           width: 430,
           height: 190,
           child: PixelStoryScene(
-            chapter: journeyChapters.first,
+            chapter: challengeVisualChapters.first,
             kind: PixelSceneKind.panorama,
             placement: PixelArtPlacement.banner,
             semanticLabel: 'Challenge artwork',

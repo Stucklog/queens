@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/app/challenge.dart';
-import 'package:regalia/app/journey.dart';
 import 'package:regalia/content/content_ids.dart';
 import 'package:regalia/content/content_models.dart';
 import 'package:regalia/content/content_repository.dart';
@@ -20,8 +19,50 @@ void main() {
   const futureArc = 'regalia:arc/moon-court';
   const futureEntitlement = 'regalia:entitlement/paid/moon-court';
 
+  Map<String, Object?> storefrontFor(String arcId, String title) {
+    final arcName = ContentId.parse(arcId, expectedKind: 'arc').localName;
+    return {
+      'title': title,
+      'tileSubtitle': 'Begin the story',
+      'lockedTileSubtitle': 'Preview the prologue',
+      'tileArtAsset': 'assets/art/backgrounds/story_opening.webp',
+      'theme': {
+        'backgroundColor': '#10182a',
+        'surfaceColor': '#202d46',
+        'primaryColor': '#634f91',
+        'secondaryColor': '#d7a85b',
+      },
+      'prologuePreview': {
+        'id': 'regalia:scene/$arcName/storefront-prologue',
+        'role': 'opening',
+        'pages': [
+          {
+            'title': '$title Prologue',
+            'paragraphs': [
+              'A lightweight opening page introduces the central conflict before the full story package is loaded by the installed edition.',
+              'Its cast, artwork, and narrative remain available as a deliberately small storefront preview on the web edition.',
+            ],
+            'semanticLabel': 'A preview of $title.',
+            'actionLabel': 'Continue',
+          },
+          {
+            'title': 'The Journey Ahead',
+            'paragraphs': [
+              'The road beyond the prologue leads into chapters, encounters, and a finale stored inside the platform-specific package.',
+              'Those deeper story records stay unread on the web while the complete paid application can continue the journey.',
+            ],
+            'semanticLabel': 'A road leading toward the next story.',
+            'actionLabel': 'View the apps',
+          },
+        ],
+        'artAsset': 'assets/art/backgrounds/story_opening.webp',
+      },
+    };
+  }
+
   Future<Map<String, String>> assetsFor({
     required List<String> futureChannels,
+    List<String> futureLockedPreviewChannels = const ['web'],
     String? futureMetadata,
   }) async {
     final assets = <String, String>{
@@ -33,26 +74,40 @@ void main() {
     assets['manifest.json'] = jsonEncode({
       'schemaVersion': 1,
       'features': [ContentIds.justPuzzleFeature],
+      'storeLinks': {
+        'appStore': 'https://apps.apple.com/example',
+        'playStore': 'https://play.google.com/store/apps/example',
+      },
       'arcs': [
         {
           'arcId': ContentIds.originArc,
           'metadataAsset': 'origin.json',
           'entitlementId': ContentIds.originEntitlement,
           'channels': ['web', 'paidPlatform'],
+          'storefront': storefrontFor(
+            ContentIds.originArc,
+            'Queen’s Regalia: Origin Story',
+          ),
         },
         {
           'arcId': futureArc,
           'metadataAsset': 'future.json',
           'entitlementId': futureEntitlement,
           'channels': futureChannels,
+          'lockedPreviewChannels': futureLockedPreviewChannels,
+          'storefront': storefrontFor(futureArc, 'The Moon Court'),
         },
       ],
     });
     return assets;
   }
 
-  ContentRepository repository(Map<String, String> assets) => ContentRepository(
+  ContentRepository repository(
+    Map<String, String> assets, {
+    List<String>? reads,
+  }) => ContentRepository(
     readAsset: (path) async {
+      reads?.add(path);
       if (path == 'assets/puzzles/catalog.json') {
         return assets['catalog.json']!;
       }
@@ -62,8 +117,9 @@ void main() {
   );
 
   test('web is origin plus Just Puzzle and excludes paid arcs', () async {
-    final assets = await assetsFor(futureChannels: ['web', 'paidPlatform']);
-    final registry = await repository(assets).load(
+    final assets = await assetsFor(futureChannels: ['paidPlatform']);
+    final reads = <String>[];
+    final registry = await repository(assets, reads: reads).load(
       manifestAsset: 'manifest.json',
       policy: const ContentEntitlementPolicy.web(),
     );
@@ -74,6 +130,19 @@ void main() {
       registry.availabilityFor(futureArc).status,
       ContentAvailabilityStatus.notInEdition,
     );
+    expect(reads, isNot(contains('future.json')));
+    expect(
+      registry.arcEntries.map((entry) => entry.descriptor!.arcId),
+      orderedEquals([ContentIds.originArc, futureArc]),
+    );
+    expect(
+      registry.availabilityFor(futureArc).storefront!.prologuePreview.pages,
+      hasLength(2),
+    );
+    expect(
+      registry.storefrontLinks!.appStore,
+      Uri.parse('https://apps.apple.com/example'),
+    );
     expect(
       registry
           .arc(ContentIds.originArc)!
@@ -83,6 +152,39 @@ void main() {
       isTrue,
     );
   });
+
+  test(
+    'manifest channels can make an additional arc available on web',
+    () async {
+      final originMetadata =
+          await File('assets/content/arcs/origin/arc.json').readAsString();
+      final originCatalog =
+          await File('assets/puzzles/catalog.json').readAsString();
+      final futureMetadata = originMetadata
+          .replaceAll(ContentIds.originArc, futureArc)
+          .replaceAll('/origin/', '/moon-court/')
+          .replaceAll('"Queen’s Regalia: Origin Story"', '"The Moon Court"')
+          .replaceAll('assets/puzzles/catalog.json', 'future-catalog.json');
+      final assets = await assetsFor(
+        futureChannels: ['web'],
+        futureLockedPreviewChannels: const [],
+        futureMetadata: futureMetadata,
+      );
+      assets['future-catalog.json'] = originCatalog.replaceAll(
+        '/origin/',
+        '/moon-court/',
+      );
+
+      final registry = await repository(assets).load(
+        manifestAsset: 'manifest.json',
+        policy: const ContentEntitlementPolicy.web(),
+      );
+
+      expect(registry.arc(ContentIds.originArc), isNotNull);
+      expect(registry.arc(futureArc), isNotNull);
+      expect(registry.availableArcs, hasLength(2));
+    },
+  );
 
   test(
     'origin cinematics carry readable paged narrative and final art',
@@ -121,61 +223,64 @@ void main() {
         arc.chapters.last.artAsset,
       );
       expect(
-        arc.chapters.map((chapter) => chapter.caption),
-        orderedEquals(journeyChapters.map((chapter) => chapter.caption)),
-        reason: 'packaged chapter copy and offline fallback must stay in sync',
+        arc.chapters.every((chapter) => chapter.mapLayout.columns > 0),
+        isTrue,
       );
     },
   );
 
-  test('paid arc must be entitled even when it is packaged', () async {
-    final assets = await assetsFor(futureChannels: ['paidPlatform']);
-    final registry = await repository(assets).load(
-      manifestAsset: 'manifest.json',
-      policy: const ContentEntitlementPolicy.paidPlatform(),
-    );
+  test(
+    'paid edition attempts packaged arcs without per-arc entitlements',
+    () async {
+      final assets = await assetsFor(futureChannels: ['paidPlatform']);
+      final registry = await repository(assets).load(
+        manifestAsset: 'manifest.json',
+        policy: const ContentEntitlementPolicy.paidPlatform(),
+      );
 
-    expect(
-      registry.availabilityFor(futureArc).status,
-      ContentAvailabilityStatus.notEntitled,
-    );
-    expect(registry.arc(ContentIds.originArc), isNotNull);
-    expect(registry.justPuzzleAvailable, isTrue);
-  });
+      expect(
+        registry.availabilityFor(futureArc).status,
+        ContentAvailabilityStatus.missingPackage,
+      );
+      expect(registry.arc(ContentIds.originArc), isNotNull);
+      expect(registry.justPuzzleAvailable, isTrue);
+    },
+  );
 
-  test('paid edition loads an additional valid entitled arc', () async {
-    final originMetadata =
-        await File('assets/content/arcs/origin/arc.json').readAsString();
-    final originCatalog =
-        await File('assets/puzzles/catalog.json').readAsString();
-    final futureMetadata = originMetadata
-        .replaceAll(ContentIds.originArc, futureArc)
-        .replaceAll('/origin/', '/moon-court/')
-        .replaceAll('"Queen’s Regalia: Origin Story"', '"The Moon Court"')
-        .replaceAll('assets/puzzles/catalog.json', 'future-catalog.json');
-    final assets = await assetsFor(
-      futureChannels: ['paidPlatform'],
-      futureMetadata: futureMetadata,
-    );
-    assets['future-catalog.json'] = originCatalog.replaceAll(
-      '/origin/',
-      '/moon-court/',
-    );
-    final registry = await repository(assets).load(
-      manifestAsset: 'manifest.json',
-      policy: const ContentEntitlementPolicy.paidPlatform(
-        grantedEntitlementIds: {futureEntitlement},
-      ),
-    );
+  test(
+    'paid edition loads an additional valid arc without entitlements',
+    () async {
+      final originMetadata =
+          await File('assets/content/arcs/origin/arc.json').readAsString();
+      final originCatalog =
+          await File('assets/puzzles/catalog.json').readAsString();
+      final futureMetadata = originMetadata
+          .replaceAll(ContentIds.originArc, futureArc)
+          .replaceAll('/origin/', '/moon-court/')
+          .replaceAll('"Queen’s Regalia: Origin Story"', '"The Moon Court"')
+          .replaceAll('assets/puzzles/catalog.json', 'future-catalog.json');
+      final assets = await assetsFor(
+        futureChannels: ['paidPlatform'],
+        futureMetadata: futureMetadata,
+      );
+      assets['future-catalog.json'] = originCatalog.replaceAll(
+        '/origin/',
+        '/moon-court/',
+      );
+      final registry = await repository(assets).load(
+        manifestAsset: 'manifest.json',
+        policy: const ContentEntitlementPolicy.paidPlatform(),
+      );
 
-    expect(registry.arc(ContentIds.originArc), isNotNull);
-    expect(registry.arc(futureArc), isNotNull);
-    expect(registry.availableArcs, hasLength(2));
-    expect(
-      registry.arc(futureArc)!.catalog.puzzles.first.id,
-      'regalia:puzzle/moon-court/easy-001',
-    );
-  });
+      expect(registry.arc(ContentIds.originArc), isNotNull);
+      expect(registry.arc(futureArc), isNotNull);
+      expect(registry.availableArcs, hasLength(2));
+      expect(
+        registry.arc(futureArc)!.catalog.puzzles.first.id,
+        'regalia:puzzle/moon-court/easy-001',
+      );
+    },
+  );
 
   test('additional arc progress persists only in that arc namespace', () async {
     SharedPreferences.setMockInitialValues({
@@ -301,6 +406,10 @@ void main() {
           'metadataAsset': 'missing-origin.json',
           'entitlementId': ContentIds.originEntitlement,
           'channels': ['web'],
+          'storefront': storefrontFor(
+            ContentIds.originArc,
+            'Queen’s Regalia: Origin Story',
+          ),
         },
       ],
     });

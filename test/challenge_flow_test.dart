@@ -38,7 +38,9 @@ void main() {
       if (!controllerDisposed) controller.dispose();
     });
     await controller.markStoryBeatSeen(StoryBeatIds.opening);
-    await controller.markStoryBeatSeen(journeyChapters.first.storyBeatId);
+    await controller.markStoryBeatSeen(
+      controller.originArc!.chapters.first.storyBeatId,
+    );
     await tester.pumpWidget(
       MaterialApp(home: JourneyScreen(controller: controller)),
     );

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../widgets/pixel_ui.dart';
@@ -14,73 +16,118 @@ class RegaliaTheme {
   static const danger = Color(0xfff06b6b);
 
   static ThemeData midnight([JourneyPalette? palette]) =>
-      _theme(secondary: palette?.secondary ?? gold);
+      _theme(palette ?? const JourneyPalette(primary: ivory, secondary: gold));
 
   static ThemeData forChapter(JourneyChapter chapter) =>
       midnight(chapter.palette);
 
-  static ThemeData _theme({required Color secondary}) {
-    final secondaryContainer = Color.lerp(midnightSurface, secondary, .24)!;
+  /// Keeps a story-authored accent recognizable when it is shown on a shared
+  /// surface whose theme may belong to a different arc.
+  static Color readableAccent({
+    required Color preferred,
+    required Color background,
+    double minimumContrast = 4.5,
+  }) {
+    assert(minimumContrast >= 1 && minimumContrast <= 21);
+    if (_contrastRatio(preferred, background) >= minimumContrast) {
+      return preferred;
+    }
+
+    final target =
+        _contrastRatio(Colors.black, background) >=
+                _contrastRatio(Colors.white, background)
+            ? Colors.black
+            : Colors.white;
+    for (var step = 1; step <= 20; step++) {
+      final candidate = Color.lerp(preferred, target, step / 20)!;
+      if (_contrastRatio(candidate, background) >= minimumContrast) {
+        return candidate;
+      }
+    }
+    return target;
+  }
+
+  static ThemeData _theme(JourneyPalette palette) {
+    final theme = palette.theme;
+    final secondary = palette.secondary;
+    final secondaryContainer = Color.lerp(theme.surface, secondary, .24)!;
+    final baseTheme =
+        theme.brightness == Brightness.dark
+            ? ThemeData.dark()
+            : ThemeData.light();
     final scheme = ColorScheme.fromSeed(
       seedColor: secondary,
-      brightness: Brightness.dark,
+      brightness: theme.brightness,
     ).copyWith(
-      surface: midnightSurface,
-      onSurface: ivory,
-      surfaceDim: midnightBlue,
-      surfaceBright: midnightSurfaceHigh,
-      surfaceContainerLowest: midnightBlue,
-      surfaceContainerLow: midnightSurfaceLow,
-      surfaceContainer: midnightSurface,
-      surfaceContainerHigh: const Color(0xff2a3659),
-      surfaceContainerHighest: midnightSurfaceHigh,
-      onSurfaceVariant: const Color(0xffd3d7e7),
-      outline: const Color(0xff919cbd),
-      outlineVariant: const Color(0xff4b587c),
-      primary: ivory,
-      onPrimary: midnightBlue,
-      primaryContainer: midnightSurfaceHigh,
-      onPrimaryContainer: ivory,
+      surface: theme.surface,
+      onSurface: theme.foreground,
+      surfaceDim: theme.background,
+      surfaceBright: theme.surfaceHigh,
+      surfaceContainerLowest: theme.background,
+      surfaceContainerLow: theme.surfaceLow,
+      surfaceContainer: theme.surface,
+      surfaceContainerHigh: theme.surfaceContainerHigh,
+      surfaceContainerHighest: theme.surfaceHigh,
+      onSurfaceVariant: theme.mutedForeground,
+      outline: theme.outline,
+      outlineVariant: theme.outlineVariant,
+      primary: theme.foreground,
+      onPrimary: theme.background,
+      primaryContainer: theme.surfaceHigh,
+      onPrimaryContainer: theme.foreground,
       secondary: secondary,
-      onSecondary: _foregroundFor(secondary),
+      onSecondary: _foregroundFor(
+        secondary,
+        dark: theme.background,
+        light: theme.foreground,
+      ),
       secondaryContainer: secondaryContainer,
-      onSecondaryContainer: ivory,
-      inverseSurface: ivory,
-      onInverseSurface: midnightBlue,
+      onSecondaryContainer: theme.foreground,
+      error: theme.danger,
+      onError: _foregroundFor(
+        theme.danger,
+        dark: theme.ink,
+        light: theme.foreground,
+      ),
+      inverseSurface: theme.foreground,
+      onInverseSurface: theme.background,
       inversePrimary: secondary,
+      shadow: theme.ink,
+      scrim: theme.ink,
       surfaceTint: Colors.transparent,
     );
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.dark,
+      brightness: theme.brightness,
       colorScheme: scheme,
-      scaffoldBackgroundColor: midnightBlue,
-      canvasColor: midnightBlue,
+      scaffoldBackgroundColor: theme.background,
+      canvasColor: theme.background,
       cardTheme: CardThemeData(
-        color: midnightSurface,
+        color: theme.surface,
         elevation: 0,
         shape: PixelOrganicBorder(
           side: BorderSide(color: scheme.outline, width: 2),
         ),
       ),
       dialogTheme: DialogThemeData(
-        backgroundColor: midnightSurface,
+        backgroundColor: theme.surface,
         elevation: 0,
         shape: PixelOrganicBorder(side: BorderSide(color: secondary, width: 3)),
-        titleTextStyle: _type(ThemeData.dark().textTheme, ivory).headlineSmall,
+        titleTextStyle:
+            _type(baseTheme.textTheme, theme.foreground).headlineSmall,
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
         scrolledUnderElevation: 0,
-        foregroundColor: ivory,
+        foregroundColor: theme.foreground,
         centerTitle: false,
         toolbarHeight: 68,
-        titleTextStyle: _type(ThemeData.dark().textTheme, ivory).titleLarge,
+        titleTextStyle: _type(baseTheme.textTheme, theme.foreground).titleLarge,
       ),
       fontFamily: 'RegaliaPixel',
-      textTheme: _type(ThemeData.dark().textTheme, ivory),
-      focusColor: ivory.withValues(alpha: .28),
+      textTheme: _type(baseTheme.textTheme, theme.foreground),
+      focusColor: theme.foreground.withValues(alpha: .28),
       hoverColor: secondary.withValues(alpha: .14),
       highlightColor: secondary.withValues(alpha: .18),
       splashFactory: NoSplash.splashFactory,
@@ -93,14 +140,16 @@ class RegaliaTheme {
         style: _buttonStyle(
           foreground: scheme.onSecondary,
           background: secondary,
-          border: ink,
+          border: theme.ink,
+          pressedInk: theme.ink,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: _buttonStyle(
-          foreground: ivory,
-          background: midnightSurface,
+          foreground: theme.foreground,
+          background: theme.surface,
           border: scheme.outline,
+          pressedInk: theme.ink,
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -108,6 +157,7 @@ class RegaliaTheme {
           foreground: secondary,
           background: Colors.transparent,
           border: Colors.transparent,
+          pressedInk: theme.ink,
         ),
       ),
       iconButtonTheme: IconButtonThemeData(
@@ -118,7 +168,7 @@ class RegaliaTheme {
             (states) =>
                 states.contains(WidgetState.disabled)
                     ? scheme.outlineVariant
-                    : ivory,
+                    : theme.foreground,
           ),
           backgroundColor: WidgetStateProperty.resolveWith(
             (states) =>
@@ -132,38 +182,39 @@ class RegaliaTheme {
       ),
       listTileTheme: ListTileThemeData(
         iconColor: secondary,
-        textColor: ivory,
+        textColor: theme.foreground,
         shape: PixelOrganicBorder(
           side: BorderSide(color: scheme.outlineVariant, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       ),
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: ink,
-        contentTextStyle: _type(ThemeData.dark().textTheme, ivory).bodyMedium,
+        backgroundColor: theme.ink,
+        contentTextStyle:
+            _type(baseTheme.textTheme, theme.foreground).bodyMedium,
         elevation: 0,
         shape: PixelOrganicBorder(side: BorderSide(color: secondary, width: 3)),
         behavior: SnackBarBehavior.floating,
       ),
       tooltipTheme: TooltipThemeData(
         decoration: ShapeDecoration(
-          color: ink,
+          color: theme.ink,
           shape: PixelOrganicBorder(
             side: BorderSide(color: secondary, width: 2),
           ),
         ),
-        textStyle: _type(ThemeData.dark().textTheme, ivory).labelMedium,
+        textStyle: _type(baseTheme.textTheme, theme.foreground).labelMedium,
         waitDuration: const Duration(milliseconds: 500),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: secondary,
-        linearTrackColor: midnightSurfaceHigh,
-        circularTrackColor: midnightSurfaceHigh,
+        linearTrackColor: theme.surfaceHigh,
+        circularTrackColor: theme.surfaceHigh,
         linearMinHeight: 10,
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: midnightSurfaceLow,
+        fillColor: theme.surfaceLow,
         border: const OutlineInputBorder(borderRadius: _inputBorderRadius),
         enabledBorder: OutlineInputBorder(
           borderRadius: _inputBorderRadius,
@@ -186,18 +237,35 @@ class RegaliaTheme {
     );
   }
 
-  static Color _foregroundFor(Color background) {
+  static Color _foregroundFor(
+    Color background, {
+    required Color dark,
+    required Color light,
+  }) {
     final luminance = background.computeLuminance();
+    final darkLuminance = dark.computeLuminance();
+    final lightLuminance = light.computeLuminance();
     final darkContrast =
-        (luminance + .05) / (midnightBlue.computeLuminance() + .05);
-    final lightContrast = (ivory.computeLuminance() + .05) / (luminance + .05);
-    return darkContrast >= lightContrast ? midnightBlue : ivory;
+        (math.max(luminance, darkLuminance) + .05) /
+        (math.min(luminance, darkLuminance) + .05);
+    final lightContrast =
+        (math.max(luminance, lightLuminance) + .05) /
+        (math.min(luminance, lightLuminance) + .05);
+    return darkContrast >= lightContrast ? dark : light;
+  }
+
+  static double _contrastRatio(Color first, Color second) {
+    final firstLuminance = first.computeLuminance();
+    final secondLuminance = second.computeLuminance();
+    return (math.max(firstLuminance, secondLuminance) + .05) /
+        (math.min(firstLuminance, secondLuminance) + .05);
   }
 
   static ButtonStyle _buttonStyle({
     required Color foreground,
     required Color background,
     required Color border,
+    required Color pressedInk,
   }) => ButtonStyle(
     minimumSize: const WidgetStatePropertyAll(Size(48, 48)),
     padding: const WidgetStatePropertyAll(
@@ -214,7 +282,7 @@ class RegaliaTheme {
           states.contains(WidgetState.disabled)
               ? background.withValues(alpha: .22)
               : states.contains(WidgetState.pressed)
-              ? Color.lerp(background, ink, .22)
+              ? Color.lerp(background, pressedInk, .22)
               : background,
     ),
     side: WidgetStatePropertyAll(BorderSide(color: border, width: 2)),

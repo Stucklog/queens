@@ -150,8 +150,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     final session = widget.controller.challengeSession;
     final chapter =
         session == null
-            ? widget.controller.originArc?.chapters.first ??
-                journeyChapters.first
+            ? widget.controller.challengeVisualChapter(DifficultyTier.easy, 1)
             : widget.controller.challengeVisualChapter(
               session.currentPuzzle.tier,
               session.currentNumber,
@@ -208,8 +207,7 @@ class _ChallengeSetup extends StatelessWidget {
       SizedBox(
         height: 190,
         child: PixelStoryScene(
-          chapter:
-              controller.originArc?.chapters.first ?? journeyChapters.first,
+          chapter: controller.challengeVisualChapter(DifficultyTier.easy, 1),
           kind: PixelSceneKind.panorama,
           placement: PixelArtPlacement.banner,
           semanticLabel:

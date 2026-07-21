@@ -234,12 +234,18 @@ void main() {
       300,
       scrollable: _settingsScroll(),
     );
-    await tester.tap(
-      find.descendant(
-        of: masterSupport,
-        matching: find.byKey(const ValueKey('open-buy-me-a-coffee')),
-      ),
+    final masterSupportButton = find.descendant(
+      of: masterSupport,
+      matching: find.byKey(const ValueKey('open-buy-me-a-coffee')),
     );
+    await tester.scrollUntilVisible(
+      masterSupportButton,
+      100,
+      scrollable: _settingsScroll(),
+    );
+    await tester.ensureVisible(masterSupportButton);
+    await tester.pump();
+    await tester.tap(masterSupportButton);
     await tester.pump();
     expect(launched, [buyMeACoffeeUri]);
 
@@ -297,12 +303,18 @@ void main() {
       300,
       scrollable: _settingsScroll(),
     );
-    await tester.tap(
-      find.descendant(
-        of: support,
-        matching: find.byKey(const ValueKey('open-buy-me-a-coffee')),
-      ),
+    final supportButton = find.descendant(
+      of: support,
+      matching: find.byKey(const ValueKey('open-buy-me-a-coffee')),
     );
+    await tester.scrollUntilVisible(
+      supportButton,
+      100,
+      scrollable: _settingsScroll(),
+    );
+    await tester.ensureVisible(supportButton);
+    await tester.pump();
+    await tester.tap(supportButton);
     await tester.pump();
 
     expect(find.text('Could not open the support page.'), findsOneWidget);

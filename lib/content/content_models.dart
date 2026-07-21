@@ -1,5 +1,6 @@
 import '../app/journey.dart';
 import '../core/models.dart';
+import 'cinematic_scene_models.dart';
 import 'content_ids.dart';
 import 'entitlements.dart';
 
@@ -42,17 +43,37 @@ class StoryScenePageContent {
 }
 
 class StorySceneContent {
-  const StorySceneContent({
+  StorySceneContent({
     required this.id,
     required this.role,
-    required this.pages,
-    required this.artAsset,
-  });
+    required this.presentation,
+  }) : pages = List<StoryScenePageContent>.unmodifiable(
+         presentation.frames.map(
+           (frame) => StoryScenePageContent(
+             title: frame.narrative.title,
+             paragraphs: frame.narrative.paragraphs,
+             semanticLabel: frame.narrative.semanticLabel,
+             actionLabel: frame.narrative.actionLabel,
+           ),
+         ),
+       );
 
   final String id;
   final StorySceneRole role;
   final List<StoryScenePageContent> pages;
-  final String artAsset;
+  final CinematicScenePresentation presentation;
+
+  List<CinematicSceneFrame> get frames => presentation.frames;
+  String get artAsset => frames.first.background.asset;
+
+  Set<String> get assetPaths => {
+    for (final frame in frames) ...[
+      frame.background.asset,
+      for (final layer in frame.characterLayers)
+        if (layer.source case CinematicAssetCharacterSource(:final asset))
+          asset,
+    ],
+  };
 
   String get title => pages.first.title;
   String get caption => pages.first.paragraphs.join('\n\n');
@@ -62,40 +83,13 @@ class StorySceneContent {
   factory StorySceneContent.fromJson(Map<String, Object?> json) {
     final id = json['id']! as String;
     ContentId.parse(id, expectedKind: 'scene');
-    final pagesJson = json['pages'] as List<Object?>?;
-    final pages =
-        pagesJson == null
-            ? [
-              StoryScenePageContent(
-                title: json['title']! as String,
-                paragraphs: List.unmodifiable([
-                  if (json['paragraphs'] case final List<Object?> values)
-                    ...values.cast<String>()
-                  else
-                    json['caption']! as String,
-                ]),
-                semanticLabel: json['semanticLabel']! as String,
-                actionLabel: json['actionLabel']! as String,
-              ),
-            ]
-            : pagesJson
-                .map(
-                  (page) => StoryScenePageContent.fromJson(
-                    page! as Map<String, Object?>,
-                  ),
-                )
-                .toList(growable: false);
-    if (pages.isEmpty) {
-      throw FormatException('$id must contain at least one story page');
-    }
     return StorySceneContent(
       id: id,
       role: StorySceneRole.values.firstWhere(
         (value) => value.name == json['role'],
         orElse: () => throw FormatException('Unknown scene role for $id'),
       ),
-      pages: List.unmodifiable(pages),
-      artAsset: json['artAsset']! as String,
+      presentation: CinematicScenePresentation.fromJson(json),
     );
   }
 }
@@ -249,7 +243,10 @@ class StoryArc {
           !ids.add(boss.id) ||
           boss.name.trim().isEmpty ||
           !_isCombatSpriteAsset(boss.spriteAsset) ||
-          boss.spectacleLevel != chapterIndex + 1 ||
+          boss.spectacleLevel < 1 ||
+          boss.spectacleLevel > 8 ||
+          boss.finisherStyle.effectLevel < 1 ||
+          boss.finisherStyle.effectLevel > 8 ||
           boss.unlockTargetId != expectedUnlockTarget ||
           boss.targetDifficulty != expectedDifficulty ||
           boss.puzzleId != puzzle.id ||
@@ -293,18 +290,146 @@ bool _isCombatSpriteAsset(String path) =>
     path.endsWith('.png') &&
     !path.contains('..');
 
+class ArcStorefrontTheme {
+  const ArcStorefrontTheme({
+    required this.backgroundColor,
+    required this.surfaceColor,
+    required this.primaryColor,
+    required this.secondaryColor,
+  });
+
+  final int backgroundColor;
+  final int surfaceColor;
+  final int primaryColor;
+  final int secondaryColor;
+
+  factory ArcStorefrontTheme.fromJson(
+    Map<String, Object?> json,
+  ) => ArcStorefrontTheme(
+    backgroundColor: _parseStorefrontColor(
+      json['backgroundColor'],
+      'backgroundColor',
+    ),
+    surfaceColor: _parseStorefrontColor(json['surfaceColor'], 'surfaceColor'),
+    primaryColor: _parseStorefrontColor(json['primaryColor'], 'primaryColor'),
+    secondaryColor: _parseStorefrontColor(
+      json['secondaryColor'],
+      'secondaryColor',
+    ),
+  );
+}
+
+int _parseStorefrontColor(Object? source, String name) {
+  final value = source as String?;
+  if (value == null || !RegExp(r'^#[0-9a-fA-F]{6}$').hasMatch(value)) {
+    throw FormatException('Invalid storefront $name color $value');
+  }
+  return int.parse('ff${value.substring(1)}', radix: 16);
+}
+
+class ArcStorefrontContent {
+  const ArcStorefrontContent({
+    required this.title,
+    required this.tileSubtitle,
+    required this.lockedTileSubtitle,
+    required this.tileArtAsset,
+    required this.tileForegroundAsset,
+    required this.theme,
+    required this.prologuePreview,
+  });
+
+  final String title;
+  final String tileSubtitle;
+  final String lockedTileSubtitle;
+  final String tileArtAsset;
+  final String? tileForegroundAsset;
+
+  final ArcStorefrontTheme theme;
+  final StorySceneContent prologuePreview;
+
+  factory ArcStorefrontContent.fromJson(Map<String, Object?> json) {
+    final title = json['title']! as String;
+    final tileSubtitle = json['tileSubtitle']! as String;
+    final lockedTileSubtitle = json['lockedTileSubtitle']! as String;
+    final tileArtAsset = json['tileArtAsset']! as String;
+    final tileForegroundAsset = json['tileForegroundAsset'] as String?;
+    if (title.trim().isEmpty ||
+        tileSubtitle.trim().isEmpty ||
+        lockedTileSubtitle.trim().isEmpty) {
+      throw const FormatException(
+        'Storefront copy and visuals cannot be empty',
+      );
+    }
+    _validateStorefrontAsset(tileArtAsset);
+    if (tileForegroundAsset != null) {
+      _validateStorefrontAsset(tileForegroundAsset);
+    }
+    return ArcStorefrontContent(
+      title: title,
+      tileSubtitle: tileSubtitle,
+      lockedTileSubtitle: lockedTileSubtitle,
+      tileArtAsset: tileArtAsset,
+      tileForegroundAsset: tileForegroundAsset,
+      theme: ArcStorefrontTheme.fromJson(
+        json['theme']! as Map<String, Object?>,
+      ),
+      prologuePreview: StorySceneContent.fromJson(
+        json['prologuePreview']! as Map<String, Object?>,
+      ),
+    );
+  }
+}
+
+void _validateStorefrontAsset(String path) {
+  if (!path.startsWith('assets/') || path.contains('..')) {
+    throw FormatException('Invalid storefront asset $path');
+  }
+}
+
+class StorefrontLinks {
+  const StorefrontLinks({required this.appStore, required this.playStore});
+
+  final Uri appStore;
+  final Uri playStore;
+
+  factory StorefrontLinks.fromJson(Map<String, Object?> json) =>
+      StorefrontLinks(
+        appStore: _parseStorefrontLink(json['appStore'], 'App Store'),
+        playStore: _parseStorefrontLink(json['playStore'], 'Play Store'),
+      );
+}
+
+Uri _parseStorefrontLink(Object? source, String name) {
+  final uri = source is String ? Uri.tryParse(source) : null;
+  final allowedHosts = switch (name) {
+    'App Store' => const {'apps.apple.com'},
+    'Play Store' => const {'play.google.com'},
+    _ => const <String>{},
+  };
+  if (uri == null ||
+      uri.scheme != 'https' ||
+      !allowedHosts.contains(uri.host.toLowerCase())) {
+    throw FormatException('Invalid $name link $source');
+  }
+  return uri;
+}
+
 class ArcPackageDescriptor {
   const ArcPackageDescriptor({
     required this.arcId,
     required this.metadataAsset,
     required this.entitlementId,
     required this.channels,
+    required this.lockedPreviewChannels,
+    required this.storefront,
   });
 
   final String arcId;
   final String metadataAsset;
   final String entitlementId;
   final Set<ReleaseChannel> channels;
+  final Set<ReleaseChannel> lockedPreviewChannels;
+  final ArcStorefrontContent storefront;
 
   factory ArcPackageDescriptor.fromJson(Map<String, Object?> json) {
     final arcId = json['arcId']! as String;
@@ -325,11 +450,44 @@ class ArcPackageDescriptor {
     if (channels.isEmpty) {
       throw FormatException('$arcId has no release channel');
     }
+    final lockedPreviewChannels =
+        (json['lockedPreviewChannels'] as List<Object?>? ?? const [])
+            .map(
+              (value) => ReleaseChannel.values.firstWhere(
+                (channel) => channel.name == value,
+                orElse:
+                    () =>
+                        throw FormatException(
+                          'Unknown locked-preview channel $value',
+                        ),
+              ),
+            )
+            .toSet();
+    final conflictingChannels = channels.intersection(lockedPreviewChannels);
+    if (conflictingChannels.isNotEmpty) {
+      throw FormatException(
+        '$arcId cannot be both available and locked on $conflictingChannels',
+      );
+    }
+    final storefront = ArcStorefrontContent.fromJson(
+      json['storefront']! as Map<String, Object?>,
+    );
+    final arcName = ContentId.parse(arcId, expectedKind: 'arc').localName;
+    final previewId = ContentId.parse(
+      storefront.prologuePreview.id,
+      expectedKind: 'scene',
+    );
+    if (previewId.arcName != arcName ||
+        storefront.prologuePreview.role != StorySceneRole.opening) {
+      throw FormatException('$arcId has an invalid storefront prologue');
+    }
     return ArcPackageDescriptor(
       arcId: arcId,
       metadataAsset: json['metadataAsset']! as String,
       entitlementId: entitlementId,
       channels: Set.unmodifiable(channels),
+      lockedPreviewChannels: Set.unmodifiable(lockedPreviewChannels),
+      storefront: storefront,
     );
   }
 }
@@ -344,23 +502,34 @@ enum ContentAvailabilityStatus {
 }
 
 class ArcAvailability {
-  const ArcAvailability({required this.status, this.arc, this.error});
+  const ArcAvailability({
+    required this.status,
+    this.descriptor,
+    this.arc,
+    this.error,
+  });
 
   final ContentAvailabilityStatus status;
+  final ArcPackageDescriptor? descriptor;
   final StoryArc? arc;
   final Object? error;
 
   bool get isAvailable => status == ContentAvailabilityStatus.available;
+  ArcStorefrontContent? get storefront => descriptor?.storefront;
 }
 
 class ContentRegistry {
   ContentRegistry({
     required Map<String, ArcAvailability> arcs,
     required this.justPuzzleAvailable,
+    this.storefrontLinks,
   }) : arcs = Map.unmodifiable(arcs);
 
   final Map<String, ArcAvailability> arcs;
   final bool justPuzzleAvailable;
+  final StorefrontLinks? storefrontLinks;
+
+  Iterable<ArcAvailability> get arcEntries => arcs.values;
 
   Iterable<StoryArc> get availableArcs => arcs.values
       .where((entry) => entry.isAvailable)

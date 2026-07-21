@@ -19,10 +19,7 @@ void main() {
       SharedPreferences.setMockInitialValues({
         'regalia.tutorialComplete': true,
         'regalia.journeySchemaVersion': 1,
-        'regalia.seenStoryBeats': <String>[
-          StoryBeatIds.opening,
-          journeyChapters.first.storyBeatId,
-        ],
+        'regalia.seenStoryBeats': <String>[StoryBeatIds.opening],
         'regalia.settings':
             '{"themeMode":"light","showTimer":false,"showAutomaticExclusions":true,"reducedMotion":true}',
       });

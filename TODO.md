@@ -10,6 +10,14 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## Gameplay and progression
 
+- [ ] **P1 — Make first launch flow into the origin story and guided first puzzle.**
+  - After the one-time opening slides, take the player directly into the origin story and show the prologue.
+  - Make the first puzzle of the origin arc the guided rules walkthrough rather than a separate tutorial flow.
+  - Use simple, progressive guidance so new players learn the board, crowns, exclusions, and deductions while solving that puzzle.
+  - Save the walkthrough/prologue completion state so the opening sequence does not repeat automatically on every launch.
+  - Add a clearly visible Home Screen entry so players can replay the rules walkthrough whenever they need a refresher.
+  - Allow replaying the walkthrough without affecting story or puzzle progress.
+
 - [x] **P1 — Set story arcs to nine puzzles per difficulty–size combination.**
   - Set the arc progression target to nine puzzles for each difficulty and board-size combination.
   - Ensure players can move through the current story arc faster and reach the next story arc sooner.
@@ -61,6 +69,12 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Establish which puzzles trigger each encounter and how encounters affect presentation or rewards.
 
 ## Combat animation and boss presentation
+
+- [ ] **P1 — Fix the Drowned Acolyte’s inconsistent facing direction.**
+  - Review every frame of the Drowned Acolyte animation for incorrect left/right orientation.
+  - Correct the frames that face the wrong way and ensure direction changes are intentional and consistent.
+  - Check the animation in all gameplay and cutscene contexts where the sprite appears.
+  - Add or update a visual regression test to catch future facing-direction errors.
 
 - [x] **P1 — Present each boss-defeating special move as a cutscene.**
   - Play the knight’s final special move in a dedicated cutscene when a boss puzzle is solved.
@@ -155,6 +169,13 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Final direction: use clean, old-game rounded corners with subtly pixel-stepped curves and straight edges rather than wiggly outlines.
 
 ## UI and naming
+
+- [ ] **P2 — Add a temporary “Unlock All” button to the Bestiary.**
+  - Add a development/testing button on the Bestiary page that unlocks every enemy entry.
+  - Use it to inspect all enemy animations without requiring normal progression.
+  - Make the control clearly temporary and gate it behind a code/configuration flag or development build check.
+  - Ensure it cannot unintentionally alter normal player progress or ship enabled in the production release.
+  - Remove the temporary control or disable its flag before release.
 
 - [x] **P2 — Match automatic crown exclusions to player-made `X` marks.**
   - Make the marks placed automatically after a crown is solved look identical to manually placed `X` exclusions.

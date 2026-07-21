@@ -2,18 +2,102 @@ import 'package:flutter/material.dart';
 
 import '../content/content_ids.dart';
 import '../core/models.dart';
+import 'arc_theme.dart';
+import 'combat_style.dart';
 
 const regaliaMidnight = Color(0xff151d3b);
 const regaliaMidnightSurface = Color(0xff253052);
 
 class JourneyPalette {
-  const JourneyPalette({required this.primary, required this.secondary});
+  const JourneyPalette({
+    required this.primary,
+    required this.secondary,
+    this.theme = ArcThemeColors.midnight,
+  });
 
   final Color primary;
   final Color secondary;
+  final ArcThemeColors theme;
 
-  Color get background => regaliaMidnight;
-  Color get surface => regaliaMidnightSurface;
+  Color get background => theme.background;
+  Color get surface => theme.surface;
+}
+
+enum JourneyRoutePattern {
+  /// Alternates direction on each row so the route remains serpentine.
+  snake,
+
+  /// Starts every row from the configured side.
+  rows;
+
+  static JourneyRoutePattern parse(Object? value) {
+    if (value == null) return JourneyRoutePattern.snake;
+    return values.firstWhere(
+      (pattern) => pattern.name == value,
+      orElse:
+          () => throw FormatException('Unknown journey route pattern $value'),
+    );
+  }
+}
+
+enum JourneyRouteDirection {
+  leftToRight,
+  rightToLeft;
+
+  static JourneyRouteDirection parse(Object? value) {
+    if (value == null) return JourneyRouteDirection.leftToRight;
+    return values.firstWhere(
+      (direction) => direction.name == value,
+      orElse:
+          () => throw FormatException('Unknown journey route direction $value'),
+    );
+  }
+}
+
+/// Controls how one chapter's puzzle nodes are arranged on the journey map.
+///
+/// Omitted content retains the original three-column, left-to-right snake.
+class JourneyMapLayout {
+  const JourneyMapLayout({
+    this.columns = 3,
+    this.pattern = JourneyRoutePattern.snake,
+    this.direction = JourneyRouteDirection.leftToRight,
+  }) : assert(columns > 0);
+
+  static const standard = JourneyMapLayout();
+
+  final int columns;
+  final JourneyRoutePattern pattern;
+  final JourneyRouteDirection direction;
+
+  int displayColumnFor({
+    required int row,
+    required int logicalColumn,
+    required int columnCount,
+  }) {
+    final startsOnLeft = direction == JourneyRouteDirection.leftToRight;
+    final runsLeftToRight = switch (pattern) {
+      JourneyRoutePattern.snake => row.isEven ? startsOnLeft : !startsOnLeft,
+      JourneyRoutePattern.rows => startsOnLeft,
+    };
+    return runsLeftToRight ? logicalColumn : columnCount - 1 - logicalColumn;
+  }
+
+  factory JourneyMapLayout.fromJson(Object? value) {
+    if (value == null) return standard;
+    if (value is! Map<String, Object?>) {
+      throw const FormatException('mapLayout must be an object');
+    }
+    final columns = (value['columns'] as num?)?.toInt() ?? standard.columns;
+    if (columns < 1) {
+      throw FormatException('mapLayout columns must be positive, got $columns');
+    }
+    return JourneyMapLayout(
+      columns: columns,
+      pattern: JourneyRoutePattern.parse(value['pattern']),
+      direction: JourneyRouteDirection.parse(value['direction']),
+    );
+  }
 }
 
 enum EnemySpriteFamily {
@@ -41,7 +125,8 @@ class CombatEncounter {
     required this.spriteAsset,
     required this.spectacleLevel,
     required this.isBoss,
-  });
+    CombatFinisherStyle? finisherStyle,
+  }) : _finisherStyle = finisherStyle;
 
   final String id;
   final String name;
@@ -54,6 +139,10 @@ class CombatEncounter {
   /// One for regular encounters and 1–8 for increasingly climactic bosses.
   final int spectacleLevel;
   final bool isBoss;
+  final CombatFinisherStyle? _finisherStyle;
+
+  CombatFinisherStyle get finisherStyle =>
+      _finisherStyle ?? CombatFinisherStyle.legacy(spectacleLevel);
 }
 
 class ChapterEnemy extends CombatEncounter {
@@ -63,6 +152,7 @@ class ChapterEnemy extends CombatEncounter {
     required super.puzzleId,
     required super.spriteFamily,
     required super.spriteAsset,
+    super.finisherStyle,
   }) : super(spectacleLevel: 1, isBoss: false);
 
   factory ChapterEnemy.fromJson(Map<String, Object?> json) {
@@ -76,6 +166,10 @@ class ChapterEnemy extends CombatEncounter {
       puzzleId: puzzleId,
       spriteFamily: EnemySpriteFamily.parse(json['spriteFamily']! as String),
       spriteAsset: json['spriteAsset']! as String,
+      finisherStyle: CombatFinisherStyle.fromJson(
+        json['finisher'],
+        legacySpectacleLevel: 1,
+      ),
     );
   }
 }
@@ -88,6 +182,7 @@ class ChapterBoss extends CombatEncounter {
     required super.spriteFamily,
     required super.spriteAsset,
     required super.spectacleLevel,
+    super.finisherStyle,
     required this.size,
     required this.targetDifficulty,
     required this.unlockTargetId,
@@ -106,13 +201,18 @@ class ChapterBoss extends CombatEncounter {
     ContentId.parse(id, expectedKind: 'boss');
     ContentId.parse(puzzleId, expectedKind: 'puzzle');
     ContentId.parse(unlockTargetId);
+    final spectacleLevel = (json['spectacleLevel']! as num).toInt();
     return ChapterBoss(
       id: id,
       name: json['name']! as String,
       puzzleId: puzzleId,
       spriteFamily: EnemySpriteFamily.parse(json['spriteFamily']! as String),
       spriteAsset: json['spriteAsset']! as String,
-      spectacleLevel: (json['spectacleLevel']! as num).toInt(),
+      spectacleLevel: spectacleLevel,
+      finisherStyle: CombatFinisherStyle.fromJson(
+        json['finisher'],
+        legacySpectacleLevel: spectacleLevel,
+      ),
       size: (json['size']! as num).toInt(),
       targetDifficulty: DifficultyTierLabel.parse(
         json['targetDifficulty']! as String,
@@ -139,6 +239,7 @@ class JourneyChapter {
     required this.boss,
     this.encounters = const [],
     required this.palette,
+    this.mapLayout = JourneyMapLayout.standard,
   });
 
   final String id;
@@ -156,12 +257,16 @@ class JourneyChapter {
   final ChapterBoss boss;
   final List<ChapterEnemy> encounters;
   final JourneyPalette palette;
+  final JourneyMapLayout mapLayout;
 
   String get storyBeatId => sceneId;
 
   bool contains(int order) => order >= startOrder && order <= endOrder;
 
-  factory JourneyChapter.fromJson(Map<String, Object?> json) {
+  factory JourneyChapter.fromJson(
+    Map<String, Object?> json, {
+    ArcThemeColors arcTheme = ArcThemeColors.midnight,
+  }) {
     Color color(String key) {
       final value = json[key]! as String;
       if (!RegExp(r'^#[0-9a-fA-F]{6}$').hasMatch(value)) {
@@ -199,260 +304,87 @@ class JourneyChapter {
       palette: JourneyPalette(
         primary: color('primaryColor'),
         secondary: color('secondaryColor'),
+        theme: ArcThemeColors.mergeFromJson(json['theme'], base: arcTheme),
       ),
+      mapLayout: JourneyMapLayout.fromJson(json['mapLayout']),
     );
   }
 }
 
-/// Offline visual fallback for Just Puzzle and compatibility helpers in tests.
-/// The story UI uses the chapters loaded from the active [StoryArc].
-const journeyChapters = <JourneyChapter>[
-  JourneyChapter(
-    id: 'regalia:chapter/origin/clovermead',
-    mapId: ContentIds.originMap,
-    sceneId: 'regalia:scene/origin/clovermead',
-    artKey: 'clovermead',
-    artAsset: 'assets/art/backgrounds/chapter_clovermead.webp',
+/// Story-independent visual themes for generated puzzles and resilient UI
+/// fallbacks. Canonical story chapters are loaded only from content packages.
+final List<JourneyChapter> challengeVisualChapters = List.unmodifiable([
+  _challengeVisualChapter(
+    tier: DifficultyTier.easy,
+    title: 'Verdant Crucible',
+    primary: const Color(0xff527663),
+    secondary: const Color(0xff5d9ab5),
     visualIndex: 0,
-    title: 'Asterfall Vale',
-    caption:
-        'The Regalia fell in Asterfall Vale, where the Starfall Stag guards the shrine that can restore its first jewel.',
-    startOrder: 1,
-    endOrder: 9,
-    difficulty: DifficultyTier.easy,
-    size: 6,
-    boss: ChapterBoss(
-      id: 'regalia:boss/origin/starfall-stag',
-      name: 'Starfall Stag',
-      puzzleId: 'regalia:puzzle/origin/boss/starfall-stag',
-      spriteFamily: EnemySpriteFamily.antlered,
-      spriteAsset: 'assets/art/combat/opponents/starfall-stag.png',
-      spectacleLevel: 1,
-      size: 7,
-      targetDifficulty: DifficultyTier.easy,
-      unlockTargetId: 'regalia:chapter/origin/whisperwood',
-    ),
-    palette: JourneyPalette(
-      primary: Color(0xff527663),
-      secondary: Color(0xff5d9ab5),
-    ),
   ),
-  JourneyChapter(
-    id: 'regalia:chapter/origin/whisperwood',
-    mapId: ContentIds.originMap,
-    sceneId: 'regalia:scene/origin/whisperwood',
-    artKey: 'whisperwood',
-    artAsset: 'assets/art/backgrounds/chapter_whisperwood.webp',
-    visualIndex: 1,
-    title: 'Myrrhveil Wilds',
-    caption:
-        'A hidden path through Myrrhveil leads to the Elderroot Wyrm and the power needed to restore the second jewel.',
-    startOrder: 10,
-    endOrder: 18,
-    difficulty: DifficultyTier.easy,
-    size: 7,
-    boss: ChapterBoss(
-      id: 'regalia:boss/origin/elderroot-wyrm',
-      name: 'Elderroot Wyrm',
-      puzzleId: 'regalia:puzzle/origin/boss/elderroot-wyrm',
-      spriteFamily: EnemySpriteFamily.rootbound,
-      spriteAsset: 'assets/art/combat/opponents/elderroot-wyrm.png',
-      spectacleLevel: 2,
-      size: 7,
-      targetDifficulty: DifficultyTier.medium,
-      unlockTargetId: 'regalia:chapter/origin/windmill-heights',
-    ),
-    palette: JourneyPalette(
-      primary: Color(0xff365f50),
-      secondary: Color(0xff704d78),
-    ),
-  ),
-  JourneyChapter(
-    id: 'regalia:chapter/origin/windmill-heights',
-    mapId: ContentIds.originMap,
-    sceneId: 'regalia:scene/origin/windmill-heights',
-    artKey: 'windmill-heights',
-    artAsset: 'assets/art/backgrounds/chapter_windmill_heights.webp',
+  _challengeVisualChapter(
+    tier: DifficultyTier.medium,
+    title: 'Tempest Crucible',
+    primary: const Color(0xff536d88),
+    secondary: const Color(0xffa75b3b),
     visualIndex: 2,
-    title: 'Skyglass Reach',
-    caption:
-        'The Tempest Roc has trapped Skyglass Reach in a storm and cut off its floating islands.',
-    startOrder: 19,
-    endOrder: 27,
-    difficulty: DifficultyTier.medium,
-    size: 7,
-    boss: ChapterBoss(
-      id: 'regalia:boss/origin/tempest-roc',
-      name: 'Tempest Roc',
-      puzzleId: 'regalia:puzzle/origin/boss/tempest-roc',
-      spriteFamily: EnemySpriteFamily.winged,
-      spriteAsset: 'assets/art/combat/opponents/tempest-roc.png',
-      spectacleLevel: 3,
-      size: 8,
-      targetDifficulty: DifficultyTier.medium,
-      unlockTargetId: 'regalia:chapter/origin/sunken-cloister',
-    ),
-    palette: JourneyPalette(
-      primary: Color(0xff536d88),
-      secondary: Color(0xffa75b3b),
-    ),
   ),
-  JourneyChapter(
-    id: 'regalia:chapter/origin/sunken-cloister',
-    mapId: ContentIds.originMap,
-    sceneId: 'regalia:scene/origin/sunken-cloister',
-    artKey: 'sunken-cloister',
-    artAsset: 'assets/art/backgrounds/chapter_sunken_cloister.webp',
-    visualIndex: 3,
-    title: 'Nacre Basilica',
-    caption:
-        'The flooded city’s silent bell tower holds the power needed to restore the fourth jewel.',
-    startOrder: 28,
-    endOrder: 36,
-    difficulty: DifficultyTier.medium,
-    size: 8,
-    boss: ChapterBoss(
-      id: 'regalia:boss/origin/abyssal-bellkeeper',
-      name: 'Abyssal Bellkeeper',
-      puzzleId: 'regalia:puzzle/origin/boss/abyssal-bellkeeper',
-      spriteFamily: EnemySpriteFamily.abyssal,
-      spriteAsset: 'assets/art/combat/opponents/abyssal-bellkeeper.png',
-      spectacleLevel: 4,
-      size: 8,
-      targetDifficulty: DifficultyTier.hard,
-      unlockTargetId: 'regalia:chapter/origin/emberbell-caverns',
-    ),
-    palette: JourneyPalette(
-      primary: Color(0xff247f82),
-      secondary: Color(0xff879e91),
-    ),
-  ),
-  JourneyChapter(
-    id: 'regalia:chapter/origin/emberbell-caverns',
-    mapId: ContentIds.originMap,
-    sceneId: 'regalia:scene/origin/emberbell-caverns',
-    artKey: 'emberbell-caverns',
-    artAsset: 'assets/art/backgrounds/chapter_emberbell_caverns.webp',
+  _challengeVisualChapter(
+    tier: DifficultyTier.hard,
+    title: 'Ember Crucible',
+    primary: const Color(0xff8d3e31),
+    secondary: const Color(0xffdb7a37),
     visualIndex: 4,
-    title: 'Pyreheart Caldera',
-    caption:
-        'The Cindermaw Behemoth blocks the ancient forge where the fifth jewel can be restored.',
-    startOrder: 37,
-    endOrder: 45,
-    difficulty: DifficultyTier.hard,
-    size: 8,
-    boss: ChapterBoss(
-      id: 'regalia:boss/origin/cindermaw-behemoth',
-      name: 'Cindermaw Behemoth',
-      puzzleId: 'regalia:puzzle/origin/boss/cindermaw-behemoth',
-      spriteFamily: EnemySpriteFamily.volcanic,
-      spriteAsset: 'assets/art/combat/opponents/cindermaw-behemoth.png',
-      spectacleLevel: 5,
-      size: 9,
-      targetDifficulty: DifficultyTier.hard,
-      unlockTargetId: 'regalia:chapter/origin/goblin-underkeep',
-    ),
-    palette: JourneyPalette(
-      primary: Color(0xff8d3e31),
-      secondary: Color(0xffdb7a37),
-    ),
   ),
-  JourneyChapter(
-    id: 'regalia:chapter/origin/goblin-underkeep',
-    mapId: ContentIds.originMap,
-    sceneId: 'regalia:scene/origin/goblin-underkeep',
-    artKey: 'goblin-underkeep',
-    artAsset: 'assets/art/backgrounds/chapter_goblin_underkeep.webp',
-    visualIndex: 5,
-    title: 'Brasswake Arsenal',
-    caption:
-        'The Gilded War Colossus guards the sixth jewel’s power and the only lift to the upper realms.',
-    startOrder: 46,
-    endOrder: 54,
-    difficulty: DifficultyTier.hard,
-    size: 9,
-    boss: ChapterBoss(
-      id: 'regalia:boss/origin/gilded-war-colossus',
-      name: 'Gilded War Colossus',
-      puzzleId: 'regalia:puzzle/origin/boss/gilded-war-colossus',
-      spriteFamily: EnemySpriteFamily.clockwork,
-      spriteAsset: 'assets/art/combat/opponents/gilded-war-colossus.png',
-      spectacleLevel: 6,
-      size: 9,
-      targetDifficulty: DifficultyTier.expert,
-      unlockTargetId: 'regalia:chapter/origin/moonlit-catacombs',
-    ),
-    palette: JourneyPalette(
-      primary: Color(0xff5b4c2a),
-      secondary: Color(0xff91a934),
-    ),
-  ),
-  JourneyChapter(
-    id: 'regalia:chapter/origin/moonlit-catacombs',
-    mapId: ContentIds.originMap,
-    sceneId: 'regalia:scene/origin/moonlit-catacombs',
-    artKey: 'moonlit-catacombs',
-    artAsset: 'assets/art/backgrounds/chapter_moonlit_catacombs.webp',
+  _challengeVisualChapter(
+    tier: DifficultyTier.expert,
+    title: 'Astral Crucible',
+    primary: const Color(0xff514d82),
+    secondary: const Color(0xffbd8b2d),
     visualIndex: 6,
-    title: 'Pale Moon Necropolis',
-    caption:
-        'The spirits of seven former queens test the knight’s right to carry the Regalia.',
-    startOrder: 55,
-    endOrder: 63,
-    difficulty: DifficultyTier.expert,
-    size: 9,
-    boss: ChapterBoss(
-      id: 'regalia:boss/origin/sevenfold-wraith',
-      name: 'The Sevenfold Wraith',
-      puzzleId: 'regalia:puzzle/origin/boss/sevenfold-wraith',
-      spriteFamily: EnemySpriteFamily.spectral,
-      spriteAsset: 'assets/art/combat/opponents/sevenfold-wraith.png',
-      spectacleLevel: 7,
-      size: 10,
-      targetDifficulty: DifficultyTier.expert,
-      unlockTargetId: 'regalia:chapter/origin/crownspire',
-    ),
-    palette: JourneyPalette(
-      primary: Color(0xff514d82),
-      secondary: Color(0xff9ca9c7),
-    ),
   ),
-  JourneyChapter(
-    id: 'regalia:chapter/origin/crownspire',
-    mapId: ContentIds.originMap,
-    sceneId: 'regalia:scene/origin/crownspire',
-    artKey: 'crownspire',
-    artAsset: 'assets/art/backgrounds/chapter_crownspire_final.png',
-    visualIndex: 7,
-    title: 'Empyrean Citadel',
-    caption:
-        'The Hollow Star has trapped the Queen inside the deserted citadel and kept the final jewel dark.',
-    startOrder: 64,
-    endOrder: 72,
-    difficulty: DifficultyTier.expert,
-    size: 10,
-    boss: ChapterBoss(
-      id: 'regalia:boss/origin/hollow-star',
-      name: 'The Hollow Star',
-      puzzleId: 'regalia:puzzle/origin/boss/hollow-star',
-      spriteFamily: EnemySpriteFamily.cosmic,
-      spriteAsset: 'assets/art/combat/opponents/hollow-star.png',
-      spectacleLevel: 8,
-      size: 12,
-      targetDifficulty: DifficultyTier.expert,
-      unlockTargetId: ContentIds.originFinaleUnlock,
-    ),
-    palette: JourneyPalette(
-      primary: Color(0xff244a98),
-      secondary: Color(0xffbd8b2d),
-    ),
-  ),
-];
+]);
 
-JourneyChapter chapterForOrder(int order) => journeyChapters.firstWhere(
-  (chapter) => chapter.contains(order),
-  orElse: () => journeyChapters.last,
-);
+JourneyChapter _challengeVisualChapter({
+  required DifficultyTier tier,
+  required String title,
+  required Color primary,
+  required Color secondary,
+  required int visualIndex,
+}) {
+  final slug = tier.name;
+  final order = tier.index + 1;
+  return JourneyChapter(
+    id: 'regalia:chapter/just-puzzle/$slug',
+    mapId: 'regalia:map/just-puzzle/endless-crucible',
+    sceneId: 'regalia:scene/just-puzzle/$slug',
+    artKey: 'challenge-$slug',
+    artAsset: 'assets/art/backgrounds/story_opening.webp',
+    visualIndex: visualIndex,
+    title: title,
+    caption: 'A story-independent visual theme for generated puzzles.',
+    startOrder: order,
+    endOrder: order,
+    difficulty: tier,
+    size: switch (tier) {
+      DifficultyTier.easy => 6,
+      DifficultyTier.medium => 7,
+      DifficultyTier.hard => 8,
+      DifficultyTier.expert => 10,
+    },
+    boss: ChapterBoss(
+      id: 'regalia:boss/just-puzzle/$slug',
+      name: 'Crucible Sentinel',
+      puzzleId: 'regalia:puzzle/just-puzzle/visual-$slug',
+      spriteFamily: EnemySpriteFamily.cosmic,
+      spriteAsset: 'assets/art/combat/opponents/starbound-sentinel.png',
+      spectacleLevel: order,
+      size: 6,
+      targetDifficulty: tier,
+      unlockTargetId: 'regalia:unlock/just-puzzle/continue',
+    ),
+    palette: JourneyPalette(primary: primary, secondary: secondary),
+  );
+}
 
 class JourneyProgress {
   const JourneyProgress({

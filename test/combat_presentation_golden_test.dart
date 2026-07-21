@@ -12,6 +12,8 @@ import 'package:regalia/widgets/boss_finisher_cutscene.dart';
 import 'package:regalia/widgets/combat_presentation.dart';
 import 'package:regalia/widgets/pixel_art.dart';
 
+late List<JourneyChapter> _originChapters;
+
 void main() {
   late List<CombatEncounter> allOpponents;
 
@@ -28,8 +30,10 @@ void main() {
             )
             as Map<String, Object?>;
     final opponents = <CombatEncounter>[];
+    final chapters = <JourneyChapter>[];
     for (final chapterValue in metadata['chapters']! as List<Object?>) {
       final chapter = chapterValue! as Map<String, Object?>;
+      chapters.add(JourneyChapter.fromJson(chapter));
       opponents.add(
         ChapterBoss.fromJson(chapter['boss']! as Map<String, Object?>),
       );
@@ -40,6 +44,7 @@ void main() {
       }
     }
     allOpponents = opponents;
+    _originChapters = chapters;
   });
 
   testWidgets(
@@ -70,7 +75,7 @@ void main() {
                     crossAxisCount: 2,
                     childAspectRatio: 2.75,
                     children: [
-                      for (final chapter in journeyChapters)
+                      for (final chapter in _originChapters)
                         CombatPresentationBar(
                           animation: finisherForSpectacle(
                             chapter.boss.spectacleLevel,
@@ -371,7 +376,7 @@ Future<void> _goldenFinalBossFinisher(
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
-  final chapter = journeyChapters.last;
+  final chapter = _originChapters.last;
   final presentation = BossFinisherPresentation.forSpectacle(
     chapter.boss.spectacleLevel,
   );

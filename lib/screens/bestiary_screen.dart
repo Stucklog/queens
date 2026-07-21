@@ -169,10 +169,15 @@ class _ChapterBestiaryPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final chapter = progress.chapter;
+    final colors = Theme.of(context).colorScheme;
+    final accent = RegaliaTheme.readableAccent(
+      preferred: chapter.palette.secondary,
+      background: colors.surface,
+    );
     return PixelPanel(
       key: ValueKey('bestiary-chapter-${chapter.id}'),
       padding: const EdgeInsets.all(12),
-      borderColor: chapter.palette.secondary,
+      borderColor: accent,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -187,9 +192,9 @@ class _ChapterBestiaryPanel extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 '${progress.defeatedCount}/${progress.foes.length}',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: chapter.palette.secondary,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium?.copyWith(color: accent),
               ),
             ],
           ),
@@ -201,6 +206,7 @@ class _ChapterBestiaryPanel extends StatelessWidget {
               ),
               chapter: chapter,
               entry: progress.foes[index],
+              accent: accent,
             ),
             if (index + 1 < progress.foes.length) const SizedBox(height: 8),
           ],
@@ -215,11 +221,13 @@ class _FoeSlot extends StatelessWidget {
     required this.slotKey,
     required this.chapter,
     required this.entry,
+    required this.accent,
   });
 
   final Key slotKey;
   final JourneyChapter chapter;
   final BestiaryFoeEntry entry;
+  final Color accent;
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +288,7 @@ class _FoeSlot extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         shape: PixelOrganicBorder.compact(
-          side: BorderSide(color: chapter.palette.secondary, width: 2),
+          side: BorderSide(color: accent, width: 2),
         ),
         clipBehavior: Clip.hardEdge,
         child: InkWell(
@@ -322,9 +330,9 @@ class _FoeSlot extends StatelessWidget {
                       const SizedBox(height: 3),
                       Text(
                         encounter.isBoss ? 'Boss · Defeated' : 'Foe · Defeated',
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: chapter.palette.secondary,
-                        ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.labelSmall?.copyWith(color: accent),
                       ),
                     ],
                   ),
@@ -332,7 +340,7 @@ class _FoeSlot extends StatelessWidget {
                 const SizedBox(width: 6),
                 PixelIcon(
                   PixelGlyph.arrowRight,
-                  color: chapter.palette.secondary,
+                  color: accent,
                   size: 24,
                   excludeFromSemantics: true,
                 ),

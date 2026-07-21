@@ -1,8 +1,22 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/origin",
-  "contentVersion": 8,
+  "contentVersion": 9,
   "title": "Queen’s Regalia: Origin Story",
+  "theme": {
+    "brightness": "dark",
+    "backgroundColor": "#151d3b",
+    "surfaceColor": "#253052",
+    "surfaceLowColor": "#1b2444",
+    "surfaceContainerHighColor": "#2a3659",
+    "surfaceHighColor": "#303c60",
+    "foregroundColor": "#fff3dc",
+    "mutedForegroundColor": "#d3d7e7",
+    "outlineColor": "#919cbd",
+    "outlineVariantColor": "#4b587c",
+    "inkColor": "#080d20",
+    "dangerColor": "#f06b6b"
+  },
   "mapId": "regalia:map/origin/pilgrimage",
   "puzzleCatalogAsset": "assets/puzzles/catalog.json",
   "unlocks": {
@@ -23,6 +37,11 @@
       "endOrder": 9,
       "difficulty": "easy",
       "size": 6,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
       "boss": {
         "id": "regalia:boss/origin/starfall-stag",
         "name": "Starfall Stag",
@@ -30,6 +49,11 @@
         "spriteFamily": "antlered",
         "spriteAsset": "assets/art/combat/opponents/starfall-stag.png",
         "spectacleLevel": 1,
+        "finisher": {
+          "track": "crownSlash",
+          "moveName": "Crown Slash",
+          "effectLevel": 1
+        },
         "size": 7,
         "targetDifficulty": "easy",
         "unlocks": "regalia:chapter/origin/whisperwood"
@@ -66,6 +90,11 @@
       "endOrder": 18,
       "difficulty": "easy",
       "size": 7,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
       "boss": {
         "id": "regalia:boss/origin/elderroot-wyrm",
         "name": "Elderroot Wyrm",
@@ -73,6 +102,11 @@
         "spriteFamily": "rootbound",
         "spriteAsset": "assets/art/combat/opponents/elderroot-wyrm.png",
         "spectacleLevel": 2,
+        "finisher": {
+          "track": "twinSigil",
+          "moveName": "Twin Sigil",
+          "effectLevel": 2
+        },
         "size": 7,
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/origin/windmill-heights"
@@ -109,6 +143,11 @@
       "endOrder": 27,
       "difficulty": "medium",
       "size": 7,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
       "boss": {
         "id": "regalia:boss/origin/tempest-roc",
         "name": "Tempest Roc",
@@ -116,6 +155,11 @@
         "spriteFamily": "winged",
         "spriteAsset": "assets/art/combat/opponents/tempest-roc.png",
         "spectacleLevel": 3,
+        "finisher": {
+          "track": "skybreak",
+          "moveName": "Skybreak",
+          "effectLevel": 3
+        },
         "size": 8,
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/origin/sunken-cloister"
@@ -152,6 +196,11 @@
       "endOrder": 36,
       "difficulty": "medium",
       "size": 8,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
       "boss": {
         "id": "regalia:boss/origin/abyssal-bellkeeper",
         "name": "Abyssal Bellkeeper",
@@ -159,6 +208,11 @@
         "spriteFamily": "abyssal",
         "spriteAsset": "assets/art/combat/opponents/abyssal-bellkeeper.png",
         "spectacleLevel": 4,
+        "finisher": {
+          "track": "tidalAegis",
+          "moveName": "Tidal Aegis",
+          "effectLevel": 4
+        },
         "size": 8,
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/origin/emberbell-caverns"
@@ -195,6 +249,11 @@
       "endOrder": 45,
       "difficulty": "hard",
       "size": 8,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
       "boss": {
         "id": "regalia:boss/origin/cindermaw-behemoth",
         "name": "Cindermaw Behemoth",
@@ -202,6 +261,11 @@
         "spriteFamily": "volcanic",
         "spriteAsset": "assets/art/combat/opponents/cindermaw-behemoth.png",
         "spectacleLevel": 5,
+        "finisher": {
+          "track": "cinderfall",
+          "moveName": "Cinderfall",
+          "effectLevel": 5
+        },
         "size": 9,
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/origin/goblin-underkeep"
@@ -238,6 +302,11 @@
       "endOrder": 54,
       "difficulty": "hard",
       "size": 9,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
       "boss": {
         "id": "regalia:boss/origin/gilded-war-colossus",
         "name": "Gilded War Colossus",
@@ -245,6 +314,11 @@
         "spriteFamily": "clockwork",
         "spriteAsset": "assets/art/combat/opponents/gilded-war-colossus.png",
         "spectacleLevel": 6,
+        "finisher": {
+          "track": "brassJudgment",
+          "moveName": "Brass Judgment",
+          "effectLevel": 6
+        },
         "size": 9,
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/origin/moonlit-catacombs"
@@ -281,6 +355,11 @@
       "endOrder": 63,
       "difficulty": "expert",
       "size": 9,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
       "boss": {
         "id": "regalia:boss/origin/sevenfold-wraith",
         "name": "The Sevenfold Wraith",
@@ -288,6 +367,11 @@
         "spriteFamily": "spectral",
         "spriteAsset": "assets/art/combat/opponents/sevenfold-wraith.png",
         "spectacleLevel": 7,
+        "finisher": {
+          "track": "moonlitSever",
+          "moveName": "Moonlit Sever",
+          "effectLevel": 7
+        },
         "size": 10,
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/origin/crownspire"
@@ -324,6 +408,11 @@
       "endOrder": 72,
       "difficulty": "expert",
       "size": 10,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
       "boss": {
         "id": "regalia:boss/origin/hollow-star",
         "name": "The Hollow Star",
@@ -331,6 +420,11 @@
         "spriteFamily": "cosmic",
         "spriteAsset": "assets/art/combat/opponents/hollow-star.png",
         "spectacleLevel": 8,
+        "finisher": {
+          "track": "regaliaNova",
+          "moveName": "Regalia Nova",
+          "effectLevel": 8
+        },
         "size": 12,
         "targetDifficulty": "expert",
         "unlocks": "regalia:unlock/origin/finale"
@@ -356,40 +450,6 @@
     }
   ],
   "scenes": [
-    {
-      "id": "regalia:scene/origin/opening",
-      "role": "opening",
-      "pages": [
-        {
-          "title": "The Stolen Dawn",
-          "paragraphs": [
-            "For generations, the eight jewels of the Queen’s Regalia linked the crown to the eight realms. Each jewel carried the power of a different land, and together they kept the roads open and brought daylight to the kingdom.",
-            "One morning, a dark star appeared above the Empyrean Citadel and covered the sun. The palace sealed around the Queen, the birds fell silent, and darkness spread from the capital into every realm."
-          ],
-          "semanticLabel": "The Hollow Star blocks the sun above the Empyrean Citadel while darkness spreads across the realms.",
-          "actionLabel": "See what happened"
-        },
-        {
-          "title": "The Falling Crown",
-          "paragraphs": [
-            "Before the darkness closed around her, the Queen used a spell to send the Regalia out of the citadel. The crown crossed the sky toward Asterfall Vale, and its eight jewels went dark one after another.",
-            "It struck a meadow and left a crater scattered with glassy earth. A knight traveling through the valley found the crown still warm. When they picked it up, they saw a vision of the eight troubled realms and the Queen trapped inside the darkened palace."
-          ],
-          "semanticLabel": "The Regalia falls from the darkened citadel and lands near a lone knight in Asterfall Vale.",
-          "actionLabel": "Follow the crown"
-        },
-        {
-          "title": "The Knight’s Choice",
-          "paragraphs": [
-            "The vision gave the knight no promise of victory. It showed a route through the eight realms and made one thing clear: each jewel had to be restored before the Hollow Star could be challenged and the Queen could be freed.",
-            "The knight could have left the crown where it fell. Instead, they put it on, tightened the worn straps of their armor, and faced the first darkened road. As they started forward, the first jewel gave a faint spark."
-          ],
-          "semanticLabel": "The knight lifts the darkened Regalia and prepares to travel through the eight realms.",
-          "actionLabel": "Begin the journey"
-        }
-      ],
-      "artAsset": "assets/art/backgrounds/story_opening.webp"
-    },
     {
       "id": "regalia:scene/origin/clovermead",
       "role": "chapter",
@@ -521,8 +581,38 @@
     {
       "id": "regalia:scene/origin/finale",
       "role": "finale",
-      "pages": [
+      "defaults": {
+        "background": {
+          "asset": "assets/art/backgrounds/story_finale.webp",
+          "fit": "cover"
+        },
+        "characters": [
+          {
+            "id": "crown-bearer",
+            "source": {
+              "type": "builtIn",
+              "character": "crownBearer"
+            },
+            "alignment": {"x": -0.42, "y": 0.65},
+            "size": {"width": 82, "height": 123},
+            "semanticLabel": "The crown-bearer"
+          },
+          {
+            "id": "queen",
+            "source": {
+              "type": "builtIn",
+              "character": "queen"
+            },
+            "alignment": {"x": 0.34, "y": 0.55},
+            "size": {"width": 92, "height": 145},
+            "mirrored": true,
+            "semanticLabel": "The Queen"
+          }
+        ]
+      },
+      "frames": [
         {
+          "id": "hollow-star-falls",
           "title": "The Hollow Star Falls",
           "paragraphs": [
             "The knight’s final strike broke the Hollow Star. For a moment, the throne hall remained dark. Then the eighth jewel awoke, and the completed Regalia shone with the combined colors of all eight realms.",
@@ -532,6 +622,7 @@
           "actionLabel": "See the dawn return"
         },
         {
+          "id": "crown-returns",
           "title": "The Crown Returns",
           "paragraphs": [
             "The Queen stepped out of the broken spell, older and more tired than the figure the knight had seen in the Regalia’s first vision. With all eight jewels shining, the knight knelt and offered the crown back to her.",
@@ -541,6 +632,7 @@
           "actionLabel": "Return the crown"
         },
         {
+          "id": "first-morning",
           "title": "The First Morning",
           "paragraphs": [
             "In the days that followed, the storm over Skyglass cleared, the water around Nacre began to fall, and new leaves appeared in Myrrhveil. People left their shelters and reopened the roads between the realms.",

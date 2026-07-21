@@ -12,6 +12,7 @@ class ContentEntitlementPolicy {
   const ContentEntitlementPolicy({
     required this.channel,
     this.grantedEntitlementIds = const {},
+    this.grantChannelEntitlements = false,
   });
 
   factory ContentEntitlementPolicy.current({
@@ -19,24 +20,28 @@ class ContentEntitlementPolicy {
   }) => ContentEntitlementPolicy(
     channel: kIsWeb ? ReleaseChannel.web : ReleaseChannel.paidPlatform,
     grantedEntitlementIds: grantedEntitlementIds,
+    grantChannelEntitlements: true,
   );
 
   const ContentEntitlementPolicy.web()
     : channel = ReleaseChannel.web,
-      grantedEntitlementIds = const {};
+      grantedEntitlementIds = const {},
+      grantChannelEntitlements = true;
 
   const ContentEntitlementPolicy.paidPlatform({
     this.grantedEntitlementIds = const {},
-  }) : channel = ReleaseChannel.paidPlatform;
+  }) : channel = ReleaseChannel.paidPlatform,
+       grantChannelEntitlements = true;
 
   final ReleaseChannel channel;
   final Set<String> grantedEntitlementIds;
+  final bool grantChannelEntitlements;
 
-  bool includesArc(String arcId, Set<ReleaseChannel> packageChannels) =>
-      packageChannels.contains(channel) &&
-      (channel != ReleaseChannel.web || arcId == ContentIds.originArc);
+  bool includesArc(Set<ReleaseChannel> packageChannels) =>
+      packageChannels.contains(channel);
 
   bool isEntitled(String entitlementId) =>
+      grantChannelEntitlements ||
       entitlementId == ContentIds.originEntitlement ||
       entitlementId == ContentIds.justPuzzleEntitlement ||
       grantedEntitlementIds.contains(entitlementId);
