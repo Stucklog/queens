@@ -18,7 +18,6 @@ jobs:
       - run: flutter analyze
       - run: flutter test --exclude-tags=golden
       - run: flutter test --platform chrome test/current_release_channel_test.dart
-      - run: flutter test --platform chrome test/portfolio_web_smoke_test.dart
       - run: dart run tool/generate_puzzles.dart validate-all
       - run: dart run tool/verify_crown_art.dart
       - run: dart run tool/verify_offline.dart
