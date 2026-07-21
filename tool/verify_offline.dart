@@ -3,13 +3,18 @@ import 'dart:io';
 
 Future<void> main(List<String> arguments) async {
   final failures = <String>[];
-  final paidSource = arguments.contains('--paid-source');
+  final webSource = arguments.contains('--web-source');
+  if (arguments.contains('--paid-source')) {
+    failures.add(
+      '--paid-source is obsolete; the checked-in source is the complete app',
+    );
+  }
   final pubspec = await File('pubspec.yaml').readAsString();
   final flutterAssets = _flutterAssetDeclarations(pubspec);
   if (RegExp(r'^  default-flavor:', multiLine: true).hasMatch(pubspec)) {
     failures.add(
-      'pubspec.yaml must not set default-flavor; unflavored web builds are the '
-      'secure baseline',
+      'pubspec.yaml must not set default-flavor; native builds use the default '
+      'complete bundle and web filtering happens only in temporary staging',
     );
   }
   final dependencies = _directDependencies(pubspec);
@@ -90,7 +95,7 @@ Future<void> main(List<String> arguments) async {
         decoded,
         failures: failures,
         flutterAssets: flutterAssets,
-        paidSource: paidSource,
+        webSource: webSource,
       );
     } on Object catch (error) {
       failures.add('invalid content manifest: $error');
@@ -136,8 +141,11 @@ Future<void> main(List<String> arguments) async {
 
   final buildIndex = arguments.indexOf('--web-build');
   final nativeBuildIndex = arguments.indexOf('--native-build');
-  if (paidSource && buildIndex >= 0) {
-    failures.add('a paid staging workspace must never be used for a web build');
+  if (buildIndex >= 0 && !webSource) {
+    failures.add('--web-build requires the restricted --web-source workspace');
+  }
+  if (webSource && nativeBuildIndex >= 0) {
+    failures.add('the restricted GitHub Pages source cannot build native apps');
   }
   if (buildIndex >= 0 && nativeBuildIndex >= 0) {
     failures.add('verify web and native build artifacts in separate commands');
@@ -205,16 +213,15 @@ Future<void> main(List<String> arguments) async {
             );
           }
           if (File('${root.path}/$webAsset').existsSync()) {
-            failures.add('web build bundles web-excluded package asset $asset');
+            failures.add(
+              'GitHub Pages build bundles excluded package asset $asset',
+            );
           }
         }
       }
     }
   }
   if (nativeBuildIndex >= 0) {
-    if (!paidSource) {
-      failures.add('--native-build requires an expanded --paid-source');
-    }
     if (nativeBuildIndex + 1 >= arguments.length) {
       failures.add('--native-build requires an artifact path');
     } else {
@@ -265,13 +272,13 @@ Future<void> main(List<String> arguments) async {
     return;
   }
   stdout.writeln(
-    paidSource
-        ? nativeBuildIndex >= 0
-            ? 'Verified the paid native artifact and offline package set.'
-            : 'Verified the expanded paid-edition source and offline package set.'
+    nativeBuildIndex >= 0
+        ? 'Verified the full native artifact and offline package set.'
         : buildIndex >= 0
-        ? 'Verified release network isolation and offline PWA resources.'
-        : 'Verified release network isolation and installable PWA metadata.',
+        ? 'Verified restricted GitHub Pages resources and isolation.'
+        : webSource
+        ? 'Verified the restricted GitHub Pages source package.'
+        : 'Verified the full default app source and offline package set.',
   );
 }
 
@@ -342,7 +349,7 @@ _ContentOfflinePolicy _contentOfflinePolicy(
   Map<String, Object?> manifest, {
   required List<String> failures,
   required List<_FlutterAssetDeclaration> flutterAssets,
-  required bool paidSource,
+  required bool webSource,
 }) {
   _validateStoreLinks(manifest['storeLinks'], failures);
   final arcs = manifest['arcs'];
@@ -499,30 +506,20 @@ _ContentOfflinePolicy _contentOfflinePolicy(
   final sharedWebAssets = {...webPackageAssets, ...storefrontAssets};
   for (final asset in webExcludedPackageAssets) {
     if (!File(asset).existsSync()) {
-      failures.add('paid content package asset is missing: $asset');
+      failures.add('full story package asset is missing: $asset');
       continue;
     }
     if (sharedWebAssets.contains(asset)) continue;
-    if (paidSource) {
-      if (!_isFlutterAssetDeclared(asset, flutterAssets, flavor: null)) {
+    if (webSource) {
+      if (_isFlutterAssetDeclared(asset, flutterAssets, flavor: null)) {
         failures.add(
-          'paid content package asset is not declared in the expanded paid '
-          'edition: $asset',
+          'GitHub Pages source declares excluded full-package asset: $asset',
         );
       }
       continue;
     }
-    if (_isFlutterAssetDeclared(asset, flutterAssets, flavor: null)) {
-      failures.add(
-        'paid-only content asset leaks into the unflavored web edition: '
-        '$asset',
-      );
-    }
-    if (!_isFlutterAssetDeclared(asset, flutterAssets, flavor: 'paid')) {
-      failures.add(
-        'paid content package asset is not declared for the paid edition: '
-        '$asset',
-      );
+    if (!_isFlutterAssetDeclared(asset, flutterAssets, flavor: null)) {
+      failures.add('default app source omits full story package asset: $asset');
     }
   }
   return _ContentOfflinePolicy(

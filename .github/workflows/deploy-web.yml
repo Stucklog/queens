@@ -37,11 +37,24 @@ jobs:
       - name: Test
         run: flutter test --exclude-tags=golden
 
+      - name: Stage restricted GitHub Pages edition
+        run: dart run tool/stage_web_edition.dart --output "${{ runner.temp }}/regalia-web"
+
+      - name: Install staged web dependencies
+        working-directory: ${{ runner.temp }}/regalia-web
+        run: flutter pub get
+
+      - name: Verify restricted web source
+        working-directory: ${{ runner.temp }}/regalia-web
+        run: dart run tool/verify_offline.dart --web-source
+
       - name: Build release PWA
+        working-directory: ${{ runner.temp }}/regalia-web
         run: flutter build web --release --base-href "/"
 
       - name: Verify offline release
-        run: dart run tool/verify_offline.dart --web-build build/web
+        working-directory: ${{ runner.temp }}/regalia-web
+        run: dart run tool/verify_offline.dart --web-source --web-build build/web
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -49,7 +62,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: build/web
+          path: ${{ runner.temp }}/regalia-web/build/web
 
   deploy:
     environment:

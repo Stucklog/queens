@@ -17,11 +17,7 @@ jobs:
       - run: dart format --output=none --set-exit-if-changed lib test tool
       - run: flutter analyze
       - run: flutter test --exclude-tags=golden
-      # Flutter's unit-test asset bundle is cached without the asset flavor in
-      # its fingerprint. Reset it before asserting the paid-only package.
-      - run: flutter clean
-      - run: flutter pub get
-      - run: flutter test --flavor paid test/atlas_of_borrowed_winds_paid_bundle_test.dart
+      - run: flutter test --platform chrome test/current_release_channel_test.dart
       - run: dart run tool/generate_puzzles.dart validate
       - run: dart run tool/generate_puzzles.dart validate --catalog assets/content/arcs/atlas-of-borrowed-winds/catalog.json
       - run: dart run tool/verify_crown_art.dart
@@ -81,34 +77,32 @@ jobs:
         with:
           flutter-version: 3.29.3
           cache: true
-      - run: flutter pub get
       - if: matrix.target == 'linux'
         run: sudo apt-get update && sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
-      - if: matrix.target != 'web'
-        run: dart run tool/stage_paid_edition.dart --output "${{ runner.temp }}/regalia-paid"
-      - if: matrix.target != 'web'
-        working-directory: ${{ runner.temp }}/regalia-paid
+      - if: matrix.target == 'web'
+        run: dart run tool/stage_web_edition.dart --output "${{ runner.temp }}/regalia-web"
+      - if: matrix.target == 'web'
+        working-directory: ${{ runner.temp }}/regalia-web
         run: flutter pub get
       - if: matrix.target != 'web'
-        working-directory: ${{ runner.temp }}/regalia-paid
-        run: dart run tool/verify_offline.dart --paid-source
+        run: flutter pub get
       - if: matrix.target == 'web'
+        working-directory: ${{ runner.temp }}/regalia-web
         run: ${{ matrix.command }}
       - if: matrix.target != 'web'
-        working-directory: ${{ runner.temp }}/regalia-paid
         run: ${{ matrix.command }}
       - if: matrix.target != 'web'
-        working-directory: ${{ runner.temp }}/regalia-paid
-        run: dart run tool/verify_offline.dart --paid-source --native-build "${{ matrix.artifact }}"
+        run: dart run tool/verify_offline.dart --native-build "${{ matrix.artifact }}"
       - if: matrix.target == 'web'
-        run: dart run tool/verify_offline.dart --web-build build/web
+        working-directory: ${{ runner.temp }}/regalia-web
+        run: dart run tool/verify_offline.dart --web-source --web-build build/web
       - if: matrix.target == 'web'
+        uses: actions/upload-artifact@v4
+        with:
+          name: regalia-${{ matrix.target }}
+          path: ${{ runner.temp }}/regalia-web/${{ matrix.artifact }}
+      - if: matrix.target != 'web'
         uses: actions/upload-artifact@v4
         with:
           name: regalia-${{ matrix.target }}
           path: ${{ matrix.artifact }}
-      - if: matrix.target != 'web'
-        uses: actions/upload-artifact@v4
-        with:
-          name: regalia-${{ matrix.target }}
-          path: ${{ runner.temp }}/regalia-paid/${{ matrix.artifact }}

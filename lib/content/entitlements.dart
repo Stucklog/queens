@@ -4,10 +4,11 @@ import 'content_ids.dart';
 
 enum ReleaseChannel { web, paidPlatform }
 
-/// Separates content packaging from the right to use that content.
+/// Selects the browser catalog or the complete installed-app catalog.
 ///
-/// Store purchase/receipt code can translate its result into
-/// [grantedEntitlementIds] without coupling content loading to a storefront.
+/// Native storefronts sell the app once; there are no per-arc purchases or
+/// receipt gates. [grantedEntitlementIds] remains only for explicit package-
+/// isolation policies and is never supplied by the shipping app.
 class ContentEntitlementPolicy {
   const ContentEntitlementPolicy({
     required this.channel,

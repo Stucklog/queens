@@ -49,7 +49,7 @@ void main() {
             'title': 'The Journey Ahead',
             'paragraphs': [
               'The road beyond the prologue leads into chapters, encounters, and a finale stored inside the platform-specific package.',
-              'Those deeper story records stay unread on the web while the complete paid application can continue the journey.',
+              'Those deeper story records stay unread on the web while the complete installed app can continue the journey.',
             ],
             'semanticLabel': 'A road leading toward the next story.',
             'actionLabel': 'View the apps',
@@ -234,7 +234,7 @@ void main() {
   );
 
   test(
-    'paid edition attempts packaged arcs without per-arc entitlements',
+    'installed app attempts packaged arcs without per-arc entitlements',
     () async {
       final assets = await assetsFor(futureChannels: ['paidPlatform']);
       final registry = await repository(assets).load(
@@ -252,7 +252,7 @@ void main() {
   );
 
   test(
-    'paid edition loads an additional valid arc without entitlements',
+    'installed app loads an additional valid arc without entitlements',
     () async {
       final originMetadata =
           await File('assets/content/arcs/origin/arc.json').readAsString();

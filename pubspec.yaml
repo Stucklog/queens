@@ -64,18 +64,10 @@ flutter:
     - assets/content/
     - assets/content/arcs/origin/
     - assets/storefront/atlas-of-borrowed-winds/
-    - path: assets/content/arcs/atlas-of-borrowed-winds/
-      flavors:
-        - paid
-    - path: assets/art/arcs/atlas-of-borrowed-winds/backgrounds/
-      flavors:
-        - paid
-    - path: assets/art/arcs/atlas-of-borrowed-winds/characters/
-      flavors:
-        - paid
-    - path: assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/
-      flavors:
-        - paid
+    - assets/content/arcs/atlas-of-borrowed-winds/ # web-excluded
+    - assets/art/arcs/atlas-of-borrowed-winds/backgrounds/ # web-excluded
+    - assets/art/arcs/atlas-of-borrowed-winds/characters/ # web-excluded
+    - assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/ # web-excluded
     - assets/fonts/PixelifySans_LICENSE.txt
     - assets/puzzles/catalog.json
     - assets/puzzles/tutorial.json

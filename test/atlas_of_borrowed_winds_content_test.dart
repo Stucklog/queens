@@ -25,7 +25,7 @@ void main() {
   );
 
   test(
-    'web exposes the Atlas preview without reading its paid package',
+    'web exposes the Atlas preview without reading its full package',
     () async {
       final reads = <String>[];
       final registry = await repository(reads: reads).load(
