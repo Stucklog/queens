@@ -12,7 +12,10 @@ import '../widgets/pixel_ui.dart';
 
 const _debugBestiaryUnlockAllBuildFlag = bool.fromEnvironment(
   'REGALIA_ENABLE_DEBUG_BESTIARY_UNLOCK_ALL',
-  defaultValue: false,
+  // Make the animation-review control available in ordinary debug launches.
+  // It remains impossible to show in profile or release builds because
+  // [_debugUnlockAllAvailable] also requires [kDebugMode].
+  defaultValue: true,
 );
 
 class BestiaryScreen extends StatefulWidget {

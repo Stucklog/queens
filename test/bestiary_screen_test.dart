@@ -84,7 +84,9 @@ void main() {
     semantics.dispose();
   });
 
-  testWidgets('temporary unlock control is absent by default', (tester) async {
+  testWidgets('temporary unlock control is available in debug by default', (
+    tester,
+  ) async {
     final controller = await _controller(tester);
     addTearDown(controller.dispose);
 
@@ -92,10 +94,30 @@ void main() {
 
     expect(
       find.byKey(const ValueKey('bestiary-debug-unlock-all')),
-      findsNothing,
+      findsOneWidget,
     );
     expect(find.text('0 / 24 foes revealed'), findsOneWidget);
   });
+
+  testWidgets(
+    'temporary unlock control can be disabled with a build override',
+    (tester) async {
+      final controller = await _controller(tester);
+      addTearDown(controller.dispose);
+
+      await _pumpBestiary(
+        tester,
+        controller,
+        const Size(390, 844),
+        debugUnlockAllEnabledOverride: false,
+      );
+
+      expect(
+        find.byKey(const ValueKey('bestiary-debug-unlock-all')),
+        findsNothing,
+      );
+    },
+  );
 
   testWidgets('debug opt-in can reveal every foe for the current visit', (
     tester,
@@ -175,7 +197,7 @@ void main() {
 
     expect(
       find.byKey(const ValueKey('bestiary-debug-unlock-all')),
-      findsNothing,
+      findsOneWidget,
     );
     expect(find.text('0 / 24 foes revealed'), findsOneWidget);
     expect(find.text(firstFoe.name), findsNothing);

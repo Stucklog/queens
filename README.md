@@ -39,6 +39,11 @@ The checked-in workspace is the web-safe source. To run or build the complete
 paid edition on any native target, create the isolated staging workspace
 described in [Content authoring and releases](docs/CONTENT_AUTHORING.md#loading-and-web-bundle-boundary), run `flutter pub get` there, then use the normal `flutter run` or `flutter build` command. Flutter targets web, iOS, Android, macOS, Windows, and Linux. A release web build includes Flutter's generated service worker, which caches the app shell and bundled catalog for use after the first load.
 
+For local macOS animation review, choose **Queen's Regalia — macOS
+full-content preview** in VS Code's Run and Debug view. It includes the
+complete Atlas package. In debug builds, the Bestiary also shows **Unlock All Foes (Debug)**;
+that preview lasts only for the current visit and never changes saved progress.
+
 ## Puzzle tooling
 
 The app and command-line tooling share the pure-Dart core in `lib/core`.

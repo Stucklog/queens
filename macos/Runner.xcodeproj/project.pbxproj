@@ -87,6 +87,8 @@
 		7DD8B4CB3088DE1F44849D40 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		ACA5AC02306AC4DE16FA2546 /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C04F02F29FCBA65FB893F4B3 /* Pods-Runner.debug-paid.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-paid.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-paid.xcconfig"; sourceTree = "<group>"; };
+		D38612A12ADEC867ACEEAA21 /* Pods-RunnerTests.debug-paid.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug-paid.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug-paid.xcconfig"; sourceTree = "<group>"; };
 		E11938A1F84F8543AF41D413 /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -194,6 +196,8 @@
 				1C68F33092D37D1FF52D2B69 /* Pods-RunnerTests.debug.xcconfig */,
 				0EEE8F79CDD07009C1A505F1 /* Pods-RunnerTests.release.xcconfig */,
 				E11938A1F84F8543AF41D413 /* Pods-RunnerTests.profile.xcconfig */,
+				C04F02F29FCBA65FB893F4B3 /* Pods-Runner.debug-paid.xcconfig */,
+				D38612A12ADEC867ACEEAA21 /* Pods-RunnerTests.debug-paid.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
@@ -752,6 +756,61 @@
 			};
 			name = Release;
 		};
+		A11CE0012044C6BA0003C045 /* Debug-paid */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = "Debug-paid";
+		};
+		A11CE0022044C6BA0003C045 /* Debug-paid */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 33E5194F232828860026EE4D /* AppInfo.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/DebugProfile.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Runner/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = "Debug-paid";
+		};
+		A11CE0032044C6BA0003C045 /* Debug-paid */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Debug-paid";
+		};
+		A11CE0042044C6BA0003C045 /* Debug-paid */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D38612A12ADEC867ACEEAA21 /* Pods-RunnerTests.debug-paid.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.queens.RunnerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Queens Regalia.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Queens Regalia";
+			};
+			name = "Debug-paid";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -759,6 +818,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				331C80DB294CF71000263BE5 /* Debug */,
+				A11CE0042044C6BA0003C045 /* Debug-paid */,
 				331C80DC294CF71000263BE5 /* Release */,
 				331C80DD294CF71000263BE5 /* Profile */,
 			);
@@ -769,6 +829,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				33CC10F92044A3C60003C045 /* Debug */,
+				A11CE0012044C6BA0003C045 /* Debug-paid */,
 				33CC10FA2044A3C60003C045 /* Release */,
 				338D0CE9231458BD00FA5F75 /* Profile */,
 			);
@@ -779,6 +840,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				33CC10FC2044A3C60003C045 /* Debug */,
+				A11CE0022044C6BA0003C045 /* Debug-paid */,
 				33CC10FD2044A3C60003C045 /* Release */,
 				338D0CEA231458BD00FA5F75 /* Profile */,
 			);
@@ -789,6 +851,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				33CC111C2044C6BA0003C045 /* Debug */,
+				A11CE0032044C6BA0003C045 /* Debug-paid */,
 				33CC111D2044C6BA0003C045 /* Release */,
 				338D0CEB231458BD00FA5F75 /* Profile */,
 			);

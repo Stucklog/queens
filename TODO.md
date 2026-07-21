@@ -10,13 +10,15 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## Gameplay and progression
 
-- [x] **P1 — Make first launch flow into the origin story and guided first puzzle.**
-  - After the one-time opening slides, take the player directly into the origin story and show the prologue.
-  - Make the first puzzle of the origin arc the guided rules walkthrough rather than a separate tutorial flow.
-  - Use simple, progressive guidance so new players learn the board, crowns, exclusions, and deductions while solving that puzzle.
-  - Save the walkthrough/prologue completion state so the opening sequence does not repeat automatically on every launch.
-  - Add a clearly visible Home Screen entry so players can replay the rules walkthrough whenever they need a refresher.
-  - Allow replaying the walkthrough without affecting story or puzzle progress.
+- [ ] **P1 — Create a read-only “How to Play” walkthrough before the first prologue.**
+  - After the one-time opening slides, show “How to Play” before entering the origin story and prologue.
+  - Cover the game rules, puzzle interactions, story selection, and how progression/unlocks work.
+  - Teach each rule forcefully and in order rather than allowing free play on a live puzzle board.
+  - Use partially completed read-only boards to demonstrate deductions and interactions: one tap for a block/exclusion, two taps for a crown, and dragging to block multiple cells.
+  - Make examples advance only after the intended lesson is understood or acknowledged, without changing puzzle state.
+  - Do not show “How to Play” again after the first prologue has been completed; retain a clearly visible Home Screen entry for optional replay.
+  - Restore the first origin-story puzzle to a normal playable puzzle instead of using it as the tutorial.
+  - Ensure replaying “How to Play” never changes story, puzzle, or progression state.
 
 - [x] **P1 — Set story arcs to nine puzzles per difficulty–size combination.**
   - Set the arc progression target to nine puzzles for each difficulty and board-size combination.
@@ -53,6 +55,11 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Start with fundamentals and unlock more advanced techniques as lessons are completed.
   - Let players revisit completed lessons and practice techniques without affecting the main journey.
   - Track lesson completion and make the Academy accessible from the main navigation.
+
+- [ ] **P1 — Disable the Academy until it can be improved.**
+  - Hide or disable the Academy entry and access point while its content and experience are being improved.
+  - Preserve the Academy implementation and progress data so it can be re-enabled later with a configuration toggle or feature flag.
+  - Ensure disabled Academy access does not block the main journey, tutorial, or “Just Puzzle!” mode.
 
 - [x] **P1 — Add a boss puzzle at the end of every chapter.**
   - Set each boss puzzle’s difficulty to match the difficulty of the next chapter.
@@ -114,6 +121,11 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Reserve the strongest version for the final boss.
 
 ## Story and cinematic scenes
+
+- [ ] **P2 — Limit prologues to three pages.**
+  - Keep each story-arc prologue to a maximum of three pages.
+  - Condense or redistribute text so the essential setup, context, and hook remain clear within the limit.
+  - Check pacing, text readability, navigation, and transitions on small and large screens.
 
 - [x] **P1 — Improve text contrast on story-arc homepage tiles.**
   - Fix the current black text over black drop shadow treatment, which makes tile labels difficult to read.
@@ -187,7 +199,7 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## UI and naming
 
-- [x] **P2 — Add a temporary “Unlock All” button to the Bestiary.**
+- [ ] **P2 — Add a temporary “Unlock All” button to the Bestiary.**
   - Add a development/testing button on the Bestiary page that unlocks every enemy entry.
   - Use it to inspect all enemy animations without requiring normal progression.
   - Make the control clearly temporary and gate it behind a code/configuration flag or development build check.
