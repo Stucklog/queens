@@ -406,7 +406,9 @@ _ContentOfflinePolicy _contentOfflinePolicy(
           packageDirectory
               .listSync(recursive: true)
               .whereType<File>()
-              .map((file) => file.path),
+              // Manifest and pubspec asset paths always use URL-style
+              // separators, even when the verifier runs on Windows.
+              .map((file) => file.path.replaceAll('\\', '/')),
         );
       }
       if (metadataFile.existsSync()) {
