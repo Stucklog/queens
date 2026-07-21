@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/content/content_ids.dart';
@@ -25,6 +26,9 @@ void main() {
     });
     final controller = AppController(
       contentPolicy: const ContentEntitlementPolicy.web(),
+      // Browser widget tests do not provide Flutter's generated binary asset
+      // manifest, so read the declared fixtures directly from the test bundle.
+      contentAssetReader: rootBundle.loadString,
     );
     await tester.runAsync(controller.initialize);
     addTearDown(controller.dispose);
