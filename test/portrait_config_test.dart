@@ -45,10 +45,7 @@ void main() {
     SharedPreferences.setMockInitialValues({
       'regalia.tutorialComplete': true,
       'regalia.journeySchemaVersion': 1,
-      'regalia.seenStoryBeats': <String>[
-        StoryBeatIds.opening,
-        journeyChapters.first.storyBeatId,
-      ],
+      'regalia.seenStoryBeats': <String>[StoryBeatIds.opening],
     });
     final controller = AppController();
     await tester.runAsync(controller.initialize);

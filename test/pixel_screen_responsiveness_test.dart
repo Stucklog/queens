@@ -12,6 +12,7 @@ import 'package:regalia/screens/rules_screen.dart';
 import 'package:regalia/screens/settings_screen.dart';
 import 'package:regalia/screens/story_scene_screen.dart';
 import 'package:regalia/screens/tutorial_screen.dart';
+import 'package:regalia/widgets/cinematic_scene.dart';
 import 'package:regalia/widgets/pixel_art.dart';
 import 'package:regalia/widgets/pixel_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -197,7 +198,9 @@ void main() {
       expect(find.text('Empyrean Citadel'), findsOneWidget);
       expect(find.byType(PixelStoryKnightSprite), findsNothing);
       expect(find.byType(PixelKnightSprite), findsNothing);
-      final chapterArtSize = tester.getSize(find.byType(PixelStoryScene));
+      final chapterArtSize = tester.getSize(
+        find.byType(CinematicSceneFrameView),
+      );
       expect(chapterArtSize.width, closeTo(chapterArtSize.height, .01));
       _expectNoLayoutException(
         tester,

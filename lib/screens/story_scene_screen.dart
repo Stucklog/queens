@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import '../app/app_controller.dart';
 import '../app/journey.dart';
 import '../app/theme.dart';
+import '../content/cinematic_scene_models.dart';
 import '../content/content_models.dart';
+import '../widgets/cinematic_scene.dart';
 import '../widgets/crown_mark.dart';
 import '../widgets/pixel_art.dart';
 import '../widgets/pixel_ui.dart';
@@ -16,8 +18,10 @@ class StorySceneScreen extends StatefulWidget {
     required this.controller,
     required this.scene,
     this.chapter,
+    this.palette,
     this.popOnContinue = true,
     this.recordSeenOnComplete = true,
+    this.onCompleted,
   });
 
   factory StorySceneScreen.opening({
@@ -65,23 +69,29 @@ class StorySceneScreen extends StatefulWidget {
     required AppController controller,
     required StorySceneContent scene,
     JourneyChapter? chapter,
+    JourneyPalette? palette,
     bool popOnContinue = true,
     bool recordSeenOnComplete = true,
+    VoidCallback? onCompleted,
   }) => StorySceneScreen(
     controller: controller,
     scene: scene,
     chapter: chapter,
+    palette: palette,
     popOnContinue: popOnContinue,
     recordSeenOnComplete: recordSeenOnComplete,
+    onCompleted: onCompleted,
   );
 
   final AppController controller;
   final StorySceneContent scene;
   final JourneyChapter? chapter;
+  final JourneyPalette? palette;
   final bool popOnContinue;
 
   /// Replays deliberately leave the durable seen-scene set untouched.
   final bool recordSeenOnComplete;
+  final VoidCallback? onCompleted;
 
   @override
   State<StorySceneScreen> createState() => _StorySceneScreenState();
@@ -95,8 +105,8 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.scene.id != widget.scene.id) {
       _pageIndex = 0;
-    } else if (_pageIndex >= widget.scene.pages.length) {
-      _pageIndex = widget.scene.pages.length - 1;
+    } else if (_pageIndex >= widget.scene.frames.length) {
+      _pageIndex = widget.scene.frames.length - 1;
     }
   }
 
@@ -108,12 +118,17 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedChapter =
-        widget.chapter ??
-        widget.controller.originArc?.chapters.first ??
-        journeyChapters.first;
-    final themed = RegaliaTheme.forChapter(selectedChapter);
+    final selectedChapter = widget.chapter;
+    final palette =
+        widget.palette ??
+        selectedChapter?.palette ??
+        const JourneyPalette(
+          primary: Color(0xff527663),
+          secondary: Color(0xffd6af53),
+        );
+    final themed = RegaliaTheme.midnight(palette);
     final page = widget.scene.pages[_pageIndex];
+    final frame = widget.scene.frames[_pageIndex];
     return Theme(
       data: themed,
       child: Builder(
@@ -150,12 +165,16 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
                                   context,
                                   constraints,
                                   selectedChapter,
+                                  palette,
+                                  frame,
                                   page,
                                 )
                                 : _buildNarrow(
                                   context,
                                   constraints,
                                   selectedChapter,
+                                  palette,
+                                  frame,
                                   page,
                                 ),
                       ),
@@ -171,7 +190,9 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
   Widget _buildNarrow(
     BuildContext context,
     BoxConstraints constraints,
-    JourneyChapter chapter,
+    JourneyChapter? chapter,
+    JourneyPalette palette,
+    CinematicSceneFrame frame,
     StoryScenePageContent page,
   ) {
     final artHeight = math.min(
@@ -187,7 +208,10 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: artHeight, child: _artPanel(chapter, page)),
+              SizedBox(
+                height: artHeight,
+                child: _artPanel(chapter, palette, frame),
+              ),
               const SizedBox(height: 22),
               _narrative(context, page),
             ],
@@ -200,7 +224,9 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
   Widget _buildWide(
     BuildContext context,
     BoxConstraints constraints,
-    JourneyChapter chapter,
+    JourneyChapter? chapter,
+    JourneyPalette palette,
+    CinematicSceneFrame frame,
     StoryScenePageContent page,
   ) => Center(
     child: ConstrainedBox(
@@ -210,7 +236,7 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(flex: 11, child: _artPanel(chapter, page)),
+            Expanded(flex: 11, child: _artPanel(chapter, palette, frame)),
             const SizedBox(width: 30),
             Expanded(
               flex: 9,
@@ -225,16 +251,29 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
     ),
   );
 
-  Widget _art(JourneyChapter chapter, StoryScenePageContent page) =>
-      PixelStoryScene(
+  Widget _artPanel(
+    JourneyChapter? chapter,
+    JourneyPalette palette,
+    CinematicSceneFrame frame,
+  ) {
+    final art = DecoratedBox(
+      decoration: ShapeDecoration(
+        shape: const PixelOrganicBorder(),
+        shadows: [
+          BoxShadow(
+            color: palette.theme.ink.withValues(alpha: .35),
+            offset: const Offset(6, 6),
+          ),
+        ],
+      ),
+      child: CinematicSceneFrameView(
+        key: ValueKey('cinematic-frame-${frame.id}'),
+        frame: frame,
+        palette: palette,
+        sceneKind: _sceneKind,
         chapter: chapter,
-        kind: _sceneKind,
-        semanticLabel: page.semanticLabel,
-        assetPath: widget.scene.artAsset,
-      );
-
-  Widget _artPanel(JourneyChapter chapter, StoryScenePageContent page) {
-    final art = _art(chapter, page);
+      ),
+    );
     if (widget.scene.role != StorySceneRole.chapter) return art;
     return Align(child: AspectRatio(aspectRatio: 1, child: art));
   }
@@ -325,13 +364,14 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
   void _previous() => setState(() => _pageIndex--);
 
   Future<void> _continue() async {
-    if (_pageIndex + 1 < widget.scene.pages.length) {
+    if (_pageIndex + 1 < widget.scene.frames.length) {
       setState(() => _pageIndex++);
       return;
     }
     if (widget.recordSeenOnComplete) {
       await widget.controller.markStoryBeatSeen(widget.scene.id);
     }
+    widget.onCompleted?.call();
     if (widget.popOnContinue && mounted) Navigator.pop(context);
   }
 }

@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/app/theme.dart';
 import 'package:regalia/content/content_ids.dart';
+import 'package:regalia/content/entitlements.dart';
 import 'package:regalia/core/models.dart';
 import 'package:regalia/main.dart';
 import 'package:regalia/screens/bestiary_screen.dart';
 import 'package:regalia/widgets/combat_presentation.dart';
+import 'package:regalia/widgets/pixel_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -28,7 +32,14 @@ void main() {
     await tester.pumpWidget(RegaliaApp(controller: controller));
     await tester.pump();
     final tile = find.byKey(const ValueKey('open-bestiary-home'));
-    await tester.ensureVisible(tile);
+    await tester.scrollUntilVisible(
+      tile,
+      240,
+      scrollable: find.descendant(
+        of: find.byKey(const ValueKey('home-content-list')),
+        matching: find.byType(Scrollable),
+      ),
+    );
     expect(
       find.byKey(const ValueKey('home-bestiary-progress')),
       findsOneWidget,
@@ -283,6 +294,31 @@ void main() {
     );
   });
 
+  testWidgets('paid story accents stay readable on the shared Bestiary theme', (
+    tester,
+  ) async {
+    final controller = await _paidController(tester);
+    addTearDown(controller.dispose);
+    final arc = controller.content!.arc('regalia:arc/atlas-of-borrowed-winds')!;
+
+    await _pumpBestiary(tester, controller, const Size(600, 6000));
+    final surface = RegaliaTheme.midnight().colorScheme.surface;
+    for (final chapter in arc.chapters) {
+      final panel = find.byKey(ValueKey('bestiary-chapter-${chapter.id}'));
+      expect(panel, findsOneWidget);
+      final expected = RegaliaTheme.readableAccent(
+        preferred: chapter.palette.secondary,
+        background: surface,
+      );
+      expect(tester.widget<PixelPanel>(panel).borderColor, expected);
+      final progress = find.descendant(
+        of: panel,
+        matching: find.text('0/${chapter.encounters.length + 1}'),
+      );
+      expect(tester.widget<Text>(progress).style?.color, expected);
+    }
+  });
+
   testWidgets('narrow scaled detail remains scrollable without overflow', (
     tester,
   ) async {
@@ -315,6 +351,20 @@ Future<AppController> _controller(WidgetTester tester) async {
     'regalia.journeySchemaVersion': 1,
   });
   final controller = AppController();
+  await tester.runAsync(controller.initialize);
+  return controller;
+}
+
+Future<AppController> _paidController(WidgetTester tester) async {
+  SharedPreferences.setMockInitialValues({
+    SaveIds.tutorialComplete: true,
+    'regalia.journeySchemaVersion': 1,
+  });
+  final controller = AppController(
+    contentAssetReader: (path) => File(path).readAsString(),
+    contentAssetExists: (path) => File(path).exists(),
+    contentPolicy: const ContentEntitlementPolicy.paidPlatform(),
+  );
   await tester.runAsync(controller.initialize);
   return controller;
 }

@@ -114,7 +114,7 @@ class CombatPresentationBar extends StatelessWidget {
                   key: const ValueKey('combat-special-effects'),
                   active: animation.isCombatFinisher,
                   duration: animation.presentationDuration,
-                  level: activeEncounter.spectacleLevel,
+                  level: activeEncounter.finisherStyle.effectLevel,
                   restartToken: restartToken,
                   color: colors.secondary,
                 ),
@@ -273,9 +273,7 @@ class _EncounterStatus extends StatelessWidget {
       children: [
         ExcludeSemantics(
           child: Text(
-            encounter.isBoss
-                ? 'BOSS · FINISH ${encounter.spectacleLevel}/8'
-                : 'ENCOUNTER',
+            encounter.isBoss ? 'BOSS ENCOUNTER' : 'ENCOUNTER',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(

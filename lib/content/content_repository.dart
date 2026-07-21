@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+import '../app/arc_theme.dart';
 import '../app/journey.dart';
 import '../core/models.dart';
 import 'content_ids.dart';
@@ -9,11 +10,13 @@ import 'content_models.dart';
 import 'entitlements.dart';
 
 typedef ContentAssetReader = Future<String> Function(String assetPath);
+typedef ContentAssetExists = Future<bool> Function(String assetPath);
 
 class ContentRepository {
-  const ContentRepository({required this.readAsset});
+  const ContentRepository({required this.readAsset, this.assetExists});
 
   final ContentAssetReader readAsset;
+  final ContentAssetExists? assetExists;
 
   Future<ContentRegistry> load({
     required String manifestAsset,
@@ -41,22 +44,37 @@ class ContentRepository {
       if (availability.containsKey(descriptor.arcId)) {
         throw FormatException('Duplicate arc package ${descriptor.arcId}');
       }
-      if (!policy.includesArc(descriptor.arcId, descriptor.channels)) {
-        availability[descriptor.arcId] = const ArcAvailability(
+      if (!policy.includesArc(descriptor.channels)) {
+        availability[descriptor.arcId] = ArcAvailability(
           status: ContentAvailabilityStatus.notInEdition,
+          descriptor: descriptor,
         );
         continue;
       }
       if (!policy.isEntitled(descriptor.entitlementId)) {
-        availability[descriptor.arcId] = const ArcAvailability(
+        availability[descriptor.arcId] = ArcAvailability(
           status: ContentAvailabilityStatus.notEntitled,
+          descriptor: descriptor,
         );
         continue;
+      }
+      if (assetExists case final exists?) {
+        if (!await exists(descriptor.metadataAsset)) {
+          availability[descriptor.arcId] = ArcAvailability(
+            status: ContentAvailabilityStatus.missingPackage,
+            descriptor: descriptor,
+            error: StateError(
+              'Content asset not found: ${descriptor.metadataAsset}',
+            ),
+          );
+          continue;
+        }
       }
       try {
         final arc = await _loadArc(descriptor);
         availability[descriptor.arcId] = ArcAvailability(
           status: ContentAvailabilityStatus.available,
+          descriptor: descriptor,
           arc: arc,
         );
       } on Object catch (error) {
@@ -71,15 +89,21 @@ class ContentRepository {
               missing
                   ? ContentAvailabilityStatus.missingPackage
                   : ContentAvailabilityStatus.invalidPackage,
+          descriptor: descriptor,
           error: error,
         );
       }
     }
+    final storefrontLinks = switch (manifest['storeLinks']) {
+      final Map<String, Object?> links => StorefrontLinks.fromJson(links),
+      _ => null,
+    };
     return ContentRegistry(
       arcs: availability,
       justPuzzleAvailable:
           features.contains(ContentIds.justPuzzleFeature) &&
           policy.isEntitled(ContentIds.justPuzzleEntitlement),
+      storefrontLinks: storefrontLinks,
     );
   }
 
@@ -94,6 +118,30 @@ class ContentRepository {
     }
     final catalogAsset = metadata['puzzleCatalogAsset']! as String;
     final catalog = PuzzleCatalog.fromJsonString(await readAsset(catalogAsset));
+    final arcTheme = ArcThemeColors.fromJson(metadata['theme']);
+    final packagedScenes =
+        (metadata['scenes']! as List<Object?>)
+            .map(
+              (scene) =>
+                  StorySceneContent.fromJson(scene! as Map<String, Object?>),
+            )
+            .toList();
+    final packagedOpenings = packagedScenes
+        .where((scene) => scene.role == StorySceneRole.opening)
+        .toList(growable: false);
+    if (packagedOpenings.length > 1 ||
+        (packagedOpenings.isNotEmpty &&
+            packagedOpenings.single.id !=
+                descriptor.storefront.prologuePreview.id)) {
+      throw FormatException(
+        '${descriptor.metadataAsset} has an opening that conflicts with its '
+        'storefront prologue',
+      );
+    }
+    final scenes = <StorySceneContent>[
+      if (packagedOpenings.isEmpty) descriptor.storefront.prologuePreview,
+      ...packagedScenes,
+    ];
     return StoryArc(
       id: metadata['id']! as String,
       contentVersion: (metadata['contentVersion']! as num).toInt(),
@@ -105,17 +153,13 @@ class ContentRepository {
       chapters:
           (metadata['chapters']! as List<Object?>)
               .map(
-                (chapter) =>
-                    JourneyChapter.fromJson(chapter! as Map<String, Object?>),
+                (chapter) => JourneyChapter.fromJson(
+                  chapter! as Map<String, Object?>,
+                  arcTheme: arcTheme,
+                ),
               )
               .toList(),
-      scenes:
-          (metadata['scenes']! as List<Object?>)
-              .map(
-                (scene) =>
-                    StorySceneContent.fromJson(scene! as Map<String, Object?>),
-              )
-              .toList(),
+      scenes: scenes,
       catalog: catalog,
     );
   }

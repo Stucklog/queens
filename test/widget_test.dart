@@ -175,7 +175,9 @@ void main() {
     await tester.runAsync(controller.initialize);
     addTearDown(controller.dispose);
     await controller.markStoryBeatSeen(StoryBeatIds.opening);
-    await controller.markStoryBeatSeen(journeyChapters.first.storyBeatId);
+    await controller.markStoryBeatSeen(
+      controller.originArc!.chapters.first.storyBeatId,
+    );
     final puzzles = controller.catalog!.puzzles;
     controller.records[puzzles[0].id] = const CompletionRecord(
       status: CompletionStatus.cleanSolved,
@@ -250,7 +252,9 @@ void main() {
     await tester.runAsync(controller.initialize);
     addTearDown(controller.dispose);
     await controller.markStoryBeatSeen(StoryBeatIds.opening);
-    await controller.markStoryBeatSeen(journeyChapters.first.storyBeatId);
+    await controller.markStoryBeatSeen(
+      controller.originArc!.chapters.first.storyBeatId,
+    );
     Uri? launchedUri;
 
     await tester.pumpWidget(
@@ -289,7 +293,9 @@ void main() {
     await tester.runAsync(controller.initialize);
     addTearDown(controller.dispose);
     await controller.markStoryBeatSeen(StoryBeatIds.opening);
-    await controller.markStoryBeatSeen(journeyChapters.first.storyBeatId);
+    await controller.markStoryBeatSeen(
+      controller.originArc!.chapters.first.storyBeatId,
+    );
     final firstPuzzle = controller.catalog!.puzzles.first;
     controller.records[firstPuzzle.id] = const CompletionRecord(
       status: CompletionStatus.cleanSolved,
@@ -351,14 +357,16 @@ void main() {
     await tester.runAsync(controller.initialize);
     addTearDown(controller.dispose);
     await controller.markStoryBeatSeen(StoryBeatIds.opening);
-    await controller.markStoryBeatSeen(journeyChapters.first.storyBeatId);
+    await controller.markStoryBeatSeen(
+      controller.originArc!.chapters.first.storyBeatId,
+    );
 
     await tester.pumpWidget(
       MaterialApp(home: JourneyScreen(controller: controller)),
     );
     await tester.pump(const Duration(milliseconds: 500));
 
-    for (final chapter in journeyChapters) {
+    for (final chapter in controller.originArc!.chapters) {
       expect(find.byKey(ValueKey('landmark-${chapter.id}')), findsOneWidget);
     }
     expect(find.byKey(const ValueKey('final-landmark')), findsOneWidget);

@@ -761,7 +761,7 @@ class _GameScreenState extends State<GameScreen> {
             ? arc?.encounterForPuzzle(widget.puzzle)
             : null;
     if (encounter != null) {
-      final finisher = finisherForSpectacle(encounter.spectacleLevel);
+      final finisher = finisherForTrack(encounter.finisherStyle.track);
       setState(() {
         _pendingCompletion = outcome;
         _knightAnimation = finisher;

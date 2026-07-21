@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
-import 'package:regalia/app/journey.dart';
 import 'package:regalia/app/theme.dart';
 import 'package:regalia/core/models.dart';
 import 'package:regalia/screens/journey_screen.dart';
@@ -97,7 +96,7 @@ void main() {
 
   testWidgets('chapter story scene in midnight theme', (tester) async {
     final controller = await _controllerAt(tester, completed: 27);
-    final chapter = journeyChapters[3];
+    final chapter = controller.originArc!.chapters[3];
     await _goldenStory(
       tester,
       controller: controller,
@@ -112,19 +111,17 @@ Future<AppController> _controllerAt(
   WidgetTester tester, {
   required int completed,
 }) async {
-  final reachedOrder = completed >= 72 ? 72 : completed + 1;
-  final chapter = chapterForOrder(reachedOrder);
   SharedPreferences.setMockInitialValues({
     'regalia.tutorialComplete': true,
     'regalia.journeySchemaVersion': 1,
-    'regalia.seenStoryBeats': <String>[
-      StoryBeatIds.opening,
-      chapter.storyBeatId,
-    ],
   });
   final controller = AppController();
   await tester.runAsync(controller.initialize);
   addTearDown(controller.dispose);
+  final reachedOrder = completed >= 72 ? 72 : completed + 1;
+  final chapter = controller.originArc!.chapterForOrder(reachedOrder);
+  await controller.markStoryBeatSeen(controller.originArc!.openingScene.id);
+  await controller.markStoryBeatSeen(chapter.storyBeatId);
   for (final puzzle in controller.catalog!.puzzles.take(completed)) {
     controller.records[puzzle.id] = const CompletionRecord(
       status: CompletionStatus.cleanSolved,

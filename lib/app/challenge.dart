@@ -99,15 +99,16 @@ ChallengeGenerationSpec challengeSpec({
 JourneyChapter challengeChapterFor(
   DifficultyTier tier,
   int number, {
-  List<JourneyChapter> chapters = journeyChapters,
+  List<JourneyChapter>? chapters,
 }) {
-  final pair = switch (tier) {
-    DifficultyTier.easy => chapters.sublist(0, 2),
-    DifficultyTier.medium => chapters.sublist(2, 4),
-    DifficultyTier.hard => chapters.sublist(4, 6),
-    DifficultyTier.expert => chapters.sublist(6, 8),
-  };
-  return pair[(number - 1) % pair.length];
+  final palette = chapters ?? challengeVisualChapters;
+  if (palette.isEmpty) {
+    throw ArgumentError.value(palette, 'chapters', 'cannot be empty');
+  }
+  final matching =
+      palette.where((chapter) => chapter.difficulty == tier).toList();
+  final choices = matching.isEmpty ? palette : matching;
+  return choices[(number - 1) % choices.length];
 }
 
 class ChallengeSession {

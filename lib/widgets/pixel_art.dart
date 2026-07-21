@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../app/combat_style.dart';
 import '../app/journey.dart';
 import 'pixel_ui.dart';
 
@@ -55,16 +56,18 @@ enum KnightAnimation {
 
 /// The chapter-specific finishing move used when an encounter puzzle is solved.
 KnightAnimation finisherForSpectacle(int spectacleLevel) =>
-    switch (spectacleLevel.clamp(1, 8)) {
-      1 => KnightAnimation.crownSlash,
-      2 => KnightAnimation.twinSigil,
-      3 => KnightAnimation.skybreak,
-      4 => KnightAnimation.tidalAegis,
-      5 => KnightAnimation.cinderfall,
-      6 => KnightAnimation.brassJudgment,
-      7 => KnightAnimation.moonlitSever,
-      _ => KnightAnimation.regaliaNova,
-    };
+    finisherForTrack(CombatFinisherTrack.forLegacyLevel(spectacleLevel));
+
+KnightAnimation finisherForTrack(CombatFinisherTrack track) => switch (track) {
+  CombatFinisherTrack.crownSlash => KnightAnimation.crownSlash,
+  CombatFinisherTrack.twinSigil => KnightAnimation.twinSigil,
+  CombatFinisherTrack.skybreak => KnightAnimation.skybreak,
+  CombatFinisherTrack.tidalAegis => KnightAnimation.tidalAegis,
+  CombatFinisherTrack.cinderfall => KnightAnimation.cinderfall,
+  CombatFinisherTrack.brassJudgment => KnightAnimation.brassJudgment,
+  CombatFinisherTrack.moonlitSever => KnightAnimation.moonlitSever,
+  CombatFinisherTrack.regaliaNova => KnightAnimation.regaliaNova,
+};
 
 extension KnightAnimationPresentation on KnightAnimation {
   bool get isCombatFinisher => switch (this) {

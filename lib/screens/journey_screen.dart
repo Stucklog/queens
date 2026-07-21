@@ -255,7 +255,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
       if (!widget.controller.hasSeenStoryBeat(_arc.finaleScene.id)) {
         unawaited(
           precachePixelArtAssets(context, [
-            _arc.finaleScene.artAsset,
+            ..._arc.finaleScene.assetPaths,
             PixelStoryKnightSprite.assetPath,
             PixelQueenSprite.assetPath,
           ]),
@@ -328,7 +328,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
 
   Future<void> _showChapter(JourneyChapter chapter) async {
     final scene = _arc.sceneById(chapter.sceneId);
-    unawaited(precachePixelArtAssets(context, [scene.artAsset]));
+    unawaited(precachePixelArtAssets(context, scene.assetPaths));
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder:
@@ -345,7 +345,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
     final scene = _arc.openingScene;
     unawaited(
       precachePixelArtAssets(context, [
-        scene.artAsset,
+        ...scene.assetPaths,
         PixelStoryKnightSprite.assetPath,
       ]),
     );
@@ -628,12 +628,19 @@ class _OpeningLandmark extends StatelessWidget {
                   placement: PixelArtPlacement.banner,
                   assetPath: arc.openingScene.artAsset,
                 ),
-                const DecoratedBox(
+                DecoratedBox(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
-                      colors: [Color(0xf2151d3b), Color(0x99151d3b)],
+                      colors: [
+                        Theme.of(
+                          context,
+                        ).scaffoldBackgroundColor.withValues(alpha: .95),
+                        Theme.of(
+                          context,
+                        ).scaffoldBackgroundColor.withValues(alpha: .6),
+                      ],
                     ),
                   ),
                 ),
@@ -875,7 +882,7 @@ class _RouteSection extends StatelessWidget {
                 final layout = _RouteLayout(
                   width: width,
                   count: puzzles.length,
-                  columns: 3,
+                  mapLayout: chapter.mapLayout,
                 );
                 Offset? markerOrigin;
                 if (markerPosition != null &&
@@ -1236,13 +1243,20 @@ class _FinalLandmark extends StatelessWidget {
                         placement: PixelArtPlacement.banner,
                       ),
                     ),
-                    const Positioned.fill(
+                    Positioned.fill(
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            colors: [Color(0x16080d20), Color(0xaa080d20)],
+                            colors: [
+                              Theme.of(
+                                context,
+                              ).colorScheme.shadow.withValues(alpha: .086),
+                              Theme.of(
+                                context,
+                              ).colorScheme.shadow.withValues(alpha: .667),
+                            ],
                           ),
                         ),
                       ),
@@ -1330,8 +1344,9 @@ class _RouteLayout {
   _RouteLayout({
     required this.width,
     required this.count,
-    required this.columns,
+    required this.mapLayout,
   }) {
+    final columns = count == 0 ? 1 : math.min(mapLayout.columns, count);
     final rows = (count / columns).ceil();
     const nodeSize = 56.0;
     const top = 132.0;
@@ -1344,7 +1359,11 @@ class _RouteLayout {
     for (var index = 0; index < count; index++) {
       final row = index ~/ columns;
       final logicalColumn = index % columns;
-      final column = row.isEven ? logicalColumn : columns - 1 - logicalColumn;
+      final column = mapLayout.displayColumnFor(
+        row: row,
+        logicalColumn: logicalColumn,
+        columnCount: columns,
+      );
       final origin = Offset(gridLeft + column * pitch, top + row * pitch);
       origins.add(origin);
       points.add(origin + const Offset(nodeSize / 2, nodeSize / 2));
@@ -1354,7 +1373,7 @@ class _RouteLayout {
 
   final double width;
   final int count;
-  final int columns;
+  final JourneyMapLayout mapLayout;
   final List<Offset> origins = [];
   final List<Offset> points = [];
   late final double height;
@@ -1376,28 +1395,39 @@ class _RoutePainter extends CustomPainter {
       final from = points[index - 1];
       final to = points[index];
       if ((from.dy - to.dy).abs() < 1) {
-        canvas.drawRect(
-          Rect.fromLTRB(
-            math.min(from.dx, to.dx),
-            from.dy - 4,
-            math.max(from.dx, to.dx),
-            from.dy + 4,
-          ),
-          paint,
-        );
+        _drawHorizontal(canvas, paint, from.dx, to.dx, from.dy);
+      } else if ((from.dx - to.dx).abs() < 1) {
+        _drawVertical(canvas, paint, from.dy, to.dy, from.dx);
       } else {
-        canvas.drawRect(
-          Rect.fromLTRB(
-            from.dx - 4,
-            math.min(from.dy, to.dy),
-            from.dx + 4,
-            math.max(from.dy, to.dy),
-          ),
-          paint,
-        );
+        final middleY = (from.dy + to.dy) / 2;
+        _drawVertical(canvas, paint, from.dy, middleY, from.dx);
+        _drawHorizontal(canvas, paint, from.dx, to.dx, middleY);
+        _drawVertical(canvas, paint, middleY, to.dy, to.dx);
       }
     }
   }
+
+  void _drawHorizontal(
+    Canvas canvas,
+    Paint paint,
+    double from,
+    double to,
+    double y,
+  ) => canvas.drawRect(
+    Rect.fromLTRB(math.min(from, to), y - 4, math.max(from, to), y + 4),
+    paint,
+  );
+
+  void _drawVertical(
+    Canvas canvas,
+    Paint paint,
+    double from,
+    double to,
+    double x,
+  ) => canvas.drawRect(
+    Rect.fromLTRB(x - 4, math.min(from, to), x + 4, math.max(from, to)),
+    paint,
+  );
 
   @override
   bool shouldRepaint(_RoutePainter oldDelegate) =>

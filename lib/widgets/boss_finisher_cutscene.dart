@@ -95,11 +95,32 @@ class BossFinisherPresentation {
   factory BossFinisherPresentation.forSpectacle(int spectacleLevel) {
     final level = spectacleLevel.clamp(1, 8);
     final finisher = finisherForSpectacle(level);
+    return _forSelection(
+      level: level,
+      finisher: finisher,
+      specialMoveName: _specialMoveName(finisher),
+    );
+  }
+
+  factory BossFinisherPresentation.forEncounter(CombatEncounter encounter) {
+    final style = encounter.finisherStyle;
+    return _forSelection(
+      level: style.effectLevel,
+      finisher: finisherForTrack(style.track),
+      specialMoveName: style.moveName,
+    );
+  }
+
+  static BossFinisherPresentation _forSelection({
+    required int level,
+    required KnightAnimation finisher,
+    required String specialMoveName,
+  }) {
     final pan = Duration(milliseconds: 340 + level * 20);
     return BossFinisherPresentation(
       spectacleLevel: level,
       finisher: finisher,
-      specialMoveName: _specialMoveName(finisher),
+      specialMoveName: specialMoveName,
       effectLevel: level,
       timing: BossFinisherTiming(
         finalMove:
@@ -164,8 +185,7 @@ class BossFinisherCutscene extends StatefulWidget {
     this.accentColor,
     this.energyColor,
   }) : presentation =
-           presentation ??
-           BossFinisherPresentation.forSpectacle(boss.spectacleLevel);
+           presentation ?? BossFinisherPresentation.forEncounter(boss);
 
   /// The defeated opponent. Regular chapter enemies use the same authored
   /// sequence as bosses, while their labels remain encounter-specific.
@@ -462,7 +482,7 @@ class _BossFinisherFrame extends StatelessWidget {
                   isVictory
                       ? 'VICTORY'
                       : boss.isBoss
-                      ? 'REGALIA SPECIAL · ${presentation.spectacleLevel}/8'
+                      ? 'REGALIA SPECIAL'
                       : 'ENCOUNTER SPECIAL',
               title:
                   isVictory
