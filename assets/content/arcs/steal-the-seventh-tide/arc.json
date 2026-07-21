@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "id": "regalia:arc/steal-the-seventh-tide",
+  "contentVersion": 1,
+  "title": "Steal the Seventh Tide",
+  "theme": {
+    "brightness": "dark",
+    "backgroundColor": "#041824",
+    "surfaceColor": "#0B2A38",
+    "surfaceLowColor": "#07212F",
+    "surfaceHighColor": "#123747",
+    "surfaceContainerHighColor": "#194759",
+    "foregroundColor": "#F4FCFA",
+    "mutedForegroundColor": "#BBD7D4",
+    "outlineColor": "#96BCBA",
+    "outlineVariantColor": "#71999B",
+    "inkColor": "#020D14",
+    "dangerColor": "#FF958E"
+  },
+  "mapId": "regalia:map/steal-the-seventh-tide/main-route",
+  "puzzleCatalogAsset": "assets/content/arcs/steal-the-seventh-tide/catalog.json",
+  "unlocks": {
+    "fullMap": "regalia:unlock/steal-the-seventh-tide/full-map",
+    "finale": "regalia:unlock/steal-the-seventh-tide/finale"
+  },
+  "chapters": [
+    {
+      "id": "regalia:chapter/steal-the-seventh-tide/a-crew-for-a-living-current",
+      "mapId": "regalia:map/steal-the-seventh-tide/main-route",
+      "sceneId": "regalia:scene/steal-the-seventh-tide/a-crew-for-a-living-current",
+      "artKey": "a-crew-for-a-living-current",
+      "artAsset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_01_a_crew_for_a_living_current.jpg",
+      "visualIndex": 0,
+      "title": "A Crew for a Living Current",
+      "caption": "Turn four private motives into one workable plan.",
+      "startOrder": 1,
+      "endOrder": 9,
+      "difficulty": "easy",
+      "size": 6,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/steal-the-seventh-tide/brinehorn-bailiff",
+        "name": "Brinehorn Bailiff",
+        "puzzleId": "regalia:puzzle/steal-the-seventh-tide/boss/brinehorn-bailiff",
+        "spriteFamily": "antlered",
+        "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/brinehorn-bailiff.png",
+        "spectacleLevel": 1,
+        "finisher": {
+          "track": "crownSlash",
+          "moveName": "License Levy",
+          "effectLevel": 1
+        },
+        "size": 7,
+        "targetDifficulty": "easy",
+        "unlocks": "regalia:chapter/steal-the-seventh-tide/the-eclipse-route"
+      },
+      "encounters": [],
+      "primaryColor": "#54D5D0",
+      "secondaryColor": "#FFD28A"
+    },
+    {
+      "id": "regalia:chapter/steal-the-seventh-tide/the-eclipse-route",
+      "mapId": "regalia:map/steal-the-seventh-tide/main-route",
+      "sceneId": "regalia:scene/steal-the-seventh-tide/the-eclipse-route",
+      "artKey": "the-eclipse-route",
+      "artAsset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_02_the_eclipse_route.jpg",
+      "visualIndex": 1,
+      "title": "The Eclipse Route",
+      "caption": "Steal the sequence that exists for one moonless hour.",
+      "startOrder": 10,
+      "endOrder": 18,
+      "difficulty": "easy",
+      "size": 7,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/steal-the-seventh-tide/route-coral-warden",
+        "name": "The Route-Coral Warden",
+        "puzzleId": "regalia:puzzle/steal-the-seventh-tide/boss/route-coral-warden",
+        "spriteFamily": "rootbound",
+        "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/route-coral-warden.png",
+        "spectacleLevel": 2,
+        "finisher": {
+          "track": "tidalAegis",
+          "moveName": "Architect's Snare",
+          "effectLevel": 2
+        },
+        "size": 7,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/steal-the-seventh-tide/masks-beneath-the-waves"
+      },
+      "encounters": [],
+      "primaryColor": "#F08F84",
+      "secondaryColor": "#8BE3D7"
+    },
+    {
+      "id": "regalia:chapter/steal-the-seventh-tide/masks-beneath-the-waves",
+      "mapId": "regalia:map/steal-the-seventh-tide/main-route",
+      "sceneId": "regalia:scene/steal-the-seventh-tide/masks-beneath-the-waves",
+      "artKey": "masks-beneath-the-waves",
+      "artAsset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_03_masks_beneath_the_waves.jpg",
+      "visualIndex": 2,
+      "title": "Masks Beneath the Waves",
+      "caption": "Steal a shifting floor plan in a room full of watchers.",
+      "startOrder": 19,
+      "endOrder": 27,
+      "difficulty": "medium",
+      "size": 7,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/steal-the-seventh-tide/masque-manta",
+        "name": "The Masque Manta",
+        "puzzleId": "regalia:puzzle/steal-the-seventh-tide/boss/masque-manta",
+        "spriteFamily": "winged",
+        "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/masque-manta.png",
+        "spectacleLevel": 3,
+        "finisher": {
+          "track": "twinSigil",
+          "moveName": "Unmasking Wake",
+          "effectLevel": 3
+        },
+        "size": 8,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/steal-the-seventh-tide/the-drowned-galleries"
+      },
+      "encounters": [],
+      "primaryColor": "#B39AE8",
+      "secondaryColor": "#75DDD4"
+    },
+    {
+      "id": "regalia:chapter/steal-the-seventh-tide/the-drowned-galleries",
+      "mapId": "regalia:map/steal-the-seventh-tide/main-route",
+      "sceneId": "regalia:scene/steal-the-seventh-tide/the-drowned-galleries",
+      "artKey": "the-drowned-galleries",
+      "artAsset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_04_the_drowned_galleries.jpg",
+      "visualIndex": 3,
+      "title": "The Drowned Galleries",
+      "caption": "Cross the defenses Nima built and Jory fears.",
+      "startOrder": 28,
+      "endOrder": 36,
+      "difficulty": "medium",
+      "size": 8,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/steal-the-seventh-tide/blackwater-curator",
+        "name": "The Blackwater Curator",
+        "puzzleId": "regalia:puzzle/steal-the-seventh-tide/boss/blackwater-curator",
+        "spriteFamily": "abyssal",
+        "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/blackwater-curator.png",
+        "spectacleLevel": 4,
+        "finisher": {
+          "track": "moonlitSever",
+          "moveName": "Solitary Escape",
+          "effectLevel": 4
+        },
+        "size": 8,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/steal-the-seventh-tide/the-living-lock"
+      },
+      "encounters": [],
+      "primaryColor": "#56BFE6",
+      "secondaryColor": "#FFB086"
+    },
+    {
+      "id": "regalia:chapter/steal-the-seventh-tide/the-living-lock",
+      "mapId": "regalia:map/steal-the-seventh-tide/main-route",
+      "sceneId": "regalia:scene/steal-the-seventh-tide/the-living-lock",
+      "artKey": "the-living-lock",
+      "artAsset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_05_the_living_lock.jpg",
+      "visualIndex": 4,
+      "title": "The Living Lock",
+      "caption": "Open a vault that judges what every thief intends.",
+      "startOrder": 37,
+      "endOrder": 45,
+      "difficulty": "hard",
+      "size": 8,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/steal-the-seventh-tide/vent-crowned-judge",
+        "name": "The Vent-Crowned Judge",
+        "puzzleId": "regalia:puzzle/steal-the-seventh-tide/boss/vent-crowned-judge",
+        "spriteFamily": "volcanic",
+        "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/vent-crowned-judge.png",
+        "spectacleLevel": 5,
+        "finisher": {
+          "track": "brassJudgment",
+          "moveName": "Boiling Verdict",
+          "effectLevel": 5
+        },
+        "size": 9,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/steal-the-seventh-tide/the-regents-warning"
+      },
+      "encounters": [],
+      "primaryColor": "#F29A70",
+      "secondaryColor": "#82E0D2"
+    },
+    {
+      "id": "regalia:chapter/steal-the-seventh-tide/the-regents-warning",
+      "mapId": "regalia:map/steal-the-seventh-tide/main-route",
+      "sceneId": "regalia:scene/steal-the-seventh-tide/the-regents-warning",
+      "artKey": "the-regents-warning",
+      "artAsset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_06_the_regents_warning.jpg",
+      "visualIndex": 5,
+      "title": "The Regent's Warning",
+      "caption": "Redesign the theft around a danger the tyrant did not invent.",
+      "startOrder": 46,
+      "endOrder": 54,
+      "difficulty": "hard",
+      "size": 9,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/steal-the-seventh-tide/pearl-orrery",
+        "name": "The Pearl Orrery",
+        "puzzleId": "regalia:puzzle/steal-the-seventh-tide/boss/pearl-orrery",
+        "spriteFamily": "clockwork",
+        "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/pearl-orrery.png",
+        "spectacleLevel": 6,
+        "finisher": {
+          "track": "cinderfall",
+          "moveName": "Only Two Futures",
+          "effectLevel": 6
+        },
+        "size": 9,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/steal-the-seventh-tide/the-seventh-tide-runs-free"
+      },
+      "encounters": [],
+      "primaryColor": "#E7CC8A",
+      "secondaryColor": "#77D6E5"
+    },
+    {
+      "id": "regalia:chapter/steal-the-seventh-tide/the-seventh-tide-runs-free",
+      "mapId": "regalia:map/steal-the-seventh-tide/main-route",
+      "sceneId": "regalia:scene/steal-the-seventh-tide/the-seventh-tide-runs-free",
+      "artKey": "the-seventh-tide-runs-free",
+      "artAsset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_07_the_seventh_tide_runs_free.jpg",
+      "visualIndex": 6,
+      "title": "The Seventh Tide Runs Free",
+      "caption": "Unfold a living current without letting the prison tear it apart.",
+      "startOrder": 55,
+      "endOrder": 63,
+      "difficulty": "expert",
+      "size": 9,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/steal-the-seventh-tide/aftertide-gaoler",
+        "name": "The Aftertide Gaoler",
+        "puzzleId": "regalia:puzzle/steal-the-seventh-tide/boss/aftertide-gaoler",
+        "spriteFamily": "spectral",
+        "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/aftertide-gaoler.png",
+        "spectacleLevel": 7,
+        "finisher": {
+          "track": "skybreak",
+          "moveName": "Remembered Chains",
+          "effectLevel": 7
+        },
+        "size": 10,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/steal-the-seventh-tide/the-moving-ritual"
+      },
+      "encounters": [],
+      "primaryColor": "#57DDD0",
+      "secondaryColor": "#F2C879"
+    },
+    {
+      "id": "regalia:chapter/steal-the-seventh-tide/the-moving-ritual",
+      "mapId": "regalia:map/steal-the-seventh-tide/main-route",
+      "sceneId": "regalia:scene/steal-the-seventh-tide/the-moving-ritual",
+      "artKey": "the-moving-ritual",
+      "artAsset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_08_the_moving_ritual.jpg",
+      "visualIndex": 7,
+      "title": "The Moving Ritual",
+      "caption": "Restore the high tide while leading an ancient danger home.",
+      "startOrder": 64,
+      "endOrder": 72,
+      "difficulty": "expert",
+      "size": 10,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/steal-the-seventh-tide/vask-the-moonblind",
+        "name": "Vask the Moonblind",
+        "puzzleId": "regalia:puzzle/steal-the-seventh-tide/boss/vask-the-moonblind",
+        "spriteFamily": "cosmic",
+        "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/vask-the-moonblind.png",
+        "spectacleLevel": 8,
+        "finisher": {
+          "track": "regaliaNova",
+          "moveName": "Trenchwake",
+          "effectLevel": 8
+        },
+        "size": 12,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:unlock/steal-the-seventh-tide/finale"
+      },
+      "encounters": [],
+      "primaryColor": "#8AAEF3",
+      "secondaryColor": "#FFBD82"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "regalia:scene/steal-the-seventh-tide/a-crew-for-a-living-current",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_01_a_crew_for_a_living_current.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-1-arrival",
+          "title": "A Crew for a Living Current",
+          "paragraphs": [
+            "Selke tests the crew against a model of the palace: Nima reshapes coral passages, Iri holds pressure doors on a note, and Jory crosses the mechanism without touching water. Their separate solutions work only after Selke charts them as one continuous route.",
+            "Royal license collectors surround the hideout behind Brinehorn Bailiff, a salt-armored harbor guardian that tracks unpaid water through its branching crown. The crew combines all four specialties to send it charging after a decoy current, escaping with their plan and their first earned trust."
+          ],
+          "semanticLabel": "The four thieves face a salt-armored antlered harbor guardian beside a glowing model of the Pearl Court.",
+          "actionLabel": "Escape with the plan"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/steal-the-seventh-tide/the-eclipse-route",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_02_the_eclipse_route.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-2-arrival",
+          "title": "The Eclipse Route",
+          "paragraphs": [
+            "The entry route is stored in a garden that grows a new navigation sequence with every lunar phase. Selke and Nima align the eclipse shadows while Jory lifts the sequence from a pearl that closes whenever it senses fear.",
+            "The garden knots itself into The Route-Coral Warden, sealing every passage Nima once designed. She breaks her old pattern instead of repeating it, and a route no palace architect anticipated blooms through the reef."
+          ],
+          "semanticLabel": "The crew navigates a moonlit coral maze as its living branches rise into a towering warden.",
+          "actionLabel": "Take the eclipse route"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/steal-the-seventh-tide/masks-beneath-the-waves",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_03_masks_beneath_the_waves.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-3-arrival",
+          "title": "Masks Beneath the Waves",
+          "paragraphs": [
+            "Disguised in bioluminescent masks, the crew enters the Pearl Court's eclipse masquerade. Selke navigates Regent Nacre's layered courtesies while Jory copies the palace plan from dances that make the ballroom floor rearrange.",
+            "Nacre releases The Masque Manta, a jeweled watcher that reads false identities in the water around each guest. Iri changes the orchestra's pressure-song, giving the crew one honest heartbeat in which every mask appears equally true."
+          ],
+          "semanticLabel": "Masked dancers swirl through a flooded ballroom beneath a vast jeweled manta with luminous wings.",
+          "actionLabel": "Dance out with the plan"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/steal-the-seventh-tide/the-drowned-galleries",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_04_the_drowned_galleries.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-4-arrival",
+          "title": "The Drowned Galleries",
+          "paragraphs": [
+            "The stolen plan leads through galleries the Court floods at random, forcing Nima to reshape her own defenses while Jory moves from one shrinking pocket of air to the next. Selke refuses to rush him, even as the eclipse route closes behind them.",
+            "The lowest chamber gathers their fear into The Blackwater Curator, an abyssal figure that offers each thief a dry exit in exchange for abandoning the others. Jory names the trick first and crosses the final flooded span to open a path for the whole crew."
+          ],
+          "semanticLabel": "Jory crosses a flooded gallery toward an abyssal curator while his crewmates wait in a shrinking air pocket.",
+          "actionLabel": "Cross the blackwater"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/steal-the-seventh-tide/the-living-lock",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_05_the_living_lock.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-5-arrival",
+          "title": "The Living Lock",
+          "paragraphs": [
+            "The tide vault reads hidden intent through coral, resonance, touch, and current. Nima, Iri, Jory, and Selke must each expose a private motive, then arrange those truths into one promise to return the tide rather than possess it.",
+            "Their contradictions ignite The Vent-Crowned Judge, a furnace-bright guardian fed by every lie they still tell themselves. Selke admits that revenge brought her this far but cannot guide what comes next, cooling the lock enough for the crew's shared purpose to open it."
+          ],
+          "semanticLabel": "The crew stands before a living coral lock as a crown of volcanic vents burns above their reflected motives.",
+          "actionLabel": "Speak the honest purpose"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/steal-the-seventh-tide/the-regents-warning",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_06_the_regents_warning.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-6-arrival",
+          "title": "The Regent's Warning",
+          "paragraphs": [
+            "Regent Nacre meets the crew inside the vault and reveals the pressure readings beneath the palace: the imprisoned tide also weighs down a sleeping leviathan. Releasing it at once would restore the coasts and wake a creature large enough to break them.",
+            "Nacre seals the chamber with The Pearl Orrery, a mechanical model that permits only two futures—endless royal control or immediate ruin. Selke forces its interlocked moons into a third alignment, proving the tide can be moved gradually if the crew stays inside to guide it."
+          ],
+          "semanticLabel": "Selke and Regent Nacre face a pearl-and-brass orrery above the shadow of a sleeping leviathan.",
+          "actionLabel": "Chart a third outcome"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/steal-the-seventh-tide/the-seventh-tide-runs-free",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_07_the_seventh_tide_runs_free.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-7-arrival",
+          "title": "The Seventh Tide Runs Free",
+          "paragraphs": [
+            "The crew releases one fold of the seventh tide at a time, sending its first surge toward starving reefs and silted harbors. Iri sings the pressure sequence while Selke steers a current that has spent generations learning to fear every wall.",
+            "The broken prison rises as The Aftertide Gaoler, a spectral copy of every channel used to force the tide into obedience. Nima dissolves her last controlling architecture, and the living current runs free even as something immense opens an eye below."
+          ],
+          "semanticLabel": "A luminous living tide breaks through ghostly prison channels while a leviathan's eye opens in the abyss.",
+          "actionLabel": "Release the living tide"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/steal-the-seventh-tide/the-moving-ritual",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_08_the_moving_ritual.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-8-arrival",
+          "title": "The Moving Ritual",
+          "paragraphs": [
+            "With the palace breaking around them, the crew distributes the seventh tide through reefs, ports, and inland channels in a sequence that becomes their escape route. Each restored waterway draws the awakened leviathan away from populated coasts and toward an ancient trench.",
+            "Vask the Moonblind rises beneath the final current, following pressure older than any chart while the trench gates fail to align. Selke trusts her crew to finish the route without her command, and together they turn the restored tide into a moving ritual that guides Vask safely into the deep."
+          ],
+          "semanticLabel": "The crew rides a luminous tide above the moonblind leviathan as restored waterways converge on a deep ocean trench.",
+          "actionLabel": "Guide the leviathan home"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/steal-the-seventh-tide/finale",
+      "role": "finale",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/finale_crisis.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "the-high-water-returns",
+          "title": "The High Water Returns",
+          "paragraphs": [
+            "The seventh tide reaches harbors that had forgotten the sound of deep water. Silt lifts, reef polyps open, and royal license gates stand useless as the living current chooses its own wide course.",
+            "Far below, Vask settles into the restored trench, held not by a palace prison but by the pressure and song of a healed ocean."
+          ],
+          "semanticLabel": "A bright high tide restores a harbor and reef while the leviathan rests peacefully in a distant trench.",
+          "actionLabel": "Follow the tide ashore"
+        },
+        {
+          "id": "no-one-owns-the-route",
+          "title": "No One Owns the Route",
+          "paragraphs": [
+            "Regent Nacre loses the monopoly she defended, though her warning becomes part of the new charts rather than a secret buried with her court. Ports and inland towns agree to tend the channels together and publish every change.",
+            "Selke does not ask for her old seal back. With Nima, Iri, and a proudly seasick Jory beside her, she draws a new navigator's mark: an open route that no crown can close."
+          ],
+          "semanticLabel": "Selke's crew draws an open route on a shared harbor chart as moonlit water rises behind them.",
+          "actionLabel": "Return to the map",
+          "background": {
+            "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/finale_resolution.jpg",
+            "fit": "cover"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "id": "regalia:arc/crimson-ledger",
+  "contentVersion": 1,
+  "title": "The Crimson Ledger",
+  "theme": {
+    "brightness": "dark",
+    "backgroundColor": "#120D12",
+    "surfaceColor": "#21171F",
+    "surfaceLowColor": "#191118",
+    "surfaceHighColor": "#30222D",
+    "surfaceContainerHighColor": "#3C2937",
+    "foregroundColor": "#FFF4F6",
+    "mutedForegroundColor": "#D5BDC7",
+    "outlineColor": "#B5909E",
+    "outlineVariantColor": "#9A788A",
+    "inkColor": "#080609",
+    "dangerColor": "#FF8291"
+  },
+  "mapId": "regalia:map/crimson-ledger/main-route",
+  "puzzleCatalogAsset": "assets/content/arcs/crimson-ledger/catalog.json",
+  "unlocks": {
+    "fullMap": "regalia:unlock/crimson-ledger/full-map",
+    "finale": "regalia:unlock/crimson-ledger/finale"
+  },
+  "chapters": [
+    {
+      "id": "regalia:chapter/crimson-ledger/impossible-memory",
+      "mapId": "regalia:map/crimson-ledger/main-route",
+      "sceneId": "regalia:scene/crimson-ledger/impossible-memory",
+      "artKey": "impossible-memory",
+      "artAsset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_01_impossible_memory.jpg",
+      "visualIndex": 0,
+      "title": "Impossible Memory",
+      "caption": "Reconstruct a victim's last impossible sight.",
+      "startOrder": 1,
+      "endOrder": 9,
+      "difficulty": "easy",
+      "size": 6,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/crimson-ledger/last-memory-wraith",
+        "name": "The Last-Memory Wraith",
+        "puzzleId": "regalia:puzzle/crimson-ledger/boss/last-memory-wraith",
+        "spriteFamily": "spectral",
+        "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/last-memory-wraith.png",
+        "spectacleLevel": 1,
+        "finisher": {
+          "track": "crownSlash",
+          "moveName": "Fractured Testimony",
+          "effectLevel": 1
+        },
+        "size": 7,
+        "targetDifficulty": "easy",
+        "unlocks": "regalia:chapter/crimson-ledger/marked-donor"
+      },
+      "encounters": [],
+      "primaryColor": "#B74262",
+      "secondaryColor": "#F2C86B"
+    },
+    {
+      "id": "regalia:chapter/crimson-ledger/marked-donor",
+      "mapId": "regalia:map/crimson-ledger/main-route",
+      "sceneId": "regalia:scene/crimson-ledger/marked-donor",
+      "artKey": "marked-donor",
+      "artAsset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_02_marked_donor.jpg",
+      "visualIndex": 1,
+      "title": "The Marked Donor",
+      "caption": "Follow a life erased from the official record.",
+      "startOrder": 10,
+      "endOrder": 18,
+      "difficulty": "easy",
+      "size": 7,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/crimson-ledger/redaction-hart",
+        "name": "The Redaction Hart",
+        "puzzleId": "regalia:puzzle/crimson-ledger/boss/redaction-hart",
+        "spriteFamily": "antlered",
+        "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/redaction-hart.png",
+        "spectacleLevel": 2,
+        "finisher": {
+          "track": "tidalAegis",
+          "moveName": "Expunge the Name",
+          "effectLevel": 2
+        },
+        "size": 7,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/crimson-ledger/hunger-measured"
+      },
+      "encounters": [],
+      "primaryColor": "#7B4254",
+      "secondaryColor": "#E9D7C8"
+    },
+    {
+      "id": "regalia:chapter/crimson-ledger/hunger-measured",
+      "mapId": "regalia:map/crimson-ledger/main-route",
+      "sceneId": "regalia:scene/crimson-ledger/hunger-measured",
+      "artKey": "hunger-measured",
+      "artAsset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_03_hunger_measured.jpg",
+      "visualIndex": 2,
+      "title": "A Hunger Measured",
+      "caption": "Test the difference between infection and intent.",
+      "startOrder": 19,
+      "endOrder": 27,
+      "difficulty": "medium",
+      "size": 7,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/crimson-ledger/veinroot-colony",
+        "name": "The Veinroot Colony",
+        "puzzleId": "regalia:puzzle/crimson-ledger/boss/veinroot-colony",
+        "spriteFamily": "rootbound",
+        "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/veinroot-colony.png",
+        "spectacleLevel": 3,
+        "finisher": {
+          "track": "twinSigil",
+          "moveName": "Hungry Circulation",
+          "effectLevel": 3
+        },
+        "size": 8,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/crimson-ledger/clinics-below"
+      },
+      "encounters": [],
+      "primaryColor": "#C25A70",
+      "secondaryColor": "#FFB3BD"
+    },
+    {
+      "id": "regalia:chapter/crimson-ledger/clinics-below",
+      "mapId": "regalia:map/crimson-ledger/main-route",
+      "sceneId": "regalia:scene/crimson-ledger/clinics-below",
+      "artKey": "clinics-below",
+      "artAsset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_04_clinics_below.jpg",
+      "visualIndex": 3,
+      "title": "Clinics Below",
+      "caption": "Map the hidden ward beneath the cathedral.",
+      "startOrder": 28,
+      "endOrder": 36,
+      "difficulty": "medium",
+      "size": 8,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/crimson-ledger/bell-suture-automaton",
+        "name": "The Bell-Suture Automaton",
+        "puzzleId": "regalia:puzzle/crimson-ledger/boss/bell-suture-automaton",
+        "spriteFamily": "clockwork",
+        "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/bell-suture-automaton.png",
+        "spectacleLevel": 4,
+        "finisher": {
+          "track": "moonlitSever",
+          "moveName": "Ward Rotation",
+          "effectLevel": 4
+        },
+        "size": 8,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/crimson-ledger/staged-hunt"
+      },
+      "encounters": [],
+      "primaryColor": "#52678E",
+      "secondaryColor": "#BFCDF2"
+    },
+    {
+      "id": "regalia:chapter/crimson-ledger/staged-hunt",
+      "mapId": "regalia:map/crimson-ledger/main-route",
+      "sceneId": "regalia:scene/crimson-ledger/staged-hunt",
+      "artKey": "staged-hunt",
+      "artAsset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_05_staged_hunt.jpg",
+      "visualIndex": 4,
+      "title": "The Staged Hunt",
+      "caption": "Stop a spectacle designed to make fear look true.",
+      "startOrder": 37,
+      "endOrder": 45,
+      "difficulty": "hard",
+      "size": 8,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/crimson-ledger/rehearsal-gargoyle",
+        "name": "The Rehearsal Gargoyle",
+        "puzzleId": "regalia:puzzle/crimson-ledger/boss/rehearsal-gargoyle",
+        "spriteFamily": "winged",
+        "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/rehearsal-gargoyle.png",
+        "spectacleLevel": 5,
+        "finisher": {
+          "track": "brassJudgment",
+          "moveName": "Practiced Panic",
+          "effectLevel": 5
+        },
+        "size": 9,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/crimson-ledger/benefactors-arithmetic"
+      },
+      "encounters": [],
+      "primaryColor": "#A63E58",
+      "secondaryColor": "#FFD0D7"
+    },
+    {
+      "id": "regalia:chapter/crimson-ledger/benefactors-arithmetic",
+      "mapId": "regalia:map/crimson-ledger/main-route",
+      "sceneId": "regalia:scene/crimson-ledger/benefactors-arithmetic",
+      "artKey": "benefactors-arithmetic",
+      "artAsset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_06_benefactors_arithmetic.jpg",
+      "visualIndex": 5,
+      "title": "The Benefactor's Arithmetic",
+      "caption": "Count the lives hidden inside a charitable balance sheet.",
+      "startOrder": 46,
+      "endOrder": 54,
+      "difficulty": "hard",
+      "size": 9,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/crimson-ledger/tithe-constellation",
+        "name": "The Tithe Constellation",
+        "puzzleId": "regalia:puzzle/crimson-ledger/boss/tithe-constellation",
+        "spriteFamily": "cosmic",
+        "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/tithe-constellation.png",
+        "spectacleLevel": 6,
+        "finisher": {
+          "track": "cinderfall",
+          "moveName": "Mortal Dividend",
+          "effectLevel": 6
+        },
+        "size": 9,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/crimson-ledger/cathedral-reservoir"
+      },
+      "encounters": [],
+      "primaryColor": "#705B9A",
+      "secondaryColor": "#DCCBFF"
+    },
+    {
+      "id": "regalia:chapter/crimson-ledger/cathedral-reservoir",
+      "mapId": "regalia:map/crimson-ledger/main-route",
+      "sceneId": "regalia:scene/crimson-ledger/cathedral-reservoir",
+      "artKey": "cathedral-reservoir",
+      "artAsset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_07_cathedral_reservoir.jpg",
+      "visualIndex": 6,
+      "title": "The Cathedral Reservoir",
+      "caption": "Free the captives without drowning their memories.",
+      "startOrder": 55,
+      "endOrder": 63,
+      "difficulty": "expert",
+      "size": 9,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/crimson-ledger/reservoir-maw",
+        "name": "The Reservoir Maw",
+        "puzzleId": "regalia:puzzle/crimson-ledger/boss/reservoir-maw",
+        "spriteFamily": "abyssal",
+        "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/reservoir-maw.png",
+        "spectacleLevel": 7,
+        "finisher": {
+          "track": "skybreak",
+          "moveName": "Drown the Name",
+          "effectLevel": 7
+        },
+        "size": 10,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/crimson-ledger/names-in-daylight"
+      },
+      "encounters": [],
+      "primaryColor": "#23766F",
+      "secondaryColor": "#B9E5DB"
+    },
+    {
+      "id": "regalia:chapter/crimson-ledger/names-in-daylight",
+      "mapId": "regalia:map/crimson-ledger/main-route",
+      "sceneId": "regalia:scene/crimson-ledger/names-in-daylight",
+      "artKey": "names-in-daylight",
+      "artAsset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_08_names_in_daylight.jpg",
+      "visualIndex": 7,
+      "title": "Names in Daylight",
+      "caption": "Turn Bellgrave's cure and evidence toward the public.",
+      "startOrder": 64,
+      "endOrder": 72,
+      "difficulty": "expert",
+      "size": 10,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/crimson-ledger/mercy-crucible",
+        "name": "The Mercy Crucible",
+        "puzzleId": "regalia:puzzle/crimson-ledger/boss/mercy-crucible",
+        "spriteFamily": "volcanic",
+        "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/mercy-crucible.png",
+        "spectacleLevel": 8,
+        "finisher": {
+          "track": "regaliaNova",
+          "moveName": "Necessary Sacrifice",
+          "effectLevel": 8
+        },
+        "size": 12,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:unlock/crimson-ledger/finale"
+      },
+      "encounters": [],
+      "primaryColor": "#D06B48",
+      "secondaryColor": "#FFF0C7"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "regalia:scene/crimson-ledger/impossible-memory",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_01_impossible_memory.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-1-arrival",
+          "title": "Impossible Memory",
+          "paragraphs": [
+            "At the morgue, Elian aligns reflections from a bloodless aristocrat's final memory. The completed perspective reveals a donor entering the cathedral dispensary after the records say she died.",
+            "When the contradictory recollections tear free of the page, they become The Last-Memory Wraith. Elian must hold one truthful image in place long enough to preserve the dispensary seal."
+          ],
+          "semanticLabel": "Elian assembles floating memory fragments above a rain-dark morgue table.",
+          "actionLabel": "Reconstruct the memory"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/crimson-ledger/marked-donor",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_02_marked_donor.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-2-arrival",
+          "title": "The Marked Donor",
+          "paragraphs": [
+            "Elian follows the donor mark through burial lists, night-clinic appointments, and pages replaced with immaculate forgeries. Sister Anja risks her post to smuggle out the original register and the names of families still waiting for answers.",
+            "Ink and sealing wax gather around the stolen pages as The Redaction Hart, an antlered guardian trained to gore inconvenient names from history. Defeating it leaves one unaltered address: Mirelle Dane's shuttered laboratory."
+          ],
+          "semanticLabel": "Elian and Sister Anja compare a hidden donor register beneath cathedral archives.",
+          "actionLabel": "Recover the register"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/crimson-ledger/hunger-measured",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_03_hunger_measured.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-3-arrival",
+          "title": "A Hunger Measured",
+          "paragraphs": [
+            "Elian corners Mirelle in her ruined laboratory and finds her measuring each pulse of hunger instead of feeding it. To prove her treatment works, they must recalibrate an assay sabotaged to label every infected patient incurable.",
+            "The spoiled samples knit into The Veinroot Colony, feeding on fear as quickly as blood. Elian protects Mirelle while she names every false result, and their reluctant partnership survives its first honest test."
+          ],
+          "semanticLabel": "Mirelle steadies a silver blood assay while Elian watches in a crimson-lit laboratory.",
+          "actionLabel": "Calibrate the assay"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/crimson-ledger/clinics-below",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_04_clinics_below.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-4-arrival",
+          "title": "Clinics Below",
+          "paragraphs": [
+            "Patient seals and bell schedules guide Elian and Mirelle into a maze of crypt clinics. By matching empty beds to the memories soaked into their restraints, they expose a route used to infect selected donors and stage their disappearances.",
+            "At the central junction, The Bell-Suture Automaton rearranges doors whenever the cathedral clock strikes. Mirelle reads its medical rhythm while Elian severs its false routes, opening a way back to the city above."
+          ],
+          "semanticLabel": "Elian and Mirelle navigate tiled crypt wards beneath tolling cathedral bells.",
+          "actionLabel": "Map the hidden clinics"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/crimson-ledger/staged-hunt",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_05_staged_hunt.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-5-arrival",
+          "title": "The Staged Hunt",
+          "paragraphs": [
+            "A vampire attack erupts during a crowded charity procession, exactly where the dispensary's warnings predicted. Elian notices that its blood fragments repeat memories from earlier victims, proving the supposed attacker was planted and conditioned for the scene.",
+            "Above the panicked square, The Rehearsal Gargoyle echoes each practiced scream and drives the crowd toward a second captive. Elian and Mirelle break its script in time to save the captive alive, denying Bellgrave the monster it expected to see."
+          ],
+          "semanticLabel": "Elian and Mirelle protect a charity procession beneath a winged stone creature.",
+          "actionLabel": "Break the staged attack"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/crimson-ledger/benefactors-arithmetic",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_06_benefactors_arithmetic.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-6-arrival",
+          "title": "The Benefactor's Arithmetic",
+          "paragraphs": [
+            "Anja's stolen records connect Provost Absal Rook's longevity patients to cycles of infection, fear, and disappearance. Every charitable donation becomes a variable in a program that enriches memory in blood before selling it to Bellgrave's most powerful families.",
+            "The figures rise from the ledger as The Tithe Constellation, a cold geometry that reduces each victim to yield and cost. By restoring names to its numbered stars, the investigators reveal Rook's reservoir beneath the cathedral."
+          ],
+          "semanticLabel": "Names and crimson figures form a constellation above Rook's secret account books.",
+          "actionLabel": "Balance the true ledger"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/crimson-ledger/cathedral-reservoir",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_07_cathedral_reservoir.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-7-arrival",
+          "title": "The Cathedral Reservoir",
+          "paragraphs": [
+            "Branded as traitors, Elian and Mirelle descend into Rook's reservoir while Anja carries their evidence toward the public archive. They must open interlocked valves in a sequence that preserves the treatment, frees the captives, and keeps centuries of stolen memories from flooding Bellgrave.",
+            "The deepest cistern wakes as The Reservoir Maw, shaped from every identity the dispensary tried to dissolve. Mirelle listens for living heartbeats inside its roar while Elian draws a safe path through the dark."
+          ],
+          "semanticLabel": "Elian and Mirelle cross narrow valves above a vast crimson cathedral reservoir.",
+          "actionLabel": "Open the reservoir"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/crimson-ledger/names-in-daylight",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_08_names_in_daylight.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-8-arrival",
+          "title": "Names in Daylight",
+          "paragraphs": [
+            "Rook seals the cathedral and prepares to burn the ledger while his supporters call the captives an outbreak. Elian and Mirelle route her treatment through the dispensary network as Anja reads every stolen name into the public record.",
+            "Rook's doctrine ignites around the altar as The Mercy Crucible, promising safety if the city accepts one last sacrifice. The investigators cool its furnace with unedited memories, leaving Bellgrave to see its celebrated benefactor clearly at last."
+          ],
+          "semanticLabel": "Daylight enters the cathedral as names fill its walls and captives emerge safely.",
+          "actionLabel": "Bring the names to light"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/crimson-ledger/finale",
+      "role": "finale",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/crimson-ledger/backgrounds/finale_crisis.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "the-public-ledger",
+          "title": "The Public Ledger",
+          "paragraphs": [
+            "By noon, the dispensary steps are covered with copied records that no single office can destroy. Families find the missing, patients receive Mirelle's treatment, and Rook faces the city without a charitable title to hide behind.",
+            "Elian adds his own hunting reports to the archive, including every conclusion he drew too quickly. Evidence, he decides, should expose certainty as readily as monsters."
+          ],
+          "semanticLabel": "Citizens read copied ledgers in daylight on the cathedral steps.",
+          "actionLabel": "See what changes"
+        },
+        {
+          "id": "a-different-watch",
+          "title": "A Different Watch",
+          "paragraphs": [
+            "Anja opens the former dispensary as a clinic governed by patients and donors, with Mirelle directing its research in full view of the public. No one is asked to surrender a memory to earn care.",
+            "When rain returns to Bellgrave, Elian and Mirelle walk into it together toward a new case. This time, hunter and physician begin with a question instead of a verdict."
+          ],
+          "semanticLabel": "Elian, Mirelle, and Anja stand outside a bright public clinic in gentle rain.",
+          "actionLabel": "Return to the journeys",
+          "background": {
+            "asset": "assets/art/arcs/crimson-ledger/backgrounds/finale_resolution.jpg",
+            "fit": "cover"
+          }
+        }
+      ]
+    }
+  ]
+}

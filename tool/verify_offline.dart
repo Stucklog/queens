@@ -142,10 +142,10 @@ Future<void> main(List<String> arguments) async {
   final buildIndex = arguments.indexOf('--web-build');
   final nativeBuildIndex = arguments.indexOf('--native-build');
   if (buildIndex >= 0 && !webSource) {
-    failures.add('--web-build requires the restricted --web-source workspace');
+    failures.add('--web-build requires the staged --web-source workspace');
   }
   if (webSource && nativeBuildIndex >= 0) {
-    failures.add('the restricted GitHub Pages source cannot build native apps');
+    failures.add('the staged web source cannot build native apps');
   }
   if (buildIndex >= 0 && nativeBuildIndex >= 0) {
     failures.add('verify web and native build artifacts in separate commands');
@@ -181,7 +181,7 @@ Future<void> main(List<String> arguments) async {
           'assets/assets/art/combat/knight_finishers.png',
           ...combatAssets.map((asset) => 'assets/$asset'),
           ...contentPolicy.webPackageAssets.map(_webAssetPath),
-          ...contentPolicy.storefrontAssets.map(_webAssetPath),
+          ...contentPolicy.webStorefrontAssets.map(_webAssetPath),
           'icons/Icon-512.png',
         };
         for (final asset in requiredAssets) {
@@ -193,7 +193,7 @@ Future<void> main(List<String> arguments) async {
         }
         final allowedWebAssets = {
           ...contentPolicy.webPackageAssets,
-          ...contentPolicy.storefrontAssets,
+          ...contentPolicy.webStorefrontAssets,
           'assets/puzzles/catalog.json',
           'assets/puzzles/tutorial.json',
           'assets/fonts/PixelifySans-Variable.ttf',
@@ -203,19 +203,18 @@ Future<void> main(List<String> arguments) async {
           'assets/art/combat/knight_finishers.png',
           ...combatAssets,
         };
-        final excludedAssets = contentPolicy.webExcludedPackageAssets
-            .difference(allowedWebAssets);
+        final excludedAssets = contentPolicy.webExcludedAssets.difference(
+          allowedWebAssets,
+        );
         for (final asset in excludedAssets) {
           final webAsset = _webAssetPath(asset);
           if (_serviceWorkerContains(source, webAsset)) {
             failures.add(
-              'service worker lists web-excluded package asset $webAsset',
+              'service worker lists channel-excluded asset $webAsset',
             );
           }
           if (File('${root.path}/$webAsset').existsSync()) {
-            failures.add(
-              'GitHub Pages build bundles excluded package asset $asset',
-            );
+            failures.add('web build bundles channel-excluded asset $asset');
           }
         }
       }
@@ -249,9 +248,8 @@ Future<void> main(List<String> arguments) async {
           'assets/art/queen.png',
           'assets/art/combat/knight_finishers.png',
           ...combatAssets,
-          ...contentPolicy.webPackageAssets,
-          ...contentPolicy.webExcludedPackageAssets,
-          ...contentPolicy.storefrontAssets,
+          ...contentPolicy.nativePackageAssets,
+          ...contentPolicy.nativeStorefrontAssets,
         };
         for (final asset in requiredNativeAssets) {
           if (!entries.any(
@@ -275,9 +273,9 @@ Future<void> main(List<String> arguments) async {
     nativeBuildIndex >= 0
         ? 'Verified the full native artifact and offline package set.'
         : buildIndex >= 0
-        ? 'Verified restricted GitHub Pages resources and isolation.'
+        ? 'Verified staged web resources against manifest channels.'
         : webSource
-        ? 'Verified the restricted GitHub Pages source package.'
+        ? 'Verified the staged web source against manifest channels.'
         : 'Verified the full default app source and offline package set.',
   );
 }
@@ -331,18 +329,24 @@ Set<String> _directDependencies(String pubspec) {
 final class _ContentOfflinePolicy {
   const _ContentOfflinePolicy({
     required this.webPackageAssets,
-    required this.webExcludedPackageAssets,
-    required this.storefrontAssets,
+    required this.webStorefrontAssets,
+    required this.webExcludedAssets,
+    required this.nativePackageAssets,
+    required this.nativeStorefrontAssets,
   });
 
   const _ContentOfflinePolicy.empty()
     : webPackageAssets = const {},
-      webExcludedPackageAssets = const {},
-      storefrontAssets = const {};
+      webStorefrontAssets = const {},
+      webExcludedAssets = const {},
+      nativePackageAssets = const {},
+      nativeStorefrontAssets = const {};
 
   final Set<String> webPackageAssets;
-  final Set<String> webExcludedPackageAssets;
-  final Set<String> storefrontAssets;
+  final Set<String> webStorefrontAssets;
+  final Set<String> webExcludedAssets;
+  final Set<String> nativePackageAssets;
+  final Set<String> nativeStorefrontAssets;
 }
 
 _ContentOfflinePolicy _contentOfflinePolicy(
@@ -359,8 +363,10 @@ _ContentOfflinePolicy _contentOfflinePolicy(
   }
 
   final webPackageAssets = <String>{};
-  final webExcludedPackageAssets = <String>{};
-  final storefrontAssets = <String>{};
+  final webStorefrontAssets = <String>{};
+  final webExcludedAssets = <String>{};
+  final nativePackageAssets = <String>{};
+  final nativeStorefrontAssets = <String>{};
   var originIncludedOnWeb = false;
   for (final (index, value) in arcs.indexed) {
     if (value is! Map<String, Object?>) {
@@ -405,6 +411,7 @@ _ContentOfflinePolicy _contentOfflinePolicy(
       );
     }
     final includedOnWeb = channels.contains('web');
+    final includedOnNative = channels.contains('paidPlatform');
     if (arcId == 'regalia:arc/origin' && includedOnWeb) {
       originIncludedOnWeb = true;
     }
@@ -440,7 +447,10 @@ _ContentOfflinePolicy _contentOfflinePolicy(
     if (includedOnWeb) {
       webPackageAssets.addAll(packageAssets);
     } else {
-      webExcludedPackageAssets.addAll(packageAssets);
+      webExcludedAssets.addAll(packageAssets);
+    }
+    if (includedOnNative) {
+      nativePackageAssets.addAll(packageAssets);
     }
 
     final storefront = value['storefront'];
@@ -448,12 +458,13 @@ _ContentOfflinePolicy _contentOfflinePolicy(
       failures.add('$arcId has no lightweight storefront content');
       continue;
     }
+    final descriptorStorefrontAssets = <String>{};
     final tileArt = _manifestAsset(
       storefront['tileArtAsset'],
       '$arcId storefront tileArtAsset',
       failures,
     );
-    if (tileArt != null) storefrontAssets.add(tileArt);
+    if (tileArt != null) descriptorStorefrontAssets.add(tileArt);
     final tileForeground = storefront['tileForegroundAsset'];
     if (tileForeground != null) {
       final asset = _manifestAsset(
@@ -461,7 +472,7 @@ _ContentOfflinePolicy _contentOfflinePolicy(
         '$arcId storefront tileForegroundAsset',
         failures,
       );
-      if (asset != null) storefrontAssets.add(asset);
+      if (asset != null) descriptorStorefrontAssets.add(asset);
     }
     final preview = storefront['prologuePreview'];
     final previewAssets = <String>{};
@@ -472,7 +483,17 @@ _ContentOfflinePolicy _contentOfflinePolicy(
       if (previewAssets.isEmpty) {
         failures.add('$arcId storefront prologue preview has no art asset');
       }
-      storefrontAssets.addAll(previewAssets);
+      descriptorStorefrontAssets.addAll(previewAssets);
+    }
+    final storefrontIncludedOnWeb =
+        includedOnWeb || lockedPreviewChannels.contains('web');
+    if (storefrontIncludedOnWeb) {
+      webStorefrontAssets.addAll(descriptorStorefrontAssets);
+    } else {
+      webExcludedAssets.addAll(descriptorStorefrontAssets);
+    }
+    if (includedOnNative || lockedPreviewChannels.contains('paidPlatform')) {
+      nativeStorefrontAssets.addAll(descriptorStorefrontAssets);
     }
   }
 
@@ -480,52 +501,53 @@ _ContentOfflinePolicy _contentOfflinePolicy(
     failures.add('regalia:arc/origin must remain available on web');
   }
 
-  for (final asset in storefrontAssets) {
+  final requiredSourcePackageAssets =
+      webSource
+          ? webPackageAssets
+          : {...webPackageAssets, ...nativePackageAssets};
+  final requiredSourceStorefrontAssets =
+      webSource
+          ? webStorefrontAssets
+          : {...webStorefrontAssets, ...nativeStorefrontAssets};
+  final sourceLabel = webSource ? 'staged web' : 'default app';
+  for (final asset in requiredSourceStorefrontAssets) {
     if (!File(asset).existsSync()) {
       failures.add('storefront asset is missing: $asset');
     }
     if (!_isFlutterAssetDeclared(asset, flutterAssets, flavor: null)) {
       failures.add(
-        'storefront asset is not declared for the unflavored web edition: '
+        'storefront asset is not declared for the $sourceLabel source: $asset',
+      );
+    }
+  }
+  for (final asset in requiredSourcePackageAssets) {
+    if (!File(asset).existsSync()) {
+      failures.add('content package asset is missing: $asset');
+    }
+    if (!_isFlutterAssetDeclared(asset, flutterAssets, flavor: null)) {
+      failures.add(
+        'content package asset is not declared for the $sourceLabel source: '
         '$asset',
       );
     }
   }
-  for (final asset in webPackageAssets) {
-    if (!File(asset).existsSync()) {
-      failures.add('web content package asset is missing: $asset');
-    }
-    if (!_isFlutterAssetDeclared(asset, flutterAssets, flavor: null)) {
-      failures.add(
-        'web content package asset is not declared for the unflavored web '
-        'edition: $asset',
-      );
-    }
-  }
 
-  final sharedWebAssets = {...webPackageAssets, ...storefrontAssets};
-  for (final asset in webExcludedPackageAssets) {
-    if (!File(asset).existsSync()) {
-      failures.add('full story package asset is missing: $asset');
-      continue;
-    }
-    if (sharedWebAssets.contains(asset)) continue;
-    if (webSource) {
+  if (webSource) {
+    final includedWebAssets = {...webPackageAssets, ...webStorefrontAssets};
+    for (final asset in webExcludedAssets.difference(includedWebAssets)) {
       if (_isFlutterAssetDeclared(asset, flutterAssets, flavor: null)) {
         failures.add(
-          'GitHub Pages source declares excluded full-package asset: $asset',
+          'staged web source declares channel-excluded asset: $asset',
         );
       }
-      continue;
-    }
-    if (!_isFlutterAssetDeclared(asset, flutterAssets, flavor: null)) {
-      failures.add('default app source omits full story package asset: $asset');
     }
   }
   return _ContentOfflinePolicy(
     webPackageAssets: Set.unmodifiable(webPackageAssets),
-    webExcludedPackageAssets: Set.unmodifiable(webExcludedPackageAssets),
-    storefrontAssets: Set.unmodifiable(storefrontAssets),
+    webStorefrontAssets: Set.unmodifiable(webStorefrontAssets),
+    webExcludedAssets: Set.unmodifiable(webExcludedAssets),
+    nativePackageAssets: Set.unmodifiable(nativePackageAssets),
+    nativeStorefrontAssets: Set.unmodifiable(nativeStorefrontAssets),
   );
 }
 

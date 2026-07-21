@@ -244,6 +244,18 @@ class StoryArc {
               : chapter.difficulty;
       final unlockTarget = ContentId.parse(boss.unlockTargetId);
       final puzzle = catalog.puzzles[chapter.endOrder - 1];
+      final regularPuzzles = catalog.puzzles
+          .skip(chapter.startOrder - 1)
+          .take(chapter.endOrder - chapter.startOrder);
+      if (regularPuzzles.any(
+        (puzzle) =>
+            puzzle.size != chapter.size || puzzle.tier != chapter.difficulty,
+      )) {
+        throw FormatException(
+          '${chapter.id} contains a puzzle outside its declared '
+          '${chapter.difficulty.label} ${chapter.size}x${chapter.size} band',
+        );
+      }
       if (bossId.arcName != arc.localName ||
           bossPuzzleId.arcName != arc.localName ||
           unlockTarget.arcName != arc.localName ||

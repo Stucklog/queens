@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "id": "regalia:arc/oathstorm-fleet",
+  "contentVersion": 1,
+  "title": "The Oathstorm Fleet",
+  "theme": {
+    "brightness": "dark",
+    "backgroundColor": "#101A26",
+    "surfaceColor": "#1A2B39",
+    "surfaceLowColor": "#14232F",
+    "surfaceHighColor": "#243746",
+    "surfaceContainerHighColor": "#2D4352",
+    "foregroundColor": "#F6F2E7",
+    "mutedForegroundColor": "#C7D0D2",
+    "outlineColor": "#A9B7BD",
+    "outlineVariantColor": "#7892A0",
+    "inkColor": "#07101A",
+    "dangerColor": "#FF8177"
+  },
+  "mapId": "regalia:map/oathstorm-fleet/main-route",
+  "puzzleCatalogAsset": "assets/content/arcs/oathstorm-fleet/catalog.json",
+  "unlocks": {
+    "fullMap": "regalia:unlock/oathstorm-fleet/full-map",
+    "finale": "regalia:unlock/oathstorm-fleet/finale"
+  },
+  "chapters": [
+    {
+      "id": "regalia:chapter/oathstorm-fleet/harbor-of-glass",
+      "mapId": "regalia:map/oathstorm-fleet/main-route",
+      "sceneId": "regalia:scene/oathstorm-fleet/harbor-of-glass",
+      "artKey": "harbor-of-glass",
+      "artAsset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_01_harbor_of_glass.jpg",
+      "visualIndex": 0,
+      "title": "Harbor of Glass",
+      "caption": "Yrsa reads the newborn ice to find a path toward the people stranded beyond it.",
+      "startOrder": 1,
+      "endOrder": 9,
+      "difficulty": "easy",
+      "size": 6,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/oathstorm-fleet/rimehorn-warden",
+        "name": "Rimehorn Warden",
+        "puzzleId": "regalia:puzzle/oathstorm-fleet/boss/rimehorn-warden",
+        "spriteFamily": "antlered",
+        "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/rimehorn-warden.png",
+        "spectacleLevel": 1,
+        "finisher": {
+          "track": "crownSlash",
+          "moveName": "Harbor Split",
+          "effectLevel": 1
+        },
+        "size": 7,
+        "targetDifficulty": "easy",
+        "unlocks": "regalia:chapter/oathstorm-fleet/amendable-keel"
+      },
+      "encounters": [],
+      "primaryColor": "#8DDBE8",
+      "secondaryColor": "#FFB36B"
+    },
+    {
+      "id": "regalia:chapter/oathstorm-fleet/amendable-keel",
+      "mapId": "regalia:map/oathstorm-fleet/main-route",
+      "sceneId": "regalia:scene/oathstorm-fleet/amendable-keel",
+      "artKey": "amendable-keel",
+      "artAsset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_02_amendable_keel.jpg",
+      "visualIndex": 1,
+      "title": "The Amendable Keel",
+      "caption": "An unfinished longship can cross the ice only after Yrsa makes room for a broken promise.",
+      "startOrder": 10,
+      "endOrder": 18,
+      "difficulty": "easy",
+      "size": 7,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/oathstorm-fleet/clausewood-jotun",
+        "name": "Clausewood Jotun",
+        "puzzleId": "regalia:puzzle/oathstorm-fleet/boss/clausewood-jotun",
+        "spriteFamily": "rootbound",
+        "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/clausewood-jotun.png",
+        "spectacleLevel": 2,
+        "finisher": {
+          "track": "tidalAegis",
+          "moveName": "Amending Stroke",
+          "effectLevel": 2
+        },
+        "size": 7,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/oathstorm-fleet/captains-at-cross-purposes"
+      },
+      "encounters": [],
+      "primaryColor": "#F2C879",
+      "secondaryColor": "#7FE0D0"
+    },
+    {
+      "id": "regalia:chapter/oathstorm-fleet/captains-at-cross-purposes",
+      "mapId": "regalia:map/oathstorm-fleet/main-route",
+      "sceneId": "regalia:scene/oathstorm-fleet/captains-at-cross-purposes",
+      "artKey": "captains-at-cross-purposes",
+      "artAsset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_03_captains_at_cross_purposes.jpg",
+      "visualIndex": 2,
+      "title": "Captains at Cross-Purposes",
+      "caption": "Rival crews need a charter strong enough to hold without making them one clan.",
+      "startOrder": 19,
+      "endOrder": 27,
+      "difficulty": "medium",
+      "size": 7,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/oathstorm-fleet/banner-raven-parliament",
+        "name": "Banner-Raven Parliament",
+        "puzzleId": "regalia:puzzle/oathstorm-fleet/boss/banner-raven-parliament",
+        "spriteFamily": "winged",
+        "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/banner-raven-parliament.png",
+        "spectacleLevel": 3,
+        "finisher": {
+          "track": "twinSigil",
+          "moveName": "Many-Captain Charter",
+          "effectLevel": 3
+        },
+        "size": 8,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/oathstorm-fleet/names-beneath-ice"
+      },
+      "encounters": [],
+      "primaryColor": "#FF9898",
+      "secondaryColor": "#80D8F0"
+    },
+    {
+      "id": "regalia:chapter/oathstorm-fleet/names-beneath-ice",
+      "mapId": "regalia:map/oathstorm-fleet/main-route",
+      "sceneId": "regalia:scene/oathstorm-fleet/names-beneath-ice",
+      "artKey": "names-beneath-ice",
+      "artAsset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_04_names_beneath_ice.jpg",
+      "visualIndex": 3,
+      "title": "Names Beneath Ice",
+      "caption": "The fleet discovers that the vow has mistaken every returning life for an enemy.",
+      "startOrder": 28,
+      "endOrder": 36,
+      "difficulty": "medium",
+      "size": 8,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/oathstorm-fleet/deepname-leviathan",
+        "name": "Deepname Leviathan",
+        "puzzleId": "regalia:puzzle/oathstorm-fleet/boss/deepname-leviathan",
+        "spriteFamily": "abyssal",
+        "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/deepname-leviathan.png",
+        "spectacleLevel": 4,
+        "finisher": {
+          "track": "moonlitSever",
+          "moveName": "Homeward Naming",
+          "effectLevel": 4
+        },
+        "size": 8,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/oathstorm-fleet/hostages-harbor"
+      },
+      "encounters": [],
+      "primaryColor": "#78D5E8",
+      "secondaryColor": "#F3C66D"
+    },
+    {
+      "id": "regalia:chapter/oathstorm-fleet/hostages-harbor",
+      "mapId": "regalia:map/oathstorm-fleet/main-route",
+      "sceneId": "regalia:scene/oathstorm-fleet/hostages-harbor",
+      "artKey": "hostages-harbor",
+      "artAsset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_05_hostages_harbor.jpg",
+      "visualIndex": 4,
+      "title": "The Hostage's Harbor",
+      "caption": "Kell challenges every clan that calls possession a form of protection.",
+      "startOrder": 37,
+      "endOrder": 45,
+      "difficulty": "hard",
+      "size": 8,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/oathstorm-fleet/hearthlaw-giant",
+        "name": "Hearthlaw Giant",
+        "puzzleId": "regalia:puzzle/oathstorm-fleet/boss/hearthlaw-giant",
+        "spriteFamily": "volcanic",
+        "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/hearthlaw-giant.png",
+        "spectacleLevel": 5,
+        "finisher": {
+          "track": "brassJudgment",
+          "moveName": "Unbarred Hearth",
+          "effectLevel": 5
+        },
+        "size": 9,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/oathstorm-fleet/current-on-trial"
+      },
+      "encounters": [],
+      "primaryColor": "#FFAC72",
+      "secondaryColor": "#92D9D0"
+    },
+    {
+      "id": "regalia:chapter/oathstorm-fleet/current-on-trial",
+      "mapId": "regalia:map/oathstorm-fleet/main-route",
+      "sceneId": "regalia:scene/oathstorm-fleet/current-on-trial",
+      "artKey": "current-on-trial",
+      "artAsset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_06_current_on_trial.jpg",
+      "visualIndex": 5,
+      "title": "The Current on Trial",
+      "caption": "The oath demands a definition of safe passage that does not leave the islands defenseless.",
+      "startOrder": 46,
+      "endOrder": 54,
+      "difficulty": "hard",
+      "size": 9,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/oathstorm-fleet/verdict-wheel",
+        "name": "Verdict Wheel",
+        "puzzleId": "regalia:puzzle/oathstorm-fleet/boss/verdict-wheel",
+        "spriteFamily": "clockwork",
+        "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/verdict-wheel.png",
+        "spectacleLevel": 6,
+        "finisher": {
+          "track": "cinderfall",
+          "moveName": "Law in Motion",
+          "effectLevel": 6
+        },
+        "size": 9,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/oathstorm-fleet/heart-of-the-oathstorm"
+      },
+      "encounters": [],
+      "primaryColor": "#A7C7FF",
+      "secondaryColor": "#FFD27D"
+    },
+    {
+      "id": "regalia:chapter/oathstorm-fleet/heart-of-the-oathstorm",
+      "mapId": "regalia:map/oathstorm-fleet/main-route",
+      "sceneId": "regalia:scene/oathstorm-fleet/heart-of-the-oathstorm",
+      "artKey": "heart-of-the-oathstorm",
+      "artAsset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_07_heart_of_the_oathstorm.jpg",
+      "visualIndex": 6,
+      "title": "Heart of the Oathstorm",
+      "caption": "Every captain must surrender an absolute promise before the fleet can reach the storm's heart.",
+      "startOrder": 55,
+      "endOrder": 63,
+      "difficulty": "expert",
+      "size": 9,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/oathstorm-fleet/dead-kings-word",
+        "name": "Dead King's Word",
+        "puzzleId": "regalia:puzzle/oathstorm-fleet/boss/dead-kings-word",
+        "spriteFamily": "spectral",
+        "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/dead-kings-word.png",
+        "spectacleLevel": 7,
+        "finisher": {
+          "track": "skybreak",
+          "moveName": "Truth in the Keel",
+          "effectLevel": 7
+        },
+        "size": 10,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/oathstorm-fleet/aurora-roads"
+      },
+      "encounters": [],
+      "primaryColor": "#CFB5FF",
+      "secondaryColor": "#77DFC8"
+    },
+    {
+      "id": "regalia:chapter/oathstorm-fleet/aurora-roads",
+      "mapId": "regalia:map/oathstorm-fleet/main-route",
+      "sceneId": "regalia:scene/oathstorm-fleet/aurora-roads",
+      "artKey": "aurora-roads",
+      "artAsset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_08_aurora_roads.jpg",
+      "visualIndex": 7,
+      "title": "Aurora Roads",
+      "caption": "The clans speak a mutual vow while Yrsa carves its changing paths into the sea.",
+      "startOrder": 64,
+      "endOrder": 72,
+      "difficulty": "expert",
+      "size": 10,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/oathstorm-fleet/aurora-worldcoil",
+        "name": "Aurora Worldcoil",
+        "puzzleId": "regalia:puzzle/oathstorm-fleet/boss/aurora-worldcoil",
+        "spriteFamily": "cosmic",
+        "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/aurora-worldcoil.png",
+        "spectacleLevel": 8,
+        "finisher": {
+          "track": "regaliaNova",
+          "moveName": "Roads of Thaw",
+          "effectLevel": 8
+        },
+        "size": 12,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:unlock/oathstorm-fleet/finale"
+      },
+      "encounters": [],
+      "primaryColor": "#82E9E3",
+      "secondaryColor": "#FFCA7A"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "regalia:scene/oathstorm-fleet/harbor-of-glass",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_01_harbor_of_glass.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-1-arrival",
+          "title": "Harbor of Glass",
+          "paragraphs": [
+            "The funeral vow freezes faster than axes can break it, and every careless step opens a black crack beneath the rescue crews. Yrsa reads the stress lines like timber grain, marking the only route strong enough to bear a ship.",
+            "The oath raises its first border as the Rimehorn Warden, an antlered mass of harbor ice that charges wherever the clans name an enemy. Yrsa must redirect each fracture without letting fear decide who belongs outside."
+          ],
+          "semanticLabel": "Yrsa marks a safe path across glassy harbor ice while a towering horned ice warden blocks the ships.",
+          "actionLabel": "Chart the glass"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/oathstorm-fleet/amendable-keel",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_02_amendable_keel.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-2-arrival",
+          "title": "The Amendable Keel",
+          "paragraphs": [
+            "Yrsa and Toren arrange the keel's unfinished clauses around the oath Yrsa refuses to name, loosening the ship from its frozen cradle. Young Kell Rime boards carrying several clans' competing promises of protection and none of their trust.",
+            "The rejected clauses twist ashwood and frozen roots into the Clausewood Jotun, which grips the keel whenever Yrsa tries to hide her past. She cannot destroy it; she must carve an honest opening through what remains unfinished."
+          ],
+          "semanticLabel": "A giant of carved ashwood clauses grips Yrsa's longship while Kell and Toren defend the glowing keel.",
+          "actionLabel": "Amend the keel"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/oathstorm-fleet/captains-at-cross-purposes",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_03_captains_at_cross_purposes.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-3-arrival",
+          "title": "Captains at Cross-Purposes",
+          "paragraphs": [
+            "Captains join Yrsa for rescue, vengeance, trade, and glory, then nearly wreck the expedition arguing over who commands it. With Toren's help, Yrsa fits their incompatible pledges into a temporary charter that preserves every crew's right to leave.",
+            "Boasts and battle banners take wing as the Banner-Raven Parliament, a shrieking flock that repeats each captain's demand until no one can hear another. Kell finds the one shared duty that can quiet the flock without crowning a leader."
+          ],
+          "semanticLabel": "Rival longships surround a storm of red banners shaped like ravens while Kell stands between their captains.",
+          "actionLabel": "Bind the free crews"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/oathstorm-fleet/names-beneath-ice",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_04_names_beneath_ice.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-4-arrival",
+          "title": "Names Beneath Ice",
+          "paragraphs": [
+            "Beyond the wall, the crews find exiles, whales, and the first spring current sealed in blue ice. Toren reads the aurora's definitions and learns that the oath classifies anything crossing toward home as an invader.",
+            "The names denied safe return sink together into the Deepname Leviathan, an abyssal shape moving under every ship. Yrsa must speak those names back into the charter while the fleet steers across its dark wake."
+          ],
+          "semanticLabel": "A vast shadow swims beneath ice holding whales and human silhouettes as names glow in the aurora above.",
+          "actionLabel": "Name those returning"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/oathstorm-fleet/hostages-harbor",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_05_hostages_harbor.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-5-arrival",
+          "title": "The Hostage's Harbor",
+          "paragraphs": [
+            "Jarl Veyra blocks the fleet at her fortress harbor and demands that Kell remain under her protection. Kell lays the clans' overlapping claims side by side, proving that none can possess the person they all swore to keep safe.",
+            "Veyra's hearth-oaths erupt from the fortress as the Hearthlaw Giant, a volcanic guardian that offers warmth only inside locked walls. Kell opens the gates from within while Yrsa turns the giant's fire toward thawing a public harbor."
+          ],
+          "semanticLabel": "Kell opens an iron harbor gate as a giant of hearth fire and black stone rises above Jarl Veyra's fortress.",
+          "actionLabel": "Open the hostage harbor"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/oathstorm-fleet/current-on-trial",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_06_current_on_trial.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-6-arrival",
+          "title": "The Current on Trial",
+          "paragraphs": [
+            "At the storm's threshold, the vow puts each approaching vessel and natural current on trial. The crews must distinguish passage from invasion while admitting that no rule can remove every risk from an open sea.",
+            "The storm assembles their rigid precedents into the Verdict Wheel, a clockwork tribunal that freezes every answer into permanent law. Yrsa and Toren make room for consent, review, and change before its final ring closes."
+          ],
+          "semanticLabel": "Concentric iron and ice rings judge ships and spring currents beneath a courtroom-shaped aurora.",
+          "actionLabel": "Revise the verdict"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/oathstorm-fleet/heart-of-the-oathstorm",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_07_heart_of_the_oathstorm.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-7-arrival",
+          "title": "Heart of the Oathstorm",
+          "paragraphs": [
+            "Inside the frozen tempest, each captain confronts the vow that brought them aboard and concedes the harm hidden inside it. Yrsa fits their revisions into one mutual promise, but the keel still waits for the truth she withheld.",
+            "The king's funeral voice emerges as the Dead King's Word, a spectral command sustained by generations afraid that amendment means betrayal. Yrsa admits whom her own broken oath once hurt, and her confession gives the fleet permission to change."
+          ],
+          "semanticLabel": "Yrsa faces a spectral king formed from snow and spoken runes while rival captains surround the glowing keel.",
+          "actionLabel": "Answer the dead king"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/oathstorm-fleet/aurora-roads",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_08_aurora_roads.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-8-arrival",
+          "title": "Aurora Roads",
+          "paragraphs": [
+            "Captains, exiles, and islanders speak the new vow across the fleet: they will defend one another's passage and revisit the promise whenever safety becomes possession. Yrsa carves each concession into the keel, thawing roads that shift with need and consent.",
+            "The last absolute clauses coil across the sky as the Aurora Worldcoil, a cosmic serpent tightening every road toward permanent winter. The fleet carries the new words from ship to ship until the coil opens into paths of living light."
+          ],
+          "semanticLabel": "A luminous serpent of aurora circles the fleet as black ships carve branching teal roads through the thawing sea.",
+          "actionLabel": "Open the aurora roads"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/oathstorm-fleet/finale",
+      "role": "finale",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/finale_crisis.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "the-homeward-sea",
+          "title": "The Homeward Sea",
+          "paragraphs": [
+            "Spring currents move through the islands again, carrying whales, exiles, traders, and Yrsa's missing kin toward open harbors. The fleet guides them between aurora markers that bend instead of becoming walls.",
+            "Veyra lowers her fortress chains and joins the first harbor council beside Kell. Protection will now be a duty offered to people, not a claim made over them."
+          ],
+          "semanticLabel": "Whales and longships travel together through a thawed slate sea beneath branching teal aurora paths.",
+          "actionLabel": "Guide them home"
+        },
+        {
+          "id": "promises-that-live",
+          "title": "Promises That Live",
+          "paragraphs": [
+            "Toren records the amended vow with space around every clause for future hands. At the next royal funeral, the clans honor their dead without asking winter to keep the world unchanged.",
+            "Yrsa returns to her workshop, where the oathship's keel bears scars from every revision. She leaves them visible, then begins another vessel built to cross whatever the sea becomes."
+          ],
+          "semanticLabel": "Yrsa shapes a new ashwood keel in a bright workshop while the amended ship rests on an open shore.",
+          "actionLabel": "Sail the changed sea",
+          "background": {
+            "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/finale_resolution.jpg",
+            "fit": "cover"
+          }
+        }
+      ]
+    }
+  ]
+}

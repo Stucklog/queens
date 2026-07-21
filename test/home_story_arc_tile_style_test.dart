@@ -34,6 +34,14 @@ void main() {
       foreground: Colors.white,
       outline: Colors.black,
     );
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('story-arc-tile-$_atlasArcId')),
+      240,
+      scrollable: find.descendant(
+        of: find.byKey(const ValueKey('home-content-list')),
+        matching: find.byType(Scrollable),
+      ),
+    );
     _expectOutlinedText(
       tester,
       find.byKey(const ValueKey('story-arc-title-$_atlasArcId')),

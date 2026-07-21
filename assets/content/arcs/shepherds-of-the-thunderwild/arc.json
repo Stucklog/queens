@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "id": "regalia:arc/shepherds-of-the-thunderwild",
+  "contentVersion": 1,
+  "title": "Shepherds of the Thunderwild",
+  "theme": {
+    "brightness": "dark",
+    "backgroundColor": "#071B2D",
+    "surfaceColor": "#102A3E",
+    "surfaceLowColor": "#0B2235",
+    "surfaceHighColor": "#17364A",
+    "surfaceContainerHighColor": "#204258",
+    "foregroundColor": "#F4FAFC",
+    "mutedForegroundColor": "#BED1DB",
+    "outlineColor": "#9DB7C4",
+    "outlineVariantColor": "#7694A3",
+    "inkColor": "#04111C",
+    "dangerColor": "#FF978F"
+  },
+  "mapId": "regalia:map/shepherds-of-the-thunderwild/main-route",
+  "puzzleCatalogAsset": "assets/content/arcs/shepherds-of-the-thunderwild/catalog.json",
+  "unlocks": {
+    "fullMap": "regalia:unlock/shepherds-of-the-thunderwild/full-map",
+    "finale": "regalia:unlock/shepherds-of-the-thunderwild/finale"
+  },
+  "chapters": [
+    {
+      "id": "regalia:chapter/shepherds-of-the-thunderwild/the-storm-that-never-came",
+      "mapId": "regalia:map/shepherds-of-the-thunderwild/main-route",
+      "sceneId": "regalia:scene/shepherds-of-the-thunderwild/the-storm-that-never-came",
+      "artKey": "the-storm-that-never-came",
+      "artAsset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_01_the_storm_that_never_came.jpg",
+      "visualIndex": 0,
+      "title": "The Storm That Never Came",
+      "caption": "Gather a herd that followed rain into nothing.",
+      "startOrder": 1,
+      "endOrder": 9,
+      "difficulty": "easy",
+      "size": 6,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/shepherds-of-the-thunderwild/forkhorn-staticback",
+        "name": "Forkhorn Staticback",
+        "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/boss/forkhorn-staticback",
+        "spriteFamily": "antlered",
+        "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/forkhorn-staticback.png",
+        "spectacleLevel": 1,
+        "finisher": {
+          "track": "crownSlash",
+          "moveName": "Panic Fork",
+          "effectLevel": 1
+        },
+        "size": 7,
+        "targetDifficulty": "easy",
+        "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/the-language-below"
+      },
+      "encounters": [],
+      "primaryColor": "#5EC6F1",
+      "secondaryColor": "#FF8DD1"
+    },
+    {
+      "id": "regalia:chapter/shepherds-of-the-thunderwild/the-language-below",
+      "mapId": "regalia:map/shepherds-of-the-thunderwild/main-route",
+      "sceneId": "regalia:scene/shepherds-of-the-thunderwild/the-language-below",
+      "artKey": "the-language-below",
+      "artAsset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_02_the_language_below.jpg",
+      "visualIndex": 1,
+      "title": "The Language Below",
+      "caption": "Learn the ground-song that holds the herd together.",
+      "startOrder": 10,
+      "endOrder": 18,
+      "difficulty": "easy",
+      "size": 7,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/shepherds-of-the-thunderwild/lightning-root",
+        "name": "The Lightning Root",
+        "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/boss/lightning-root",
+        "spriteFamily": "rootbound",
+        "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/lightning-root.png",
+        "spectacleLevel": 2,
+        "finisher": {
+          "track": "tidalAegis",
+          "moveName": "Signal Tangle",
+          "effectLevel": 2
+        },
+        "size": 7,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/the-poachers-path"
+      },
+      "encounters": [],
+      "primaryColor": "#78D7BC",
+      "secondaryColor": "#FFD36F"
+    },
+    {
+      "id": "regalia:chapter/shepherds-of-the-thunderwild/the-poachers-path",
+      "mapId": "regalia:map/shepherds-of-the-thunderwild/main-route",
+      "sceneId": "regalia:scene/shepherds-of-the-thunderwild/the-poachers-path",
+      "artKey": "the-poachers-path",
+      "artAsset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_03_the_poachers_path.jpg",
+      "visualIndex": 2,
+      "title": "The Poacher's Path",
+      "caption": "Take the hidden route without repeating its harm.",
+      "startOrder": 19,
+      "endOrder": 27,
+      "difficulty": "medium",
+      "size": 7,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/shepherds-of-the-thunderwild/snarewing-kite",
+        "name": "The Snarewing Kite",
+        "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/boss/snarewing-kite",
+        "spriteFamily": "winged",
+        "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/snarewing-kite.png",
+        "spectacleLevel": 3,
+        "finisher": {
+          "track": "twinSigil",
+          "moveName": "Cable-Fletched Dive",
+          "effectLevel": 3
+        },
+        "size": 8,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/many-tempers-one-herd"
+      },
+      "encounters": [],
+      "primaryColor": "#F0B766",
+      "secondaryColor": "#88D4F5"
+    },
+    {
+      "id": "regalia:chapter/shepherds-of-the-thunderwild/many-tempers-one-herd",
+      "mapId": "regalia:map/shepherds-of-the-thunderwild/main-route",
+      "sceneId": "regalia:scene/shepherds-of-the-thunderwild/many-tempers-one-herd",
+      "artKey": "many-tempers-one-herd",
+      "artAsset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_04_many_tempers_one_herd.jpg",
+      "visualIndex": 3,
+      "title": "Many Tempers, One Herd",
+      "caption": "Move as one without forcing every creature alike.",
+      "startOrder": 28,
+      "endOrder": 36,
+      "difficulty": "medium",
+      "size": 8,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/shepherds-of-the-thunderwild/thirst-hollow",
+        "name": "The Thirst Hollow",
+        "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/boss/thirst-hollow",
+        "spriteFamily": "abyssal",
+        "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/thirst-hollow.png",
+        "spectacleLevel": 4,
+        "finisher": {
+          "track": "moonlitSever",
+          "moveName": "Rainless Pull",
+          "effectLevel": 4
+        },
+        "size": 8,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/the-silent-wind-valley"
+      },
+      "encounters": [],
+      "primaryColor": "#9ED06E",
+      "secondaryColor": "#FF9ACF"
+    },
+    {
+      "id": "regalia:chapter/shepherds-of-the-thunderwild/the-silent-wind-valley",
+      "mapId": "regalia:map/shepherds-of-the-thunderwild/main-route",
+      "sceneId": "regalia:scene/shepherds-of-the-thunderwild/the-silent-wind-valley",
+      "artKey": "the-silent-wind-valley",
+      "artAsset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_05_the_silent_wind_valley.jpg",
+      "visualIndex": 4,
+      "title": "The Silent Wind Valley",
+      "caption": "Rebuild a route where compass, cloud, and echo fail.",
+      "startOrder": 37,
+      "endOrder": 45,
+      "difficulty": "hard",
+      "size": 8,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/shepherds-of-the-thunderwild/heatglass-behemoth",
+        "name": "The Heatglass Behemoth",
+        "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/boss/heatglass-behemoth",
+        "spriteFamily": "volcanic",
+        "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/heatglass-behemoth.png",
+        "spectacleLevel": 5,
+        "finisher": {
+          "track": "brassJudgment",
+          "moveName": "Molten Mirage",
+          "effectLevel": 5
+        },
+        "size": 9,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/the-city-of-borrowed-lightning"
+      },
+      "encounters": [],
+      "primaryColor": "#F29B72",
+      "secondaryColor": "#8FD8F2"
+    },
+    {
+      "id": "regalia:chapter/shepherds-of-the-thunderwild/the-city-of-borrowed-lightning",
+      "mapId": "regalia:map/shepherds-of-the-thunderwild/main-route",
+      "sceneId": "regalia:scene/shepherds-of-the-thunderwild/the-city-of-borrowed-lightning",
+      "artKey": "the-city-of-borrowed-lightning",
+      "artAsset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_06_the_city_of_borrowed_lightning.jpg",
+      "visualIndex": 5,
+      "title": "The City of Borrowed Lightning",
+      "caption": "Free the matriarch without darkening a million homes.",
+      "startOrder": 46,
+      "endOrder": 54,
+      "difficulty": "hard",
+      "size": 9,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/shepherds-of-the-thunderwild/loadkeeper-array",
+        "name": "The Loadkeeper Array",
+        "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/boss/loadkeeper-array",
+        "spriteFamily": "clockwork",
+        "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/loadkeeper-array.png",
+        "spectacleLevel": 6,
+        "finisher": {
+          "track": "cinderfall",
+          "moveName": "Terminal Demand",
+          "effectLevel": 6
+        },
+        "size": 9,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/a-grid-that-can-migrate"
+      },
+      "encounters": [],
+      "primaryColor": "#FFD166",
+      "secondaryColor": "#91D9C2"
+    },
+    {
+      "id": "regalia:chapter/shepherds-of-the-thunderwild/a-grid-that-can-migrate",
+      "mapId": "regalia:map/shepherds-of-the-thunderwild/main-route",
+      "sceneId": "regalia:scene/shepherds-of-the-thunderwild/a-grid-that-can-migrate",
+      "artKey": "a-grid-that-can-migrate",
+      "artAsset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_07_a_grid_that_can_migrate.jpg",
+      "visualIndex": 6,
+      "title": "A Grid That Can Migrate",
+      "caption": "Build a power system that follows instead of cages.",
+      "startOrder": 55,
+      "endOrder": 63,
+      "difficulty": "expert",
+      "size": 9,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/shepherds-of-the-thunderwild/brownout-choir",
+        "name": "The Brownout Choir",
+        "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/boss/brownout-choir",
+        "spriteFamily": "spectral",
+        "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/brownout-choir.png",
+        "spectacleLevel": 7,
+        "finisher": {
+          "track": "skybreak",
+          "moveName": "Last Light Lament",
+          "effectLevel": 7
+        },
+        "size": 10,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/the-great-shared-migration"
+      },
+      "encounters": [],
+      "primaryColor": "#A999E8",
+      "secondaryColor": "#FFCF70"
+    },
+    {
+      "id": "regalia:chapter/shepherds-of-the-thunderwild/the-great-shared-migration",
+      "mapId": "regalia:map/shepherds-of-the-thunderwild/main-route",
+      "sceneId": "regalia:scene/shepherds-of-the-thunderwild/the-great-shared-migration",
+      "artKey": "the-great-shared-migration",
+      "artAsset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_08_the_great_shared_migration.jpg",
+      "visualIndex": 7,
+      "title": "The Great Shared Migration",
+      "caption": "Carry herd, city, and weather into one living cycle.",
+      "startOrder": 64,
+      "endOrder": 72,
+      "difficulty": "expert",
+      "size": 10,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/shepherds-of-the-thunderwild/skywheel-colossus",
+        "name": "The Skywheel Colossus",
+        "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/boss/skywheel-colossus",
+        "spriteFamily": "cosmic",
+        "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/skywheel-colossus.png",
+        "spectacleLevel": 8,
+        "finisher": {
+          "track": "regaliaNova",
+          "moveName": "Continental Thunderturn",
+          "effectLevel": 8
+        },
+        "size": 12,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:unlock/shepherds-of-the-thunderwild/finale"
+      },
+      "encounters": [],
+      "primaryColor": "#71CFF3",
+      "secondaryColor": "#FF97D5"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "regalia:scene/shepherds-of-the-thunderwild/the-storm-that-never-came",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_01_the_storm_that_never_came.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-1-arrival",
+          "title": "The Storm That Never Came",
+          "paragraphs": [
+            "Asha follows static prints through the dust and arranges resonant shepherd bells to call scattered families away from the dead cloud bank. Each recovered beast adds its pulse to a growing map beneath her feet.",
+            "The largest straggler, Forkhorn Staticback, is trapped inside a loop of its own frightened lightning and charges every approaching rider. Asha mirrors its heartbeat through the bells until the antlered giant recognizes the herd's answering rhythm."
+          ],
+          "semanticLabel": "Asha rings storm bells before an enormous fork-horned thunderbeast encircled by frightened lightning.",
+          "actionLabel": "Bring the straggler home"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/shepherds-of-the-thunderwild/the-language-below",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_02_the_language_below.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-2-arrival",
+          "title": "The Language Below",
+          "paragraphs": [
+            "Boro teaches Asha to separate hoof-fall, warning, kin-call, and route-memory in the vibrations below them. Together they relay a message across buried stone and locate calves stranded beyond the fences.",
+            "Decades of stolen charge have awakened The Lightning Root beneath the fence line, and its luminous branches scramble every ground-signal they touch. Asha retunes the herd's steps into one patient cadence, soothing the root long enough for the calves to cross."
+          ],
+          "semanticLabel": "Luminous roots split the prairie beneath Boro, Asha, and a line of thunderbeast calves.",
+          "actionLabel": "Send the ground-song"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/shepherds-of-the-thunderwild/the-poachers-path",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_03_the_poachers_path.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-3-arrival",
+          "title": "The Poacher's Path",
+          "paragraphs": [
+            "Former poacher Tavi Rook offers a passage around the new barriers, reading broken grass and cut wire faster than any map. Old trap marks along the route make Asha wonder whether he is guiding the herd to safety or back to his buyers.",
+            "A hunter's scouting creature called The Snarewing Kite dives with cable feathers meant to tag the matriarchs. Tavi gives up the codes that once protected his livelihood, letting Asha ground it safely and proving which future he has chosen."
+          ],
+          "semanticLabel": "Tavi cuts signal cables from a metallic kite creature diving above Asha and the migrating herd.",
+          "actionLabel": "Clear the poacher's path"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/shepherds-of-the-thunderwild/many-tempers-one-herd",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_04_many_tempers_one_herd.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-4-arrival",
+          "title": "Many Tempers, One Herd",
+          "paragraphs": [
+            "Heat-blasted farms leave only a narrow passage between fragile crops and a dry ravine. Asha pairs bold scouts, cautious calves, and solitary elders with different signals so cooperation does not become obedience.",
+            "At midday, The Thirst Hollow opens in the ravine and pulls moisture, sound, and charge toward its lightless center. The herd escapes when Asha lets each family answer the hazard in its own way, combining their different strengths into a rain-bearing front."
+          ],
+          "semanticLabel": "Different thunderbeast families form a protective arc around a dark drought hollow in scorched farmland.",
+          "actionLabel": "Unite the herd's tempers"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/shepherds-of-the-thunderwild/the-silent-wind-valley",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_05_the_silent_wind_valley.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-5-arrival",
+          "title": "The Silent Wind Valley",
+          "paragraphs": [
+            "Inside the silent valley, no breeze carries scent, no compass keeps north, and the ground returns no herd-call. The shepherds reconstruct the forgotten migration from worn hoof basins, mineral traces, and Boro's oldest remembered rhythm.",
+            "Heat trapped for generations rises as The Heatglass Behemoth, sealing each landmark behind walls of molten mirage. Asha guides the thunderbeasts to release their charge in measured waves, cooling a real path instead of chasing reflections."
+          ],
+          "semanticLabel": "A molten glass giant rises between mirrored cliffs as measured lightning cools a path through the silent valley.",
+          "actionLabel": "Find the true route"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/shepherds-of-the-thunderwild/the-city-of-borrowed-lightning",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_06_the_city_of_borrowed_lightning.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-6-arrival",
+          "title": "The City of Borrowed Lightning",
+          "paragraphs": [
+            "The lost route ends beneath Director Sen's metropolis, where a captive matriarch powers pumps, clinics, cooling halls, and whole neighborhoods. Sen does not deny the cruelty; she asks Asha which lives should lose power the moment the chains come off.",
+            "The Loadkeeper Array locks every circuit to the matriarch's heartbeat and treats rescue as a fatal outage. Asha, Boro, and Sen reroute essential loads through stored storm cells, gaining one night to design a freedom the city can survive."
+          ],
+          "semanticLabel": "A captive thunderbeast matriarch glows inside a vast city generator while Asha and Sen reroute brass circuits.",
+          "actionLabel": "Keep the city breathing"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/shepherds-of-the-thunderwild/a-grid-that-can-migrate",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_07_a_grid_that_can_migrate.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-7-arrival",
+          "title": "A Grid That Can Migrate",
+          "paragraphs": [
+            "Asha proposes seasonal relay towers that gather passing charge and return migration corridors to the herd. Citizens, shepherds, and skeptical engineers must align a moving grid before the city's reserves fail and panic closes the gates.",
+            "Every failed circuit leaves behind The Brownout Choir, spectral echoes that repeat the city's worst memories of cold and darkness until no one will risk another change. Boro turns the echoes into a shared pulse, and the citizens complete the relay by following vibration when the lights go out."
+          ],
+          "semanticLabel": "Citizens raise portable relay towers through ghostly waves of blackout fear as Boro marks a rhythm on the ground.",
+          "actionLabel": "Set the grid in motion"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/shepherds-of-the-thunderwild/the-great-shared-migration",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_08_the_great_shared_migration.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-8-arrival",
+          "title": "The Great Shared Migration",
+          "paragraphs": [
+            "The matriarch walks free as mobile relays, citizen caravans, and the reunited herd cross the final range together. At the lost calving ground, Asha must place every tower and thunderbeast within the ancient pattern before the continent's divided weather collapses.",
+            "The gathering fronts become The Skywheel Colossus, a continent-wide storm whose turning bands can nourish every watershed or tear the migration apart. Asha trusts the herd to lead the final alignment, and human hands move the grid around their natural rhythm."
+          ],
+          "semanticLabel": "The reunited herd and a moving city grid align beneath a colossal wheel-shaped storm over the calving ground.",
+          "actionLabel": "Turn the weather home"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/shepherds-of-the-thunderwild/finale",
+      "role": "finale",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/finale_crisis.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "rain-on-every-roof",
+          "title": "Rain on Every Roof",
+          "paragraphs": [
+            "The first calves arrive under a storm bright with their mothers' answering calls. Rain follows the herd outward, filling farm channels, city cisterns, and rivers that children had known only from stories.",
+            "Director Sen's relays keep the clinics lit without a chain on any creature. Every settlement that draws power now tends a piece of the open route in return."
+          ],
+          "semanticLabel": "Newborn thunderbeasts stand in silver rain while rivers brighten from prairie to distant city.",
+          "actionLabel": "Follow the returning rain"
+        },
+        {
+          "id": "the-herd-leads",
+          "title": "The Herd Leads",
+          "paragraphs": [
+            "Asha began the journey believing leadership meant hiding every doubt and choosing every step. She ends it listening through the soles of her boots as thousands of hooves choose the next season's road.",
+            "Boro feels her answer in the ground, and Tavi opens the last old fence ahead. Beneath a living sky, shepherds and citizens travel beside the thunderwild instead of trying to own it."
+          ],
+          "semanticLabel": "Asha, Boro, and Tavi ride beside the herd through an open fence beneath a renewed storm sky.",
+          "actionLabel": "Return to the map",
+          "background": {
+            "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/finale_resolution.jpg",
+            "fit": "cover"
+          }
+        }
+      ]
+    }
+  ]
+}

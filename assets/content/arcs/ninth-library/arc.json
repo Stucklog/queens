@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "id": "regalia:arc/ninth-library",
+  "contentVersion": 1,
+  "title": "The Ninth Library",
+  "theme": {
+    "brightness": "dark",
+    "backgroundColor": "#100D1C",
+    "surfaceColor": "#1A1629",
+    "surfaceLowColor": "#141020",
+    "surfaceHighColor": "#241E36",
+    "surfaceContainerHighColor": "#2C2540",
+    "foregroundColor": "#F7F0E3",
+    "mutedForegroundColor": "#C8BED2",
+    "outlineColor": "#AA9DBA",
+    "outlineVariantColor": "#82758F",
+    "inkColor": "#08060F",
+    "dangerColor": "#FF8FA3"
+  },
+  "mapId": "regalia:map/ninth-library/main-route",
+  "puzzleCatalogAsset": "assets/content/arcs/ninth-library/catalog.json",
+  "unlocks": {
+    "fullMap": "regalia:unlock/ninth-library/full-map",
+    "finale": "regalia:unlock/ninth-library/finale"
+  },
+  "chapters": [
+    {
+      "id": "regalia:chapter/ninth-library/a-card-from-a-shadow",
+      "mapId": "regalia:map/ninth-library/main-route",
+      "sceneId": "regalia:scene/ninth-library/a-card-from-a-shadow",
+      "artKey": "a-card-from-a-shadow",
+      "artAsset": "assets/art/arcs/ninth-library/backgrounds/chapter_01_a_card_from_a_shadow.jpg",
+      "visualIndex": 0,
+      "title": "A Card from a Shadow",
+      "caption": "Open the passage that Alis died to reveal.",
+      "startOrder": 1,
+      "endOrder": 9,
+      "difficulty": "easy",
+      "size": 6,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/ninth-library/index-hart",
+        "name": "The Index Hart",
+        "puzzleId": "regalia:puzzle/ninth-library/boss/index-hart",
+        "spriteFamily": "antlered",
+        "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/index-hart.png",
+        "spectacleLevel": 1,
+        "finisher": {
+          "track": "crownSlash",
+          "moveName": "Branching Call Number",
+          "effectLevel": 1
+        },
+        "size": 7,
+        "targetDifficulty": "easy",
+        "unlocks": "regalia:chapter/ninth-library/the-price-of-entry"
+      },
+      "encounters": [],
+      "primaryColor": "#C96F86",
+      "secondaryColor": "#EAD9B7"
+    },
+    {
+      "id": "regalia:chapter/ninth-library/the-price-of-entry",
+      "mapId": "regalia:map/ninth-library/main-route",
+      "sceneId": "regalia:scene/ninth-library/the-price-of-entry",
+      "artKey": "the-price-of-entry",
+      "artAsset": "assets/art/arcs/ninth-library/backgrounds/chapter_02_the_price_of_entry.jpg",
+      "visualIndex": 1,
+      "title": "The Price of Entry",
+      "caption": "Borrow one truth and surrender what it weighs.",
+      "startOrder": 10,
+      "endOrder": 18,
+      "difficulty": "easy",
+      "size": 7,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/ninth-library/mnemonic-briar",
+        "name": "The Mnemonic Briar",
+        "puzzleId": "regalia:puzzle/ninth-library/boss/mnemonic-briar",
+        "spriteFamily": "rootbound",
+        "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/mnemonic-briar.png",
+        "spectacleLevel": 2,
+        "finisher": {
+          "track": "tidalAegis",
+          "moveName": "Beloved Falsehood",
+          "effectLevel": 2
+        },
+        "size": 7,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/ninth-library/the-rival-borrower"
+      },
+      "encounters": [],
+      "primaryColor": "#D7B76B",
+      "secondaryColor": "#86D1B8"
+    },
+    {
+      "id": "regalia:chapter/ninth-library/the-rival-borrower",
+      "mapId": "regalia:map/ninth-library/main-route",
+      "sceneId": "regalia:scene/ninth-library/the-rival-borrower",
+      "artKey": "the-rival-borrower",
+      "artAsset": "assets/art/arcs/ninth-library/backgrounds/chapter_03_the_rival_borrower.jpg",
+      "visualIndex": 2,
+      "title": "The Rival Borrower",
+      "caption": "Trust the rival who already paid too much.",
+      "startOrder": 19,
+      "endOrder": 27,
+      "difficulty": "medium",
+      "size": 7,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/ninth-library/paper-roc",
+        "name": "The Paper Roc",
+        "puzzleId": "regalia:puzzle/ninth-library/boss/paper-roc",
+        "spriteFamily": "winged",
+        "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/paper-roc.png",
+        "spectacleLevel": 3,
+        "finisher": {
+          "track": "twinSigil",
+          "moveName": "Peerless Review",
+          "effectLevel": 3
+        },
+        "size": 8,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/ninth-library/annotations-in-red"
+      },
+      "encounters": [],
+      "primaryColor": "#76C9B4",
+      "secondaryColor": "#E7C77D"
+    },
+    {
+      "id": "regalia:chapter/ninth-library/annotations-in-red",
+      "mapId": "regalia:map/ninth-library/main-route",
+      "sceneId": "regalia:scene/ninth-library/annotations-in-red",
+      "artKey": "annotations-in-red",
+      "artAsset": "assets/art/arcs/ninth-library/backgrounds/chapter_04_annotations_in_red.jpg",
+      "visualIndex": 3,
+      "title": "Annotations in Red",
+      "caption": "Follow the argument moving between erased books.",
+      "startOrder": 28,
+      "endOrder": 36,
+      "difficulty": "medium",
+      "size": 8,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/ninth-library/redaction-maw",
+        "name": "The Redaction Maw",
+        "puzzleId": "regalia:puzzle/ninth-library/boss/redaction-maw",
+        "spriteFamily": "abyssal",
+        "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/redaction-maw.png",
+        "spectacleLevel": 4,
+        "finisher": {
+          "track": "moonlitSever",
+          "moveName": "Total Omission",
+          "effectLevel": 4
+        },
+        "size": 8,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/ninth-library/what-we-forgot-together"
+      },
+      "encounters": [],
+      "primaryColor": "#E6827D",
+      "secondaryColor": "#9AD9C5"
+    },
+    {
+      "id": "regalia:chapter/ninth-library/what-we-forgot-together",
+      "mapId": "regalia:map/ninth-library/main-route",
+      "sceneId": "regalia:scene/ninth-library/what-we-forgot-together",
+      "artKey": "what-we-forgot-together",
+      "artAsset": "assets/art/arcs/ninth-library/backgrounds/chapter_05_what_we_forgot_together.jpg",
+      "visualIndex": 4,
+      "title": "What We Forgot Together",
+      "caption": "Believe the evidence after the feeling is gone.",
+      "startOrder": 37,
+      "endOrder": 45,
+      "difficulty": "hard",
+      "size": 8,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/ninth-library/cinder-thesis",
+        "name": "The Cinder Thesis",
+        "puzzleId": "regalia:puzzle/ninth-library/boss/cinder-thesis",
+        "spriteFamily": "volcanic",
+        "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/cinder-thesis.png",
+        "spectacleLevel": 5,
+        "finisher": {
+          "track": "brassJudgment",
+          "moveName": "Ashen Rebuttal",
+          "effectLevel": 5
+        },
+        "size": 9,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/ninth-library/the-prestige-of-silence"
+      },
+      "encounters": [],
+      "primaryColor": "#AE9BE0",
+      "secondaryColor": "#F2C77D"
+    },
+    {
+      "id": "regalia:chapter/ninth-library/the-prestige-of-silence",
+      "mapId": "regalia:map/ninth-library/main-route",
+      "sceneId": "regalia:scene/ninth-library/the-prestige-of-silence",
+      "artKey": "the-prestige-of-silence",
+      "artAsset": "assets/art/arcs/ninth-library/backgrounds/chapter_06_the_prestige_of_silence.jpg",
+      "visualIndex": 5,
+      "title": "The Prestige of Silence",
+      "caption": "Expose the institution that turns theft into honor.",
+      "startOrder": 46,
+      "endOrder": 54,
+      "difficulty": "hard",
+      "size": 9,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/ninth-library/citation-engine",
+        "name": "The Citation Engine",
+        "puzzleId": "regalia:puzzle/ninth-library/boss/citation-engine",
+        "spriteFamily": "clockwork",
+        "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/citation-engine.png",
+        "spectacleLevel": 6,
+        "finisher": {
+          "track": "cinderfall",
+          "moveName": "Manufactured Authority",
+          "effectLevel": 6
+        },
+        "size": 9,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/ninth-library/witnesses-beyond-the-stacks"
+      },
+      "encounters": [],
+      "primaryColor": "#D4A95F",
+      "secondaryColor": "#8FD4DC"
+    },
+    {
+      "id": "regalia:chapter/ninth-library/witnesses-beyond-the-stacks",
+      "mapId": "regalia:map/ninth-library/main-route",
+      "sceneId": "regalia:scene/ninth-library/witnesses-beyond-the-stacks",
+      "artKey": "witnesses-beyond-the-stacks",
+      "artAsset": "assets/art/arcs/ninth-library/backgrounds/chapter_07_witnesses_beyond_the_stacks.jpg",
+      "visualIndex": 6,
+      "title": "Witnesses Beyond the Stacks",
+      "caption": "Move the testimony where no single curator can erase it.",
+      "startOrder": 55,
+      "endOrder": 63,
+      "difficulty": "expert",
+      "size": 9,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/ninth-library/tenure-wraith",
+        "name": "The Tenure Wraith",
+        "puzzleId": "regalia:puzzle/ninth-library/boss/tenure-wraith",
+        "spriteFamily": "spectral",
+        "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/tenure-wraith.png",
+        "spectacleLevel": 7,
+        "finisher": {
+          "track": "skybreak",
+          "moveName": "Borrowed Authority",
+          "effectLevel": 7
+        },
+        "size": 10,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/ninth-library/the-open-catalog"
+      },
+      "encounters": [],
+      "primaryColor": "#86C8D3",
+      "secondaryColor": "#E9B6C4"
+    },
+    {
+      "id": "regalia:chapter/ninth-library/the-open-catalog",
+      "mapId": "regalia:map/ninth-library/main-route",
+      "sceneId": "regalia:scene/ninth-library/the-open-catalog",
+      "artKey": "the-open-catalog",
+      "artAsset": "assets/art/arcs/ninth-library/backgrounds/chapter_08_the_open_catalog.jpg",
+      "visualIndex": 7,
+      "title": "The Open Catalog",
+      "caption": "Make the forbidden collection impossible to own.",
+      "startOrder": 64,
+      "endOrder": 72,
+      "difficulty": "expert",
+      "size": 10,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/ninth-library/quiet-constellation",
+        "name": "The Quiet Constellation",
+        "puzzleId": "regalia:puzzle/ninth-library/boss/quiet-constellation",
+        "spriteFamily": "cosmic",
+        "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/quiet-constellation.png",
+        "spectacleLevel": 8,
+        "finisher": {
+          "track": "regaliaNova",
+          "moveName": "Approved Heavens",
+          "effectLevel": 8
+        },
+        "size": 12,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:unlock/ninth-library/finale"
+      },
+      "encounters": [],
+      "primaryColor": "#E9CC76",
+      "secondaryColor": "#9DD9C8"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "regalia:scene/ninth-library/a-card-from-a-shadow",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_01_a_card_from_a_shadow.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-1-arrival",
+          "title": "A Card from a Shadow",
+          "paragraphs": [
+            "Alis's Shadow leads Oriel through closed reading rooms while the catalog card rearranges shelf marks into a route below the university. Oriel must restore the card's broken sequence before the night porter discovers them.",
+            "At the final index, a many-tined sentinel called The Index Hart charges along every false branch of the catalog. Oriel corners it with the one call number the university erased, and the hidden stair opens beneath its hooves."
+          ],
+          "semanticLabel": "Oriel and Alis's Shadow face an antlered index sentinel among tilting shelves and red catalog lights.",
+          "actionLabel": "Open the hidden stair"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/ninth-library/the-price-of-entry",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_02_the_price_of_entry.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-2-arrival",
+          "title": "The Price of Entry",
+          "paragraphs": [
+            "The murder ledger is sealed by the library's balance, so Oriel offers the memory of her mother's farewell at the station. The page opens to reveal that Alis was killed after tracing stolen research to a celebrated university chair.",
+            "The surrendered memory takes root as The Mnemonic Briar, tangling true images with comforting inventions. Oriel cuts a path by recording what she can still prove, but leaves unable to recall why her mother looked proud."
+          ],
+          "semanticLabel": "A glowing memory grows into thorned roots around Oriel and an open forbidden ledger.",
+          "actionLabel": "Carry out the clue"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/ninth-library/the-rival-borrower",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_03_the_rival_borrower.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-3-arrival",
+          "title": "The Rival Borrower",
+          "paragraphs": [
+            "Matias Quill recognizes the hollow edge around Oriel's lost memory and admits that years of his own life are missing from repeated loans. His private notes connect Alis's clue to a research wing that officially never existed.",
+            "Their search wakes The Paper Roc, a storm of rejected theses trained to shred any unauthorized citation. Matias remembers its pattern from a year he cannot remember living, and Oriel follows his notes to bind its wings without demanding another loan."
+          ],
+          "semanticLabel": "Oriel and Matias shelter beneath flying pages as a vast paper bird circles a forbidden research wing.",
+          "actionLabel": "Enter the erased wing"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/ninth-library/annotations-in-red",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_04_annotations_in_red.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-4-arrival",
+          "title": "Annotations in Red",
+          "paragraphs": [
+            "Animated notes in Alis's hand leap between volumes that were stripped from the eight public collections. Oriel, Matias, and Alis's Shadow reorder the marginalia into a map of suppressed discoveries and the patrons who profited from them.",
+            "The trail ends where The Redaction Maw devours names, dates, and finally the aisles around them. Alis's Shadow steps inside the absence to hold it open while Oriel restores the missing citations in red."
+          ],
+          "semanticLabel": "Red handwritten notes bridge open books above a lightless mouth consuming an aisle of shelves.",
+          "actionLabel": "Restore the citations"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/ninth-library/what-we-forgot-together",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_05_what_we_forgot_together.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-5-arrival",
+          "title": "What We Forgot Together",
+          "paragraphs": [
+            "A locked testimony demands a memory neither investigator owns alone, and Oriel and Matias sacrifice the night their rivalry became friendship. They emerge with proof that Alis named her killer, yet with every affectionate reason to distrust one another restored to suspicion.",
+            "The lost night ignites into The Cinder Thesis, which burns their shared notes whenever either acts alone. By following the habits their former selves left in the margins, Oriel and Matias quench it together and choose trust as a present action rather than a recovered feeling."
+          ],
+          "semanticLabel": "Oriel and Matias join separated notes across a burning lecture hall while a figure of ember and ash rises.",
+          "actionLabel": "Choose trust again"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/ninth-library/the-prestige-of-silence",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_06_the_prestige_of_silence.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-6-arrival",
+          "title": "The Prestige of Silence",
+          "paragraphs": [
+            "Alis's murder file opens onto a century of dissent erased, discoveries reassigned, and patrons protected by ceremonial acclaim. Curator Vey argues that the bargains prevented unrest, while Oriel sees how carefully the cost was forced upon people with the least protection.",
+            "The archive's authorship machine becomes The Citation Engine, stamping stolen names beneath portraits of university heroes. Oriel and Matias reverse its proof chain until every prestigious claim points back to the silenced scholar who made it."
+          ],
+          "semanticLabel": "A brass authorship machine stamps false citations beneath grand portraits while Oriel reverses its gears.",
+          "actionLabel": "Trace every stolen name"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/ninth-library/witnesses-beyond-the-stacks",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_07_witnesses_beyond_the_stacks.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-7-arrival",
+          "title": "Witnesses Beyond the Stacks",
+          "paragraphs": [
+            "Curator Vey seals every exit and offers Oriel one final private audience, insisting that uncontrolled truth will punish innocent people along with the guilty. Instead, the investigators divide Alis's testimony among printers, street teachers, former borrowers, and the living shadows of other victims.",
+            "The Tenure Wraith hunts each messenger by wearing the faces of authorities they once trusted. Alis's Shadow teaches the witnesses to compare what they remember, and their overlapping accounts leave the specter no solitary mind to haunt."
+          ],
+          "semanticLabel": "A chain of witnesses passes luminous pages beyond the stacks while an academic specter changes faces behind them.",
+          "actionLabel": "Send the witnesses outward"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/ninth-library/the-open-catalog",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_08_the_open_catalog.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-8-arrival",
+          "title": "The Open Catalog",
+          "paragraphs": [
+            "At the master catalog, Vey offers to reveal Alis's final minute in exchange for Oriel's reason for seeking justice. Oriel refuses the bargain and links the catalog to thousands of readers above, accepting uncertainty so the evidence can survive outside any chosen keeper.",
+            "The library gathers its doctrine of perfect control into The Quiet Constellation, a sky of cold index lights that blanks every unapproved connection. Oriel lets readers draw their own lines between the facts, breaking the pattern and opening every shelf at once."
+          ],
+          "semanticLabel": "Thousands of catalog lights form a false constellation above Oriel as open pages stream toward the city.",
+          "actionLabel": "Open the catalog"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/ninth-library/finale",
+      "role": "finale",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/ninth-library/backgrounds/finale_crisis.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "a-thousand-copies",
+          "title": "Truth in a Thousand Hands",
+          "paragraphs": [
+            "By morning, Alis's testimony and the stolen discoveries cover printshop walls, classroom slates, and kitchen tables across the city. No curator can reclaim a truth that neighbors now keep for one another.",
+            "The university begins answering for the murder and the thefts behind it. The reckoning is untidy, but the people once treated as footnotes finally speak under their own names."
+          ],
+          "semanticLabel": "Citizens read copied catalog pages across a rain-washed square as the university doors stand open.",
+          "actionLabel": "See what remains"
+        },
+        {
+          "id": "the-memory-we-make",
+          "title": "The Memory We Make",
+          "paragraphs": [
+            "Oriel cannot recover her mother's farewell or the lost beginning of her friendship with Matias. She can choose what comes next, and together they record every future loan, cost, and consent in an open ledger.",
+            "Alis's Shadow settles beside her own credited work, no longer the collection's only witness. Beneath the city, the Ninth Library is still dangerous, but its doors now open under many watchful eyes."
+          ],
+          "semanticLabel": "Oriel, Matias, and Alis's peaceful shadow write in an open ledger beneath newly unlocked library doors.",
+          "actionLabel": "Return to the map",
+          "background": {
+            "asset": "assets/art/arcs/ninth-library/backgrounds/finale_resolution.jpg",
+            "fit": "cover"
+          }
+        }
+      ]
+    }
+  ]
+}

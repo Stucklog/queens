@@ -1,10 +1,11 @@
 import 'dart:io';
 
-/// Creates an isolated web-build workspace with full story packages removed
-/// from Flutter's asset declarations.
+/// Creates an isolated web-build workspace and removes any asset declarations
+/// explicitly reserved for non-web release channels.
 ///
-/// The checked-in source remains the complete native app. This temporary copy
-/// exists only so a web build does not ship assets it can never use.
+/// The current release shares the complete portfolio with web, so a valid
+/// staging run may remove nothing. The marker remains available for future
+/// channel-restricted packages.
 Future<void> main(List<String> arguments) async {
   final outputIndex = arguments.indexOf('--output');
   if (outputIndex < 0 || outputIndex + 1 >= arguments.length) {
@@ -46,7 +47,7 @@ Future<void> main(List<String> arguments) async {
   final (filteredPubspec, removedCount) = _removeWebExcludedAssets(
     sourcePubspec,
   );
-  if (removedCount == 0 || filteredPubspec.contains('# web-excluded')) {
+  if (filteredPubspec.contains('# web-excluded')) {
     stderr.writeln(
       'Could not remove the web-excluded Flutter asset declarations.',
     );
@@ -56,8 +57,8 @@ Future<void> main(List<String> arguments) async {
   await stagedPubspec.writeAsString(filteredPubspec, flush: true);
 
   stdout.writeln(
-    'Restricted web source staged at ${output.path} '
-    '($removedCount asset roots excluded).',
+    'Web source staged at ${output.path} '
+    '($removedCount channel-restricted asset roots excluded).',
   );
   stdout.writeln(
     'Build web only from this temporary directory; build every native target '
@@ -86,6 +87,7 @@ Future<void> _copyDirectory(Directory source, Directory destination) async {
     'Pods',
     'build',
     'ephemeral',
+    'tmp',
   };
   await for (final entity in source.list(followLinks: false)) {
     final name =

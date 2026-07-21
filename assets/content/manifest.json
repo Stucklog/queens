@@ -91,19 +91,273 @@
       }
     },
     {
+      "arcId": "regalia:arc/sun-sail-covenant",
+      "metadataAsset": "assets/content/arcs/sun-sail-covenant/arc.json",
+      "entitlementId": "regalia:entitlement/base/sun-sail-covenant",
+      "channels": [
+        "web",
+        "paidPlatform"
+      ],
+      "storefront": {
+        "title": "The Sun-Sail Covenant",
+        "tileSubtitle": "Sail beyond the eclipse",
+        "lockedTileSubtitle": "Play the complete story",
+        "tileArtAsset": "assets/storefront/sun-sail-covenant/tile.jpg",
+        "theme": {
+          "backgroundColor": "#07142F",
+          "surfaceColor": "#10254A",
+          "primaryColor": "#FFD166",
+          "secondaryColor": "#70D7FF"
+        },
+        "prologuePreview": {
+          "id": "regalia:scene/sun-sail-covenant/opening",
+          "role": "opening",
+          "defaults": {
+            "background": {
+              "asset": "assets/storefront/sun-sail-covenant/prologue.jpg",
+              "fit": "cover"
+            },
+            "characters": []
+          },
+          "frames": [
+            {
+              "id": "the-light-goes-out",
+              "title": "A Sun Falters",
+              "paragraphs": [
+                "Route courier Nera Venn is carrying medicine across the radiant currents when a frontier sun dims in the middle of her passage. Solar lanes buckle around her, and a moon full of people disappears into premature night.",
+                "Nera dives through the collapsing light to rescue a sealed imperial ledger from a shattered relay. Before she can read it, warships close the route and name her ship as their target."
+              ],
+              "semanticLabel": "Nera's small ceramic courier ship races away from a dim red sun through fractured ribbons of golden light.",
+              "actionLabel": "Outrun the eclipse"
+            },
+            {
+              "id": "the-price-of-shelter",
+              "title": "The Price of Shelter",
+              "paragraphs": [
+                "The ledger reveals that the dimming was no accident. First Minister Sile is draining remote stars to power an escape engine before a stellar storm reaches the capital.",
+                "The storm is real, but the rescue condemns every frontier world to darkness. Nera has carried orders all her life; now she must decide whether this truth can survive the journey."
+              ],
+              "semanticLabel": "A luminous ledger projects a map of bright central worlds connected to frontier suns fading one by one.",
+              "actionLabel": "Read the ledger"
+            },
+            {
+              "id": "a-route-for-everyone",
+              "title": "A Route for Everyone",
+              "paragraphs": [
+                "A furious salvage pilot named Kest Arlo answers Nera's emergency signal from the first darkened moon. An unsigned message hidden in the ledger offers one more lead: find the engineer who built the tithe.",
+                "Nera turns her courier toward forbidden currents with the empire behind her and a storm ahead. If one route cannot carry every world, she will have to build a new one."
+              ],
+              "semanticLabel": "Two small ships meet above a moon of wreckage as a great stellar storm glows on the far horizon.",
+              "actionLabel": "Begin the pursuit"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "arcId": "regalia:arc/where-the-rain-trees-walk",
+      "metadataAsset": "assets/content/arcs/where-the-rain-trees-walk/arc.json",
+      "entitlementId": "regalia:entitlement/base/where-the-rain-trees-walk",
+      "channels": [
+        "web",
+        "paidPlatform"
+      ],
+      "storefront": {
+        "title": "Where the Rain Trees Walk",
+        "tileSubtitle": "Follow the roots to rain",
+        "lockedTileSubtitle": "Play the complete story",
+        "tileArtAsset": "assets/storefront/where-the-rain-trees-walk/tile.jpg",
+        "theme": {
+          "backgroundColor": "#F3E7C7",
+          "surfaceColor": "#FFF7E1",
+          "primaryColor": "#1F6654",
+          "secondaryColor": "#714017"
+        },
+        "prologuePreview": {
+          "id": "regalia:scene/where-the-rain-trees-walk/opening",
+          "role": "opening",
+          "defaults": {
+            "background": {
+              "asset": "assets/storefront/where-the-rain-trees-walk/prologue.jpg",
+              "fit": "cover"
+            },
+            "characters": []
+          },
+          "frames": [
+            {
+              "id": "the-dry-thunder",
+              "title": "Thunder Without Rain",
+              "paragraphs": [
+                "Drought has tightened every roof beam in Mara Tavi's terraced village, but the great aqueduct still delivers its measured trickle. Then thunder shakes a clear sky, and a living root splits the village square from below.",
+                "Mara feels a rhythm moving through the broken timber, too deliberate to be an earthquake. It points toward the dry mountains and the oldest foundations of the waterway."
+              ],
+              "semanticLabel": "Mara listens to a vast green root rising through an ochre village square beneath a cloudless sky.",
+              "actionLabel": "Listen to the root"
+            },
+            {
+              "id": "a-song-beneath-stone",
+              "title": "A Song Beneath Stone",
+              "paragraphs": [
+                "Elderly beekeeper Orra Fen recognizes the rhythm as half of a migration song her hives once followed. The missing notes have not been heard since the aqueduct crossed the valley.",
+                "Iven Rusk, the proud young engineer responsible for the waterway, insists its foundations cannot move. Yet the cracks under Mara's hands say something enormous has been waiting beneath them."
+              ],
+              "semanticLabel": "Orra raises a wooden resonator beside Mara and Iven while bees circle mossy aqueduct arches.",
+              "actionLabel": "Recover the song"
+            },
+            {
+              "id": "the-forest-below",
+              "title": "The Forest Below",
+              "paragraphs": [
+                "Mara repairs the old wind resonators, and their answer opens a sealed stair under the aqueduct. Cool air rises carrying the scent of wet leaves into a valley that has almost forgotten rain.",
+                "She asks Iven to descend with her and Orra. Saving the waterway will mean learning what it has silenced—and listening before the last underground storm dies."
+              ],
+              "semanticLabel": "A stone stair opens beneath the aqueduct, revealing green light, mist, and immense roots far underground.",
+              "actionLabel": "Enter the rootway"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "arcId": "regalia:arc/oathstorm-fleet",
+      "metadataAsset": "assets/content/arcs/oathstorm-fleet/arc.json",
+      "entitlementId": "regalia:entitlement/base/oathstorm-fleet",
+      "channels": [
+        "web",
+        "paidPlatform"
+      ],
+      "storefront": {
+        "title": "The Oathstorm Fleet",
+        "tileSubtitle": "Rewrite the frozen sea",
+        "lockedTileSubtitle": "Play the complete story",
+        "tileArtAsset": "assets/storefront/oathstorm-fleet/tile.jpg",
+        "theme": {
+          "backgroundColor": "#101A26",
+          "surfaceColor": "#1A2B39",
+          "primaryColor": "#8DDBE8",
+          "secondaryColor": "#FFB36B"
+        },
+        "prologuePreview": {
+          "id": "regalia:scene/oathstorm-fleet/opening",
+          "role": "opening",
+          "defaults": {
+            "background": {
+              "asset": "assets/storefront/oathstorm-fleet/prologue.jpg",
+              "fit": "cover"
+            },
+            "characters": []
+          },
+          "frames": [
+            {
+              "id": "the-kings-last-fire",
+              "title": "The King's Last Fire",
+              "paragraphs": [
+                "The island clans gather around a dead king's pyre while enemy sails wait beyond the harbor. Grief sharpens into one shared vow: no enemy will ever cross these waters again.",
+                "Shipwright Yrsa Vale hears the dangerous absence in those words, but her warning comes too late. The promise climbs into the sky, and the first snow falls through the funeral smoke."
+              ],
+              "semanticLabel": "Clan leaders swear beside a king's burning ship as snow begins beneath a green aurora.",
+              "actionLabel": "Hear the vow"
+            },
+            {
+              "id": "when-the-sea-answered",
+              "title": "When the Sea Answered",
+              "paragraphs": [
+                "By dawn, the harbor is glass. Ships, exiles, migrating whales, Yrsa's missing kin, and even the spring currents are trapped beyond a wall of rune-cracked ice.",
+                "Jarl Veyra calls the frozen border a victory and orders the clans to endure. Yrsa knows endurance will become a tomb unless someone can change a promise spoken by thousands."
+              ],
+              "semanticLabel": "A black harbor is frozen solid while ships and whales wait beyond a towering wall of inscribed ice.",
+              "actionLabel": "Face the frozen sea"
+            },
+            {
+              "id": "the-keel-that-can-amend",
+              "title": "The Keel That Can Amend",
+              "paragraphs": [
+                "Hidden in Yrsa's workshop is an unfinished longship whose carved keel can amend an oath without erasing who first spoke it. To launch her, Yrsa must reopen the promise she once broke and has never confessed.",
+                "Skald Toren Ash-Hand arrives able to read the legal shape of weather in the aurora. Together they will gather rival crews, find the heart of the oathstorm, and carve a safer meaning into the sea."
+              ],
+              "semanticLabel": "Yrsa and Toren stand over a longship keel carved with glowing unfinished clauses inside an ember-lit workshop.",
+              "actionLabel": "Launch the oathship"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "arcId": "regalia:arc/crimson-ledger",
+      "metadataAsset": "assets/content/arcs/crimson-ledger/arc.json",
+      "entitlementId": "regalia:entitlement/base/crimson-ledger",
+      "channels": [
+        "web",
+        "paidPlatform"
+      ],
+      "storefront": {
+        "title": "The Crimson Ledger",
+        "tileSubtitle": "Expose the secret beneath Bellgrave",
+        "lockedTileSubtitle": "Play the complete story",
+        "tileArtAsset": "assets/storefront/crimson-ledger/tile.jpg",
+        "theme": {
+          "backgroundColor": "#120D12",
+          "surfaceColor": "#21171F",
+          "primaryColor": "#B74262",
+          "secondaryColor": "#F2C86B"
+        },
+        "prologuePreview": {
+          "id": "regalia:scene/crimson-ledger/opening",
+          "role": "opening",
+          "defaults": {
+            "background": {
+              "asset": "assets/storefront/crimson-ledger/prologue.jpg",
+              "fit": "cover"
+            },
+            "characters": []
+          },
+          "frames": [
+            {
+              "id": "memories-in-blood",
+              "title": "Memories in Blood",
+              "paragraphs": [
+                "In rain-soaked Bellgrave, spilled blood keeps a final flash of the life it carried. Hunter Elian Voss turns those fragments into exact charcoal portraits, giving the dead a name and the city a monster to blame.",
+                "He has trusted this work for years, even as every finished face makes certainty feel a little more like comfort than truth."
+              ],
+              "semanticLabel": "Elian Voss sketches a face from a crimson memory in a gaslit Bellgrave morgue.",
+              "actionLabel": "Examine the memory"
+            },
+            {
+              "id": "the-impossible-victim",
+              "title": "The Impossible Victim",
+              "paragraphs": [
+                "A bloodless aristocrat is carried into the morgue, but the residue on his cuff shows a marked donor walking into the cathedral dispensary three nights after her burial. The memory is impossible, and impossible evidence has always meant someone arranged the scene.",
+                "Elian redraws the fragment from every angle until the dispensary seal emerges in the rain behind her."
+              ],
+              "semanticLabel": "A fractured blood-memory reveals a dead donor approaching Bellgrave's cathedral dispensary.",
+              "actionLabel": "Trace the seal"
+            },
+            {
+              "id": "a-warning-after-dark",
+              "title": "A Warning After Dark",
+              "paragraphs": [
+                "Before dawn, dispensary nurse Sister Anja Pell slips a donor number beneath Elian's door and begs him to follow records instead of rumors. Someone has already torn the matching page from the public register.",
+                "The trail leads below the cathedral, where Dr. Mirelle Dane waits with a physician's instruments, a vampire's hunger, and proof that Bellgrave has been hunting the wrong disease."
+              ],
+              "semanticLabel": "A donor number leads from Elian's dark workshop toward a cathedral stair below the street.",
+              "actionLabel": "Enter Bellgrave"
+            }
+          ]
+        }
+      }
+    },
+    {
       "arcId": "regalia:arc/atlas-of-borrowed-winds",
       "metadataAsset": "assets/content/arcs/atlas-of-borrowed-winds/arc.json",
       "entitlementId": "regalia:entitlement/paid/atlas-of-borrowed-winds",
       "channels": [
+        "web",
         "paidPlatform"
-      ],
-      "lockedPreviewChannels": [
-        "web"
       ],
       "storefront": {
         "title": "The Atlas of Borrowed Winds",
         "tileSubtitle": "Rewrite a desert of living roads",
-        "lockedTileSubtitle": "Preview the prologue · Available in the apps",
+        "lockedTileSubtitle": "Play the complete story",
         "tileArtAsset": "assets/storefront/atlas-of-borrowed-winds/tile.jpg",
         "tileForegroundAsset": "assets/storefront/atlas-of-borrowed-winds/nahla_apprentice.png",
         "theme": {
@@ -279,6 +533,326 @@
                   "zOrder": 1
                 }
               ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "arcId": "regalia:arc/treaty-written-in-thorns",
+      "metadataAsset": "assets/content/arcs/treaty-written-in-thorns/arc.json",
+      "entitlementId": "regalia:entitlement/base/treaty-written-in-thorns",
+      "channels": [
+        "web",
+        "paidPlatform"
+      ],
+      "storefront": {
+        "title": "A Treaty Written in Thorns",
+        "tileSubtitle": "Tell the truth across an enemy border",
+        "lockedTileSubtitle": "Play the complete story",
+        "tileArtAsset": "assets/storefront/treaty-written-in-thorns/tile.jpg",
+        "theme": {
+          "backgroundColor": "#0D1B16",
+          "surfaceColor": "#182922",
+          "primaryColor": "#3D8B65",
+          "secondaryColor": "#F0C98A"
+        },
+        "prologuePreview": {
+          "id": "regalia:scene/treaty-written-in-thorns/opening",
+          "role": "opening",
+          "defaults": {
+            "background": {
+              "asset": "assets/storefront/treaty-written-in-thorns/prologue.jpg",
+              "fit": "cover"
+            },
+            "characters": []
+          },
+          "frames": [
+            {
+              "id": "a-century-of-ashes",
+              "title": "A Century of Ashes",
+              "paragraphs": [
+                "For a hundred years, the kingdoms of Ash and Vale have traded the same border through war, truce, and war again. Their burned frontier now grows nothing except graves and thorn scrub.",
+                "Envoy Liora Ash and Commander Ren Vale arrive at the peace table carrying generations of grief, and courts that need them to end the fighting without changing who holds power."
+              ],
+              "semanticLabel": "Two rival delegations face each other across a table overlooking a burned frontier.",
+              "actionLabel": "Approach the treaty"
+            },
+            {
+              "id": "the-living-signature",
+              "title": "The Living Signature",
+              "paragraphs": [
+                "The treaty is written in a ceremonial vine said to recognize honest intent. When Liora and Ren sign, green ink climbs beneath their skin and binds each diplomat to the other's words.",
+                "Their first courteous lie raises a thorn in both palms; their first painful truth opens a white flower in the wasteland outside."
+              ],
+              "semanticLabel": "A living green treaty links Liora and Ren as one flower opens beyond the court windows.",
+              "actionLabel": "Speak carefully"
+            },
+            {
+              "id": "peace-under-attack",
+              "title": "Peace Under Attack",
+              "paragraphs": [
+                "Before either court can withdraw, soldiers bearing Vale colors attack an Ash border post and leave evidence too perfect to trust. Liora suspects Ren's command; Ren suspects her aunt Queen Maelin arranged a pretext.",
+                "Bound to feel every lie between them, the envoys begin a joint progress along the frontier to find who needs their treaty to fail."
+              ],
+              "semanticLabel": "Liora and Ren ride together toward a smoking border post as thorned ink circles their hands.",
+              "actionLabel": "Begin the border progress"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "arcId": "regalia:arc/inn-at-the-end-of-yesterday",
+      "metadataAsset": "assets/content/arcs/inn-at-the-end-of-yesterday/arc.json",
+      "entitlementId": "regalia:entitlement/base/inn-at-the-end-of-yesterday",
+      "channels": [
+        "web",
+        "paidPlatform"
+      ],
+      "storefront": {
+        "title": "The Inn at the End of Yesterday",
+        "tileSubtitle": "Find tomorrow beyond one last regret",
+        "lockedTileSubtitle": "Play the complete story",
+        "tileArtAsset": "assets/storefront/inn-at-the-end-of-yesterday/tile.jpg",
+        "theme": {
+          "backgroundColor": "#F6EAD4",
+          "surfaceColor": "#FFF8EA",
+          "primaryColor": "#B87934",
+          "secondaryColor": "#4C3B70"
+        },
+        "prologuePreview": {
+          "id": "regalia:scene/inn-at-the-end-of-yesterday/opening",
+          "role": "opening",
+          "defaults": {
+            "background": {
+              "asset": "assets/storefront/inn-at-the-end-of-yesterday/prologue.jpg",
+              "fit": "cover"
+            },
+            "characters": []
+          },
+          "frames": [
+            {
+              "id": "the-inherited-key",
+              "title": "The Inherited Key",
+              "paragraphs": [
+                "Tamsin Reed inherits a brass key, a handwritten book of house rules, and an inn that appears wherever someone reaches a crossroads wishing to undo a choice. Its windows glow only for travelers carrying a regret they cannot set down.",
+                "Inside, ghostly baker Corin keeps the oven warm and courier Pip Sallow arrives with the same undelivered letter he has carried for twelve years."
+              ],
+              "semanticLabel": "Tamsin unlocks a glowing inn at a rainy crossroads while Corin and Pip wait inside.",
+              "actionLabel": "Unlock the inn"
+            },
+            {
+              "id": "one-memory-only",
+              "title": "One Memory Only",
+              "paragraphs": [
+                "A guest may enter one room and relive one memory exactly as it happened. The inn can restore a voice, a scent, or a forgotten kindness, but its oldest rule forbids anyone from changing the past.",
+                "Most guests leave with a hot meal and enough courage for tomorrow. Tamsin is very good at guiding them past regrets she never has to name as her own."
+              ],
+              "semanticLabel": "A guest watches a cherished memory through an open doorway while Tamsin waits beside a warm hearth.",
+              "actionLabel": "Read the house rules"
+            },
+            {
+              "id": "the-missing-yesterday",
+              "title": "The Missing Yesterday",
+              "paragraphs": [
+                "Near midnight, a traveler arrives who remembers today and the day before yesterday, but nothing between. At the same moment, an empty guest room appears where the inn's outer wall should be.",
+                "Its clock has no hands, its window looks onto a village morning that never occurred, and somewhere beyond the crossroads tomorrow begins to lose an hour."
+              ],
+              "semanticLabel": "A bewildered traveler stands before an impossible empty room with a handless clock.",
+              "actionLabel": "Search for yesterday"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "arcId": "regalia:arc/ninth-library",
+      "metadataAsset": "assets/content/arcs/ninth-library/arc.json",
+      "entitlementId": "regalia:entitlement/base/ninth-library",
+      "channels": [
+        "web",
+        "paidPlatform"
+      ],
+      "storefront": {
+        "title": "The Ninth Library",
+        "tileSubtitle": "Enter the archive beneath accepted truth",
+        "lockedTileSubtitle": "Play the complete story",
+        "tileArtAsset": "assets/storefront/ninth-library/tile.jpg",
+        "theme": {
+          "backgroundColor": "#100D1C",
+          "surfaceColor": "#1A1629",
+          "primaryColor": "#C96F86",
+          "secondaryColor": "#EAD9B7"
+        },
+        "prologuePreview": {
+          "id": "regalia:scene/ninth-library/opening",
+          "role": "opening",
+          "defaults": {
+            "background": {
+              "asset": "assets/storefront/ninth-library/prologue.jpg",
+              "fit": "cover"
+            },
+            "characters": []
+          },
+          "frames": [
+            {
+              "id": "eight-doors",
+              "title": "Eight Accepted Truths",
+              "paragraphs": [
+                "The city gives every respectable question a door: eight public libraries, eight approved branches of knowledge, and no patience for answers that cross between them.",
+                "Oriel Marr has earned a scholarship behind the grandest door of all, yet on her first rain-dark evening at the university, a classmate named Alis dies before she can share what she found below it."
+              ],
+              "semanticLabel": "Oriel stands beneath eight illuminated library doors while rain darkens the university courtyard.",
+              "actionLabel": "Cross the courtyard"
+            },
+            {
+              "id": "the-card",
+              "title": "A Card Without an Owner",
+              "paragraphs": [
+                "After the memorial, Alis's shadow peels away from a candlelit wall and presses a catalog card into Oriel's hand. It remembers fear, a locked stair, and one name scratched out in red.",
+                "The card fits no catalog in the city, but its call number shifts whenever Oriel looks toward the oldest foundations of the university."
+              ],
+              "semanticLabel": "A living shadow offers Oriel a red-annotated catalog card beside a memorial candle.",
+              "actionLabel": "Follow the call number"
+            },
+            {
+              "id": "below-the-catalog",
+              "title": "The Shelf Beneath the World",
+              "paragraphs": [
+                "Beneath a glass floor, Oriel finds a ninth doorway and shelves receding farther than the university grounds could hold. Every book contains a discovery erased from the world above.",
+                "A brass notice states the lending rule plainly: every truth borrowed here costs a memory of equal emotional weight. Somewhere in the stacks waits the truth of who murdered Alis."
+              ],
+              "semanticLabel": "Impossible library stacks descend beneath a glass floor as red marginalia glows between the shelves.",
+              "actionLabel": "Enter the Ninth Library"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "arcId": "regalia:arc/shepherds-of-the-thunderwild",
+      "metadataAsset": "assets/content/arcs/shepherds-of-the-thunderwild/arc.json",
+      "entitlementId": "regalia:entitlement/base/shepherds-of-the-thunderwild",
+      "channels": [
+        "web",
+        "paidPlatform"
+      ],
+      "storefront": {
+        "title": "Shepherds of the Thunderwild",
+        "tileSubtitle": "Guide the last great storm herd home",
+        "lockedTileSubtitle": "Play the complete story",
+        "tileArtAsset": "assets/storefront/shepherds-of-the-thunderwild/tile.jpg",
+        "theme": {
+          "backgroundColor": "#071B2D",
+          "surfaceColor": "#102A3E",
+          "primaryColor": "#5EC6F1",
+          "secondaryColor": "#FF8DD1"
+        },
+        "prologuePreview": {
+          "id": "regalia:scene/shepherds-of-the-thunderwild/opening",
+          "role": "opening",
+          "defaults": {
+            "background": {
+              "asset": "assets/storefront/shepherds-of-the-thunderwild/prologue.jpg",
+              "fit": "cover"
+            },
+            "characters": []
+          },
+          "frames": [
+            {
+              "id": "the-empty-sky",
+              "title": "The Sky Forgets to Answer",
+              "paragraphs": [
+                "Rain once followed the thunderbeasts from horizon to horizon, waking rivers and seedbeds wherever their hooves charged the earth. Now fences cut the old routes and cities draw lightning from herds that never return.",
+                "Asha Neral reads every sign of a gathering storm, but on the morning of her first solo migration, the promised clouds dissolve over fields already cracking with heat."
+              ],
+              "semanticLabel": "Asha waits on a dry green-brown prairie while enormous thunderbeasts face an empty cobalt sky.",
+              "actionLabel": "Search the horizon"
+            },
+            {
+              "id": "a-scattered-herd",
+              "title": "When the Herd Breaks",
+              "paragraphs": [
+                "The thirsty herd chases the vanishing clouds and scatters against a new line of humming fences. Calves call from the dust while frightened adults carry their storms in eight different directions.",
+                "Asha knows the weather better than anyone her age, yet knowledge feels small when every creature is waiting for her to choose which life to reach first."
+              ],
+              "semanticLabel": "Thunderbeasts scatter between humming fences as lightning forks through dust around Asha.",
+              "actionLabel": "Call for the stragglers"
+            },
+            {
+              "id": "listen-below",
+              "title": "Listen Below the Storm",
+              "paragraphs": [
+                "Veteran shepherd Boro Tem places Asha's palm against the ground. Through the trembling soil, she feels the herd speaking beneath the noise of wind and fear.",
+                "The message carries an old destination: a calving ground beyond the fenced continent, on a route no surviving map records. Asha lifts the shepherd's banner and answers through the earth."
+              ],
+              "semanticLabel": "Boro and Asha kneel with hands on luminous vibrating soil as distant herd calls ripple toward them.",
+              "actionLabel": "Begin the migration"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "arcId": "regalia:arc/steal-the-seventh-tide",
+      "metadataAsset": "assets/content/arcs/steal-the-seventh-tide/arc.json",
+      "entitlementId": "regalia:entitlement/base/steal-the-seventh-tide",
+      "channels": [
+        "web",
+        "paidPlatform"
+      ],
+      "storefront": {
+        "title": "Steal the Seventh Tide",
+        "tileSubtitle": "Rob a palace and return the ocean's highest tide",
+        "lockedTileSubtitle": "Play the complete story",
+        "tileArtAsset": "assets/storefront/steal-the-seventh-tide/tile.jpg",
+        "theme": {
+          "backgroundColor": "#041824",
+          "surfaceColor": "#0B2A38",
+          "primaryColor": "#54D5D0",
+          "secondaryColor": "#FFD28A"
+        },
+        "prologuePreview": {
+          "id": "regalia:scene/steal-the-seventh-tide/opening",
+          "role": "opening",
+          "defaults": {
+            "background": {
+              "asset": "assets/storefront/steal-the-seventh-tide/prologue.jpg",
+              "fit": "cover"
+            },
+            "characters": []
+          },
+          "frames": [
+            {
+              "id": "six-tides",
+              "title": "An Ocean One Tide Short",
+              "paragraphs": [
+                "The world remembers seven tides, but only six still answer the moon. Since the Pearl Court captured the highest, harbors have filled with silt, reefs have starved, and inland rulers buy every cup through royal licenses.",
+                "Selke Marr once charted routes for that system and lost her navigator's seal when she challenged it. Now the dead harbor outside her window gives disgrace a more urgent name: debt."
+              ],
+              "semanticLabel": "Selke studies six tide marks above a silted harbor while a seventh empty line gleams under moonlight.",
+              "actionLabel": "Read the missing tide"
+            },
+            {
+              "id": "the-living-current",
+              "title": "What the Court Keeps",
+              "paragraphs": [
+                "A stolen palace chart confirms Selke's suspicion: the seventh tide was never a royal treasure. It is a living current, folded beneath the undersea palace and forced to feed a continent of licensed canals.",
+                "A once-in-a-decade eclipse will open one route to its prison. Selke has the map and a narrow window, but no thief survives the Pearl Court alone."
+              ],
+              "semanticLabel": "A palace chart reveals a luminous living current coiled beneath the Pearl Court.",
+              "actionLabel": "Plan the impossible theft"
+            },
+            {
+              "id": "four-specialists",
+              "title": "A Crew for the Deep",
+              "paragraphs": [
+                "Selke calls on Nima Coral, the architect who shaped the palace; Iri Sable, a singer who opens pressure locks; and Jory Venn, a dryland thief who can steal anything except a calm breath underwater.",
+                "Each has a reason to hate the Court and a reason not to trust Selke. Above them, the moon begins its slow passage toward shadow."
+              ],
+              "semanticLabel": "Selke, Nima, Iri, and Jory gather around a glowing heist map as the eclipse begins above the sea.",
+              "actionLabel": "Assemble the crew"
             }
           ]
         }

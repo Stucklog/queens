@@ -63,11 +63,47 @@ flutter:
     - assets/art/combat/opponents/
     - assets/content/
     - assets/content/arcs/origin/
+    - assets/storefront/sun-sail-covenant/
+    - assets/content/arcs/sun-sail-covenant/
+    - assets/art/arcs/sun-sail-covenant/backgrounds/
+    - assets/art/arcs/sun-sail-covenant/combat/opponents/
+    - assets/storefront/where-the-rain-trees-walk/
+    - assets/content/arcs/where-the-rain-trees-walk/
+    - assets/art/arcs/where-the-rain-trees-walk/backgrounds/
+    - assets/art/arcs/where-the-rain-trees-walk/combat/opponents/
+    - assets/storefront/oathstorm-fleet/
+    - assets/content/arcs/oathstorm-fleet/
+    - assets/art/arcs/oathstorm-fleet/backgrounds/
+    - assets/art/arcs/oathstorm-fleet/combat/opponents/
+    - assets/storefront/crimson-ledger/
+    - assets/content/arcs/crimson-ledger/
+    - assets/art/arcs/crimson-ledger/backgrounds/
+    - assets/art/arcs/crimson-ledger/combat/opponents/
     - assets/storefront/atlas-of-borrowed-winds/
-    - assets/content/arcs/atlas-of-borrowed-winds/ # web-excluded
-    - assets/art/arcs/atlas-of-borrowed-winds/backgrounds/ # web-excluded
-    - assets/art/arcs/atlas-of-borrowed-winds/characters/ # web-excluded
-    - assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/ # web-excluded
+    - assets/content/arcs/atlas-of-borrowed-winds/
+    - assets/art/arcs/atlas-of-borrowed-winds/backgrounds/
+    - assets/art/arcs/atlas-of-borrowed-winds/characters/
+    - assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/
+    - assets/storefront/treaty-written-in-thorns/
+    - assets/content/arcs/treaty-written-in-thorns/
+    - assets/art/arcs/treaty-written-in-thorns/backgrounds/
+    - assets/art/arcs/treaty-written-in-thorns/combat/opponents/
+    - assets/storefront/inn-at-the-end-of-yesterday/
+    - assets/content/arcs/inn-at-the-end-of-yesterday/
+    - assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/
+    - assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/
+    - assets/storefront/ninth-library/
+    - assets/content/arcs/ninth-library/
+    - assets/art/arcs/ninth-library/backgrounds/
+    - assets/art/arcs/ninth-library/combat/opponents/
+    - assets/storefront/shepherds-of-the-thunderwild/
+    - assets/content/arcs/shepherds-of-the-thunderwild/
+    - assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/
+    - assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/
+    - assets/storefront/steal-the-seventh-tide/
+    - assets/content/arcs/steal-the-seventh-tide/
+    - assets/art/arcs/steal-the-seventh-tide/backgrounds/
+    - assets/art/arcs/steal-the-seventh-tide/combat/opponents/
     - assets/fonts/PixelifySans_LICENSE.txt
     - assets/puzzles/catalog.json
     - assets/puzzles/tutorial.json

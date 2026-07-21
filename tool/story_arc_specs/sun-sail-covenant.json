@@ -1,0 +1,233 @@
+{
+  "slug": "sun-sail-covenant",
+  "title": "The Sun-Sail Covenant",
+  "tagline": "A courier uncovers a survival plan that saves the center by extinguishing the frontier.",
+  "environment": "space",
+  "seed": 31001,
+  "theme": {
+    "brightness": "dark",
+    "backgroundColor": "#07142F",
+    "surfaceColor": "#10254A",
+    "surfaceLowColor": "#0B1C3A",
+    "surfaceHighColor": "#18325E",
+    "surfaceContainerHighColor": "#213B67",
+    "foregroundColor": "#FFF8E8",
+    "mutedForegroundColor": "#C8D0DC",
+    "outlineColor": "#A7B8D1",
+    "outlineVariantColor": "#7892B8",
+    "inkColor": "#030A18",
+    "dangerColor": "#FF7A86"
+  },
+  "storefront": {
+    "tileSubtitle": "Sail beyond the eclipse",
+    "keyArtPrompt": "Heroic science-fantasy key art, no text: courier Nera Venn stands on the prow of a worn bone-white ceramic starship, holding a glowing sealed ledger while vast saffron light-sails cross ultramarine space; a crimson eclipse darkens a frontier sun behind her, radiant transit ribbons lead toward a fragile civilian flotilla, cinematic mythic scale, tactile analog controls, hopeful but urgent mood, high contrast widescreen composition.",
+    "prologueFrames": [
+      {
+        "id": "the-light-goes-out",
+        "title": "A Sun Falters",
+        "paragraphs": [
+          "Route courier Nera Venn is carrying medicine across the radiant currents when a frontier sun dims in the middle of her passage. Solar lanes buckle around her, and a moon full of people disappears into premature night.",
+          "Nera dives through the collapsing light to rescue a sealed imperial ledger from a shattered relay. Before she can read it, warships close the route and name her ship as their target."
+        ],
+        "semanticLabel": "Nera's small ceramic courier ship races away from a dim red sun through fractured ribbons of golden light.",
+        "actionLabel": "Outrun the eclipse"
+      },
+      {
+        "id": "the-price-of-shelter",
+        "title": "The Price of Shelter",
+        "paragraphs": [
+          "The ledger reveals that the dimming was no accident. First Minister Sile is draining remote stars to power an escape engine before a stellar storm reaches the capital.",
+          "The storm is real, but the rescue condemns every frontier world to darkness. Nera has carried orders all her life; now she must decide whether this truth can survive the journey."
+        ],
+        "semanticLabel": "A luminous ledger projects a map of bright central worlds connected to frontier suns fading one by one.",
+        "actionLabel": "Read the ledger"
+      },
+      {
+        "id": "a-route-for-everyone",
+        "title": "A Route for Everyone",
+        "paragraphs": [
+          "A furious salvage pilot named Kest Arlo answers Nera's emergency signal from the first darkened moon. An unsigned message hidden in the ledger offers one more lead: find the engineer who built the tithe.",
+          "Nera turns her courier toward forbidden currents with the empire behind her and a storm ahead. If one route cannot carry every world, she will have to build a new one."
+        ],
+        "semanticLabel": "Two small ships meet above a moon of wreckage as a great stellar storm glows on the far horizon.",
+        "actionLabel": "Begin the pursuit"
+      }
+    ]
+  },
+  "chapters": [
+    {
+      "slug": "dimming-sun",
+      "title": "The Dimming Sun",
+      "caption": "Nera steals proof from a dying route while the empire closes the frontier.",
+      "paragraphs": [
+        "Nera threads failing currents around the darkened moon, matching each pulse of her sail to the last beats of its sun. She reaches the wrecked relay, recovers the ledger's missing seal, and finds an escape line through the debris.",
+        "The lockdown packs stolen radiance into the antlers of the Eclipse Hart, a blazing sentinel that charges every open lane. Nera must split its repeating pattern before the last safe current collapses."
+      ],
+      "semanticLabel": "Nera's saffron sail banks around a radiant antlered sentinel above a moon slipping into darkness.",
+      "actionLabel": "Break the eclipse",
+      "primaryColor": "#FFD166",
+      "secondaryColor": "#70D7FF",
+      "boss": {
+        "slug": "eclipse-hart",
+        "name": "Eclipse Hart",
+        "family": "antlered",
+        "moveName": "Sunbreak Turn"
+      }
+    },
+    {
+      "slug": "moon-of-wrecks",
+      "title": "Moon of Wrecks",
+      "caption": "Nera and Kest rebuild a beacon that can prove the sun was deliberately drained.",
+      "paragraphs": [
+        "Kest meets Nera with an accusation instead of a welcome: couriers served the empire long before one of them stole a ledger. Working among the salvage fields, they fit fragments of the moon's beacon into a signal no ministry can dismiss.",
+        "Severed cables and abandoned light-sails knot themselves into the Cablebloom Colossus, guarding the beacon behind a thicket of wreckage. Nera plots the openings while Kest cuts only the lines that will not bury the truth."
+      ],
+      "semanticLabel": "Nera and Kest face a giant flowering mass of cables and torn sails in a blue-black salvage field.",
+      "actionLabel": "Relight the beacon",
+      "primaryColor": "#F4C95D",
+      "secondaryColor": "#7CE0C3",
+      "boss": {
+        "slug": "cablebloom-colossus",
+        "name": "Cablebloom Colossus",
+        "family": "rootbound",
+        "moveName": "Beacon Severance"
+      }
+    },
+    {
+      "slug": "tithemaker",
+      "title": "The Tithemaker",
+      "caption": "The crew finds the engineer whose remorse may reveal the empire's next targets.",
+      "paragraphs": [
+        "The beacon's hidden cadence leads Nera and Kest to Tor Axiom, alone inside an abandoned transfer station. Tor admits he designed the tithe, then helps them wake its dormant nodes so the ledger can display every star marked for sacrifice.",
+        "The station's censorship protocol unfolds into the Audit Seraph, a razor-winged manifestation that deletes any route it cannot authorize. To preserve the target map, the three fugitives must carry one signal through its shifting blind spots."
+      ],
+      "semanticLabel": "A luminous mechanical seraph spreads blade-like wings above Nera, Kest, and Tor in an abandoned transfer station.",
+      "actionLabel": "Expose the targets",
+      "primaryColor": "#84E1FF",
+      "secondaryColor": "#FFD166",
+      "boss": {
+        "slug": "audit-seraph",
+        "name": "Audit Seraph",
+        "family": "winged",
+        "moveName": "Unsealed Signal"
+      }
+    },
+    {
+      "slug": "witness-worlds",
+      "title": "Witness Worlds",
+      "caption": "Threatened systems turn scattered observations into evidence the empire cannot erase.",
+      "paragraphs": [
+        "Nera's crew crosses the marked systems and aligns observatories that have spent generations distrusting one another. Each world verifies a different part of the tithe, and civilian ships begin gathering around their shared proof.",
+        "Imperial jamming hollows the network into the Lightless Choir, a vast silence that swallows every isolated transmission. The witness worlds must aim their lenses together, giving Nera one chorus bright enough to cross the void."
+      ],
+      "semanticLabel": "Observatory beams from many colorful worlds converge against a vast dark shape swallowing radio light.",
+      "actionLabel": "Unite the witnesses",
+      "primaryColor": "#9EC5FF",
+      "secondaryColor": "#FFCD70",
+      "boss": {
+        "slug": "lightless-choir",
+        "name": "Lightless Choir",
+        "family": "abyssal",
+        "moveName": "Many-World Chorus"
+      }
+    },
+    {
+      "slug": "fleet-divided",
+      "title": "A Fleet Divided",
+      "caption": "Nera must give rival captains one current without abandoning the slowest ships.",
+      "paragraphs": [
+        "The growing flotilla brings vengeance, surrender, and demands for privileged passage into the same crowded lane. Nera lays out a shared current where every ship's position protects another, asking the fastest captains to place themselves last.",
+        "Their anger ignites the exhaust wake into the Cinderwake Behemoth, a furnace-bodied war shape that grows whenever a captain breaks formation. The fleet can cool it only by holding a course no single crew would choose alone."
+      ],
+      "semanticLabel": "A diverse flotilla holds a precise formation around a colossal creature made of crimson reactor fire.",
+      "actionLabel": "Hold the shared current",
+      "primaryColor": "#FF9B73",
+      "secondaryColor": "#7DE2D1",
+      "boss": {
+        "slug": "cinderwake-behemoth",
+        "name": "Cinderwake Behemoth",
+        "family": "volcanic",
+        "moveName": "Common Wake"
+      }
+    },
+    {
+      "slug": "storms-measure",
+      "title": "The Storm's Measure",
+      "caption": "At the storm's edge, honest numbers reveal both the danger and another way through it.",
+      "paragraphs": [
+        "At the edge of the stellar storm, the crew repairs a forecasting array and confirms the capital will not survive in place. Tor also reveals the limits he hid inside the escape engine: it can move everyone, but only through thousands of independent sail decisions.",
+        "The damaged array rebuilds its harshest forecasts as the Prognosis Engine, a clockwork judge that rejects every future containing uncertainty. Nera must chart a survivable range instead of promising a perfect rescue no one can guarantee."
+      ],
+      "semanticLabel": "Nera studies branching storm paths while a brass forecasting engine locks its rings around one fatal prediction.",
+      "actionLabel": "Measure an honest path",
+      "primaryColor": "#B9A7FF",
+      "secondaryColor": "#FFD978",
+      "boss": {
+        "slug": "prognosis-engine",
+        "name": "Prognosis Engine",
+        "family": "clockwork",
+        "moveName": "Open Forecast"
+      }
+    },
+    {
+      "slug": "capital-current",
+      "title": "The Capital Current",
+      "caption": "The coalition reaches the imperial engine as Sile begins the final tithe.",
+      "paragraphs": [
+        "First Minister Sile starts the engine before the flotilla can enter the capital current. Nera, Kest, and Tor reroute its interlocked solar channels, proving that shared control can widen the passage without draining another frontier sun.",
+        "Centuries of centralized orders rise from the engine as the Imperial Mandate, a spectral crown that restores every channel to one command. The crew must break its chain of obedience and hand each world a living part of the route."
+      ],
+      "semanticLabel": "A ghostly crown towers over an imperial engine as the crew redirects golden channels toward a waiting flotilla.",
+      "actionLabel": "Unmake the mandate",
+      "primaryColor": "#E5B8FF",
+      "secondaryColor": "#72E3C0",
+      "boss": {
+        "slug": "imperial-mandate",
+        "name": "Imperial Mandate",
+        "family": "spectral",
+        "moveName": "Sovereignty Severed"
+      }
+    },
+    {
+      "slug": "covenant-of-light",
+      "title": "Covenant of Light",
+      "caption": "Thousands of light-sails must become one migration without surrendering their freedom.",
+      "paragraphs": [
+        "Nera asks every ship and world to steer one part of a migration pattern no capital could command alone. Sile yields the engine when she sees frontier sails shielding the capital, and the old tithe opens into a network of mutual passage.",
+        "The storm's pressure twists the released radiance into the Crownstorm Singularity, a cosmic knot capable of swallowing the newborn routes. Nera carries the final turn between fleets, and their covenant pulls every world safely through."
+      ],
+      "semanticLabel": "Thousands of saffron light-sails spiral cooperatively around a brilliant cosmic knot while whole worlds move through the storm.",
+      "actionLabel": "Carry every world",
+      "primaryColor": "#FFE08A",
+      "secondaryColor": "#86E6FF",
+      "boss": {
+        "slug": "crownstorm-singularity",
+        "name": "Crownstorm Singularity",
+        "family": "cosmic",
+        "moveName": "Covenant of Light"
+      }
+    }
+  ],
+  "finaleFrames": [
+    {
+      "id": "dawn-between-worlds",
+      "title": "Dawn Between Worlds",
+      "paragraphs": [
+        "The stellar storm closes behind the last migrating world. Frontier suns brighten as the tithe returns their stolen fire, and ships once divided by distance wake beneath the same new dawn.",
+        "Kest guides salvage crews home, Tor publishes the engine's design, and Sile faces the worlds her plan would have abandoned. Survival is no longer a privilege granted from the center."
+      ],
+      "semanticLabel": "Restored suns rise beyond a vast fleet whose light-sails form connected golden paths across blue space.",
+      "actionLabel": "See the new dawn"
+    },
+    {
+      "id": "courier-of-the-covenant",
+      "title": "Courier of the Covenant",
+      "paragraphs": [
+        "The ledger becomes the first public record of the covenant: no world may close a route that another needs to live. Its pages carry many seals now, none larger than the rest.",
+        "Nera refuses a minister's chair and returns to her courier ship. There are more voices to connect beyond the mapped currents, and for the first time she chooses what her route is for."
+      ],
+      "semanticLabel": "Nera launches her repaired courier beneath a holographic covenant bearing many equal seals.",
+      "actionLabel": "Return to the stars"
+    }
+  ]
+}

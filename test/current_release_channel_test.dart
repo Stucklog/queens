@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/content/entitlements.dart';
 
 void main() {
-  test('only web builds use the restricted content channel', () {
+  test('web builds select the web content channel', () {
     final policy = ContentEntitlementPolicy.current();
 
     expect(

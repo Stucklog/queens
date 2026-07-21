@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "id": "regalia:arc/inn-at-the-end-of-yesterday",
+  "contentVersion": 1,
+  "title": "The Inn at the End of Yesterday",
+  "theme": {
+    "brightness": "light",
+    "backgroundColor": "#F6EAD4",
+    "surfaceColor": "#FFF8EA",
+    "surfaceLowColor": "#EBDCC2",
+    "surfaceHighColor": "#FFFDF7",
+    "surfaceContainerHighColor": "#E3CEAF",
+    "foregroundColor": "#2B201B",
+    "mutedForegroundColor": "#66564A",
+    "outlineColor": "#74604F",
+    "outlineVariantColor": "#8A6F52",
+    "inkColor": "#3C3042",
+    "dangerColor": "#8D2F3C"
+  },
+  "mapId": "regalia:map/inn-at-the-end-of-yesterday/main-route",
+  "puzzleCatalogAsset": "assets/content/arcs/inn-at-the-end-of-yesterday/catalog.json",
+  "unlocks": {
+    "fullMap": "regalia:unlock/inn-at-the-end-of-yesterday/full-map",
+    "finale": "regalia:unlock/inn-at-the-end-of-yesterday/finale"
+  },
+  "chapters": [
+    {
+      "id": "regalia:chapter/inn-at-the-end-of-yesterday/house-at-the-crossroads",
+      "mapId": "regalia:map/inn-at-the-end-of-yesterday/main-route",
+      "sceneId": "regalia:scene/inn-at-the-end-of-yesterday/house-at-the-crossroads",
+      "artKey": "house-at-the-crossroads",
+      "artAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_01_house_at_the_crossroads.jpg",
+      "visualIndex": 0,
+      "title": "The House at the Crossroads",
+      "caption": "Learn why memory may be revisited but never rewritten.",
+      "startOrder": 1,
+      "endOrder": 9,
+      "difficulty": "easy",
+      "size": 6,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/inn-at-the-end-of-yesterday/rulebook-porter",
+        "name": "The Rulebook Porter",
+        "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/boss/rulebook-porter",
+        "spriteFamily": "clockwork",
+        "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/rulebook-porter.png",
+        "spectacleLevel": 1,
+        "finisher": {
+          "track": "crownSlash",
+          "moveName": "No Exceptions",
+          "effectLevel": 1
+        },
+        "size": 7,
+        "targetDifficulty": "easy",
+        "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/guest-without-yesterday"
+      },
+      "encounters": [],
+      "primaryColor": "#B87934",
+      "secondaryColor": "#4C3B70"
+    },
+    {
+      "id": "regalia:chapter/inn-at-the-end-of-yesterday/guest-without-yesterday",
+      "mapId": "regalia:map/inn-at-the-end-of-yesterday/main-route",
+      "sceneId": "regalia:scene/inn-at-the-end-of-yesterday/guest-without-yesterday",
+      "artKey": "guest-without-yesterday",
+      "artAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_02_guest_without_yesterday.jpg",
+      "visualIndex": 1,
+      "title": "The Guest Without Yesterday",
+      "caption": "Open a room built around a day that is gone.",
+      "startOrder": 10,
+      "endOrder": 18,
+      "difficulty": "easy",
+      "size": 7,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/inn-at-the-end-of-yesterday/blank-bellhop",
+        "name": "The Blank Bellhop",
+        "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/boss/blank-bellhop",
+        "spriteFamily": "spectral",
+        "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/blank-bellhop.png",
+        "spectacleLevel": 2,
+        "finisher": {
+          "track": "tidalAegis",
+          "moveName": "Forget the Clue",
+          "effectLevel": 2
+        },
+        "size": 7,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/hours-on-the-menu"
+      },
+      "encounters": [],
+      "primaryColor": "#8D668A",
+      "secondaryColor": "#47334F"
+    },
+    {
+      "id": "regalia:chapter/inn-at-the-end-of-yesterday/hours-on-the-menu",
+      "mapId": "regalia:map/inn-at-the-end-of-yesterday/main-route",
+      "sceneId": "regalia:scene/inn-at-the-end-of-yesterday/hours-on-the-menu",
+      "artKey": "hours-on-the-menu",
+      "artAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_03_hours_on_the_menu.jpg",
+      "visualIndex": 2,
+      "title": "Hours on the Menu",
+      "caption": "Recover the tastes and sounds stolen with time.",
+      "startOrder": 19,
+      "endOrder": 27,
+      "difficulty": "medium",
+      "size": 7,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/inn-at-the-end-of-yesterday/hour-thieving-ivy",
+        "name": "The Hour-Thieving Ivy",
+        "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/boss/hour-thieving-ivy",
+        "spriteFamily": "rootbound",
+        "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/hour-thieving-ivy.png",
+        "spectacleLevel": 3,
+        "finisher": {
+          "track": "twinSigil",
+          "moveName": "Season Out of Time",
+          "effectLevel": 3
+        },
+        "size": 8,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/twelve-year-letter"
+      },
+      "encounters": [],
+      "primaryColor": "#6D8750",
+      "secondaryColor": "#344D32"
+    },
+    {
+      "id": "regalia:chapter/inn-at-the-end-of-yesterday/twelve-year-letter",
+      "mapId": "regalia:map/inn-at-the-end-of-yesterday/main-route",
+      "sceneId": "regalia:scene/inn-at-the-end-of-yesterday/twelve-year-letter",
+      "artKey": "twelve-year-letter",
+      "artAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_04_twelve_year_letter.jpg",
+      "visualIndex": 3,
+      "title": "The Twelve-Year Letter",
+      "caption": "Follow a delivery route that redraws itself each night.",
+      "startOrder": 28,
+      "endOrder": 36,
+      "difficulty": "medium",
+      "size": 8,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/inn-at-the-end-of-yesterday/routefold-raven",
+        "name": "The Routefold Raven",
+        "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/boss/routefold-raven",
+        "spriteFamily": "winged",
+        "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/routefold-raven.png",
+        "spectacleLevel": 4,
+        "finisher": {
+          "track": "moonlitSever",
+          "moveName": "Return to Sender",
+          "effectLevel": 4
+        },
+        "size": 8,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/auditor-at-the-door"
+      },
+      "encounters": [],
+      "primaryColor": "#4F7690",
+      "secondaryColor": "#2D4F63"
+    },
+    {
+      "id": "regalia:chapter/inn-at-the-end-of-yesterday/auditor-at-the-door",
+      "mapId": "regalia:map/inn-at-the-end-of-yesterday/main-route",
+      "sceneId": "regalia:scene/inn-at-the-end-of-yesterday/auditor-at-the-door",
+      "artKey": "auditor-at-the-door",
+      "artAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_05_auditor_at_the_door.jpg",
+      "visualIndex": 4,
+      "title": "The Auditor at the Door",
+      "caption": "Prove the refuge is not consuming its guests' futures.",
+      "startOrder": 37,
+      "endOrder": 45,
+      "difficulty": "hard",
+      "size": 8,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/inn-at-the-end-of-yesterday/future-horn-stag",
+        "name": "The Future-Horn Stag",
+        "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/boss/future-horn-stag",
+        "spriteFamily": "antlered",
+        "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/future-horn-stag.png",
+        "spectacleLevel": 5,
+        "finisher": {
+          "track": "brassJudgment",
+          "moveName": "Unlived Branches",
+          "effectLevel": 5
+        },
+        "size": 9,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/room-tamsin-locked"
+      },
+      "encounters": [],
+      "primaryColor": "#806D51",
+      "secondaryColor": "#483B2D"
+    },
+    {
+      "id": "regalia:chapter/inn-at-the-end-of-yesterday/room-tamsin-locked",
+      "mapId": "regalia:map/inn-at-the-end-of-yesterday/main-route",
+      "sceneId": "regalia:scene/inn-at-the-end-of-yesterday/room-tamsin-locked",
+      "artKey": "room-tamsin-locked",
+      "artAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_06_room_tamsin_locked.jpg",
+      "visualIndex": 5,
+      "title": "The Room Tamsin Locked",
+      "caption": "Remember the wish that first called the inn home.",
+      "startOrder": 46,
+      "endOrder": 54,
+      "difficulty": "hard",
+      "size": 9,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/inn-at-the-end-of-yesterday/unremembering-well",
+        "name": "The Unremembering Well",
+        "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/boss/unremembering-well",
+        "spriteFamily": "abyssal",
+        "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/unremembering-well.png",
+        "spectacleLevel": 6,
+        "finisher": {
+          "track": "cinderfall",
+          "moveName": "Wish It Never Was",
+          "effectLevel": 6
+        },
+        "size": 9,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/yesterday-restored"
+      },
+      "encounters": [],
+      "primaryColor": "#6B557A",
+      "secondaryColor": "#463452"
+    },
+    {
+      "id": "regalia:chapter/inn-at-the-end-of-yesterday/yesterday-restored",
+      "mapId": "regalia:map/inn-at-the-end-of-yesterday/main-route",
+      "sceneId": "regalia:scene/inn-at-the-end-of-yesterday/yesterday-restored",
+      "artKey": "yesterday-restored",
+      "artAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_07_yesterday_restored.jpg",
+      "visualIndex": 6,
+      "title": "Yesterday Restored",
+      "caption": "Rebuild one day without smoothing away its grief.",
+      "startOrder": 55,
+      "endOrder": 63,
+      "difficulty": "expert",
+      "size": 9,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/inn-at-the-end-of-yesterday/midnight-mosaic",
+        "name": "The Midnight Mosaic",
+        "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/boss/midnight-mosaic",
+        "spriteFamily": "cosmic",
+        "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/midnight-mosaic.png",
+        "spectacleLevel": 7,
+        "finisher": {
+          "track": "skybreak",
+          "moveName": "Preferred Version",
+          "effectLevel": 7
+        },
+        "size": 10,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/new-house-rules"
+      },
+      "encounters": [],
+      "primaryColor": "#9B6F37",
+      "secondaryColor": "#4F3B20"
+    },
+    {
+      "id": "regalia:chapter/inn-at-the-end-of-yesterday/new-house-rules",
+      "mapId": "regalia:map/inn-at-the-end-of-yesterday/main-route",
+      "sceneId": "regalia:scene/inn-at-the-end-of-yesterday/new-house-rules",
+      "artKey": "new-house-rules",
+      "artAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_08_new_house_rules.jpg",
+      "visualIndex": 7,
+      "title": "New House Rules",
+      "caption": "Keep a refuge for understanding the past, not escaping it.",
+      "startOrder": 64,
+      "endOrder": 72,
+      "difficulty": "expert",
+      "size": 10,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/inn-at-the-end-of-yesterday/last-regret-fire",
+        "name": "The Last-Regret Fire",
+        "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/boss/last-regret-fire",
+        "spriteFamily": "volcanic",
+        "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/last-regret-fire.png",
+        "spectacleLevel": 8,
+        "finisher": {
+          "track": "regaliaNova",
+          "moveName": "One More Chance",
+          "effectLevel": 8
+        },
+        "size": 12,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:unlock/inn-at-the-end-of-yesterday/finale"
+      },
+      "encounters": [],
+      "primaryColor": "#A85E39",
+      "secondaryColor": "#5C3528"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "regalia:scene/inn-at-the-end-of-yesterday/house-at-the-crossroads",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_01_house_at_the_crossroads.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-1-arrival",
+          "title": "The House at the Crossroads",
+          "paragraphs": [
+            "On Tamsin's first night as innkeeper, she guides a weary guest through a memory of the farewell they regret. When the guest reaches for a different ending, Tamsin steadies the room and helps them hear the love inside the goodbye they actually shared.",
+            "The house rules march from their book as The Rulebook Porter, enforcing every sentence without mercy or context. Tamsin restores the room by upholding the past while making space for the guest to choose what comes next."
+          ],
+          "semanticLabel": "Tamsin holds an old rulebook in an impossible hallway lit by a warm guest-room door.",
+          "actionLabel": "Keep the first memory"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/inn-at-the-end-of-yesterday/guest-without-yesterday",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_02_guest_without_yesterday.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-2-arrival",
+          "title": "The Guest Without Yesterday",
+          "paragraphs": [
+            "A traveler checks in with no memory of the previous day, no gap in their journal, and mud from a road no map remembers. An impossible room appears upstairs, perfectly clean except for a handless clock and one place set for breakfast.",
+            "The missing day drifts through the room as The Blank Bellhop, politely removing every clue just after Tamsin notices it. She anchors the traveler's remaining memories long enough to hear bells from three nearby villages."
+          ],
+          "semanticLabel": "Tamsin and the traveler search a pale empty room while memories fade around them.",
+          "actionLabel": "Enter the empty room"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/inn-at-the-end-of-yesterday/hours-on-the-menu",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_03_hours_on_the_menu.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-3-arrival",
+          "title": "Hours on the Menu",
+          "paragraphs": [
+            "Corin cooks from the traveler's last intact sensations: rain on mint, woodsmoke, and pears just beginning to brown. Each restored flavor points to an hour missing from a different village, where people remember events but not the lives lived inside them.",
+            "Stolen minutes crawl through the pantry as The Hour-Thieving Ivy, ripening fruit and fading voices with every new leaf. Tamsin and Corin prune its hours in the order they were taken, preserving a sensory trail back to the inn."
+          ],
+          "semanticLabel": "Corin serves glowing memory dishes while clock-faced ivy winds through the inn pantry.",
+          "actionLabel": "Cook the lost hours"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/inn-at-the-end-of-yesterday/twelve-year-letter",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_04_twelve_year_letter.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-4-arrival",
+          "title": "The Twelve-Year Letter",
+          "paragraphs": [
+            "Pip admits that his undelivered letter returns to his satchel every dawn with a different address. Its newest route marks match the stolen village hours and end at a door Tamsin insists has never belonged to the inn.",
+            "The folded map bursts into The Routefold Raven, carrying each road toward a safer but false destination. Pip chooses the uncertain route himself, guiding the household to the sealed door and finally ending twelve years of walking in circles."
+          ],
+          "semanticLabel": "Pip follows shifting ink roads from his old letter through the inn's impossible corridors.",
+          "actionLabel": "Follow the changing route"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/inn-at-the-end-of-yesterday/auditor-at-the-door",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_05_auditor_at_the_door.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-5-arrival",
+          "title": "The Auditor at the Door",
+          "paragraphs": [
+            "Auditor Vale arrives to close the unstable rooms and seal the inn outside time. Their rulings seem heartless until Tamsin sees futures thinning around the villages; if the fractures spread, children may lose tomorrows they have not lived yet.",
+            "Those endangered possibilities gather as The Future-Horn Stag, branching into a thousand lives that cannot all occupy the same hour. Tamsin works beside Vale to protect the viable paths, earning one night to find the source before the inn is erased."
+          ],
+          "semanticLabel": "Tamsin and Auditor Vale face branching visions of possible futures in the inn's lobby.",
+          "actionLabel": "Protect the futures"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/inn-at-the-end-of-yesterday/room-tamsin-locked",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_06_room_tamsin_locked.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-6-arrival",
+          "title": "The Room Tamsin Locked",
+          "paragraphs": [
+            "Behind the sealed door, Tamsin recovers the choice she buried: as a frightened child, she begged the crossroads for one day she could change, and that impossible wish helped call the inn into being. She later inherited its key but never withdrew the wish at the heart of its rules.",
+            "Her suppressed regret opens beneath the floor as The Unremembering Well, which stole the traveler's unclaimed yesterday and village hours while trying to build her a changeable past. Tamsin speaks the memory without editing it, stopping the well from taking anything more."
+          ],
+          "semanticLabel": "Tamsin faces her younger reflection above a dark well in the room she sealed away.",
+          "actionLabel": "Remember the locked day"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/inn-at-the-end-of-yesterday/yesterday-restored",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_07_yesterday_restored.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-7-arrival",
+          "title": "Yesterday Restored",
+          "paragraphs": [
+            "The household gathers witnesses from each village and lays their recovered hours around the traveler. Corin restores sensation, Pip restores the route, Vale preserves cause and consequence, and Tamsin leaves every painful moment intact.",
+            "Competing versions of the day become The Midnight Mosaic, offering each person the past they most wanted instead of the one they shared. By choosing the honest pieces together, they return the traveler's yesterday and every village hour to its rightful life."
+          ],
+          "semanticLabel": "Guests and villagers assemble glowing pieces of one lost day around the inn's midnight table.",
+          "actionLabel": "Restore the missing day"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/inn-at-the-end-of-yesterday/new-house-rules",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_08_new_house_rules.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-8-arrival",
+          "title": "New House Rules",
+          "paragraphs": [
+            "With chronology stable, Vale still must close any house founded on a wish to rewrite time. Tamsin gathers former guests to draft new rules: memories may be witnessed with consent, no hour may be taken, and every visitor must return to their own tomorrow.",
+            "The inn's oldest desire flares in the hearth as The Last-Regret Fire, offering Tamsin the childhood day she once demanded. She lets the vision pass unaltered, and Vale records the wandering inn as a refuge that can finally be allowed to remain."
+          ],
+          "semanticLabel": "Tamsin, Corin, Pip, Vale, and former guests write new rules around a bright hearth.",
+          "actionLabel": "Write the new rules"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/inn-at-the-end-of-yesterday/finale",
+      "role": "finale",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/finale_crisis.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "tomorrow-on-the-road",
+          "title": "Tomorrow on the Road",
+          "paragraphs": [
+            "Morning returns to every village with no missing hours, and the traveler leaves carrying a complete yesterday rather than a painless one. Vale places a small brass seal beside the house rules and promises to audit with questions before conclusions.",
+            "Pip's twelve-year letter finally stays delivered: it contains a welcome written by the inn's former keeper for the day Tamsin was ready to remember. Corin marks the occasion with pear cakes that taste only of pear cakes."
+          ],
+          "semanticLabel": "The traveler departs at sunrise while Pip opens his empty satchel and Vale seals the new rules.",
+          "actionLabel": "Welcome tomorrow"
+        },
+        {
+          "id": "the-next-crossroads",
+          "title": "The Next Crossroads",
+          "paragraphs": [
+            "That evening, the inn folds its hallways, lifts its glowing windows, and settles beside another rain-dark road. Somewhere nearby, a new guest has reached a choice they cannot forgive.",
+            "Tamsin opens the door with Corin at the oven and Pip ready to carry a letter forward. The past is waiting inside, but so is breakfast—and beyond it, a road into tomorrow."
+          ],
+          "semanticLabel": "The glowing inn appears at a new crossroads as Tamsin opens its door to a traveler.",
+          "actionLabel": "Return to the journeys",
+          "background": {
+            "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/finale_resolution.jpg",
+            "fit": "cover"
+          }
+        }
+      ]
+    }
+  ]
+}

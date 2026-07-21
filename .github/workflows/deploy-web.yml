@@ -37,14 +37,29 @@ jobs:
       - name: Test
         run: flutter test --exclude-tags=golden
 
-      - name: Stage restricted GitHub Pages edition
+      - name: Test golden layouts
+        run: flutter test --tags=golden
+
+      - name: Test web release channel
+        run: flutter test --platform chrome test/current_release_channel_test.dart
+
+      - name: Smoke-test the web portfolio
+        run: flutter test --platform chrome test/portfolio_web_smoke_test.dart
+
+      - name: Validate every puzzle catalog
+        run: dart run tool/generate_puzzles.dart validate-all
+
+      - name: Verify crown art
+        run: dart run tool/verify_crown_art.dart
+
+      - name: Stage GitHub Pages edition
         run: dart run tool/stage_web_edition.dart --output "${{ runner.temp }}/regalia-web"
 
       - name: Install staged web dependencies
         working-directory: ${{ runner.temp }}/regalia-web
         run: flutter pub get
 
-      - name: Verify restricted web source
+      - name: Verify staged web source
         working-directory: ${{ runner.temp }}/regalia-web
         run: dart run tool/verify_offline.dart --web-source
 

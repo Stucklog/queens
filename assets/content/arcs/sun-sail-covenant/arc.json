@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "id": "regalia:arc/sun-sail-covenant",
+  "contentVersion": 1,
+  "title": "The Sun-Sail Covenant",
+  "theme": {
+    "brightness": "dark",
+    "backgroundColor": "#07142F",
+    "surfaceColor": "#10254A",
+    "surfaceLowColor": "#0B1C3A",
+    "surfaceHighColor": "#18325E",
+    "surfaceContainerHighColor": "#213B67",
+    "foregroundColor": "#FFF8E8",
+    "mutedForegroundColor": "#C8D0DC",
+    "outlineColor": "#A7B8D1",
+    "outlineVariantColor": "#7892B8",
+    "inkColor": "#030A18",
+    "dangerColor": "#FF7A86"
+  },
+  "mapId": "regalia:map/sun-sail-covenant/main-route",
+  "puzzleCatalogAsset": "assets/content/arcs/sun-sail-covenant/catalog.json",
+  "unlocks": {
+    "fullMap": "regalia:unlock/sun-sail-covenant/full-map",
+    "finale": "regalia:unlock/sun-sail-covenant/finale"
+  },
+  "chapters": [
+    {
+      "id": "regalia:chapter/sun-sail-covenant/dimming-sun",
+      "mapId": "regalia:map/sun-sail-covenant/main-route",
+      "sceneId": "regalia:scene/sun-sail-covenant/dimming-sun",
+      "artKey": "dimming-sun",
+      "artAsset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_01_dimming_sun.jpg",
+      "visualIndex": 0,
+      "title": "The Dimming Sun",
+      "caption": "Nera steals proof from a dying route while the empire closes the frontier.",
+      "startOrder": 1,
+      "endOrder": 9,
+      "difficulty": "easy",
+      "size": 6,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/sun-sail-covenant/eclipse-hart",
+        "name": "Eclipse Hart",
+        "puzzleId": "regalia:puzzle/sun-sail-covenant/boss/eclipse-hart",
+        "spriteFamily": "antlered",
+        "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/eclipse-hart.png",
+        "spectacleLevel": 1,
+        "finisher": {
+          "track": "crownSlash",
+          "moveName": "Sunbreak Turn",
+          "effectLevel": 1
+        },
+        "size": 7,
+        "targetDifficulty": "easy",
+        "unlocks": "regalia:chapter/sun-sail-covenant/moon-of-wrecks"
+      },
+      "encounters": [],
+      "primaryColor": "#FFD166",
+      "secondaryColor": "#70D7FF"
+    },
+    {
+      "id": "regalia:chapter/sun-sail-covenant/moon-of-wrecks",
+      "mapId": "regalia:map/sun-sail-covenant/main-route",
+      "sceneId": "regalia:scene/sun-sail-covenant/moon-of-wrecks",
+      "artKey": "moon-of-wrecks",
+      "artAsset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_02_moon_of_wrecks.jpg",
+      "visualIndex": 1,
+      "title": "Moon of Wrecks",
+      "caption": "Nera and Kest rebuild a beacon that can prove the sun was deliberately drained.",
+      "startOrder": 10,
+      "endOrder": 18,
+      "difficulty": "easy",
+      "size": 7,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/sun-sail-covenant/cablebloom-colossus",
+        "name": "Cablebloom Colossus",
+        "puzzleId": "regalia:puzzle/sun-sail-covenant/boss/cablebloom-colossus",
+        "spriteFamily": "rootbound",
+        "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/cablebloom-colossus.png",
+        "spectacleLevel": 2,
+        "finisher": {
+          "track": "tidalAegis",
+          "moveName": "Beacon Severance",
+          "effectLevel": 2
+        },
+        "size": 7,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/sun-sail-covenant/tithemaker"
+      },
+      "encounters": [],
+      "primaryColor": "#F4C95D",
+      "secondaryColor": "#7CE0C3"
+    },
+    {
+      "id": "regalia:chapter/sun-sail-covenant/tithemaker",
+      "mapId": "regalia:map/sun-sail-covenant/main-route",
+      "sceneId": "regalia:scene/sun-sail-covenant/tithemaker",
+      "artKey": "tithemaker",
+      "artAsset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_03_tithemaker.jpg",
+      "visualIndex": 2,
+      "title": "The Tithemaker",
+      "caption": "The crew finds the engineer whose remorse may reveal the empire's next targets.",
+      "startOrder": 19,
+      "endOrder": 27,
+      "difficulty": "medium",
+      "size": 7,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/sun-sail-covenant/audit-seraph",
+        "name": "Audit Seraph",
+        "puzzleId": "regalia:puzzle/sun-sail-covenant/boss/audit-seraph",
+        "spriteFamily": "winged",
+        "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/audit-seraph.png",
+        "spectacleLevel": 3,
+        "finisher": {
+          "track": "twinSigil",
+          "moveName": "Unsealed Signal",
+          "effectLevel": 3
+        },
+        "size": 8,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/sun-sail-covenant/witness-worlds"
+      },
+      "encounters": [],
+      "primaryColor": "#84E1FF",
+      "secondaryColor": "#FFD166"
+    },
+    {
+      "id": "regalia:chapter/sun-sail-covenant/witness-worlds",
+      "mapId": "regalia:map/sun-sail-covenant/main-route",
+      "sceneId": "regalia:scene/sun-sail-covenant/witness-worlds",
+      "artKey": "witness-worlds",
+      "artAsset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_04_witness_worlds.jpg",
+      "visualIndex": 3,
+      "title": "Witness Worlds",
+      "caption": "Threatened systems turn scattered observations into evidence the empire cannot erase.",
+      "startOrder": 28,
+      "endOrder": 36,
+      "difficulty": "medium",
+      "size": 8,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/sun-sail-covenant/lightless-choir",
+        "name": "Lightless Choir",
+        "puzzleId": "regalia:puzzle/sun-sail-covenant/boss/lightless-choir",
+        "spriteFamily": "abyssal",
+        "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/lightless-choir.png",
+        "spectacleLevel": 4,
+        "finisher": {
+          "track": "moonlitSever",
+          "moveName": "Many-World Chorus",
+          "effectLevel": 4
+        },
+        "size": 8,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/sun-sail-covenant/fleet-divided"
+      },
+      "encounters": [],
+      "primaryColor": "#9EC5FF",
+      "secondaryColor": "#FFCD70"
+    },
+    {
+      "id": "regalia:chapter/sun-sail-covenant/fleet-divided",
+      "mapId": "regalia:map/sun-sail-covenant/main-route",
+      "sceneId": "regalia:scene/sun-sail-covenant/fleet-divided",
+      "artKey": "fleet-divided",
+      "artAsset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_05_fleet_divided.jpg",
+      "visualIndex": 4,
+      "title": "A Fleet Divided",
+      "caption": "Nera must give rival captains one current without abandoning the slowest ships.",
+      "startOrder": 37,
+      "endOrder": 45,
+      "difficulty": "hard",
+      "size": 8,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/sun-sail-covenant/cinderwake-behemoth",
+        "name": "Cinderwake Behemoth",
+        "puzzleId": "regalia:puzzle/sun-sail-covenant/boss/cinderwake-behemoth",
+        "spriteFamily": "volcanic",
+        "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/cinderwake-behemoth.png",
+        "spectacleLevel": 5,
+        "finisher": {
+          "track": "brassJudgment",
+          "moveName": "Common Wake",
+          "effectLevel": 5
+        },
+        "size": 9,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/sun-sail-covenant/storms-measure"
+      },
+      "encounters": [],
+      "primaryColor": "#FF9B73",
+      "secondaryColor": "#7DE2D1"
+    },
+    {
+      "id": "regalia:chapter/sun-sail-covenant/storms-measure",
+      "mapId": "regalia:map/sun-sail-covenant/main-route",
+      "sceneId": "regalia:scene/sun-sail-covenant/storms-measure",
+      "artKey": "storms-measure",
+      "artAsset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_06_storms_measure.jpg",
+      "visualIndex": 5,
+      "title": "The Storm's Measure",
+      "caption": "At the storm's edge, honest numbers reveal both the danger and another way through it.",
+      "startOrder": 46,
+      "endOrder": 54,
+      "difficulty": "hard",
+      "size": 9,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/sun-sail-covenant/prognosis-engine",
+        "name": "Prognosis Engine",
+        "puzzleId": "regalia:puzzle/sun-sail-covenant/boss/prognosis-engine",
+        "spriteFamily": "clockwork",
+        "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/prognosis-engine.png",
+        "spectacleLevel": 6,
+        "finisher": {
+          "track": "cinderfall",
+          "moveName": "Open Forecast",
+          "effectLevel": 6
+        },
+        "size": 9,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/sun-sail-covenant/capital-current"
+      },
+      "encounters": [],
+      "primaryColor": "#B9A7FF",
+      "secondaryColor": "#FFD978"
+    },
+    {
+      "id": "regalia:chapter/sun-sail-covenant/capital-current",
+      "mapId": "regalia:map/sun-sail-covenant/main-route",
+      "sceneId": "regalia:scene/sun-sail-covenant/capital-current",
+      "artKey": "capital-current",
+      "artAsset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_07_capital_current.jpg",
+      "visualIndex": 6,
+      "title": "The Capital Current",
+      "caption": "The coalition reaches the imperial engine as Sile begins the final tithe.",
+      "startOrder": 55,
+      "endOrder": 63,
+      "difficulty": "expert",
+      "size": 9,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/sun-sail-covenant/imperial-mandate",
+        "name": "Imperial Mandate",
+        "puzzleId": "regalia:puzzle/sun-sail-covenant/boss/imperial-mandate",
+        "spriteFamily": "spectral",
+        "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/imperial-mandate.png",
+        "spectacleLevel": 7,
+        "finisher": {
+          "track": "skybreak",
+          "moveName": "Sovereignty Severed",
+          "effectLevel": 7
+        },
+        "size": 10,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/sun-sail-covenant/covenant-of-light"
+      },
+      "encounters": [],
+      "primaryColor": "#E5B8FF",
+      "secondaryColor": "#72E3C0"
+    },
+    {
+      "id": "regalia:chapter/sun-sail-covenant/covenant-of-light",
+      "mapId": "regalia:map/sun-sail-covenant/main-route",
+      "sceneId": "regalia:scene/sun-sail-covenant/covenant-of-light",
+      "artKey": "covenant-of-light",
+      "artAsset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_08_covenant_of_light.jpg",
+      "visualIndex": 7,
+      "title": "Covenant of Light",
+      "caption": "Thousands of light-sails must become one migration without surrendering their freedom.",
+      "startOrder": 64,
+      "endOrder": 72,
+      "difficulty": "expert",
+      "size": 10,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/sun-sail-covenant/crownstorm-singularity",
+        "name": "Crownstorm Singularity",
+        "puzzleId": "regalia:puzzle/sun-sail-covenant/boss/crownstorm-singularity",
+        "spriteFamily": "cosmic",
+        "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/crownstorm-singularity.png",
+        "spectacleLevel": 8,
+        "finisher": {
+          "track": "regaliaNova",
+          "moveName": "Covenant of Light",
+          "effectLevel": 8
+        },
+        "size": 12,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:unlock/sun-sail-covenant/finale"
+      },
+      "encounters": [],
+      "primaryColor": "#FFE08A",
+      "secondaryColor": "#86E6FF"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "regalia:scene/sun-sail-covenant/dimming-sun",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_01_dimming_sun.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-1-arrival",
+          "title": "The Dimming Sun",
+          "paragraphs": [
+            "Nera threads failing currents around the darkened moon, matching each pulse of her sail to the last beats of its sun. She reaches the wrecked relay, recovers the ledger's missing seal, and finds an escape line through the debris.",
+            "The lockdown packs stolen radiance into the antlers of the Eclipse Hart, a blazing sentinel that charges every open lane. Nera must split its repeating pattern before the last safe current collapses."
+          ],
+          "semanticLabel": "Nera's saffron sail banks around a radiant antlered sentinel above a moon slipping into darkness.",
+          "actionLabel": "Break the eclipse"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/sun-sail-covenant/moon-of-wrecks",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_02_moon_of_wrecks.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-2-arrival",
+          "title": "Moon of Wrecks",
+          "paragraphs": [
+            "Kest meets Nera with an accusation instead of a welcome: couriers served the empire long before one of them stole a ledger. Working among the salvage fields, they fit fragments of the moon's beacon into a signal no ministry can dismiss.",
+            "Severed cables and abandoned light-sails knot themselves into the Cablebloom Colossus, guarding the beacon behind a thicket of wreckage. Nera plots the openings while Kest cuts only the lines that will not bury the truth."
+          ],
+          "semanticLabel": "Nera and Kest face a giant flowering mass of cables and torn sails in a blue-black salvage field.",
+          "actionLabel": "Relight the beacon"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/sun-sail-covenant/tithemaker",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_03_tithemaker.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-3-arrival",
+          "title": "The Tithemaker",
+          "paragraphs": [
+            "The beacon's hidden cadence leads Nera and Kest to Tor Axiom, alone inside an abandoned transfer station. Tor admits he designed the tithe, then helps them wake its dormant nodes so the ledger can display every star marked for sacrifice.",
+            "The station's censorship protocol unfolds into the Audit Seraph, a razor-winged manifestation that deletes any route it cannot authorize. To preserve the target map, the three fugitives must carry one signal through its shifting blind spots."
+          ],
+          "semanticLabel": "A luminous mechanical seraph spreads blade-like wings above Nera, Kest, and Tor in an abandoned transfer station.",
+          "actionLabel": "Expose the targets"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/sun-sail-covenant/witness-worlds",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_04_witness_worlds.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-4-arrival",
+          "title": "Witness Worlds",
+          "paragraphs": [
+            "Nera's crew crosses the marked systems and aligns observatories that have spent generations distrusting one another. Each world verifies a different part of the tithe, and civilian ships begin gathering around their shared proof.",
+            "Imperial jamming hollows the network into the Lightless Choir, a vast silence that swallows every isolated transmission. The witness worlds must aim their lenses together, giving Nera one chorus bright enough to cross the void."
+          ],
+          "semanticLabel": "Observatory beams from many colorful worlds converge against a vast dark shape swallowing radio light.",
+          "actionLabel": "Unite the witnesses"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/sun-sail-covenant/fleet-divided",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_05_fleet_divided.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-5-arrival",
+          "title": "A Fleet Divided",
+          "paragraphs": [
+            "The growing flotilla brings vengeance, surrender, and demands for privileged passage into the same crowded lane. Nera lays out a shared current where every ship's position protects another, asking the fastest captains to place themselves last.",
+            "Their anger ignites the exhaust wake into the Cinderwake Behemoth, a furnace-bodied war shape that grows whenever a captain breaks formation. The fleet can cool it only by holding a course no single crew would choose alone."
+          ],
+          "semanticLabel": "A diverse flotilla holds a precise formation around a colossal creature made of crimson reactor fire.",
+          "actionLabel": "Hold the shared current"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/sun-sail-covenant/storms-measure",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_06_storms_measure.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-6-arrival",
+          "title": "The Storm's Measure",
+          "paragraphs": [
+            "At the edge of the stellar storm, the crew repairs a forecasting array and confirms the capital will not survive in place. Tor also reveals the limits he hid inside the escape engine: it can move everyone, but only through thousands of independent sail decisions.",
+            "The damaged array rebuilds its harshest forecasts as the Prognosis Engine, a clockwork judge that rejects every future containing uncertainty. Nera must chart a survivable range instead of promising a perfect rescue no one can guarantee."
+          ],
+          "semanticLabel": "Nera studies branching storm paths while a brass forecasting engine locks its rings around one fatal prediction.",
+          "actionLabel": "Measure an honest path"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/sun-sail-covenant/capital-current",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_07_capital_current.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-7-arrival",
+          "title": "The Capital Current",
+          "paragraphs": [
+            "First Minister Sile starts the engine before the flotilla can enter the capital current. Nera, Kest, and Tor reroute its interlocked solar channels, proving that shared control can widen the passage without draining another frontier sun.",
+            "Centuries of centralized orders rise from the engine as the Imperial Mandate, a spectral crown that restores every channel to one command. The crew must break its chain of obedience and hand each world a living part of the route."
+          ],
+          "semanticLabel": "A ghostly crown towers over an imperial engine as the crew redirects golden channels toward a waiting flotilla.",
+          "actionLabel": "Unmake the mandate"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/sun-sail-covenant/covenant-of-light",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_08_covenant_of_light.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-8-arrival",
+          "title": "Covenant of Light",
+          "paragraphs": [
+            "Nera asks every ship and world to steer one part of a migration pattern no capital could command alone. Sile yields the engine when she sees frontier sails shielding the capital, and the old tithe opens into a network of mutual passage.",
+            "The storm's pressure twists the released radiance into the Crownstorm Singularity, a cosmic knot capable of swallowing the newborn routes. Nera carries the final turn between fleets, and their covenant pulls every world safely through."
+          ],
+          "semanticLabel": "Thousands of saffron light-sails spiral cooperatively around a brilliant cosmic knot while whole worlds move through the storm.",
+          "actionLabel": "Carry every world"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/sun-sail-covenant/finale",
+      "role": "finale",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/finale_crisis.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "dawn-between-worlds",
+          "title": "Dawn Between Worlds",
+          "paragraphs": [
+            "The stellar storm closes behind the last migrating world. Frontier suns brighten as the tithe returns their stolen fire, and ships once divided by distance wake beneath the same new dawn.",
+            "Kest guides salvage crews home, Tor publishes the engine's design, and Sile faces the worlds her plan would have abandoned. Survival is no longer a privilege granted from the center."
+          ],
+          "semanticLabel": "Restored suns rise beyond a vast fleet whose light-sails form connected golden paths across blue space.",
+          "actionLabel": "See the new dawn"
+        },
+        {
+          "id": "courier-of-the-covenant",
+          "title": "Courier of the Covenant",
+          "paragraphs": [
+            "The ledger becomes the first public record of the covenant: no world may close a route that another needs to live. Its pages carry many seals now, none larger than the rest.",
+            "Nera refuses a minister's chair and returns to her courier ship. There are more voices to connect beyond the mapped currents, and for the first time she chooses what her route is for."
+          ],
+          "semanticLabel": "Nera launches her repaired courier beneath a holographic covenant bearing many equal seals.",
+          "actionLabel": "Return to the stars",
+          "background": {
+            "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/finale_resolution.jpg",
+            "fit": "cover"
+          }
+        }
+      ]
+    }
+  ]
+}
