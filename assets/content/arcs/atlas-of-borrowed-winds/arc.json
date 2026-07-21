@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/atlas-of-borrowed-winds",
-  "contentVersion": 3,
+  "contentVersion": 4,
   "title": "The Atlas of Borrowed Winds",
   "theme": {
     "brightness": "light",
@@ -47,7 +47,7 @@
         "name": "Compass Roc",
         "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/compass-roc",
         "spriteFamily": "winged",
-        "spriteAsset": "assets/art/combat/opponents/tempest-roc.png",
+        "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/compass-roc.png",
         "spectacleLevel": 1,
         "finisher": {
           "track": "crownSlash",
@@ -64,14 +64,14 @@
           "name": "Plate-Cutter Kite",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/easy-003",
           "spriteFamily": "winged",
-          "spriteAsset": "assets/art/combat/opponents/gale-harrier.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/plate-cutter-kite.png"
         },
         {
           "id": "regalia:enemy/atlas-of-borrowed-winds/sky-ink-wisp",
           "name": "Sky-Ink Wisp",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/easy-006",
           "spriteFamily": "cosmic",
-          "spriteAsset": "assets/art/combat/opponents/skyglass-wisp.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/sky-ink-wisp.png"
         }
       ],
       "primaryColor": "#C46A4A",
@@ -100,7 +100,7 @@
         "name": "Dryroot Wyrm",
         "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/dryroot-wyrm",
         "spriteFamily": "rootbound",
-        "spriteAsset": "assets/art/combat/opponents/elderroot-wyrm.png",
+        "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/dryroot-wyrm.png",
         "spectacleLevel": 2,
         "finisher": {
           "track": "tidalAegis",
@@ -117,14 +117,14 @@
           "name": "Salt Thornling",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/easy-023",
           "spriteFamily": "rootbound",
-          "spriteAsset": "assets/art/combat/opponents/vale-thornling.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/salt-thornling.png"
         },
         {
           "id": "regalia:enemy/atlas-of-borrowed-winds/lostwater-hart",
           "name": "Lostwater Hart",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/easy-026",
           "spriteFamily": "antlered",
-          "spriteAsset": "assets/art/combat/opponents/star-touched-hart.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/lostwater-hart.png"
         }
       ],
       "primaryColor": "#2D7B5C",
@@ -153,7 +153,7 @@
         "name": "Gilded Arbiter",
         "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/gilded-arbiter",
         "spriteFamily": "clockwork",
-        "spriteAsset": "assets/art/combat/opponents/gilded-war-colossus.png",
+        "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/gilded-arbiter.png",
         "spectacleLevel": 3,
         "finisher": {
           "track": "twinSigil",
@@ -170,14 +170,14 @@
           "name": "Brass Clause",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/medium-003",
           "spriteFamily": "clockwork",
-          "spriteAsset": "assets/art/combat/opponents/brass-sentry.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/brass-clause.png"
         },
         {
           "id": "regalia:enemy/atlas-of-borrowed-winds/redline-imp",
           "name": "Redline Imp",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/medium-006",
           "spriteFamily": "clockwork",
-          "spriteAsset": "assets/art/combat/opponents/gear-goblin.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/redline-imp.png"
         }
       ],
       "primaryColor": "#245A92",
@@ -206,7 +206,7 @@
         "name": "The Sevenfold Gate",
         "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/sevenfold-gate",
         "spriteFamily": "spectral",
-        "spriteAsset": "assets/art/combat/opponents/sevenfold-wraith.png",
+        "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/sevenfold-gate.png",
         "spectacleLevel": 4,
         "finisher": {
           "track": "moonlitSever",
@@ -223,14 +223,14 @@
           "name": "Unprinted Shade",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/medium-013",
           "spriteFamily": "spectral",
-          "spriteAsset": "assets/art/combat/opponents/pale-shade.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/unprinted-shade.png"
         },
         {
           "id": "regalia:enemy/atlas-of-borrowed-winds/moonroad-hound",
           "name": "Moonroad Hound",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/medium-016",
           "spriteFamily": "antlered",
-          "spriteAsset": "assets/art/combat/opponents/moonbone-hound.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/moonroad-hound.png"
         }
       ],
       "primaryColor": "#5A3F86",
@@ -273,7 +273,7 @@
         "name": "Archive Behemoth",
         "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/archive-behemoth",
         "spriteFamily": "volcanic",
-        "spriteAsset": "assets/art/combat/opponents/cindermaw-behemoth.png",
+        "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/archive-behemoth.png",
         "spectacleLevel": 5,
         "finisher": {
           "track": "brassJudgment",
@@ -290,14 +290,14 @@
           "name": "Ember Seal",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/hard-003",
           "spriteFamily": "volcanic",
-          "spriteAsset": "assets/art/combat/opponents/cinderling.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/ember-seal.png"
         },
         {
           "id": "regalia:enemy/atlas-of-borrowed-winds/basalt-indexer",
           "name": "Basalt Indexer",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/hard-006",
           "spriteFamily": "volcanic",
-          "spriteAsset": "assets/art/combat/opponents/basalt-brute.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/basalt-indexer.png"
         }
       ],
       "primaryColor": "#8F3548",
@@ -340,7 +340,7 @@
         "name": "Silent Bellkeeper",
         "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/silent-bellkeeper",
         "spriteFamily": "abyssal",
-        "spriteAsset": "assets/art/combat/opponents/abyssal-bellkeeper.png",
+        "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/silent-bellkeeper.png",
         "spectacleLevel": 6,
         "finisher": {
           "track": "cinderfall",
@@ -357,14 +357,14 @@
           "name": "Canal Husk",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/hard-023",
           "spriteFamily": "abyssal",
-          "spriteAsset": "assets/art/combat/opponents/coral-husk.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/canal-husk.png"
         },
         {
           "id": "regalia:enemy/atlas-of-borrowed-winds/drowned-waykeeper",
           "name": "Drowned Waykeeper",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/hard-026",
           "spriteFamily": "spectral",
-          "spriteAsset": "assets/art/combat/opponents/drowned-acolyte.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/drowned-waykeeper.png"
         }
       ],
       "primaryColor": "#2B7C7E",
@@ -393,7 +393,7 @@
         "name": "The Hollow Meridian",
         "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/hollow-meridian",
         "spriteFamily": "cosmic",
-        "spriteAsset": "assets/art/combat/opponents/hollow-star.png",
+        "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/hollow-meridian.png",
         "spectacleLevel": 7,
         "finisher": {
           "track": "skybreak",
@@ -410,14 +410,14 @@
           "name": "Royal Meridian",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/expert-003",
           "spriteFamily": "clockwork",
-          "spriteAsset": "assets/art/combat/opponents/starbound-sentinel.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/royal-meridian.png"
         },
         {
           "id": "regalia:enemy/atlas-of-borrowed-winds/eclipse-drake",
           "name": "Eclipse Drake",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/expert-006",
           "spriteFamily": "winged",
-          "spriteAsset": "assets/art/combat/opponents/eclipse-drake.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/eclipse-drake.png"
         }
       ],
       "primaryColor": "#6B447C",
@@ -460,7 +460,7 @@
         "name": "The Meridian Hart",
         "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/boss/meridian-hart",
         "spriteFamily": "antlered",
-        "spriteAsset": "assets/art/combat/opponents/starfall-stag.png",
+        "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/meridian-hart.png",
         "spectacleLevel": 8,
         "finisher": {
           "track": "regaliaNova",
@@ -477,14 +477,14 @@
           "name": "Consent Thorn",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/expert-013",
           "spriteFamily": "rootbound",
-          "spriteAsset": "assets/art/combat/opponents/briar-imp.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/consent-thorn.png"
         },
         {
           "id": "regalia:enemy/atlas-of-borrowed-winds/dawn-lantern",
           "name": "Dawn Lantern",
           "puzzleId": "regalia:puzzle/atlas-of-borrowed-winds/expert-016",
           "spriteFamily": "winged",
-          "spriteAsset": "assets/art/combat/opponents/lantern-moth.png"
+          "spriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/dawn-lantern.png"
         }
       ],
       "primaryColor": "#2D6F5A",

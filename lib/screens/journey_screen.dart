@@ -10,6 +10,7 @@ import '../app/theme.dart';
 import '../content/content_models.dart';
 import '../core/models.dart';
 import '../widgets/combat_presentation.dart';
+import '../widgets/cinematic_scene.dart';
 import '../widgets/crown_mark.dart';
 import '../widgets/encounter_cutscene.dart';
 import '../widgets/pixel_art.dart';
@@ -1233,15 +1234,25 @@ class _FinalLandmark extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     Positioned.fill(
-                      child: PixelLandscape(
-                        chapter: arc.chapters.last,
-                        brightness: Theme.of(context).brightness,
-                        sceneKind:
-                            reached
-                                ? PixelSceneKind.finale
-                                : PixelSceneKind.panorama,
-                        placement: PixelArtPlacement.banner,
-                      ),
+                      child:
+                          reached
+                              ? ExcludeSemantics(
+                                child: CinematicSceneFrameView(
+                                  key: const ValueKey(
+                                    'final-landmark-cinematic-frame',
+                                  ),
+                                  frame: arc.finaleScene.frames.last,
+                                  palette: arc.chapters.last.palette,
+                                  sceneKind: PixelSceneKind.finale,
+                                  chapter: arc.chapters.last,
+                                  characterScale: .5,
+                                ),
+                              )
+                              : PixelLandscape(
+                                chapter: arc.chapters.last,
+                                brightness: Theme.of(context).brightness,
+                                placement: PixelArtPlacement.banner,
+                              ),
                     ),
                     Positioned.fill(
                       child: DecoratedBox(
@@ -1261,27 +1272,6 @@ class _FinalLandmark extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (reached) ...[
-                      Positioned(
-                        left: constraints.maxWidth * .08,
-                        bottom: 12,
-                        child: const PixelKnightSprite(
-                          animation: KnightAnimation.bounce,
-                          loop: true,
-                          width: 44,
-                          height: 66,
-                        ),
-                      ),
-                      Positioned(
-                        right: constraints.maxWidth * .08,
-                        bottom: 12,
-                        child: const PixelQueenSprite(
-                          width: 46,
-                          height: 72,
-                          faceLeft: true,
-                        ),
-                      ),
-                    ],
                     Positioned(
                       left: 14,
                       right: 14,

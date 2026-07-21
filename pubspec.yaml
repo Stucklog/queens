@@ -73,6 +73,9 @@ flutter:
     - path: assets/art/arcs/atlas-of-borrowed-winds/characters/
       flavors:
         - paid
+    - path: assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/
+      flavors:
+        - paid
     - assets/fonts/PixelifySans_LICENSE.txt
     - assets/puzzles/catalog.json
     - assets/puzzles/tutorial.json

@@ -163,6 +163,10 @@ void main() {
       final futureMetadata = originMetadata
           .replaceAll(ContentIds.originArc, futureArc)
           .replaceAll('/origin/', '/moon-court/')
+          .replaceAll(
+            'assets/art/combat/opponents/',
+            'assets/art/arcs/moon-court/combat/opponents/',
+          )
           .replaceAll('"Queen’s Regalia: Origin Story"', '"The Moon Court"')
           .replaceAll('assets/puzzles/catalog.json', 'future-catalog.json');
       final assets = await assetsFor(
@@ -257,6 +261,10 @@ void main() {
       final futureMetadata = originMetadata
           .replaceAll(ContentIds.originArc, futureArc)
           .replaceAll('/origin/', '/moon-court/')
+          .replaceAll(
+            'assets/art/combat/opponents/',
+            'assets/art/arcs/moon-court/combat/opponents/',
+          )
           .replaceAll('"Queen’s Regalia: Origin Story"', '"The Moon Court"')
           .replaceAll('assets/puzzles/catalog.json', 'future-catalog.json');
       final assets = await assetsFor(
@@ -295,6 +303,10 @@ void main() {
     final futureMetadata = originMetadata
         .replaceAll(ContentIds.originArc, futureArc)
         .replaceAll('/origin/', '/moon-court/')
+        .replaceAll(
+          'assets/art/combat/opponents/',
+          'assets/art/arcs/moon-court/combat/opponents/',
+        )
         .replaceAll('"Queen’s Regalia: Origin Story"', '"The Moon Court"')
         .replaceAll('assets/puzzles/catalog.json', 'future-catalog.json');
     final assets = await assetsFor(

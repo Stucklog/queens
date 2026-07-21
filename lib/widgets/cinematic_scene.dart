@@ -17,12 +17,20 @@ class CinematicSceneFrameView extends StatelessWidget {
     required this.palette,
     required this.sceneKind,
     this.chapter,
-  });
+    this.characterScale = 1,
+  }) : assert(characterScale > 0);
 
   final CinematicSceneFrame frame;
   final JourneyPalette palette;
   final PixelSceneKind sceneKind;
   final JourneyChapter? chapter;
+
+  /// Scales authored character layers without changing their stage positions.
+  ///
+  /// Full story scenes use the default scale. Compact previews, such as the
+  /// journey's finale landmark, can retain the scene's real cast without
+  /// crowding the thumbnail.
+  final double characterScale;
 
   @override
   Widget build(BuildContext context) => Semantics(
@@ -36,7 +44,10 @@ class CinematicSceneFrameView extends StatelessWidget {
         children: [
           _background(context),
           for (final layer in frame.characterLayersInPaintOrder)
-            _CinematicCharacterLayerView(layer: layer),
+            _CinematicCharacterLayerView(
+              layer: layer,
+              characterScale: characterScale,
+            ),
         ],
       ),
     ),
@@ -77,9 +88,13 @@ class CinematicSceneFrameView extends StatelessWidget {
 }
 
 class _CinematicCharacterLayerView extends StatelessWidget {
-  const _CinematicCharacterLayerView({required this.layer});
+  const _CinematicCharacterLayerView({
+    required this.layer,
+    required this.characterScale,
+  });
 
   final CinematicCharacterLayer layer;
+  final double characterScale;
 
   @override
   Widget build(BuildContext context) {
@@ -103,13 +118,15 @@ class _CinematicCharacterLayerView extends StatelessWidget {
             (configuredHeight == null
                 ? defaultSize.width
                 : configuredHeight * defaultSize.aspectRatio)) *
-        layer.scale;
+        layer.scale *
+        characterScale;
     final height =
         (configuredHeight ??
             (configuredWidth == null
                 ? defaultSize.height
                 : configuredWidth / defaultSize.aspectRatio)) *
-        layer.scale;
+        layer.scale *
+        characterScale;
     Widget art = switch (source) {
       CinematicBuiltInCharacterSource(
         character: CinematicBuiltInCharacter.crownBearer,
@@ -237,8 +254,10 @@ class _CinematicAssetSpriteState extends State<_CinematicAssetSprite>
       gaplessPlayback: true,
       excludeFromSemantics: true,
       errorBuilder:
-          (context, error, stackTrace) => const SizedBox.expand(
-            key: ValueKey('cinematic-character-error-fallback'),
+          (context, error, stackTrace) => SizedBox(
+            key: const ValueKey('cinematic-character-error-fallback'),
+            width: widget.width,
+            height: widget.height,
           ),
     );
     if (animation != null && frame != null) {

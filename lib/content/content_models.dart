@@ -138,6 +138,13 @@ class StoryArc {
   StorySceneContent get finaleScene =>
       scenes.firstWhere((scene) => scene.role == StorySceneRole.finale);
 
+  Iterable<CombatEncounter> get combatEncounters sync* {
+    for (final chapter in chapters) {
+      yield chapter.boss;
+      yield* chapter.encounters;
+    }
+  }
+
   StorySceneContent sceneById(String id) =>
       scenes.firstWhere((scene) => scene.id == id);
 
@@ -242,7 +249,7 @@ class StoryArc {
           unlockTarget.arcName != arc.localName ||
           !ids.add(boss.id) ||
           boss.name.trim().isEmpty ||
-          !_isCombatSpriteAsset(boss.spriteAsset) ||
+          !_isCombatSpriteAsset(boss.spriteAsset, arc.localName) ||
           boss.spectacleLevel < 1 ||
           boss.spectacleLevel > 8 ||
           boss.finisherStyle.effectLevel < 1 ||
@@ -271,7 +278,7 @@ class StoryArc {
             !ids.add(encounter.id) ||
             !encounterPuzzleIds.add(encounter.puzzleId) ||
             encounter.name.trim().isEmpty ||
-            !_isCombatSpriteAsset(encounter.spriteAsset) ||
+            !_isCombatSpriteAsset(encounter.spriteAsset, arc.localName) ||
             encounter.isBoss ||
             encounter.spectacleLevel != 1 ||
             !chapter.contains(encounterPuzzle.order) ||
@@ -282,11 +289,21 @@ class StoryArc {
         }
       }
     }
+    final spriteAssets = combatEncounters.map(
+      (encounter) => encounter.spriteAsset,
+    );
+    if (spriteAssets.toSet().length != spriteAssets.length) {
+      throw FormatException('$id reuses opponent sprite art within the arc');
+    }
   }
 }
 
-bool _isCombatSpriteAsset(String path) =>
-    path.startsWith('assets/art/combat/opponents/') &&
+bool _isCombatSpriteAsset(String path, String arcName) =>
+    path.startsWith(
+      arcName == 'origin'
+          ? 'assets/art/combat/opponents/'
+          : 'assets/art/arcs/$arcName/combat/opponents/',
+    ) &&
     path.endsWith('.png') &&
     !path.contains('..');
 
