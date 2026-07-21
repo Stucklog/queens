@@ -17,6 +17,7 @@ import '../widgets/pixel_ui.dart';
 import '../widgets/support_developer.dart';
 import 'challenge_screen.dart';
 import 'game_screen.dart';
+import 'guided_walkthrough_screen.dart';
 import 'rules_screen.dart';
 import 'settings_screen.dart';
 import 'story_scene_screen.dart';
@@ -27,11 +28,13 @@ class JourneyScreen extends StatefulWidget {
     required this.controller,
     this.arc,
     this.externalUrlLauncher,
+    this.autoStartGuidedWalkthrough = false,
   });
 
   final AppController controller;
   final StoryArc? arc;
   final ExternalUrlLauncher? externalUrlLauncher;
+  final bool autoStartGuidedWalkthrough;
 
   @override
   State<JourneyScreen> createState() => _JourneyScreenState();
@@ -75,12 +78,24 @@ class _JourneyScreenState extends State<JourneyScreen> {
             ? _arc.chapters.last
             : _arc.chapterForOrder(progress.frontierPuzzle!.order);
     final reached = progress.completedCount >= chapter.startOrder - 1;
+    var chapterReady = widget.controller.hasSeenStoryBeat(chapter.storyBeatId);
     if (reached && !widget.controller.hasSeenStoryBeat(chapter.storyBeatId)) {
-      await _showChapter(chapter);
+      chapterReady = await _showChapter(chapter);
+    }
+    if (!mounted || !chapterReady || !widget.autoStartGuidedWalkthrough) {
+      return;
+    }
+    final firstPuzzle = _arc.catalog.puzzles.first;
+    if (progress.frontierPuzzle?.id == firstPuzzle.id &&
+        widget.controller.shouldGuideOriginPuzzle(firstPuzzle)) {
+      await _openPuzzle(firstPuzzle, guidedWalkthrough: true);
     }
   }
 
-  Future<void> _openPuzzle(PuzzleDefinition puzzle) async {
+  Future<void> _openPuzzle(
+    PuzzleDefinition puzzle, {
+    bool guidedWalkthrough = false,
+  }) async {
     if (!widget.controller.openPuzzle(puzzle)) return;
     unawaited(_precachePuzzlePresentation(puzzle));
     final encounter = _arc.encounterForPuzzle(puzzle);
@@ -88,8 +103,16 @@ class _JourneyScreenState extends State<JourneyScreen> {
     final outcome = await Navigator.of(context).push<PuzzleCompletionOutcome>(
       MaterialPageRoute(
         builder: (routeContext) {
-          Widget buildPuzzle(BuildContext context) =>
-              GameScreen(controller: widget.controller, puzzle: puzzle);
+          Widget buildPuzzle(BuildContext context) {
+            if (guidedWalkthrough ||
+                widget.controller.shouldGuideOriginPuzzle(puzzle)) {
+              return GuidedWalkthroughScreen(
+                controller: widget.controller,
+                puzzle: puzzle,
+              );
+            }
+            return GameScreen(controller: widget.controller, puzzle: puzzle);
+          }
 
           if (encounter == null) return buildPuzzle(routeContext);
           return EncounterCutsceneTransition(
@@ -326,8 +349,9 @@ class _JourneyScreenState extends State<JourneyScreen> {
     );
   }
 
-  Future<void> _showChapter(JourneyChapter chapter) async {
+  Future<bool> _showChapter(JourneyChapter chapter) async {
     final scene = _arc.sceneById(chapter.sceneId);
+    final alreadySeen = widget.controller.hasSeenStoryBeat(scene.id);
     unawaited(precachePixelArtAssets(context, scene.assetPaths));
     await Navigator.of(context).push(
       MaterialPageRoute(
@@ -339,6 +363,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
             ),
       ),
     );
+    return alreadySeen || widget.controller.hasSeenStoryBeat(scene.id);
   }
 
   Future<void> _showOpening() async {

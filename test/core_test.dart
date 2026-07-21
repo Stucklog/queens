@@ -177,33 +177,21 @@ void main() {
 
   group('bundled catalog', () {
     late PuzzleCatalog catalog;
-    late PuzzleDefinition tutorial;
 
     setUpAll(() async {
       catalog = PuzzleCatalog.fromJsonString(
         await File('assets/puzzles/catalog.json').readAsString(),
       );
-      tutorial = PuzzleDefinition.fromJson(
-        jsonDecode(await File('assets/puzzles/tutorial.json').readAsString())
-            as Map<String, Object?>,
-      );
     });
 
-    test('guided tutorial is valid, unique, and separate from the 72', () {
-      expect(tutorial.id, 'regalia:puzzle/system/guided-tutorial');
+    test('first Origin puzzle is the valid guided walkthrough board', () {
+      final walkthrough = catalog.puzzles.first;
+      expect(walkthrough.id, 'regalia:puzzle/origin/easy-001');
+      expect(walkthrough.order, 1);
+      expect(const ExactSolver().solve(walkthrough, limit: 2).solutionCount, 1);
       expect(
-        catalog.puzzles.map((puzzle) => puzzle.id),
-        isNot(contains(tutorial.id)),
-      );
-      expect(const ExactSolver().solve(tutorial, limit: 2).solutionCount, 1);
-      expect(const HumanSolver().analyze(tutorial).tier, DifficultyTier.easy);
-      final fingerprints =
-          catalog.puzzles
-              .map(const PuzzleGenerator().canonicalFingerprint)
-              .toSet();
-      expect(
-        fingerprints,
-        isNot(contains(const PuzzleGenerator().canonicalFingerprint(tutorial))),
+        const HumanSolver().analyze(walkthrough).tier,
+        DifficultyTier.easy,
       );
     });
 

@@ -134,6 +134,17 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
       child: Builder(
         builder:
             (context) => Scaffold(
+              appBar:
+                  widget.scene.role == StorySceneRole.opening &&
+                          widget.popOnContinue &&
+                          _pageIndex == 0
+                      ? AppBar(
+                        leading: const PixelBackButton(
+                          key: ValueKey('story-prologue-back'),
+                        ),
+                        title: const Text('Prologue'),
+                      )
+                      : null,
               body: SafeArea(
                 child: LayoutBuilder(
                   builder: (context, constraints) {

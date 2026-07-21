@@ -7,6 +7,7 @@ import 'package:regalia/content/content_ids.dart';
 import 'package:regalia/core/models.dart';
 import 'package:regalia/screens/challenge_screen.dart';
 import 'package:regalia/screens/game_screen.dart';
+import 'package:regalia/screens/guided_walkthrough_screen.dart';
 import 'package:regalia/screens/journey_screen.dart';
 import 'package:regalia/screens/rules_screen.dart';
 import 'package:regalia/screens/settings_screen.dart';
@@ -27,40 +28,56 @@ void main() {
     )).load();
   });
 
-  testWidgets('tutorial pages remain responsive at 150% text scaling', (
-    tester,
-  ) async {
-    final controller = await _initializedController(tester);
-    _resetViewAfterTest(tester);
+  testWidgets(
+    'welcome and walkthrough remain responsive at 150% text scaling',
+    (tester) async {
+      final controller = await _initializedController(tester);
+      _resetViewAfterTest(tester);
 
-    for (final size in const [_narrow, _wide]) {
-      _setViewSize(tester, size);
-      await _pumpScreen(
-        tester,
-        TutorialScreen(
-          key: ValueKey('tutorial-${size.width}'),
-          controller: controller,
-        ),
-        reason: 'tutorial intro at ${size.width}x${size.height}',
-      );
+      for (final size in const [_narrow, _wide]) {
+        _setViewSize(tester, size);
+        await _pumpScreen(
+          tester,
+          TutorialScreen(
+            key: ValueKey('tutorial-${size.width}'),
+            controller: controller,
+          ),
+          reason: 'tutorial intro at ${size.width}x${size.height}',
+        );
 
-      await tester.tap(find.text('Next'));
-      await tester.pump();
-      expect(find.text('Three kinds of royalty'), findsOneWidget);
-      _expectNoLayoutException(
-        tester,
-        reason: 'tutorial rules at ${size.width}x${size.height}',
-      );
+        await tester.tap(find.text('Next'));
+        await tester.pump();
+        expect(find.text('Four rules to remember'), findsOneWidget);
+        _expectNoLayoutException(
+          tester,
+          reason: 'tutorial rules at ${size.width}x${size.height}',
+        );
 
-      await tester.tap(find.text('Next'));
-      await tester.pump();
-      expect(find.text('Try the board'), findsOneWidget);
-      _expectNoLayoutException(
-        tester,
-        reason: 'tutorial board at ${size.width}x${size.height}',
-      );
-    }
-  });
+        await _pumpScreen(
+          tester,
+          GuidedWalkthroughScreen(
+            key: ValueKey('walkthrough-${size.width}'),
+            controller: controller,
+            puzzle: controller.catalog!.puzzles.first,
+            replay: true,
+          ),
+          reason: 'walkthrough rules at ${size.width}x${size.height}',
+        );
+        expect(
+          find.byKey(const ValueKey('guided-walkthrough-board')),
+          findsOneWidget,
+        );
+        await tester.tap(
+          find.byKey(const ValueKey('guided-walkthrough-continue')),
+        );
+        await tester.pump();
+        _expectNoLayoutException(
+          tester,
+          reason: 'walkthrough deduction at ${size.width}x${size.height}',
+        );
+      }
+    },
+  );
 
   testWidgets('rules and settings use pixel controls without overflow', (
     tester,
@@ -222,6 +239,49 @@ void main() {
         tester,
         reason: 'second prologue page at ${size.width}x${size.height}',
       );
+    }
+  });
+
+  testWidgets('Atlas prologue stays readable at 150% text scaling', (
+    tester,
+  ) async {
+    final controller = await _initializedController(tester);
+    final scene =
+        controller.content!
+            .availabilityFor('regalia:arc/atlas-of-borrowed-winds')
+            .storefront!
+            .prologuePreview;
+    _resetViewAfterTest(tester);
+
+    for (final size in const [_narrow, _wide]) {
+      _setViewSize(tester, size);
+      await _pumpScreen(
+        tester,
+        StorySceneScreen(
+          key: ValueKey('atlas-preview-${size.width}'),
+          controller: controller,
+          scene: scene,
+          palette: controller.originArc!.chapters.first.palette,
+          popOnContinue: false,
+          recordSeenOnComplete: false,
+        ),
+        reason: 'Atlas prologue at ${size.width}x${size.height}',
+      );
+
+      for (var pageIndex = 0; pageIndex < scene.pages.length; pageIndex++) {
+        expect(find.text(scene.pages[pageIndex].title), findsOneWidget);
+        _expectNoLayoutException(
+          tester,
+          reason:
+              'Atlas prologue page ${pageIndex + 1} at '
+              '${size.width}x${size.height}',
+        );
+        if (pageIndex == scene.pages.length - 1) continue;
+        final action = find.text(scene.pages[pageIndex].actionLabel);
+        await tester.ensureVisible(action);
+        await tester.tap(action);
+        await tester.pump(const Duration(milliseconds: 300));
+      }
     }
   });
 

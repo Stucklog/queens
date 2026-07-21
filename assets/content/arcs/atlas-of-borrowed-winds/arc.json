@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/atlas-of-borrowed-winds",
-  "contentVersion": 1,
+  "contentVersion": 2,
   "title": "The Atlas of Borrowed Winds",
   "theme": {
     "brightness": "light",
@@ -32,7 +32,7 @@
       "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_01_unbound_page.jpg",
       "visualIndex": 0,
       "title": "The Unbound Page",
-      "caption": "Nahla saves a caravan with one sentence—and discovers that the atlas always moves a burden somewhere else.",
+      "caption": "Nahla reaches the rescued caravan and discovers that the atlas moved an entire oasis to save it. She sets out to return the water.",
       "startOrder": 1,
       "endOrder": 9,
       "difficulty": "easy",
@@ -85,7 +85,7 @@
       "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_02_missing_water.jpg",
       "visualIndex": 1,
       "title": "The Missing Water",
-      "caption": "At the dry basin of Anbar, remembered wells and buried channels offer a route the royal survey never recorded.",
+      "caption": "Nahla traces the displaced oasis to Anbar. With the residents’ help, she maps their old channels and begins bringing the water home.",
       "startOrder": 10,
       "endOrder": 18,
       "difficulty": "easy",
@@ -138,7 +138,7 @@
       "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_03_grammar_of_borders.jpg",
       "visualIndex": 2,
       "title": "Grammar of Borders",
-      "caption": "Ilyun teaches Nahla the atlas’s true syntax: every shortcut must name the people who will pay for it.",
+      "caption": "At the Four-Way Court, Ilyun teaches Nahla the rules the palace removed from the atlas. Four towns then draft a seasonal road each can accept or refuse.",
       "startOrder": 19,
       "endOrder": 27,
       "difficulty": "medium",
@@ -191,7 +191,7 @@
       "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_04_road_unprinted.jpg",
       "visualIndex": 3,
       "title": "The Road Unprinted",
-      "caption": "Samir follows knots, stars, and spoken landmarks through gates that recognize only the crown’s destinations.",
+      "caption": "Samir leads Nahla along a route the palace left off its maps. From a hidden pass, they discover that Rafi has forced nearly all desert trade through royal tolls.",
       "startOrder": 28,
       "endOrder": 36,
       "difficulty": "medium",
@@ -258,7 +258,7 @@
       "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_05_surveyors_trap.jpg",
       "visualIndex": 4,
       "title": "The Surveyor’s Trap",
-      "caption": "Rafi turns an ambiguity into a cage, binds Ilyun, and seals Nahla inside an archive where false maps become walls.",
+      "caption": "Rafi exploits one undefined word in Nahla’s compact to bind Ilyun, seize the atlas, and trap her inside the royal archive.",
       "startOrder": 37,
       "endOrder": 45,
       "difficulty": "hard",
@@ -325,7 +325,7 @@
       "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_06_erased_home.jpg",
       "visualIndex": 5,
       "title": "The Erased Home",
-      "caption": "With her hometown removed from every official route, Nahla rebuilds its coordinates from wells, stars, and shared memory.",
+      "caption": "Rafi erases Nahla’s hometown from every official map, cutting it off from roads and royal law. Nahla must prove where it stands using the memories of the people still there.",
       "startOrder": 46,
       "endOrder": 54,
       "difficulty": "hard",
@@ -378,7 +378,7 @@
       "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_07_ownerless_lands.jpg",
       "visualIndex": 6,
       "title": "The Ownerless Lands",
-      "caption": "As Rafi’s continent-wide redrawing tears borders loose, many peoples layer their unprinted routes into one common corridor.",
+      "caption": "Rafi forces the atlas to redraw the whole desert, creating a continent-wide sandstorm. Communities combine the routes they actually use into one safe passage.",
       "startOrder": 55,
       "endOrder": 63,
       "difficulty": "expert",
@@ -445,7 +445,7 @@
       "artAsset": "assets/art/arcs/atlas-of-borrowed-winds/backgrounds/chapter_08_voluntary_compacts.jpg",
       "visualIndex": 7,
       "title": "Voluntary Compacts",
-      "caption": "Nahla and Ilyun attempt the atlas’s first agreement written by every affected voice—and owned by none.",
+      "caption": "At the palace map court, Nahla and Ilyun attempt the first atlas agreement that requires the consent of every community it will change.",
       "startOrder": 64,
       "endOrder": 72,
       "difficulty": "expert",
@@ -507,8 +507,8 @@
           "id": "the-road-that-rose",
           "title": "The Road That Rose",
           "paragraphs": [
-            "By the time Nahla reached the caravan, her bargain had already become geography. Brass wind plates spun above the wagons, and the road climbed into the air like a golden ribbon. Every traveler stood unharmed beside cool water.",
-            "On the northern horizon, an oasis was lifting from its basin—palms, wells, gardens, and all. Ilyun could not undo an agreed boundary with a wish. He could only help Nahla trace where its cost had landed."
+            "By the time Nahla and Ilyun reached the caravan, the storm had passed. A new road had carried the wagons to safety, and a stream drawn from the still-moving oasis had reached them. No traveler was hurt. That was the good news.",
+            "The bad news was still moving across the northern horizon: palms, gardens, wells, and a great shelf of soil. Ilyun could not cancel an agreement after carrying it out. The atlas needed a new agreement to put the oasis back, and first they had to find the people it belonged to."
           ],
           "semanticLabel": "A caravan stands safe beneath spinning wind plates while a distant oasis rises from the desert.",
           "actionLabel": "Trace the cost"
@@ -517,8 +517,8 @@
           "id": "the-atlas-rule",
           "title": "The Atlas’s Rule",
           "paragraphs": [
-            "The atlas showed nine knots along the changed road. Each knot held a fragment of the bargain: a traveler protected, a mile shortened, a current redirected. Nahla would have to settle them in order before the displaced water could be followed.",
-            "Above the final knot circled a Compass Roc, a creature made fierce by the broken navigation plates. Defeating it would not erase Nahla’s mistake. It would open the first honest route toward repairing it."
+            "The atlas marked nine tangles along the changed road. Each one was a place where Nahla’s rushed agreement had disturbed the land or the brass wind plates. Untangling them would reveal where the oasis had come from.",
+            "At the last tangle, a Compass Roc circled above the route and attacked anything that moved below. The altered winds had driven the giant bird off course. Getting past it would not repair Nahla’s mistake, but it would show her where to begin."
           ],
           "semanticLabel": "A glowing road winds through a long caravan toward a floating oasis ringed by brass wind plates.",
           "actionLabel": "Enter the changed road"
@@ -540,8 +540,8 @@
           "id": "the-dry-basin",
           "title": "The Dry Basin",
           "paragraphs": [
-            "Anbar had survived droughts, raids, and two dynasties by sharing one deep aquifer. Now white roots clawed through an empty basin while royal milestones insisted the oasis had never stood there.",
-            "Samir Qad met Nahla at the first dry well. He did not ask whether she meant to cause the loss. He asked whose memory of the water she had written into her repair. Nahla had written none."
+            "The trail led to Anbar, a town built around the empty basin where its oasis had stood. Its wells were dry, its gardens were dying, and white roots lay exposed in the dust. Because the royal survey had never recorded Anbar’s claim to the water, the atlas had treated the oasis as free to move.",
+            "Samir Qad, a caravan mediator helping the town, met Nahla at the first dry well. He was glad the caravan had survived. He was less impressed that Anbar had been volunteered to pay for it. Before Nahla drew another line, he told her, she would have to learn the town from the people who lived there."
           ],
           "semanticLabel": "The exposed roots of a vanished oasis surround a dry town whose official milestones deny the water ever existed.",
           "actionLabel": "Listen to Anbar"
@@ -550,8 +550,8 @@
           "id": "a-river-borrowed-back",
           "title": "A River Borrowed Back",
           "paragraphs": [
-            "Families marked old flood levels on their doors. Gardeners named the order in which channels used to fill. Children remembered where the stones stayed cool at noon. Laid together, those accounts revealed a buried lattice no palace map contained.",
-            "Nahla proposed a temporary current, bounded by time and renewed only by Anbar’s consent. The water answered—but the atlas warned that a Dryroot Wyrm had nested around the deepest valve."
+            "Families showed Nahla the flood marks on their doors. Gardeners described the order in which the channels filled, and children pointed out stones that stayed cool at noon. Together, those memories formed an accurate map of the buried water system—one the palace had never bothered to record.",
+            "With Anbar’s residents, Nahla wrote an agreement to reopen the channels temporarily, then let the town decide whether and how to renew it. Water began moving underground, but a Dryroot Wyrm had coiled around the stone gate of the main channel. The wells would remain dry until it was driven out."
           ],
           "semanticLabel": "Remembered landmarks illuminate a hidden water lattice beneath the dry basin as a temporary stream returns.",
           "actionLabel": "Restore the channels"
@@ -573,8 +573,8 @@
           "id": "a-language-of-consequence",
           "title": "A Language of Consequence",
           "paragraphs": [
-            "At the Four-Way Court, Ilyun taught Nahla what his binders had hidden. The atlas did not speak in wishes. It spoke in agreements: subject, boundary, beneficiary, burden, duration, and a voice for every place the sentence could change.",
-            "Royal surveyors had removed the final clause generations ago. Without it, the atlas treated silence as permission—and Ilyun was compelled to obey whoever held the pen."
+            "Before Nahla wrote another agreement, Ilyun insisted that she learn how the atlas understood one. At the Four-Way Court, he gave her six questions: Who was asking? What would change? Who would benefit? Who would bear the cost? How long would it last? Had every affected community been heard?",
+            "Nahla’s first agreement had named the caravan, the road, and the water, but not Anbar. The atlas had treated Anbar’s silence as permission. Ilyun explained that royal surveyors had removed the final question generations ago. They excluded him too: although he had to carry out every change, the atlas did not count him among those who must be heard."
           ],
           "semanticLabel": "Four routes converge on a lapis contract court beneath constellations aligned with every settlement.",
           "actionLabel": "Learn the lost clause"
@@ -583,8 +583,8 @@
           "id": "the-four-way-promise",
           "title": "The Four-Way Promise",
           "paragraphs": [
-            "Four towns needed the same trade road and feared being bypassed. Nahla refused to choose a winner. With Samir carrying questions between them and Ilyun testing every term, they drafted a route that shifted by season and could be refused at each gate.",
-            "The crown’s Gilded Arbiter descended before the compact could settle. Its brass law recognized only permanent roads and a single authority. Nahla opened the atlas to a sentence no machine had been built to parse."
+            "Four towns had come to the court because each needed the same trade road. A permanent route would enrich one and bypass the other three. With Samir carrying proposals between them and Ilyun checking the wording, the towns drafted a road that shifted by season and could be refused at any gate.",
+            "Before the atlas could record their agreement, the palace’s Gilded Arbiter arrived. The brass machine recognized only permanent roads issued by one royal authority. It declared the shared route illegal and moved to close the court. Nahla would have to stop it before the towns could put their agreement into effect."
           ],
           "semanticLabel": "Four luminous roads link a circular lapis court with four distant desert cities beneath a charted sky.",
           "actionLabel": "Defend the compact"
@@ -606,8 +606,8 @@
           "id": "gates-without-destinations",
           "title": "Gates Without Destinations",
           "paragraphs": [
-            "Beyond the court stood seven monumental gates. Each would open only for a destination stamped into the royal atlas. Villages without tax offices, seasonal camps, and wells kept by no governor did not exist to the locks.",
-            "Samir ignored the gates. He followed route-knots tied beneath the lintels, then matched their colors to stars reflected in black glass. A road appeared exactly where the official map showed empty stone."
+            "Beyond the court, the road ended at seven enormous palace gates. Each lock checked a traveler’s destination against the royal atlas. If a village, seasonal camp, or independent well was missing from the map, the gate stayed shut.",
+            "Samir knew an older way of recording routes: colored cords tied in knots for turns and distances, checked against the stars. He matched knots hidden beneath the gates to stars reflected in black glass. A road appeared around the locks, used long before the palace decided whether it officially existed. “The gate says this road does not exist,” Nahla said. Samir stepped onto it. “Then it should not mind us using it.”"
           ],
           "semanticLabel": "Sealed white-stone gates face an unmarked trail revealed by route-knots and reflected stars.",
           "actionLabel": "Take the unprinted road"
@@ -616,8 +616,8 @@
           "id": "the-capitals-funnel",
           "title": "The Capital’s Funnel",
           "paragraphs": [
-            "From the canyon rim, Nahla finally saw Rafi’s design. Highways that appeared independent on separate sheets all bent toward Qasr, forcing grain, medicine, and travelers through tolls controlled by the palace.",
-            "The Sevenfold Gate guarded the one pass that could prove the pattern. Its seven spectral faces recited the same decree in different voices: a route not printed was a route no one had the right to travel."
+            "From the canyon rim, Nahla could see the whole road network at once. Routes that looked independent on separate maps all bent toward the capital, Qasr. Merchants carrying grain, medicine, or passengers had been forced through toll stations controlled by the palace. Rafi’s maps were designed to control trade, not merely describe it.",
+            "The hidden pass was guarded by the Sevenfold Gate, a single magical sentinel formed from all seven locks. Its faces repeated the crown’s law: an unprinted road was illegal. Opening the pass would give caravans another route and prove that Rafi’s detours were deliberate."
           ],
           "semanticLabel": "Every official highway bends toward the distant capital while a hidden star road crosses the canyon below.",
           "actionLabel": "Break the royal funnel"
@@ -639,8 +639,8 @@
           "id": "the-omitted-pronoun",
           "title": "The Omitted Pronoun",
           "paragraphs": [
-            "Rafi welcomed Nahla back to the archive as though she were still his apprentice. He praised the seasonal compact, then read aloud one word she had left undefined: we. The atlas answered to the royal office that had witnessed the sentence, not the towns that had shaped it.",
-            "Brass seals closed around Ilyun’s wrists. Shelves rotated into walls, red borders rose from false maps, and Rafi lifted the atlas from Nahla’s hands. He called the trap a lesson in precision."
+            "Nahla, Ilyun, and Samir returned to the royal archive to enter proof of Rafi’s toll scheme in the public register. Rafi welcomed Nahla as if she were still his apprentice. He praised the four towns’ seasonal road, then pointed to one word in their agreement: we. Because Nahla had never defined who “we” meant, the atlas treated Rafi’s office as an author and let him revise the agreement.",
+            "Rafi used that loophole immediately. Brass seals closed around Ilyun’s wrists. A shelf-wall cut Samir off and sealed him in the index room, while false maps raised solid red borders around Nahla. Rafi took the atlas and called the trap a lesson in precision. His lessons had always been exacting. This one happened to include locked doors."
           ],
           "semanticLabel": "Red map-walls divide a royal archive while a many-armed survey instrument clamps the atlas at its center.",
           "actionLabel": "Find the ambiguity"
@@ -649,8 +649,8 @@
           "id": "maps-that-cast-no-stars",
           "title": "Maps That Cast No Stars",
           "paragraphs": [
-            "Every chart in the prison showed a plausible desert. Only the black floor betrayed the forgeries: true wells reflected the stars used to find them; manufactured borders reflected nothing at all.",
-            "Nahla crossed by stepping on remembered coordinates, freed Samir from a sealed index room, and reached the Archive Behemoth feeding false maps into the braziers. Ilyun remained bound, but one honest route was enough to escape."
+            "Rafi had filled the prison with maps of deserts that looked real but had never existed. Nahla tested them against the archive’s black-glass floor, where genuine landmarks reflected the navigation stars tied to their coordinates. Real wells produced a reflection. Invented wells and borders did not.",
+            "Nahla crossed the prison by stepping only on coordinates that produced stars, then freed Samir from a sealed index room. The Archive Behemoth fed false maps into roaring braziers and blocked the only genuine exit. Ilyun remained Rafi’s prisoner, but Nahla and Samir had to escape before they could follow him."
           ],
           "semanticLabel": "A line of reflected stars marks the only true path through burning false maps and geometric red walls.",
           "actionLabel": "Escape the archive"
@@ -672,8 +672,8 @@
           "id": "absent-by-decree",
           "title": "Absent by Decree",
           "paragraphs": [
-            "At the archive’s edge, one coordinate shivered through the brass seal on Nahla’s compass. Ilyun had forced it past his bindings before Rafi carried him and the atlas away. The coordinate pointed home—but Rafi’s answer had arrived before Nahla did. Dar Sifr had been scraped from every recognized map.",
-            "The people had not vanished. They stood inside an administrative blank, visible to memory and unreachable to law. Nahla’s family lit lamps along streets the atlas refused to name."
+            "Near the archive’s outer wall, Nahla’s brass compass flickered with a single coordinate. Ilyun had forced it through the seals around his wrists before Rafi carried him and the atlas away. The coordinate pointed to Dar Sifr, Nahla’s home. By the time she and Samir arrived, Rafi had removed the town from every map recognized by the crown.",
+            "Dar Sifr and its people were still there, but the official roads now bent around them. Couriers could not be sent there, and royal offices would not serve people the maps said did not exist. Nahla found her family lighting lamps along familiar streets while every milestone outside directed travelers elsewhere."
           ],
           "semanticLabel": "A luminous blank interrupts roads and milestones while the remembered outlines of a desert town remain within it.",
           "actionLabel": "Name what remains"
@@ -682,8 +682,8 @@
           "id": "coordinates-of-memory",
           "title": "Coordinates of Memory",
           "paragraphs": [
-            "Nahla began with facts no decree could own: the angle from the winter star to the oldest well, the time afternoon shade touched the baker’s door, the order of blue tiles in the school courtyard. Hundreds of memories intersected at one undeniable place.",
-            "The blank filled with light. To reconnect Dar Sifr, Nahla still had to silence the Bellkeeper that erased each spoken coordinate before it reached the atlas. When the whole town spoke together, their chorus traveled back along Ilyun’s hidden coordinate and cracked the first of Rafi’s binding seals."
+            "Without the atlas, Nahla asked Dar Sifr’s residents to rebuild the town’s coordinates themselves. They recorded the angle from the winter star to the oldest well, the hour when afternoon shade reached the baker’s door, and the order of blue tiles in the school courtyard. Hundreds of memories together identified the town’s exact location.",
+            "When the rebuilt coordinates began to glow, the Silent Bellkeeper erased each one as soon as it was spoken. It was one of Rafi’s defenses against unapproved places. Nahla asked the whole town to call out its landmarks together. Their combined voices forced one message along Ilyun’s hidden coordinate and cracked the first seal that bound him."
           ],
           "semanticLabel": "Wells, doorways, tile patterns, and constellations overlap as glowing coordinates that rebuild an erased hometown.",
           "actionLabel": "Restore Dar Sifr"
@@ -705,8 +705,8 @@
           "id": "no-flag-holds-the-wind",
           "title": "No Flag Holds the Wind",
           "paragraphs": [
-            "Unable to erase every dissenting place, Rafi locked the atlas into the palace survey engine and redrew the entire desert at once. Claimed borders tore loose as burning chains. The atlas tried to reconcile thousands of imposed lines, and the contradiction became a sandstorm wide enough to swallow the continent.",
-            "Palace roads shifted first. Samir’s unprinted routes endured longer because they belonged to practice, not decree—but no single tradition could cross the whole storm."
+            "Dar Sifr’s restored coordinates spread along the unprinted roads, and other omitted towns began adding their own. Unable to erase them one by one, Rafi locked the atlas into the palace survey engine and ordered it to redraw the entire desert. The engine imposed thousands of royal borders at once. Where they contradicted one another, roads split apart and the atlas generated a sandstorm large enough to cover the continent.",
+            "The palace highways failed first because their paths depended entirely on the royal atlas. Samir’s unprinted routes—paths maintained by caravans, farmers, pilgrims, and river communities—lasted longer because people still knew how to travel them. But each tradition covered only one region, and none crossed the full storm."
           ],
           "semanticLabel": "A violet sandstorm tears glowing border chains from the earth as royal roads fracture below.",
           "actionLabel": "Gather the living routes"
@@ -715,8 +715,8 @@
           "id": "the-common-corridor",
           "title": "The Common Corridor",
           "paragraphs": [
-            "Caravan leaders named shelter by wind. Farmers traced buried canals. Pilgrims sang distances in breaths. River people mapped the taste of wells. Nahla layered every account without forcing one to replace another.",
-            "Their routes braided into a corridor through land no ruler could honestly claim. At its center waited the Hollow Meridian, the palace engine’s outer defense against every route it could not reduce to one obedient line. Beyond it, Nahla could see Ilyun holding the failing seals apart from inside the storm."
+            "Caravan leaders marked shelters by the winds they blocked. Farmers mapped buried canals; pilgrims measured distance in songs and breaths; river guides identified wells by taste. Nahla laid their accounts over one another. Where one route ended, another supplied the next landmark, until the separate traditions formed a continuous corridor through the storm.",
+            "At its center, the Hollow Meridian guarded the palace engine from any road it could not force onto the royal grid. Beyond it, Nahla saw Ilyun straining against the cracked seals on his wrists. The freedom Dar Sifr had won him was just enough to keep Rafi’s command from closing around the atlas—but it would not hold for long."
           ],
           "semanticLabel": "Many differently colored oral routes braid into one stable corridor through an enormous sandstorm.",
           "actionLabel": "Cross the ownerless lands"
@@ -738,8 +738,8 @@
           "id": "every-voice-on-the-page",
           "title": "Every Voice on the Page",
           "paragraphs": [
-            "When the Hollow Meridian fell, the living routes tore open the palace engine. Ilyun stepped from the storm with fractured seals still fastened around his wrists, then set the atlas on the map court’s common table rather than returning it to any owner. Delegates followed the corridor; with no chamber large enough for every voice, testimony traveled by mirrored light, route-cord, drumbeat, and runners.",
-            "Nahla did not ask for unanimous borders. She asked for a process: limited terms, visible burdens, the right to refuse, and a path to revise every agreement without binding Ilyun—or anyone—to silence."
+            "After the Hollow Meridian fell, the joined routes reached the palace survey engine from every direction. The machine tried to compress them into one royal road, overloaded, and split open. Ilyun came out of the storm with the cracked brass seals still around his wrists. He refused to return the atlas to Rafi or hand it to Nahla. Instead, he placed it on the map court’s common table.",
+            "Delegates arrived by the new corridor. Samir left to collect route-cords from communities too distant to send anyone in person. Nahla proposed rules for changing the atlas: every term would expire unless renewed, every cost would be public, every affected community could refuse, and every decision could be revised."
           ],
           "semanticLabel": "Restored roads from many communities converge on open circular plazas as dawn begins beyond the storm.",
           "actionLabel": "Write the shared terms"
@@ -748,10 +748,10 @@
           "id": "the-meridian-hart",
           "title": "The Meridian Hart",
           "paragraphs": [
-            "The old atlas defended its deepest command by taking the shape of a many-antlered Meridian Hart. Every tine carried a border enforced without consent; every hoofbeat tried to stamp the new voices back into one royal route.",
-            "Nahla and Ilyun could not defeat that history by becoming its next owners. They had to open all twelve measures of the final compact and leave the atlas capable of saying no—even to them."
+            "The atlas still contained its oldest royal command: one owner could impose permanent borders on everyone else. When the delegates tried to replace that rule, it took the shape of the many-antlered Meridian Hart. Each antler carried an inherited border, and every hoofbeat drove the delegates’ new routes off the page.",
+            "The proposed compact contained twelve protections covering consent, cost, duration, refusal, and revision. Nahla and Ilyun had to write all twelve into the atlas while the Hart tried to erase them. Taking ownership would make them no better than Rafi; the new agreement had to preserve everyone’s right to say no, including Ilyun’s."
           ],
-          "semanticLabel": "An open atlas overlooks gardens, waterways, circular plazas, and many roads converging beneath a clear sunrise.",
+          "semanticLabel": "A many-antlered Meridian Hart drives community routes from an open atlas while delegates defend their new agreement.",
           "actionLabel": "Challenge the old command"
         }
       ]
@@ -771,8 +771,8 @@
           "id": "the-last-imposed-line",
           "title": "The Last Imposed Line",
           "paragraphs": [
-            "The Meridian Hart shattered into twelve measures of living script. Rafi seized the first before it could settle and drove his compass staff through the map court. One final red line rose around the capital, offering safety to everyone inside and abandonment to everyone beyond it.",
-            "He called it the only responsible choice. Nahla saw the old lesson beneath his fear: if one hand could draw the world quickly enough, no other hand needed to be heard."
+            "Rafi had remained at the edge of the court after the survey engine broke. Defeating the Meridian Hart released the compact’s twelve protections as lines of glowing script above the map court. Before they could return to the atlas, Rafi grabbed the first line and pinned it to the floor with his compass staff. A red boundary rose into a wall around the capital, protecting everyone inside from the storm and abandoning everyone beyond it.",
+            "Rafi called the wall the only responsible choice. He was afraid the capital would be lost while the delegates argued. Nahla understood what his proposal required: he would decide whose lives counted without asking those left outside. If the red line entered the atlas, a boundary drawn for one emergency would become permanent."
           ],
           "semanticLabel": "Nahla and a bound Ilyun face Rafi across a storm-lashed map court divided by a final red boundary.",
           "actionLabel": "Refuse the final line",
@@ -817,8 +817,8 @@
           "id": "the-map-cannot-consent",
           "title": "What the Map Cannot Consent To",
           "paragraphs": [
-            "Samir arrived carrying the route-cords of communities that could not reach the court. Together they spoke the missing clause: no map could consent on behalf of the people it described, and no emergency could make permanent owners of temporary guardians.",
-            "The red wall paused. For the first time, the atlas asked Ilyun whether he accepted the command written across his body. He answered no."
+            "Samir reached the court carrying route-cords from communities that could not come in person. Each cord recorded their instructions in its knots. Using their words, he and Nahla restored the clause that royal surveyors had removed: a map could describe people but could not consent for them, and temporary authority during an emergency had to end when the danger passed.",
+            "The red wall stopped rising. The restored clause meant Rafi could no longer speak for the communities outside it. A question appeared across the open page: Did Ilyun accept the order? His obedience had always been treated as automatic. This time, Ilyun answered, “No.”"
           ],
           "semanticLabel": "Nahla, Samir, a bound Ilyun, and Rafi stand over a storm-lit city-map crossed by glowing red boundaries.",
           "actionLabel": "Hear Ilyun’s answer",
@@ -874,10 +874,10 @@
           "id": "the-spoken-compact",
           "title": "The Spoken Compact",
           "paragraphs": [
-            "Once Ilyun’s refusal was possible, the rest of the sentence changed. Every affected community gained the same right. Agreements became invitations with end dates, public costs, and many routes of appeal. The atlas’s binding split; the storm began to write itself harmlessly into rain.",
-            "Rafi released his staff when the capital’s wall opened. He had wanted certainty more than cruelty, but certainty enforced by one office had become cruelty all the same. The new compact gave him one voice—no more and no less than anyone else."
+            "Once the atlas accepted Ilyun’s refusal, it applied the same right to every community named in the compact. The red boundary lost its authority. New agreements would be offers rather than commands: each would have an end date, list its costs, and provide ways to refuse or appeal. The seals around Ilyun’s wrists broke, and the sandstorm fell as ordinary rain.",
+            "Rafi released his staff as the wall opened. He had wanted certainty and believed one royal office could make safer choices than many communities. But his certainty had left those communities no choice at all. Under the new compact, he could still speak and argue; his voice simply counted no more than anyone else’s."
           ],
-          "semanticLabel": "Nahla, Samir, and an unbound Ilyun stand before a storm-lit city-map crossed by glowing red boundaries.",
+          "semanticLabel": "Nahla, Samir, an unbound Ilyun, and Rafi stand before a city-map as the red wall opens and the storm turns to rain.",
           "actionLabel": "Open every route",
           "characters": [
             {
@@ -912,6 +912,18 @@
               "size": {"width": 126, "height": 189},
               "semanticLabel": "Ilyun unbound",
               "zOrder": 3
+            },
+            {
+              "id": "rafi",
+              "source": {
+                "type": "asset",
+                "asset": "assets/storefront/atlas-of-borrowed-winds/rafi_surveyor.png"
+              },
+              "alignment": {"x": 0.82, "y": 0.71},
+              "size": {"width": 82, "height": 123},
+              "mirrored": true,
+              "semanticLabel": "Rafi Daran lowering his compass staff",
+              "zOrder": 2
             }
           ]
         },
@@ -919,8 +931,8 @@
           "id": "a-border-that-opens",
           "title": "A Border That Opens",
           "paragraphs": [
-            "At sunrise, Anbar’s displaced soil, palms, wells, and gardens settled into their old basin, and its water returned without leaving the rescued caravan thirsty. Dar Sifr reappeared on courier routes. The compact canceled hereditary survey debts; for the first time, Nahla’s family owed no weeks of their lives to the palace.",
-            "Ilyun stepped beyond the atlas for the first time without carrying an order. He chose to stay beside Nahla—not as a servant of her pen, but as a witness who could challenge every line she drew."
+            "At sunrise, the atlas carried out a settlement accepted by both Anbar and the caravan. Anbar’s soil, palms, wells, and gardens returned to their original basin, while the caravan kept enough water for its journey. Dar Sifr reappeared on every recognized map and courier route. The delegates also ended the inherited survey debts that had forced Nahla’s family to work for the palace.",
+            "With the last seal gone, Ilyun stepped away from the atlas without waiting for an order. He chose to travel beside Nahla as an equal and to challenge any careless line she drew. Nahla pointed out that he had already been doing that. This time, he said, it was a choice."
           ],
           "semanticLabel": "Nahla, Ilyun, and Samir overlook open roads, restored water, and repurposed border markers at sunrise.",
           "actionLabel": "Walk the open road",
@@ -969,8 +981,8 @@
           "id": "the-first-honest-map",
           "title": "The First Honest Map",
           "paragraphs": [
-            "Nahla declined Rafi’s former office. Instead, she founded a traveling school whose maps were copied in erasable ink and carried blank space for corrections from the road. Samir taught mediation; Ilyun taught students where language hides a burden.",
-            "The atlas remained open on a common table. Its final page held no kingdom, crown, or owner—only a question written in wind: Who has not yet been heard?"
+            "Nahla refused Rafi’s old post; she had seen what happened to cartographers whose desks were bolted to the capital. Instead, she founded a traveling school. Its students copied maps in erasable ink and left wide margins for corrections from the people who used each road. Samir taught them how to settle disputes, and Ilyun taught them to find the person quietly paying for a convenient sentence.",
+            "The atlas stayed open on a public table, with no permanent owner. Its final page did not assign land to a kingdom or crown. It held one practical question for every future mapmaker: Who has not yet been heard?"
           ],
           "semanticLabel": "Nahla, Ilyun, and Samir stand beside an open atlas overlooking bright roads, waterways, towns, and gardens.",
           "actionLabel": "Return to the stories",

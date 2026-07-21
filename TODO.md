@@ -10,7 +10,7 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## Gameplay and progression
 
-- [ ] **P1 — Make first launch flow into the origin story and guided first puzzle.**
+- [x] **P1 — Make first launch flow into the origin story and guided first puzzle.**
   - After the one-time opening slides, take the player directly into the origin story and show the prologue.
   - Make the first puzzle of the origin arc the guided rules walkthrough rather than a separate tutorial flow.
   - Use simple, progressive guidance so new players learn the board, crowns, exclusions, and deductions while solving that puzzle.
@@ -70,7 +70,7 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## Combat animation and boss presentation
 
-- [ ] **P1 — Fix the Drowned Acolyte’s inconsistent facing direction.**
+- [x] **P1 — Fix the Drowned Acolyte’s inconsistent facing direction.**
   - Review every frame of the Drowned Acolyte animation for incorrect left/right orientation.
   - Correct the frames that face the wrong way and ensure direction changes are intentional and consistent.
   - Check the animation in all gameplay and cutscene contexts where the sprite appears.
@@ -114,6 +114,23 @@ This is the working backlog for the remaining gameplay, story, presentation, and
   - Reserve the strongest version for the final boss.
 
 ## Story and cinematic scenes
+
+- [x] **P1 — Improve text contrast on story-arc homepage tiles.**
+  - Fix the current black text over black drop shadow treatment, which makes tile labels difficult to read.
+  - Adjust the text color, shadow color/strength, outline, tile overlay, or another combination to create reliable contrast.
+  - Check readability across every story-arc tile image, theme, and supported display size.
+  - Add or update visual regression coverage for the tile labels.
+
+- [x] **P2 — Add a back button to the first prologue page.**
+  - Let players quickly return to the Home Screen if they opened the story unintentionally.
+  - Show the back button on the first prologue page without disrupting normal forward navigation.
+  - Preserve the existing story state when the player returns and reopens the prologue.
+
+- [x] **P1 — Review story-direction documents and rebalance the writing style.**
+  - Identify any project document, prompt, content guide, or implementation note that may be steering the story too far toward poetry or dry exposition.
+  - Define a middle-ground story voice that is clear, emotionally engaging, and concise without becoming flat or overly ornamental.
+  - Update the source guidance document and affected story text to match the chosen direction.
+  - Review the intro, prologue, chapter scenes, and finale together for consistency and player comprehension.
 
 - [x] **P2 — Remove sprites from chapter-start screens.**
   - Remove character and other scene sprites from the chapter introduction/start cards.
@@ -170,7 +187,7 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## UI and naming
 
-- [ ] **P2 — Add a temporary “Unlock All” button to the Bestiary.**
+- [x] **P2 — Add a temporary “Unlock All” button to the Bestiary.**
   - Add a development/testing button on the Bestiary page that unlocks every enemy entry.
   - Use it to inspect all enemy animations without requiring normal progression.
   - Make the control clearly temporary and gate it behind a code/configuration flag or development build check.
