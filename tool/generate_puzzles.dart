@@ -165,6 +165,10 @@ Future<void> main(List<String> arguments) async {
       stdout.writeln(
         'Validated ${catalog.puzzles.length} puzzles and the guided tutorial.',
       );
+    case 'validate-all':
+      final manifestPath =
+          _option(arguments, '--manifest') ?? 'assets/content/manifest.json';
+      await _validateAll(manifestPath);
     case 'inspect':
       final id = arguments.length > 1 ? arguments[1] : '';
       final catalog = await _loadCatalog(catalogPath);
@@ -216,7 +220,7 @@ Future<void> main(List<String> arguments) async {
       stdout.writeln('Tier mismatches: $mismatches');
     default:
       stderr.writeln(
-        'Usage: dart run tool/generate_puzzles.dart <generate|generate-boss|generate-bosses|validate|inspect|report> [id] [--catalog path] [--seed n]',
+        'Usage: dart run tool/generate_puzzles.dart <generate|generate-boss|generate-bosses|validate|validate-all|inspect|report> [id] [--catalog path] [--manifest path] [--seed n]',
       );
       exitCode = 64;
   }
@@ -224,6 +228,125 @@ Future<void> main(List<String> arguments) async {
 
 Future<PuzzleCatalog> _loadCatalog(String path) async =>
     PuzzleCatalog.fromJsonString(await File(path).readAsString());
+
+Future<void> _validateAll(String manifestPath) async {
+  final manifestFile = File(manifestPath);
+  if (!await manifestFile.exists()) {
+    throw StateError('Manifest does not resolve: $manifestPath');
+  }
+  final manifestValue = jsonDecode(await manifestFile.readAsString());
+  if (manifestValue is! Map<String, Object?>) {
+    throw StateError('$manifestPath must contain a JSON object');
+  }
+  final descriptorValues = manifestValue['arcs'];
+  if (descriptorValues is! List<Object?> || descriptorValues.isEmpty) {
+    throw StateError('$manifestPath must contain at least one arc descriptor');
+  }
+
+  const generator = PuzzleGenerator();
+  final fingerprints =
+      <String, ({String arcId, String puzzleId, String catalogPath})>{};
+  PuzzleCatalog? originCatalog;
+  var totalPuzzles = 0;
+
+  for (var index = 0; index < descriptorValues.length; index++) {
+    final descriptorValue = descriptorValues[index];
+    if (descriptorValue is! Map<String, Object?>) {
+      throw StateError(
+        '$manifestPath arc descriptor ${index + 1} must be a JSON object',
+      );
+    }
+    final descriptorLabel = '$manifestPath arc descriptor ${index + 1}';
+    final arcId = _requiredString(descriptorValue, 'arcId', descriptorLabel);
+    final metadataPath = _requiredString(
+      descriptorValue,
+      'metadataAsset',
+      descriptorLabel,
+    );
+    final metadataFile = File(metadataPath);
+    if (!await metadataFile.exists()) {
+      throw StateError('$arcId metadata asset does not resolve: $metadataPath');
+    }
+
+    final metadataValue = jsonDecode(await metadataFile.readAsString());
+    if (metadataValue is! Map<String, Object?>) {
+      throw StateError('$metadataPath must contain a JSON object');
+    }
+    final metadataArcId = _requiredString(metadataValue, 'id', metadataPath);
+    if (metadataArcId != arcId) {
+      throw StateError(
+        '$metadataPath identifies $metadataArcId, expected descriptor $arcId',
+      );
+    }
+    final catalogPath = _requiredString(
+      metadataValue,
+      'puzzleCatalogAsset',
+      metadataPath,
+    );
+    final catalogFile = File(catalogPath);
+    if (!await catalogFile.exists()) {
+      throw StateError('$arcId catalog asset does not resolve: $catalogPath');
+    }
+
+    final catalog = await _loadCatalog(catalogPath);
+    _validate(catalog);
+    for (final puzzle in catalog.puzzles) {
+      final fingerprint = generator.canonicalFingerprint(puzzle);
+      final prior = fingerprints[fingerprint];
+      if (prior != null && prior.arcId != arcId) {
+        throw StateError(
+          '${puzzle.id} in $catalogPath reuses the canonical board from '
+          '${prior.puzzleId} in ${prior.catalogPath}',
+        );
+      }
+      fingerprints[fingerprint] = (
+        arcId: arcId,
+        puzzleId: puzzle.id,
+        catalogPath: catalogPath,
+      );
+    }
+    if (arcId == ContentIds.originArc) {
+      originCatalog = catalog;
+    }
+    totalPuzzles += catalog.puzzles.length;
+    stdout.writeln(
+      'Validated catalog ${index + 1}/${descriptorValues.length}: '
+      '$arcId — ${catalog.puzzles.length} puzzles ($catalogPath).',
+    );
+  }
+
+  if (originCatalog == null) {
+    throw StateError('$manifestPath does not declare ${ContentIds.originArc}');
+  }
+  final tutorial = PuzzleDefinition.fromJson(
+    jsonDecode(await File('assets/puzzles/tutorial.json').readAsString())
+        as Map<String, Object?>,
+  );
+  _validateTutorial(tutorial, originCatalog);
+  final tutorialDuplicate =
+      fingerprints[generator.canonicalFingerprint(tutorial)];
+  if (tutorialDuplicate != null) {
+    throw StateError(
+      '${tutorial.id} reuses the canonical board from '
+      '${tutorialDuplicate.puzzleId} in ${tutorialDuplicate.catalogPath}',
+    );
+  }
+  stdout.writeln(
+    'Validated the guided tutorial against ${ContentIds.originArc}.',
+  );
+  stdout.writeln(
+    'Validated ${descriptorValues.length} catalogs and $totalPuzzles puzzles; '
+    'all canonical fingerprints are unique across arcs and the tutorial.',
+  );
+}
+
+String _requiredString(Map<String, Object?> source, String key, String label) {
+  final value = source[key];
+  if (value is! String || value.trim().isEmpty) {
+    throw StateError('$label needs a non-empty $key');
+  }
+  return value;
+}
 
 Map<String, Object> _generationReportEntry(GeneratedPuzzle entry) => {
   'id': entry.definition.id,

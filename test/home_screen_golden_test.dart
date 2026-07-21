@@ -72,13 +72,13 @@ Future<void> _expectHomeGolden(
   await tester.pump();
 
   const originArcId = 'regalia:arc/origin';
-  const atlasArcId = 'regalia:arc/atlas-of-borrowed-winds';
+  const sunSailArcId = 'regalia:arc/sun-sail-covenant';
   expect(
     find.byKey(const ValueKey('story-arc-tile-$originArcId')),
     findsOneWidget,
   );
   expect(
-    find.byKey(const ValueKey('story-arc-tile-$atlasArcId')),
+    find.byKey(const ValueKey('story-arc-tile-$sunSailArcId')),
     findsOneWidget,
   );
 

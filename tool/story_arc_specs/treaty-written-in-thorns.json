@@ -1,0 +1,233 @@
+{
+  "slug": "treaty-written-in-thorns",
+  "title": "A Treaty Written in Thorns",
+  "tagline": "Two enemy envoys are bound to a living treaty that punishes every lie they tell each other.",
+  "environment": "thorns",
+  "seed": 32002,
+  "theme": {
+    "brightness": "dark",
+    "backgroundColor": "#0D1B16",
+    "surfaceColor": "#182922",
+    "surfaceLowColor": "#12211B",
+    "surfaceHighColor": "#23382F",
+    "surfaceContainerHighColor": "#2D453A",
+    "foregroundColor": "#FFF6E7",
+    "mutedForegroundColor": "#CFD5C7",
+    "outlineColor": "#A8B7A6",
+    "outlineVariantColor": "#80998A",
+    "inkColor": "#06100C",
+    "dangerColor": "#FF8491"
+  },
+  "storefront": {
+    "tileSubtitle": "Tell the truth across an enemy border",
+    "keyArtPrompt": "Two rival fantasy envoys standing on opposite sides of a living vine-written treaty, disciplined woman diplomat in deep emerald ceremonial dress and celebrated man commander in thorned black armor, their wrists linked by flowering ink, burned frontier fields blooming behind them, bruised rose twilight, parchment cream, candlelit court intrigue, romantic tension without embrace, original characters, no text, vertical key art",
+    "prologueFrames": [
+      {
+        "id": "a-century-of-ashes",
+        "title": "A Century of Ashes",
+        "paragraphs": [
+          "For a hundred years, the kingdoms of Ash and Vale have traded the same border through war, truce, and war again. Their burned frontier now grows nothing except graves and thorn scrub.",
+          "Envoy Liora Ash and Commander Ren Vale arrive at the peace table carrying generations of grief, and courts that need them to end the fighting without changing who holds power."
+        ],
+        "semanticLabel": "Two rival delegations face each other across a table overlooking a burned frontier.",
+        "actionLabel": "Approach the treaty"
+      },
+      {
+        "id": "the-living-signature",
+        "title": "The Living Signature",
+        "paragraphs": [
+          "The treaty is written in a ceremonial vine said to recognize honest intent. When Liora and Ren sign, green ink climbs beneath their skin and binds each diplomat to the other's words.",
+          "Their first courteous lie raises a thorn in both palms; their first painful truth opens a white flower in the wasteland outside."
+        ],
+        "semanticLabel": "A living green treaty links Liora and Ren as one flower opens beyond the court windows.",
+        "actionLabel": "Speak carefully"
+      },
+      {
+        "id": "peace-under-attack",
+        "title": "Peace Under Attack",
+        "paragraphs": [
+          "Before either court can withdraw, soldiers bearing Vale colors attack an Ash border post and leave evidence too perfect to trust. Liora suspects Ren's command; Ren suspects her aunt Queen Maelin arranged a pretext.",
+          "Bound to feel every lie between them, the envoys begin a joint progress along the frontier to find who needs their treaty to fail."
+        ],
+        "semanticLabel": "Liora and Ren ride together toward a smoking border post as thorned ink circles their hands.",
+        "actionLabel": "Begin the border progress"
+      }
+    ]
+  },
+  "chapters": [
+    {
+      "slug": "living-signature",
+      "title": "The Living Signature",
+      "caption": "Sign a peace whose promises can answer back.",
+      "paragraphs": [
+        "Before both courts, Liora and Ren arrange the treaty's living clauses so neither kingdom can hide an army inside a careful definition. They sign before either understands that the vine will punish private lies as fiercely as public ones.",
+        "The discarded loopholes twist together as The Covenant Briar, defending every ambiguity the courts hoped to exploit. Liora and Ren can cut through it only by stating what each side is truly afraid to lose."
+      ],
+      "semanticLabel": "Liora and Ren sign a green living treaty at a candlelit diplomatic table.",
+      "actionLabel": "Sign the living treaty",
+      "primaryColor": "#3D8B65",
+      "secondaryColor": "#F0C98A",
+      "boss": {
+        "slug": "covenant-briar",
+        "name": "The Covenant Briar",
+        "family": "rootbound",
+        "moveName": "Loophole Labyrinth"
+      }
+    },
+    {
+      "slug": "truth-under-skin",
+      "title": "Truth Under Skin",
+      "caption": "Learn the cost of courtesy without honesty.",
+      "paragraphs": [
+        "Their first private negotiation becomes a lesson in strategic honesty: omissions sting, polished evasions draw blood, and truths offered as weapons grow thorns too. Liora admits she expects Ren to betray her, while Ren admits he came prepared to deserve that fear.",
+        "Their rehearsed courtly answers take form as The Courtesy Shade, speaking each pleasing falsehood in a beloved voice. Naming the motives beneath those answers clears their skin and establishes the first rules they choose together."
+      ],
+      "semanticLabel": "Thorn shadows rise behind Liora and Ren during a tense private negotiation.",
+      "actionLabel": "Tell the difficult truth",
+      "primaryColor": "#8A5573",
+      "secondaryColor": "#F1B5C3",
+      "boss": {
+        "slug": "courtesy-shade",
+        "name": "The Courtesy Shade",
+        "family": "spectral",
+        "moveName": "Beautiful Evasion"
+      }
+    },
+    {
+      "slug": "border-progress",
+      "title": "The Border Progress",
+      "caption": "Investigate an attack designed to restart a war.",
+      "paragraphs": [
+        "Liora and Ren tour the frontier under the guise of a ceremonial courtship, questioning soldiers who would never speak freely to an enemy envoy. At the ruined post, formation marks prove the attackers copied Ren's tactics but never served under his command.",
+        "A standard stitched from forged loyalties unfolds into The False-Flag Shrike and scatters evidence toward both kingdoms. The pair follow what it tries hardest to destroy, finding orders written in Spymaster Orr's private cipher."
+      ],
+      "semanticLabel": "The envoys inspect a sabotaged border post while a false banner circles overhead.",
+      "actionLabel": "Track the false flag",
+      "primaryColor": "#A34E63",
+      "secondaryColor": "#FFD0D8",
+      "boss": {
+        "slug": "false-flag-shrike",
+        "name": "The False-Flag Shrike",
+        "family": "winged",
+        "moveName": "Borrowed Colors"
+      }
+    },
+    {
+      "slug": "flowers-in-burned-fields",
+      "title": "Flowers in Burned Fields",
+      "caption": "Let shared grief restore contested ground.",
+      "paragraphs": [
+        "Two villages claim the same surviving well, each with a memorial proving the other kingdom burned its fields. Liora and Ren stop arguing over whose history is complete and publicly name what both armies destroyed.",
+        "The unburied grief charges from the ash as The Cinderhart, carrying a different list of dead on every branch of its antlers. When both villages speak every name, flowers follow its path and reluctant trust takes root around a shared channel."
+      ],
+      "semanticLabel": "White flowers spread across burned fields as two border villages gather by one well.",
+      "actionLabel": "Name what was lost",
+      "primaryColor": "#6F8E46",
+      "secondaryColor": "#E7D79B",
+      "boss": {
+        "slug": "cinderhart",
+        "name": "The Cinderhart",
+        "family": "antlered",
+        "moveName": "Ashen Roll Call"
+      }
+    },
+    {
+      "slug": "masque-of-two-courts",
+      "title": "The Masque of Two Courts",
+      "caption": "Separate forged affection from a freely chosen truth.",
+      "paragraphs": [
+        "At a diplomatic masque, forged messages implicate both royal families while every dance is treated as evidence of the envoys' staged romance. Liora and Ren set boundaries the treaty cannot choose for them, then admit that the attraction left outside those boundaries is real.",
+        "The masque's prescribed steps assemble into The Clockwork Chaperone, forcing every gesture toward a politically useful ending. Breaking its rhythm reveals the courier who planted Orr's letters and lets Liora and Ren leave the dance on their own terms."
+      ],
+      "semanticLabel": "Masked courtiers surround Liora and Ren beneath flowering chandeliers and hidden forged letters.",
+      "actionLabel": "Unmask the forgery",
+      "primaryColor": "#87629B",
+      "secondaryColor": "#E8CEFF",
+      "boss": {
+        "slug": "clockwork-chaperone",
+        "name": "The Clockwork Chaperone",
+        "family": "clockwork",
+        "moveName": "Compulsory Waltz"
+      }
+    },
+    {
+      "slug": "thorns-at-the-heart",
+      "title": "Thorns at the Heart",
+      "caption": "Face the truths both crowns buried before peace.",
+      "paragraphs": [
+        "The vine tightens toward Liora's and Ren's hearts as their courts issue incompatible orders. Liora learns Queen Maelin concealed early Ash provocations, while Ren refuses a Vale command to mobilize troops behind the progress.",
+        "Every old justification ignites inside The War-Ember Regent, a crowned furnace that calls inherited violence duty. Liora confronts her aunt and Ren releases his command, starving the regent of the obedience it expects."
+      ],
+      "semanticLabel": "Liora and Ren face burning royal orders while thorns climb toward their hearts.",
+      "actionLabel": "Defy the old orders",
+      "primaryColor": "#C65A3D",
+      "secondaryColor": "#FFD2A1",
+      "boss": {
+        "slug": "war-ember-regent",
+        "name": "The War-Ember Regent",
+        "family": "volcanic",
+        "moveName": "Inherited Command"
+      }
+    },
+    {
+      "slug": "orrs-last-proof",
+      "title": "Orr's Last Proof",
+      "caption": "Expose a conspiracy built to look inevitable.",
+      "paragraphs": [
+        "Orr arranges an assassination attempt whose evidence points cleanly to both kingdoms, certain that frightened courts will accept contradiction as proof of treachery. Liora and Ren retrace the conspiracy together, matching forged dispatches to the people ordered to carry them.",
+        "Beneath the council chamber, The Proof-Eater consumes any fact that joins one side's story to the other. The envoys feed it Orr's isolated lies in the right sequence, forcing the missing connections back into view before both courts."
+      ],
+      "semanticLabel": "Liora and Ren present linked evidence before two alarmed royal courts.",
+      "actionLabel": "Reveal Orr's design",
+      "primaryColor": "#3D7180",
+      "secondaryColor": "#BCE6EC",
+      "boss": {
+        "slug": "proof-eater",
+        "name": "The Proof-Eater",
+        "family": "abyssal",
+        "moveName": "Devour the Connection"
+      }
+    },
+    {
+      "slug": "treaty-without-chains",
+      "title": "A Treaty Without Chains",
+      "caption": "Replace two bound envoys with a peace everyone can own.",
+      "paragraphs": [
+        "With Orr exposed, both crowns demand that Liora and Ren preserve the magical bond as the price of peace. Instead, the envoys gather border towns, veterans, traders, and grieving families to negotiate terms no pair of exceptional people must carry alone.",
+        "The old treaty closes around them as The Sovereign Knot, a living constellation of crowns and compulsory vows. They dissolve it clause by clause, then freely choose both a public peace and a private future that no magic can enforce."
+      ],
+      "semanticLabel": "Delegates from both kingdoms surround Liora and Ren as the thorn bond blooms and falls away.",
+      "actionLabel": "Write a freer peace",
+      "primaryColor": "#3E9A72",
+      "secondaryColor": "#FFF0C2",
+      "boss": {
+        "slug": "sovereign-knot",
+        "name": "The Sovereign Knot",
+        "family": "cosmic",
+        "moveName": "Peace by Compulsion"
+      }
+    }
+  ],
+  "finaleFrames": [
+    {
+      "id": "the-frontier-council",
+      "title": "The Frontier Council",
+      "paragraphs": [
+        "The new treaty is copied into ordinary ink and entrusted to a council drawn from the people who live with its consequences. Its clauses can be challenged, amended, and renewed without drawing anyone's blood.",
+        "Queen Maelin relinquishes the powers she hid behind necessity, and Ren's former soldiers help clear the roads they once fortified. Across the border, spring reaches fields that had forgotten its color."
+      ],
+      "semanticLabel": "A diverse frontier council signs an ordinary parchment as green fields return outside.",
+      "actionLabel": "Witness the new peace"
+    },
+    {
+      "id": "chosen-without-magic",
+      "title": "Chosen Without Magic",
+      "paragraphs": [
+        "Weeks later, Liora meets Ren at the well where the first flowers grew. Neither bears a thorn, and neither kingdom has ordered them to be there.",
+        "They tell each other what they want without pain forcing the answer, then walk the reopened border road side by side. The flowers that follow are only flowers, which makes them beautiful in a new way."
+      ],
+      "semanticLabel": "Liora and Ren meet freely beside a flower-ringed frontier well at sunrise.",
+      "actionLabel": "Return to the journeys"
+    }
+  ]
+}

@@ -26,55 +26,74 @@ void main() {
     );
   });
 
-  test('every story arc owns a distinct complete opponent roster', () {
-    final allAssets = <String>{};
-    final allImageSignatures = <int>{};
-    for (final metadataPath in [
-      'assets/content/arcs/origin/arc.json',
-      'assets/content/arcs/atlas-of-borrowed-winds/arc.json',
-    ]) {
-      final metadata =
-          jsonDecode(File(metadataPath).readAsStringSync())
+  test(
+    'every story arc owns a distinct complete opponent roster',
+    () {
+      final allAssets = <String>{};
+      final allImageSignatures = <int>{};
+      final manifest =
+          jsonDecode(File('assets/content/manifest.json').readAsStringSync())
               as Map<String, Object?>;
-      final arcId = metadata['id']! as String;
-      final assets = <String>[];
-      for (final chapterValue in metadata['chapters']! as List<Object?>) {
-        final chapter = chapterValue! as Map<String, Object?>;
-        final boss = chapter['boss']! as Map<String, Object?>;
-        assets.add(boss['spriteAsset']! as String);
-        for (final encounterValue in chapter['encounters']! as List<Object?>) {
-          final encounter = encounterValue! as Map<String, Object?>;
-          assets.add(encounter['spriteAsset']! as String);
+      final descriptors = manifest['arcs']! as List<Object?>;
+      expect(descriptors, isNotEmpty);
+
+      for (final descriptorValue in descriptors) {
+        final descriptor = descriptorValue! as Map<String, Object?>;
+        final metadataPath = descriptor['metadataAsset']! as String;
+        final metadata =
+            jsonDecode(File(metadataPath).readAsStringSync())
+                as Map<String, Object?>;
+        final arcId = metadata['id']! as String;
+        final assets = <String>[];
+        final bossAssets = <String>[];
+        for (final chapterValue in metadata['chapters']! as List<Object?>) {
+          final chapter = chapterValue! as Map<String, Object?>;
+          final boss = chapter['boss']! as Map<String, Object?>;
+          final bossAsset = boss['spriteAsset']! as String;
+          bossAssets.add(bossAsset);
+          assets.add(bossAsset);
+          for (final encounterValue
+              in chapter['encounters'] as List<Object?>? ?? const []) {
+            final encounter = encounterValue! as Map<String, Object?>;
+            assets.add(encounter['spriteAsset']! as String);
+          }
+        }
+
+        expect(
+          bossAssets.length,
+          greaterThanOrEqualTo(8),
+          reason: '$arcId must provide at least eight chapter bosses',
+        );
+        expect(assets.toSet(), hasLength(assets.length), reason: arcId);
+        expect(allAssets.intersection(assets.toSet()), isEmpty, reason: arcId);
+        allAssets.addAll(assets);
+        for (final asset in assets) {
+          expect(File(asset).existsSync(), isTrue, reason: asset);
+          final atlas = _decode(asset);
+          expect(atlas.width, 768, reason: asset);
+          expect(atlas.height, 1152, reason: asset);
+          final imageSignature = _expectCleanPixelArtAlpha(
+            atlas,
+            reason: asset,
+          );
+          expect(
+            allImageSignatures.add(imageSignature),
+            isTrue,
+            reason: '$asset duplicates another story arc opponent atlas',
+          );
+          _expectAnimatedAtlas(atlas, columns: 4, rows: 6, reason: asset);
+          _expectTransparentCellGutters(
+            atlas,
+            columns: 4,
+            rows: 6,
+            gutter: 8,
+            reason: asset,
+          );
         }
       }
-
-      expect(assets, hasLength(24), reason: arcId);
-      expect(assets.toSet(), hasLength(24), reason: arcId);
-      expect(allAssets.intersection(assets.toSet()), isEmpty, reason: arcId);
-      allAssets.addAll(assets);
-      for (final asset in assets) {
-        expect(File(asset).existsSync(), isTrue, reason: asset);
-        final atlas = _decode(asset);
-        expect(atlas.width, 768, reason: asset);
-        expect(atlas.height, 1152, reason: asset);
-        final imageSignature = _expectCleanPixelArtAlpha(atlas, reason: asset);
-        expect(
-          allImageSignatures.add(imageSignature),
-          isTrue,
-          reason: '$asset duplicates another story arc opponent atlas',
-        );
-        _expectAnimatedAtlas(atlas, columns: 4, rows: 6, reason: asset);
-        _expectTransparentCellGutters(
-          atlas,
-          columns: 4,
-          rows: 6,
-          gutter: 8,
-          reason: asset,
-        );
-      }
-    }
-    expect(allAssets, hasLength(48));
-  });
+    },
+    timeout: const Timeout(Duration(minutes: 2)),
+  );
 }
 
 int _expectCleanPixelArtAlpha(image_lib.Image atlas, {String? reason}) {

@@ -67,19 +67,23 @@ void main() {
         hasFocusAction: true,
       ),
     );
-    expect(
-      tester.getSemantics(find.byKey(const ValueKey('cell-0-2'))),
-      matchesSemantics(
-        label:
-            'Row 1, column C, region ${puzzle.regionAt(const Cell(0, 2)) + 1}',
-        value: 'empty, hint says place a crown here, selected',
-        isButton: true,
-        isSelected: true,
-        isFocusable: true,
-        hasTapAction: true,
-        hasFocusAction: true,
-      ),
+    final selectedSemantics = tester.getSemantics(
+      find.byKey(const ValueKey('cell-0-2')),
     );
+    expect(
+      selectedSemantics.label,
+      'Row 1, column C, region ${puzzle.regionAt(const Cell(0, 2)) + 1}',
+    );
+    expect(
+      selectedSemantics.value,
+      'empty, hint says place a crown here, selected',
+    );
+    expect(selectedSemantics.hasFlag(ui.SemanticsFlag.isButton), isTrue);
+    expect(selectedSemantics.hasFlag(ui.SemanticsFlag.isSelected), isTrue);
+    expect(selectedSemantics.hasFlag(ui.SemanticsFlag.isFocusable), isTrue);
+    final selectedData = selectedSemantics.getSemanticsData();
+    expect(selectedData.hasAction(ui.SemanticsAction.tap), isTrue);
+    expect(selectedData.hasAction(ui.SemanticsAction.focus), isTrue);
     expect(
       find.descendant(
         of: find.byType(RegaliaBoard),

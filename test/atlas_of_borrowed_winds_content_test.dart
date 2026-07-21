@@ -25,7 +25,7 @@ void main() {
   );
 
   test(
-    'web exposes the Atlas preview without reading its full package',
+    'web loads the complete Atlas package and keeps its authored prologue',
     () async {
       final reads = <String>[];
       final registry = await repository(reads: reads).load(
@@ -34,8 +34,8 @@ void main() {
       );
       final availability = registry.availabilityFor(atlasArc);
 
-      expect(availability.status, ContentAvailabilityStatus.notInEdition);
-      expect(availability.arc, isNull);
+      expect(availability.status, ContentAvailabilityStatus.available);
+      expect(availability.arc, isNotNull);
       expect(availability.storefront, isNotNull);
       expect(availability.storefront!.title, 'The Atlas of Borrowed Winds');
       expect(availability.storefront!.prologuePreview.frames, hasLength(3));
@@ -53,7 +53,7 @@ void main() {
         ),
         orderedEquals([2, 2, 3]),
       );
-      expect(reads.where((path) => path.startsWith(atlasPackage)), isEmpty);
+      expect(reads.where((path) => path.startsWith(atlasPackage)), isNotEmpty);
     },
   );
 

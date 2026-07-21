@@ -1,0 +1,233 @@
+{
+  "slug": "where-the-rain-trees-walk",
+  "title": "Where the Rain Trees Walk",
+  "tagline": "A roof-mender discovers that storms are grown by an ancient forest walking beneath the earth.",
+  "environment": "forest",
+  "seed": 31002,
+  "theme": {
+    "brightness": "light",
+    "backgroundColor": "#F3E7C7",
+    "surfaceColor": "#FFF7E1",
+    "surfaceLowColor": "#E5D4AA",
+    "surfaceHighColor": "#F9ECCE",
+    "surfaceContainerHighColor": "#FFFBEE",
+    "foregroundColor": "#20352E",
+    "mutedForegroundColor": "#4E5D53",
+    "outlineColor": "#5D695F",
+    "outlineVariantColor": "#77715B",
+    "inkColor": "#14261F",
+    "dangerColor": "#8A2F3B"
+  },
+  "storefront": {
+    "tileSubtitle": "Follow the roots to rain",
+    "keyArtPrompt": "Luminous ecological fantasy key art, no text: practical young roof-mender Mara Tavi kneels beside a colossal celadon root breaking through ochre village terraces, one hand listening to the timber; beneath a moss-covered aqueduct an ancient forest of walking rain trees glows with pearl-gray clouds, glass-winged pollinators, luminous fungi, handmade wind wheels and tiny human figures, warm humane wonder, painterly cinematic depth, family adventure composition.",
+    "prologueFrames": [
+      {
+        "id": "the-dry-thunder",
+        "title": "Thunder Without Rain",
+        "paragraphs": [
+          "Drought has tightened every roof beam in Mara Tavi's terraced village, but the great aqueduct still delivers its measured trickle. Then thunder shakes a clear sky, and a living root splits the village square from below.",
+          "Mara feels a rhythm moving through the broken timber, too deliberate to be an earthquake. It points toward the dry mountains and the oldest foundations of the waterway."
+        ],
+        "semanticLabel": "Mara listens to a vast green root rising through an ochre village square beneath a cloudless sky.",
+        "actionLabel": "Listen to the root"
+      },
+      {
+        "id": "a-song-beneath-stone",
+        "title": "A Song Beneath Stone",
+        "paragraphs": [
+          "Elderly beekeeper Orra Fen recognizes the rhythm as half of a migration song her hives once followed. The missing notes have not been heard since the aqueduct crossed the valley.",
+          "Iven Rusk, the proud young engineer responsible for the waterway, insists its foundations cannot move. Yet the cracks under Mara's hands say something enormous has been waiting beneath them."
+        ],
+        "semanticLabel": "Orra raises a wooden resonator beside Mara and Iven while bees circle mossy aqueduct arches.",
+        "actionLabel": "Recover the song"
+      },
+      {
+        "id": "the-forest-below",
+        "title": "The Forest Below",
+        "paragraphs": [
+          "Mara repairs the old wind resonators, and their answer opens a sealed stair under the aqueduct. Cool air rises carrying the scent of wet leaves into a valley that has almost forgotten rain.",
+          "She asks Iven to descend with her and Orra. Saving the waterway will mean learning what it has silenced—and listening before the last underground storm dies."
+        ],
+        "semanticLabel": "A stone stair opens beneath the aqueduct, revealing green light, mist, and immense roots far underground.",
+        "actionLabel": "Enter the rootway"
+      }
+    ]
+  },
+  "chapters": [
+    {
+      "slug": "roots-in-the-square",
+      "title": "Roots in the Square",
+      "caption": "Mara follows a living rhythm through the damage left by a rainless storm.",
+      "paragraphs": [
+        "Mara braces the cracked roofs, then maps the root's pulse from beam to beam across the village. Its movement is not an attack but a trapped creature searching for the path it once knew.",
+        "Fear and dry thunder shape the root tip into the Rootquake Hart, which bucks beneath the square whenever the villagers pull against it. Mara must ease each brace in sequence and guide the frightened manifestation toward open ground."
+      ],
+      "semanticLabel": "Mara steadies timber braces around a great root shaped like an antlered hart beneath the village square.",
+      "actionLabel": "Settle the root",
+      "primaryColor": "#1F6654",
+      "secondaryColor": "#714017",
+      "boss": {
+        "slug": "rootquake-hart",
+        "name": "Rootquake Hart",
+        "family": "antlered",
+        "moveName": "Gentle Footing"
+      }
+    },
+    {
+      "slug": "forgotten-song",
+      "title": "The Forgotten Song",
+      "caption": "Orra's broken melody reveals the entrance the valley chose to forget.",
+      "paragraphs": [
+        "Orra remembers the migration song in fragments, each tied to a hive or wind wheel that no longer stands. Mara rebuilds the resonators while Iven aligns them with channels hidden inside the aqueduct stones.",
+        "Years of silence gather around the final missing note as the Echo Shepherd, a spectral keeper that sends every sound back incomplete. Orra must trust Mara to carry the melody forward when her own voice falters."
+      ],
+      "semanticLabel": "Orra and Mara face a translucent shepherd of swirling leaves among repaired wooden wind resonators.",
+      "actionLabel": "Complete the refrain",
+      "primaryColor": "#345F30",
+      "secondaryColor": "#654073",
+      "boss": {
+        "slug": "echo-shepherd",
+        "name": "Echo Shepherd",
+        "family": "spectral",
+        "moveName": "Remembered Measure"
+      }
+    },
+    {
+      "slug": "under-the-waterway",
+      "title": "Under the Waterway",
+      "caption": "Mara and Iven balance gates that were built for water but now hold back a forest.",
+      "paragraphs": [
+        "The recovered song opens passages sealed since the aqueduct's construction. Mara hears roots pressing against one wall while Iven calculates how to release each gate without collapsing the water supply above them.",
+        "The original control system wakes as the Gatehouse Automaton, a clockwork warden that recognizes water pressure but not living roots. They must teach its rigid sequence a new balance before the corridor floods."
+      ],
+      "semanticLabel": "Mara and Iven adjust ancient water gates while a mossy brass automaton turns enormous valves underground.",
+      "actionLabel": "Balance the gates",
+      "primaryColor": "#2C5778",
+      "secondaryColor": "#744010",
+      "boss": {
+        "slug": "gatehouse-automaton",
+        "name": "Gatehouse Automaton",
+        "family": "clockwork",
+        "moveName": "Living Balance"
+      }
+    },
+    {
+      "slug": "cloud-garden",
+      "title": "The Cloud Garden",
+      "caption": "A stalled underground forest waits for its pollinators to bring the rain cycle home.",
+      "paragraphs": [
+        "Beyond the gates, walking trees cradle pearl-gray clouds inside immense root chambers. Their glass-winged pollinators are alive but scattered, unable to cross the broken warm-air paths that once joined flower to flower.",
+        "Confused flight lines harden into the Shardwing Murmuration, a dazzling flock that drives every pollinator away from the cloud blooms. Mara repairs the thermal wheels while Orra guides the swarm into its old living pattern."
+      ],
+      "semanticLabel": "Glass-winged insects spiral around luminous cloud blossoms as Mara repairs a mossy wind wheel.",
+      "actionLabel": "Mend the flight paths",
+      "primaryColor": "#17615C",
+      "secondaryColor": "#67416F",
+      "boss": {
+        "slug": "shardwing-murmuration",
+        "name": "Shardwing Murmuration",
+        "family": "winged",
+        "moveName": "Pollinator's Return"
+      }
+    },
+    {
+      "slug": "stone-barrier",
+      "title": "The Stone Barrier",
+      "caption": "Iven learns that saving his aqueduct requires opening the monument he built to endure.",
+      "paragraphs": [
+        "The waking forest reaches the aqueduct and stops. Iven discovers that its celebrated kiln-fired foundation lies directly across the seasonal migration route, and opening a passage will interrupt the valley's carefully controlled water.",
+        "Heat trapped in the foundation rises as the Kilnstone Titan, a volcanic guardian formed from Iven's certainty that strong work must never change. He and Mara must cool, brace, and reshape the structure without pretending it can remain untouched."
+      ],
+      "semanticLabel": "Mara and Iven confront a glowing stone titan emerging from the baked foundations of the aqueduct.",
+      "actionLabel": "Open the foundation",
+      "primaryColor": "#70401E",
+      "secondaryColor": "#245F4B",
+      "boss": {
+        "slug": "kilnstone-titan",
+        "name": "Kilnstone Titan",
+        "family": "volcanic",
+        "moveName": "Foundation Passage"
+      }
+    },
+    {
+      "slug": "captive-tree",
+      "title": "The Captive Tree",
+      "caption": "Commissioner Senn takes the last rain tree toward the capital in the name of survival.",
+      "paragraphs": [
+        "Commissioner Senn diverts the final rain tree into a deep holding basin, convinced that one captive source can guarantee water for the greatest number. Mara follows its distress through severed roots while Iven sees his own old logic magnified in Senn's plan.",
+        "The capture basin drinks without filling and becomes the Bottomless Cistern, an abyssal hunger that pulls cloud, root, and river into itself. Mara reconnects the tree's buried signals so every threatened watershed can answer its call."
+      ],
+      "semanticLabel": "A walking rain tree strains above a black bottomless cistern while green root signals spread through the earth.",
+      "actionLabel": "Answer the captive tree",
+      "primaryColor": "#73333D",
+      "secondaryColor": "#31566D",
+      "boss": {
+        "slug": "bottomless-cistern",
+        "name": "Bottomless Cistern",
+        "family": "abyssal",
+        "moveName": "Watershed Answer"
+      }
+    },
+    {
+      "slug": "living-channel",
+      "title": "A Living Channel",
+      "caption": "The valley rebuilds its waterworks as a corridor shared with the migrating forest.",
+      "paragraphs": [
+        "As the wider watershed fails, Mara asks the villages to stop defending an aqueduct that can only preserve one shrinking season. Together they reshape terraces, gates, and bridges into a route where water and roots can move side by side.",
+        "Discarded masonry and cut roots bind into the Oldcourse Colossus, a rootbound monument to every shortcut the valley took around living change. The community dismantles it piece by piece, reusing each stone in the new channel."
+      ],
+      "semanticLabel": "Villagers transform a tangled colossus of roots and old masonry into bridges along a green migration corridor.",
+      "actionLabel": "Build the living channel",
+      "primaryColor": "#245C45",
+      "secondaryColor": "#653E22",
+      "boss": {
+        "slug": "oldcourse-colossus",
+        "name": "Oldcourse Colossus",
+        "family": "rootbound",
+        "moveName": "Shared Course"
+      }
+    },
+    {
+      "slug": "when-the-trees-return",
+      "title": "When the Trees Return",
+      "caption": "Song, engineering, and community must move the forest before its final storm fades.",
+      "paragraphs": [
+        "The corridor opens, but the exhausted trees no longer remember how to begin their migration. Mara tunes the structures, Iven releases the gates, and Orra invites the whole valley to carry the song she once guarded alone.",
+        "The forest's unspent weather blooms overhead as the Rainstar Canopy, a cosmic tangle of lightning and luminous seed paths. By opening every channel in sequence, the valley turns that dangerous pressure into rain and gives the trees a road home."
+      ],
+      "semanticLabel": "Walking trees cross the opened valley beneath a vast canopy of stars, seeds, lightning, and newborn rain.",
+      "actionLabel": "Sing the forest home",
+      "primaryColor": "#255A6E",
+      "secondaryColor": "#684064",
+      "boss": {
+        "slug": "rainstar-canopy",
+        "name": "Rainstar Canopy",
+        "family": "cosmic",
+        "moveName": "Migration Chorus"
+      }
+    }
+  ],
+  "finaleFrames": [
+    {
+      "id": "rain-on-every-roof",
+      "title": "Rain on Every Roof",
+      "paragraphs": [
+        "The rain trees walk beyond the valley, and storms return to watersheds that had begun to disappear. In Mara's village, water drums on repaired roofs while children follow glass-winged pollinators through the square.",
+        "Senn releases control of the holding basin and helps convert it into a resting garden along the route. Iven keeps one cracked aqueduct stone above his desk as a promise that good work must remain able to change."
+      ],
+      "semanticLabel": "Warm rain falls on ochre rooftops as glass-winged pollinators and children cross a green village square.",
+      "actionLabel": "Welcome the rain"
+    },
+    {
+      "id": "the-next-migration",
+      "title": "The Next Migration",
+      "paragraphs": [
+        "Orra teaches the full migration song in the open, adding every new verse the travelers bring back. The aqueduct and the forest now share a calendar shaped by observation instead of ownership.",
+        "Mara shoulders her roof-mender's tools and follows a young root toward the next dry valley. Far below, an ancient tree takes one patient step, and a cloud begins to glow."
+      ],
+      "semanticLabel": "Mara walks beside a young green root toward distant terraces while a luminous rain tree moves beneath the hills.",
+      "actionLabel": "Follow the next root"
+    }
+  ]
+}

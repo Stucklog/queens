@@ -17,9 +17,8 @@ jobs:
       - run: dart format --output=none --set-exit-if-changed lib test tool
       - run: flutter analyze
       - run: flutter test --exclude-tags=golden
-      - run: flutter test --platform chrome test/current_release_channel_test.dart
-      - run: dart run tool/generate_puzzles.dart validate
-      - run: dart run tool/generate_puzzles.dart validate --catalog assets/content/arcs/atlas-of-borrowed-winds/catalog.json
+      - run: flutter test --platform chrome --no-test-assets test/current_release_channel_test.dart
+      - run: dart run tool/generate_puzzles.dart validate-all
       - run: dart run tool/verify_crown_art.dart
       - run: dart run tool/verify_offline.dart
 

@@ -1,0 +1,233 @@
+{
+  "slug": "oathstorm-fleet",
+  "title": "The Oathstorm Fleet",
+  "tagline": "Where vows become weather, a shipwright must break a dead king's promise before it freezes the sea forever.",
+  "environment": "ice",
+  "seed": 31003,
+  "theme": {
+    "brightness": "dark",
+    "backgroundColor": "#101A26",
+    "surfaceColor": "#1A2B39",
+    "surfaceLowColor": "#14232F",
+    "surfaceHighColor": "#243746",
+    "surfaceContainerHighColor": "#2D4352",
+    "foregroundColor": "#F6F2E7",
+    "mutedForegroundColor": "#C7D0D2",
+    "outlineColor": "#A9B7BD",
+    "outlineVariantColor": "#7892A0",
+    "inkColor": "#07101A",
+    "dangerColor": "#FF8177"
+  },
+  "storefront": {
+    "tileSubtitle": "Rewrite the frozen sea",
+    "keyArtPrompt": "Rugged mythic seafaring fantasy key art, no text: shipwright Yrsa Vale stands at the carved prow of a black ashwood longship cutting through rune-cracked white ice, red wool cloak in the wind and chisel in hand; rival clan ships follow beneath immense teal aurora roads while frozen whales and a supernatural storm loom beyond slate fjords, ember-lit halls on the shore, iron fittings, bold cinematic scale, defiant human warmth against severe winter.",
+    "prologueFrames": [
+      {
+        "id": "the-kings-last-fire",
+        "title": "The King's Last Fire",
+        "paragraphs": [
+          "The island clans gather around a dead king's pyre while enemy sails wait beyond the harbor. Grief sharpens into one shared vow: no enemy will ever cross these waters again.",
+          "Shipwright Yrsa Vale hears the dangerous absence in those words, but her warning comes too late. The promise climbs into the sky, and the first snow falls through the funeral smoke."
+        ],
+        "semanticLabel": "Clan leaders swear beside a king's burning ship as snow begins beneath a green aurora.",
+        "actionLabel": "Hear the vow"
+      },
+      {
+        "id": "when-the-sea-answered",
+        "title": "When the Sea Answered",
+        "paragraphs": [
+          "By dawn, the harbor is glass. Ships, exiles, migrating whales, Yrsa's missing kin, and even the spring currents are trapped beyond a wall of rune-cracked ice.",
+          "Jarl Veyra calls the frozen border a victory and orders the clans to endure. Yrsa knows endurance will become a tomb unless someone can change a promise spoken by thousands."
+        ],
+        "semanticLabel": "A black harbor is frozen solid while ships and whales wait beyond a towering wall of inscribed ice.",
+        "actionLabel": "Face the frozen sea"
+      },
+      {
+        "id": "the-keel-that-can-amend",
+        "title": "The Keel That Can Amend",
+        "paragraphs": [
+          "Hidden in Yrsa's workshop is an unfinished longship whose carved keel can amend an oath without erasing who first spoke it. To launch her, Yrsa must reopen the promise she once broke and has never confessed.",
+          "Skald Toren Ash-Hand arrives able to read the legal shape of weather in the aurora. Together they will gather rival crews, find the heart of the oathstorm, and carve a safer meaning into the sea."
+        ],
+        "semanticLabel": "Yrsa and Toren stand over a longship keel carved with glowing unfinished clauses inside an ember-lit workshop.",
+        "actionLabel": "Launch the oathship"
+      }
+    ]
+  },
+  "chapters": [
+    {
+      "slug": "harbor-of-glass",
+      "title": "Harbor of Glass",
+      "caption": "Yrsa reads the newborn ice to find a path toward the people stranded beyond it.",
+      "paragraphs": [
+        "The funeral vow freezes faster than axes can break it, and every careless step opens a black crack beneath the rescue crews. Yrsa reads the stress lines like timber grain, marking the only route strong enough to bear a ship.",
+        "The oath raises its first border as the Rimehorn Warden, an antlered mass of harbor ice that charges wherever the clans name an enemy. Yrsa must redirect each fracture without letting fear decide who belongs outside."
+      ],
+      "semanticLabel": "Yrsa marks a safe path across glassy harbor ice while a towering horned ice warden blocks the ships.",
+      "actionLabel": "Chart the glass",
+      "primaryColor": "#8DDBE8",
+      "secondaryColor": "#FFB36B",
+      "boss": {
+        "slug": "rimehorn-warden",
+        "name": "Rimehorn Warden",
+        "family": "antlered",
+        "moveName": "Harbor Split"
+      }
+    },
+    {
+      "slug": "amendable-keel",
+      "title": "The Amendable Keel",
+      "caption": "An unfinished longship can cross the ice only after Yrsa makes room for a broken promise.",
+      "paragraphs": [
+        "Yrsa and Toren arrange the keel's unfinished clauses around the oath Yrsa refuses to name, loosening the ship from its frozen cradle. Young Kell Rime boards carrying several clans' competing promises of protection and none of their trust.",
+        "The rejected clauses twist ashwood and frozen roots into the Clausewood Jotun, which grips the keel whenever Yrsa tries to hide her past. She cannot destroy it; she must carve an honest opening through what remains unfinished."
+      ],
+      "semanticLabel": "A giant of carved ashwood clauses grips Yrsa's longship while Kell and Toren defend the glowing keel.",
+      "actionLabel": "Amend the keel",
+      "primaryColor": "#F2C879",
+      "secondaryColor": "#7FE0D0",
+      "boss": {
+        "slug": "clausewood-jotun",
+        "name": "Clausewood Jotun",
+        "family": "rootbound",
+        "moveName": "Amending Stroke"
+      }
+    },
+    {
+      "slug": "captains-at-cross-purposes",
+      "title": "Captains at Cross-Purposes",
+      "caption": "Rival crews need a charter strong enough to hold without making them one clan.",
+      "paragraphs": [
+        "Captains join Yrsa for rescue, vengeance, trade, and glory, then nearly wreck the expedition arguing over who commands it. With Toren's help, Yrsa fits their incompatible pledges into a temporary charter that preserves every crew's right to leave.",
+        "Boasts and battle banners take wing as the Banner-Raven Parliament, a shrieking flock that repeats each captain's demand until no one can hear another. Kell finds the one shared duty that can quiet the flock without crowning a leader."
+      ],
+      "semanticLabel": "Rival longships surround a storm of red banners shaped like ravens while Kell stands between their captains.",
+      "actionLabel": "Bind the free crews",
+      "primaryColor": "#FF9898",
+      "secondaryColor": "#80D8F0",
+      "boss": {
+        "slug": "banner-raven-parliament",
+        "name": "Banner-Raven Parliament",
+        "family": "winged",
+        "moveName": "Many-Captain Charter"
+      }
+    },
+    {
+      "slug": "names-beneath-ice",
+      "title": "Names Beneath Ice",
+      "caption": "The fleet discovers that the vow has mistaken every returning life for an enemy.",
+      "paragraphs": [
+        "Beyond the wall, the crews find exiles, whales, and the first spring current sealed in blue ice. Toren reads the aurora's definitions and learns that the oath classifies anything crossing toward home as an invader.",
+        "The names denied safe return sink together into the Deepname Leviathan, an abyssal shape moving under every ship. Yrsa must speak those names back into the charter while the fleet steers across its dark wake."
+      ],
+      "semanticLabel": "A vast shadow swims beneath ice holding whales and human silhouettes as names glow in the aurora above.",
+      "actionLabel": "Name those returning",
+      "primaryColor": "#78D5E8",
+      "secondaryColor": "#F3C66D",
+      "boss": {
+        "slug": "deepname-leviathan",
+        "name": "Deepname Leviathan",
+        "family": "abyssal",
+        "moveName": "Homeward Naming"
+      }
+    },
+    {
+      "slug": "hostages-harbor",
+      "title": "The Hostage's Harbor",
+      "caption": "Kell challenges every clan that calls possession a form of protection.",
+      "paragraphs": [
+        "Jarl Veyra blocks the fleet at her fortress harbor and demands that Kell remain under her protection. Kell lays the clans' overlapping claims side by side, proving that none can possess the person they all swore to keep safe.",
+        "Veyra's hearth-oaths erupt from the fortress as the Hearthlaw Giant, a volcanic guardian that offers warmth only inside locked walls. Kell opens the gates from within while Yrsa turns the giant's fire toward thawing a public harbor."
+      ],
+      "semanticLabel": "Kell opens an iron harbor gate as a giant of hearth fire and black stone rises above Jarl Veyra's fortress.",
+      "actionLabel": "Open the hostage harbor",
+      "primaryColor": "#FFAC72",
+      "secondaryColor": "#92D9D0",
+      "boss": {
+        "slug": "hearthlaw-giant",
+        "name": "Hearthlaw Giant",
+        "family": "volcanic",
+        "moveName": "Unbarred Hearth"
+      }
+    },
+    {
+      "slug": "current-on-trial",
+      "title": "The Current on Trial",
+      "caption": "The oath demands a definition of safe passage that does not leave the islands defenseless.",
+      "paragraphs": [
+        "At the storm's threshold, the vow puts each approaching vessel and natural current on trial. The crews must distinguish passage from invasion while admitting that no rule can remove every risk from an open sea.",
+        "The storm assembles their rigid precedents into the Verdict Wheel, a clockwork tribunal that freezes every answer into permanent law. Yrsa and Toren make room for consent, review, and change before its final ring closes."
+      ],
+      "semanticLabel": "Concentric iron and ice rings judge ships and spring currents beneath a courtroom-shaped aurora.",
+      "actionLabel": "Revise the verdict",
+      "primaryColor": "#A7C7FF",
+      "secondaryColor": "#FFD27D",
+      "boss": {
+        "slug": "verdict-wheel",
+        "name": "Verdict Wheel",
+        "family": "clockwork",
+        "moveName": "Law in Motion"
+      }
+    },
+    {
+      "slug": "heart-of-the-oathstorm",
+      "title": "Heart of the Oathstorm",
+      "caption": "Every captain must surrender an absolute promise before the fleet can reach the storm's heart.",
+      "paragraphs": [
+        "Inside the frozen tempest, each captain confronts the vow that brought them aboard and concedes the harm hidden inside it. Yrsa fits their revisions into one mutual promise, but the keel still waits for the truth she withheld.",
+        "The king's funeral voice emerges as the Dead King's Word, a spectral command sustained by generations afraid that amendment means betrayal. Yrsa admits whom her own broken oath once hurt, and her confession gives the fleet permission to change."
+      ],
+      "semanticLabel": "Yrsa faces a spectral king formed from snow and spoken runes while rival captains surround the glowing keel.",
+      "actionLabel": "Answer the dead king",
+      "primaryColor": "#CFB5FF",
+      "secondaryColor": "#77DFC8",
+      "boss": {
+        "slug": "dead-kings-word",
+        "name": "Dead King's Word",
+        "family": "spectral",
+        "moveName": "Truth in the Keel"
+      }
+    },
+    {
+      "slug": "aurora-roads",
+      "title": "Aurora Roads",
+      "caption": "The clans speak a mutual vow while Yrsa carves its changing paths into the sea.",
+      "paragraphs": [
+        "Captains, exiles, and islanders speak the new vow across the fleet: they will defend one another's passage and revisit the promise whenever safety becomes possession. Yrsa carves each concession into the keel, thawing roads that shift with need and consent.",
+        "The last absolute clauses coil across the sky as the Aurora Worldcoil, a cosmic serpent tightening every road toward permanent winter. The fleet carries the new words from ship to ship until the coil opens into paths of living light."
+      ],
+      "semanticLabel": "A luminous serpent of aurora circles the fleet as black ships carve branching teal roads through the thawing sea.",
+      "actionLabel": "Open the aurora roads",
+      "primaryColor": "#82E9E3",
+      "secondaryColor": "#FFCA7A",
+      "boss": {
+        "slug": "aurora-worldcoil",
+        "name": "Aurora Worldcoil",
+        "family": "cosmic",
+        "moveName": "Roads of Thaw"
+      }
+    }
+  ],
+  "finaleFrames": [
+    {
+      "id": "the-homeward-sea",
+      "title": "The Homeward Sea",
+      "paragraphs": [
+        "Spring currents move through the islands again, carrying whales, exiles, traders, and Yrsa's missing kin toward open harbors. The fleet guides them between aurora markers that bend instead of becoming walls.",
+        "Veyra lowers her fortress chains and joins the first harbor council beside Kell. Protection will now be a duty offered to people, not a claim made over them."
+      ],
+      "semanticLabel": "Whales and longships travel together through a thawed slate sea beneath branching teal aurora paths.",
+      "actionLabel": "Guide them home"
+    },
+    {
+      "id": "promises-that-live",
+      "title": "Promises That Live",
+      "paragraphs": [
+        "Toren records the amended vow with space around every clause for future hands. At the next royal funeral, the clans honor their dead without asking winter to keep the world unchanged.",
+        "Yrsa returns to her workshop, where the oathship's keel bears scars from every revision. She leaves them visible, then begins another vessel built to cross whatever the sea becomes."
+      ],
+      "semanticLabel": "Yrsa shapes a new ashwood keel in a bright workshop while the amended ship rests on an open shore.",
+      "actionLabel": "Sail the changed sea"
+    }
+  ]
+}

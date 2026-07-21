@@ -2,10 +2,10 @@
 
 Queen’s Regalia treats every story arc as an independently loadable content
 package. The common manifest is also a lightweight storefront catalog. The
-web/GitHub Pages edition loads the origin package, the system Academy, and
-“Just Puzzle!”, while retaining manifest-only previews of arcs that are
-available in the installed apps. It must not deploy those arcs’ complete
-metadata, catalogs, or gameplay art.
+current web/GitHub Pages and installed editions load the complete Origin arc
+and all ten portfolio arcs alongside the system Academy and “Just Puzzle!”.
+Every current story descriptor lists both shipping channels, so its complete
+metadata, catalog, and gameplay art belong in both release families.
 
 The iOS, Android, macOS, Windows, and Linux editions are one-time-purchase apps,
 not containers for per-arc in-app purchases. Every ordinary native build loads
@@ -57,9 +57,10 @@ the arc, not chapter positions or display labels.
 4. Add arc-specific art/assets under edition-aware paths. Every runtime content
    read uses Flutter’s bundled asset system; remote metadata, downloadable
    catalogs, and runtime art downloads are unsupported. Declare the complete
-   package in the canonical asset list and mark its full-only roots
-   `# web-excluded`. Declare the lightweight storefront and preview assets in
-   the web build as well.
+   package in the canonical asset list. If a future descriptor omits the `web`
+   channel, mark its full-package roots `# web-excluded`; declare its lightweight
+   storefront assets on web only when it is available there or has a web locked
+   preview.
 5. Add a descriptor to `assets/content/manifest.json`. An installed-app-only arc uses
    `"channels": ["paidPlatform"]` and can opt into a locked web tile with
    `"lockedPreviewChannels": ["web"]`. Its descriptor remains in the common
@@ -198,9 +199,13 @@ six-digit `#RRGGBB`. A partial object inherits omitted values from midnight.
 Every chapter still requires `primaryColor` and `secondaryColor` for its route,
 landscape, and combat accents. Its optional `theme` uses the same keys and
 partially overrides the resolved arc theme. Keep text/background contrast
-accessible after both levels have been merged. The four-color storefront theme
-is a separate lightweight schema: it is expanded into a complete preview UI
-theme without loading the arc metadata.
+accessible after both levels have been merged. `inkColor` must remain a dark
+shadow/scrim color, and `outlineVariantColor` needs at least 3:1 contrast
+against every authored surface because it carries dividers, disabled icons,
+and list borders. Snackbar and tooltip text automatically choose a readable
+foreground over `inkColor`. The four-color storefront theme is a separate
+lightweight schema: it is expanded into a complete preview UI theme without
+loading the arc metadata.
 
 ### Journey map layout
 
@@ -458,10 +463,10 @@ composition are covered by animation and golden tests.
 
 `ContentEntitlementPolicy` is the storefront-neutral boundary. Shipping
 policies admit and grant every descriptor that lists the active release
-channel. The current manifest lists only Origin on `web`, while a future
-manifest can make another arc available there without a Dart change. The
-bundled Academy is system content shared by both editions rather than an arc
-entitlement.
+channel. The current manifest lists Origin and all ten portfolio arcs on both
+`web` and `paidPlatform`; a future manifest can restrict an arc without a Dart
+change. The bundled Academy is system content shared by both editions rather
+than an arc entitlement.
 
 Paid-platform policy represents ownership of the one-time-purchase app itself.
 It admits every descriptor with the `paidPlatform` channel and treats every
@@ -587,19 +592,23 @@ download-on-demand package fallback.
 
 This runtime short-circuit is necessary but is not a packaging filter. Flutter
 copies declared assets into the web output whether or not Dart code reads them.
-Keep installed-app-only package files out of the web build’s asset declarations; merely
-using `"channels": ["paidPlatform"]` or omitting an arc from the manifest does
-not remove a declared file from `build/web`. A directory entry in
-`pubspec.yaml` includes its direct children, not arbitrary nested directories,
-so explicitly declare every nested preview-art directory that web needs.
+The current manifest gives every story the `web` channel, so every complete
+package is intentionally part of `build/web`. For a future installed-app-only
+package, merely using `"channels": ["paidPlatform"]` or omitting an arc from
+the manifest does not remove a declared file from the build; its package roots
+must also be excluded during web staging. A directory entry in `pubspec.yaml`
+includes its direct children, not arbitrary nested directories, so explicitly
+declare each package, background, character, opponent, and storefront directory
+needed by an edition.
 
 The web build must contain and list for service-worker offline availability:
 
 - the common manifest and every arc descriptor;
-- the complete origin metadata, catalog, and gameplay assets;
-- every descriptor’s `tileArtAsset`, optional `tileForegroundAsset`, and every
-  `assets/...` reference inside `prologuePreview`, including app-only locked
-  previews;
+- the complete metadata, catalog, and gameplay assets for every descriptor with
+  the `web` channel;
+- the `tileArtAsset`, optional `tileForegroundAsset`, and every `assets/...`
+  reference inside `prologuePreview` for descriptors that are available on web
+  or list `web` in `lockedPreviewChannels`;
 - the system Academy, tutorial, Just Puzzle, font, and shared runtime assets.
 
 For a descriptor without the `web` channel, its `metadataAsset` and assets used
@@ -609,23 +618,29 @@ custom scene art, and opponent sprites. An asset shared by a web arc or
 explicitly referenced by the descriptor’s lightweight storefront preview is
 allowed. Keep storefront assets in an intentionally web-declared path and full
 story content in separate, web-excluded paths so this distinction stays
-reviewable.
+reviewable. A descriptor with neither web availability nor a web locked preview
+must keep its storefront-only art out of the staged web asset declarations too.
 
 The checked-in `pubspec.yaml` is the complete native source of truth. Assets
-used by every edition have ordinary scalar declarations. Full story roots that
-web can never use carry a `# web-excluded` marker:
+used by every current edition have ordinary scalar declarations, and the
+current full-portfolio release has no `# web-excluded` roots. If a future story
+does not list the `web` channel, mark each root used only by its full package:
 
 ```yaml
-- assets/storefront/atlas-of-borrowed-winds/
-- assets/content/arcs/atlas-of-borrowed-winds/ # web-excluded
-- assets/art/arcs/atlas-of-borrowed-winds/backgrounds/ # web-excluded
-- assets/art/arcs/atlas-of-borrowed-winds/combat/opponents/ # web-excluded
+- assets/storefront/moon-court/
+- assets/content/arcs/moon-court/ # web-excluded
+- assets/art/arcs/moon-court/backgrounds/ # web-excluded
+- assets/art/arcs/moon-court/combat/opponents/ # web-excluded
 ```
+
+The storefront root remains unmarked in that example because Moon Court has a
+web locked preview. Mark it as excluded too if neither `channels` nor
+`lockedPreviewChannels` contains `web`.
 
 Do not add `default-flavor` or a paid Flutter flavor. Native builds run directly
 from the checked-in source, so iOS and every other installed target receive all
-stories automatically. To keep the GitHub Pages deployment small, materialize
-an isolated temporary web workspace:
+`paidPlatform` stories automatically. Materialize an isolated temporary web
+workspace even when every current story is web-enabled:
 
 ```sh
 web_stage=/absolute/path/to/an/empty/staging-directory
@@ -638,8 +653,10 @@ dart run tool/verify_offline.dart --web-source --web-build build/web
 ```
 
 The staging tool refuses a directory inside the repository and refuses to
-overwrite a non-empty directory. It copies neither `.git`, `.dart_tool`, nor
-`build`, then removes marked asset declarations from the staged pubspec. This
+overwrite a non-empty directory. It copies neither `.git`, `.dart_tool`,
+`build`, nor `tmp`, then removes any marked asset declarations from the staged
+pubspec.
+Removing zero declarations is valid for the current all-web portfolio. This
 workspace is a disposable CI/build artifact, not a separately maintained Git
 branch or app edition. Never build a native target from it; the verifier rejects
 combining `--web-source` with `--native-build`.
@@ -651,13 +668,13 @@ For every release:
    represented object changed.
 2. Validate the common manifest and both store URLs. Confirm every referenced
    asset exists and is declared in each intended edition’s Flutter asset list.
-3. For web, keep the origin descriptor eligible for `web`. Keep each app-only
-   descriptor limited to `paidPlatform` and add `web` only to its
-   `lockedPreviewChannels` when a web preview is intended. Keep lightweight
-   preview assets in the manifest and web bundle while excluding full packages.
-   Build and inspect both the generated asset manifest and service-worker
-   resource list; these assets may enter the cache on demand rather than at
-   install time.
+3. For the current release, confirm Origin and all ten portfolio descriptors
+   list `web` and that their full packages are declared in the staged pubspec.
+   For a future app-only descriptor, limit `channels` to `paidPlatform` and add
+   `web` only to `lockedPreviewChannels` when a web preview is intended. Keep
+   that preview art in the web bundle while excluding the full package. Build
+   and inspect both the generated asset manifest and service-worker resource
+   list; these assets may enter the cache on demand rather than at install time.
 4. For native platforms, package every intended `paidPlatform` arc and all of
    its referenced assets. The store’s one-time app purchase unlocks the entire
    app; do not wire per-arc receipts to `grantedEntitlementIds`. Test a fresh
@@ -670,9 +687,9 @@ For every release:
    flutter test --exclude-tags=golden
    flutter test --tags=golden
    flutter test test/atlas_of_borrowed_winds_bundle_test.dart
+   flutter test test/portfolio_story_arcs_test.dart
    dart run tool/generate_puzzles.dart validate
-   dart run tool/generate_puzzles.dart validate \
-     --catalog assets/content/arcs/atlas-of-borrowed-winds/catalog.json
+   dart run tool/generate_puzzles.dart validate-all
    dart run tool/verify_offline.dart
    web_stage="$(mktemp -d)"
    dart run tool/stage_web_edition.dart --output "$web_stage"
@@ -684,9 +701,9 @@ For every release:
 
 6. Smoke-test origin from a fresh save and a migrated legacy save. Separately
    start/resume Just Puzzle with the origin package deliberately unavailable.
-   On web, play every locked prologue and confirm no full story package is read.
-   In a native build, confirm every valid packaged arc is available without a
-   per-arc purchase.
+   On web and in a native build, confirm every current packaged arc is available
+   without a per-arc purchase. If a future release adds a locked web preview,
+   play it and confirm its full story package is never read.
 
 The legacy migration writes all current values before deleting old keys. It
 maps old puzzle, board, scene, challenge, unlock, and save identifiers into the

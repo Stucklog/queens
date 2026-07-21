@@ -39,61 +39,22 @@ class ContentRepository {
                   ArcPackageDescriptor.fromJson(entry! as Map<String, Object?>),
             )
             .toList();
-    final availability = <String, ArcAvailability>{};
+    final arcIds = <String>{};
     for (final descriptor in descriptors) {
-      if (availability.containsKey(descriptor.arcId)) {
+      if (!arcIds.add(descriptor.arcId)) {
         throw FormatException('Duplicate arc package ${descriptor.arcId}');
       }
-      if (!policy.includesArc(descriptor.channels)) {
-        availability[descriptor.arcId] = ArcAvailability(
-          status: ContentAvailabilityStatus.notInEdition,
-          descriptor: descriptor,
-        );
-        continue;
-      }
-      if (!policy.isEntitled(descriptor.entitlementId)) {
-        availability[descriptor.arcId] = ArcAvailability(
-          status: ContentAvailabilityStatus.notEntitled,
-          descriptor: descriptor,
-        );
-        continue;
-      }
-      if (assetExists case final exists?) {
-        if (!await exists(descriptor.metadataAsset)) {
-          availability[descriptor.arcId] = ArcAvailability(
-            status: ContentAvailabilityStatus.missingPackage,
-            descriptor: descriptor,
-            error: StateError(
-              'Content asset not found: ${descriptor.metadataAsset}',
-            ),
-          );
-          continue;
-        }
-      }
-      try {
-        final arc = await _loadArc(descriptor);
-        availability[descriptor.arcId] = ArcAvailability(
-          status: ContentAvailabilityStatus.available,
-          descriptor: descriptor,
-          arc: arc,
-        );
-      } on Object catch (error) {
-        debugPrint(
-          'Content package ${descriptor.arcId} is unavailable: $error',
-        );
-        final missing =
-            error.toString().contains('Unable to load asset') ||
-            error.toString().contains('not found');
-        availability[descriptor.arcId] = ArcAvailability(
-          status:
-              missing
-                  ? ContentAvailabilityStatus.missingPackage
-                  : ContentAvailabilityStatus.invalidPackage,
-          descriptor: descriptor,
-          error: error,
-        );
-      }
     }
+    final availability = Map<String, ArcAvailability>.fromEntries(
+      await Future.wait(
+        descriptors.map(
+          (descriptor) async => MapEntry(
+            descriptor.arcId,
+            await _availabilityFor(descriptor, policy),
+          ),
+        ),
+      ),
+    );
     final storefrontLinks = switch (manifest['storeLinks']) {
       final Map<String, Object?> links => StorefrontLinks.fromJson(links),
       _ => null,
@@ -105,6 +66,56 @@ class ContentRepository {
           policy.isEntitled(ContentIds.justPuzzleEntitlement),
       storefrontLinks: storefrontLinks,
     );
+  }
+
+  Future<ArcAvailability> _availabilityFor(
+    ArcPackageDescriptor descriptor,
+    ContentEntitlementPolicy policy,
+  ) async {
+    if (!policy.includesArc(descriptor.channels)) {
+      return ArcAvailability(
+        status: ContentAvailabilityStatus.notInEdition,
+        descriptor: descriptor,
+      );
+    }
+    if (!policy.isEntitled(descriptor.entitlementId)) {
+      return ArcAvailability(
+        status: ContentAvailabilityStatus.notEntitled,
+        descriptor: descriptor,
+      );
+    }
+    if (assetExists case final exists?) {
+      if (!await exists(descriptor.metadataAsset)) {
+        return ArcAvailability(
+          status: ContentAvailabilityStatus.missingPackage,
+          descriptor: descriptor,
+          error: StateError(
+            'Content asset not found: ${descriptor.metadataAsset}',
+          ),
+        );
+      }
+    }
+    try {
+      final arc = await _loadArc(descriptor);
+      return ArcAvailability(
+        status: ContentAvailabilityStatus.available,
+        descriptor: descriptor,
+        arc: arc,
+      );
+    } on Object catch (error) {
+      debugPrint('Content package ${descriptor.arcId} is unavailable: $error');
+      final missing =
+          error.toString().contains('Unable to load asset') ||
+          error.toString().contains('not found');
+      return ArcAvailability(
+        status:
+            missing
+                ? ContentAvailabilityStatus.missingPackage
+                : ContentAvailabilityStatus.invalidPackage,
+        descriptor: descriptor,
+        error: error,
+      );
+    }
   }
 
   Future<StoryArc> _loadArc(ArcPackageDescriptor descriptor) async {

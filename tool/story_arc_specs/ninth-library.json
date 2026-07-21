@@ -1,0 +1,233 @@
+{
+  "slug": "ninth-library",
+  "title": "The Ninth Library",
+  "tagline": "A scholarship student finds a library where borrowing truth costs a memory.",
+  "environment": "library",
+  "seed": 33001,
+  "theme": {
+    "brightness": "dark",
+    "backgroundColor": "#100D1C",
+    "surfaceColor": "#1A1629",
+    "surfaceLowColor": "#141020",
+    "surfaceHighColor": "#241E36",
+    "surfaceContainerHighColor": "#2C2540",
+    "foregroundColor": "#F7F0E3",
+    "mutedForegroundColor": "#C8BED2",
+    "outlineColor": "#AA9DBA",
+    "outlineVariantColor": "#82758F",
+    "inkColor": "#08060F",
+    "dangerColor": "#FF8FA3"
+  },
+  "storefront": {
+    "tileSubtitle": "Enter the archive beneath accepted truth",
+    "keyArtPrompt": "A cinematic dark-academia fantasy illustration of scholarship student Oriel Marr descending through a glass-floored university library into impossible midnight-violet stacks, guided by a murdered student's living shadow and a red-ink catalog card; oxidized green metalwork, vellum pages, animated marginalia, rain-black courtyards overhead, warm candlelight, elegant mystery, no text, no logos, portrait composition with clear foreground silhouette and deep architectural scale.",
+    "prologueFrames": [
+      {
+        "id": "eight-doors",
+        "title": "Eight Accepted Truths",
+        "paragraphs": [
+          "The city gives every respectable question a door: eight public libraries, eight approved branches of knowledge, and no patience for answers that cross between them.",
+          "Oriel Marr has earned a scholarship behind the grandest door of all, yet on her first rain-dark evening at the university, a classmate named Alis dies before she can share what she found below it."
+        ],
+        "semanticLabel": "Oriel stands beneath eight illuminated library doors while rain darkens the university courtyard.",
+        "actionLabel": "Cross the courtyard"
+      },
+      {
+        "id": "the-card",
+        "title": "A Card Without an Owner",
+        "paragraphs": [
+          "After the memorial, Alis's shadow peels away from a candlelit wall and presses a catalog card into Oriel's hand. It remembers fear, a locked stair, and one name scratched out in red.",
+          "The card fits no catalog in the city, but its call number shifts whenever Oriel looks toward the oldest foundations of the university."
+        ],
+        "semanticLabel": "A living shadow offers Oriel a red-annotated catalog card beside a memorial candle.",
+        "actionLabel": "Follow the call number"
+      },
+      {
+        "id": "below-the-catalog",
+        "title": "The Shelf Beneath the World",
+        "paragraphs": [
+          "Beneath a glass floor, Oriel finds a ninth doorway and shelves receding farther than the university grounds could hold. Every book contains a discovery erased from the world above.",
+          "A brass notice states the lending rule plainly: every truth borrowed here costs a memory of equal emotional weight. Somewhere in the stacks waits the truth of who murdered Alis."
+        ],
+        "semanticLabel": "Impossible library stacks descend beneath a glass floor as red marginalia glows between the shelves.",
+        "actionLabel": "Enter the Ninth Library"
+      }
+    ]
+  },
+  "chapters": [
+    {
+      "slug": "a-card-from-a-shadow",
+      "title": "A Card from a Shadow",
+      "caption": "Open the passage that Alis died to reveal.",
+      "paragraphs": [
+        "Alis's Shadow leads Oriel through closed reading rooms while the catalog card rearranges shelf marks into a route below the university. Oriel must restore the card's broken sequence before the night porter discovers them.",
+        "At the final index, a many-tined sentinel called The Index Hart charges along every false branch of the catalog. Oriel corners it with the one call number the university erased, and the hidden stair opens beneath its hooves."
+      ],
+      "semanticLabel": "Oriel and Alis's Shadow face an antlered index sentinel among tilting shelves and red catalog lights.",
+      "actionLabel": "Open the hidden stair",
+      "primaryColor": "#C96F86",
+      "secondaryColor": "#EAD9B7",
+      "boss": {
+        "slug": "index-hart",
+        "name": "The Index Hart",
+        "family": "antlered",
+        "moveName": "Branching Call Number"
+      }
+    },
+    {
+      "slug": "the-price-of-entry",
+      "title": "The Price of Entry",
+      "caption": "Borrow one truth and surrender what it weighs.",
+      "paragraphs": [
+        "The murder ledger is sealed by the library's balance, so Oriel offers the memory of her mother's farewell at the station. The page opens to reveal that Alis was killed after tracing stolen research to a celebrated university chair.",
+        "The surrendered memory takes root as The Mnemonic Briar, tangling true images with comforting inventions. Oriel cuts a path by recording what she can still prove, but leaves unable to recall why her mother looked proud."
+      ],
+      "semanticLabel": "A glowing memory grows into thorned roots around Oriel and an open forbidden ledger.",
+      "actionLabel": "Carry out the clue",
+      "primaryColor": "#D7B76B",
+      "secondaryColor": "#86D1B8",
+      "boss": {
+        "slug": "mnemonic-briar",
+        "name": "The Mnemonic Briar",
+        "family": "rootbound",
+        "moveName": "Beloved Falsehood"
+      }
+    },
+    {
+      "slug": "the-rival-borrower",
+      "title": "The Rival Borrower",
+      "caption": "Trust the rival who already paid too much.",
+      "paragraphs": [
+        "Matias Quill recognizes the hollow edge around Oriel's lost memory and admits that years of his own life are missing from repeated loans. His private notes connect Alis's clue to a research wing that officially never existed.",
+        "Their search wakes The Paper Roc, a storm of rejected theses trained to shred any unauthorized citation. Matias remembers its pattern from a year he cannot remember living, and Oriel follows his notes to bind its wings without demanding another loan."
+      ],
+      "semanticLabel": "Oriel and Matias shelter beneath flying pages as a vast paper bird circles a forbidden research wing.",
+      "actionLabel": "Enter the erased wing",
+      "primaryColor": "#76C9B4",
+      "secondaryColor": "#E7C77D",
+      "boss": {
+        "slug": "paper-roc",
+        "name": "The Paper Roc",
+        "family": "winged",
+        "moveName": "Peerless Review"
+      }
+    },
+    {
+      "slug": "annotations-in-red",
+      "title": "Annotations in Red",
+      "caption": "Follow the argument moving between erased books.",
+      "paragraphs": [
+        "Animated notes in Alis's hand leap between volumes that were stripped from the eight public collections. Oriel, Matias, and Alis's Shadow reorder the marginalia into a map of suppressed discoveries and the patrons who profited from them.",
+        "The trail ends where The Redaction Maw devours names, dates, and finally the aisles around them. Alis's Shadow steps inside the absence to hold it open while Oriel restores the missing citations in red."
+      ],
+      "semanticLabel": "Red handwritten notes bridge open books above a lightless mouth consuming an aisle of shelves.",
+      "actionLabel": "Restore the citations",
+      "primaryColor": "#E6827D",
+      "secondaryColor": "#9AD9C5",
+      "boss": {
+        "slug": "redaction-maw",
+        "name": "The Redaction Maw",
+        "family": "abyssal",
+        "moveName": "Total Omission"
+      }
+    },
+    {
+      "slug": "what-we-forgot-together",
+      "title": "What We Forgot Together",
+      "caption": "Believe the evidence after the feeling is gone.",
+      "paragraphs": [
+        "A locked testimony demands a memory neither investigator owns alone, and Oriel and Matias sacrifice the night their rivalry became friendship. They emerge with proof that Alis named her killer, yet with every affectionate reason to distrust one another restored to suspicion.",
+        "The lost night ignites into The Cinder Thesis, which burns their shared notes whenever either acts alone. By following the habits their former selves left in the margins, Oriel and Matias quench it together and choose trust as a present action rather than a recovered feeling."
+      ],
+      "semanticLabel": "Oriel and Matias join separated notes across a burning lecture hall while a figure of ember and ash rises.",
+      "actionLabel": "Choose trust again",
+      "primaryColor": "#AE9BE0",
+      "secondaryColor": "#F2C77D",
+      "boss": {
+        "slug": "cinder-thesis",
+        "name": "The Cinder Thesis",
+        "family": "volcanic",
+        "moveName": "Ashen Rebuttal"
+      }
+    },
+    {
+      "slug": "the-prestige-of-silence",
+      "title": "The Prestige of Silence",
+      "caption": "Expose the institution that turns theft into honor.",
+      "paragraphs": [
+        "Alis's murder file opens onto a century of dissent erased, discoveries reassigned, and patrons protected by ceremonial acclaim. Curator Vey argues that the bargains prevented unrest, while Oriel sees how carefully the cost was forced upon people with the least protection.",
+        "The archive's authorship machine becomes The Citation Engine, stamping stolen names beneath portraits of university heroes. Oriel and Matias reverse its proof chain until every prestigious claim points back to the silenced scholar who made it."
+      ],
+      "semanticLabel": "A brass authorship machine stamps false citations beneath grand portraits while Oriel reverses its gears.",
+      "actionLabel": "Trace every stolen name",
+      "primaryColor": "#D4A95F",
+      "secondaryColor": "#8FD4DC",
+      "boss": {
+        "slug": "citation-engine",
+        "name": "The Citation Engine",
+        "family": "clockwork",
+        "moveName": "Manufactured Authority"
+      }
+    },
+    {
+      "slug": "witnesses-beyond-the-stacks",
+      "title": "Witnesses Beyond the Stacks",
+      "caption": "Move the testimony where no single curator can erase it.",
+      "paragraphs": [
+        "Curator Vey seals every exit and offers Oriel one final private audience, insisting that uncontrolled truth will punish innocent people along with the guilty. Instead, the investigators divide Alis's testimony among printers, street teachers, former borrowers, and the living shadows of other victims.",
+        "The Tenure Wraith hunts each messenger by wearing the faces of authorities they once trusted. Alis's Shadow teaches the witnesses to compare what they remember, and their overlapping accounts leave the specter no solitary mind to haunt."
+      ],
+      "semanticLabel": "A chain of witnesses passes luminous pages beyond the stacks while an academic specter changes faces behind them.",
+      "actionLabel": "Send the witnesses outward",
+      "primaryColor": "#86C8D3",
+      "secondaryColor": "#E9B6C4",
+      "boss": {
+        "slug": "tenure-wraith",
+        "name": "The Tenure Wraith",
+        "family": "spectral",
+        "moveName": "Borrowed Authority"
+      }
+    },
+    {
+      "slug": "the-open-catalog",
+      "title": "The Open Catalog",
+      "caption": "Make the forbidden collection impossible to own.",
+      "paragraphs": [
+        "At the master catalog, Vey offers to reveal Alis's final minute in exchange for Oriel's reason for seeking justice. Oriel refuses the bargain and links the catalog to thousands of readers above, accepting uncertainty so the evidence can survive outside any chosen keeper.",
+        "The library gathers its doctrine of perfect control into The Quiet Constellation, a sky of cold index lights that blanks every unapproved connection. Oriel lets readers draw their own lines between the facts, breaking the pattern and opening every shelf at once."
+      ],
+      "semanticLabel": "Thousands of catalog lights form a false constellation above Oriel as open pages stream toward the city.",
+      "actionLabel": "Open the catalog",
+      "primaryColor": "#E9CC76",
+      "secondaryColor": "#9DD9C8",
+      "boss": {
+        "slug": "quiet-constellation",
+        "name": "The Quiet Constellation",
+        "family": "cosmic",
+        "moveName": "Approved Heavens"
+      }
+    }
+  ],
+  "finaleFrames": [
+    {
+      "id": "a-thousand-copies",
+      "title": "Truth in a Thousand Hands",
+      "paragraphs": [
+        "By morning, Alis's testimony and the stolen discoveries cover printshop walls, classroom slates, and kitchen tables across the city. No curator can reclaim a truth that neighbors now keep for one another.",
+        "The university begins answering for the murder and the thefts behind it. The reckoning is untidy, but the people once treated as footnotes finally speak under their own names."
+      ],
+      "semanticLabel": "Citizens read copied catalog pages across a rain-washed square as the university doors stand open.",
+      "actionLabel": "See what remains"
+    },
+    {
+      "id": "the-memory-we-make",
+      "title": "The Memory We Make",
+      "paragraphs": [
+        "Oriel cannot recover her mother's farewell or the lost beginning of her friendship with Matias. She can choose what comes next, and together they record every future loan, cost, and consent in an open ledger.",
+        "Alis's Shadow settles beside her own credited work, no longer the collection's only witness. Beneath the city, the Ninth Library is still dangerous, but its doors now open under many watchful eyes."
+      ],
+      "semanticLabel": "Oriel, Matias, and Alis's peaceful shadow write in an open ledger beneath newly unlocked library doors.",
+      "actionLabel": "Return to the map"
+    }
+  ]
+}

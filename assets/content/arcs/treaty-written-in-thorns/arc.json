@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "id": "regalia:arc/treaty-written-in-thorns",
+  "contentVersion": 1,
+  "title": "A Treaty Written in Thorns",
+  "theme": {
+    "brightness": "dark",
+    "backgroundColor": "#0D1B16",
+    "surfaceColor": "#182922",
+    "surfaceLowColor": "#12211B",
+    "surfaceHighColor": "#23382F",
+    "surfaceContainerHighColor": "#2D453A",
+    "foregroundColor": "#FFF6E7",
+    "mutedForegroundColor": "#CFD5C7",
+    "outlineColor": "#A8B7A6",
+    "outlineVariantColor": "#80998A",
+    "inkColor": "#06100C",
+    "dangerColor": "#FF8491"
+  },
+  "mapId": "regalia:map/treaty-written-in-thorns/main-route",
+  "puzzleCatalogAsset": "assets/content/arcs/treaty-written-in-thorns/catalog.json",
+  "unlocks": {
+    "fullMap": "regalia:unlock/treaty-written-in-thorns/full-map",
+    "finale": "regalia:unlock/treaty-written-in-thorns/finale"
+  },
+  "chapters": [
+    {
+      "id": "regalia:chapter/treaty-written-in-thorns/living-signature",
+      "mapId": "regalia:map/treaty-written-in-thorns/main-route",
+      "sceneId": "regalia:scene/treaty-written-in-thorns/living-signature",
+      "artKey": "living-signature",
+      "artAsset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_01_living_signature.jpg",
+      "visualIndex": 0,
+      "title": "The Living Signature",
+      "caption": "Sign a peace whose promises can answer back.",
+      "startOrder": 1,
+      "endOrder": 9,
+      "difficulty": "easy",
+      "size": 6,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/treaty-written-in-thorns/covenant-briar",
+        "name": "The Covenant Briar",
+        "puzzleId": "regalia:puzzle/treaty-written-in-thorns/boss/covenant-briar",
+        "spriteFamily": "rootbound",
+        "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/covenant-briar.png",
+        "spectacleLevel": 1,
+        "finisher": {
+          "track": "crownSlash",
+          "moveName": "Loophole Labyrinth",
+          "effectLevel": 1
+        },
+        "size": 7,
+        "targetDifficulty": "easy",
+        "unlocks": "regalia:chapter/treaty-written-in-thorns/truth-under-skin"
+      },
+      "encounters": [],
+      "primaryColor": "#3D8B65",
+      "secondaryColor": "#F0C98A"
+    },
+    {
+      "id": "regalia:chapter/treaty-written-in-thorns/truth-under-skin",
+      "mapId": "regalia:map/treaty-written-in-thorns/main-route",
+      "sceneId": "regalia:scene/treaty-written-in-thorns/truth-under-skin",
+      "artKey": "truth-under-skin",
+      "artAsset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_02_truth_under_skin.jpg",
+      "visualIndex": 1,
+      "title": "Truth Under Skin",
+      "caption": "Learn the cost of courtesy without honesty.",
+      "startOrder": 10,
+      "endOrder": 18,
+      "difficulty": "easy",
+      "size": 7,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/treaty-written-in-thorns/courtesy-shade",
+        "name": "The Courtesy Shade",
+        "puzzleId": "regalia:puzzle/treaty-written-in-thorns/boss/courtesy-shade",
+        "spriteFamily": "spectral",
+        "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/courtesy-shade.png",
+        "spectacleLevel": 2,
+        "finisher": {
+          "track": "tidalAegis",
+          "moveName": "Beautiful Evasion",
+          "effectLevel": 2
+        },
+        "size": 7,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/treaty-written-in-thorns/border-progress"
+      },
+      "encounters": [],
+      "primaryColor": "#8A5573",
+      "secondaryColor": "#F1B5C3"
+    },
+    {
+      "id": "regalia:chapter/treaty-written-in-thorns/border-progress",
+      "mapId": "regalia:map/treaty-written-in-thorns/main-route",
+      "sceneId": "regalia:scene/treaty-written-in-thorns/border-progress",
+      "artKey": "border-progress",
+      "artAsset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_03_border_progress.jpg",
+      "visualIndex": 2,
+      "title": "The Border Progress",
+      "caption": "Investigate an attack designed to restart a war.",
+      "startOrder": 19,
+      "endOrder": 27,
+      "difficulty": "medium",
+      "size": 7,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/treaty-written-in-thorns/false-flag-shrike",
+        "name": "The False-Flag Shrike",
+        "puzzleId": "regalia:puzzle/treaty-written-in-thorns/boss/false-flag-shrike",
+        "spriteFamily": "winged",
+        "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/false-flag-shrike.png",
+        "spectacleLevel": 3,
+        "finisher": {
+          "track": "twinSigil",
+          "moveName": "Borrowed Colors",
+          "effectLevel": 3
+        },
+        "size": 8,
+        "targetDifficulty": "medium",
+        "unlocks": "regalia:chapter/treaty-written-in-thorns/flowers-in-burned-fields"
+      },
+      "encounters": [],
+      "primaryColor": "#A34E63",
+      "secondaryColor": "#FFD0D8"
+    },
+    {
+      "id": "regalia:chapter/treaty-written-in-thorns/flowers-in-burned-fields",
+      "mapId": "regalia:map/treaty-written-in-thorns/main-route",
+      "sceneId": "regalia:scene/treaty-written-in-thorns/flowers-in-burned-fields",
+      "artKey": "flowers-in-burned-fields",
+      "artAsset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_04_flowers_in_burned_fields.jpg",
+      "visualIndex": 3,
+      "title": "Flowers in Burned Fields",
+      "caption": "Let shared grief restore contested ground.",
+      "startOrder": 28,
+      "endOrder": 36,
+      "difficulty": "medium",
+      "size": 8,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/treaty-written-in-thorns/cinderhart",
+        "name": "The Cinderhart",
+        "puzzleId": "regalia:puzzle/treaty-written-in-thorns/boss/cinderhart",
+        "spriteFamily": "antlered",
+        "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/cinderhart.png",
+        "spectacleLevel": 4,
+        "finisher": {
+          "track": "moonlitSever",
+          "moveName": "Ashen Roll Call",
+          "effectLevel": 4
+        },
+        "size": 8,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/treaty-written-in-thorns/masque-of-two-courts"
+      },
+      "encounters": [],
+      "primaryColor": "#6F8E46",
+      "secondaryColor": "#E7D79B"
+    },
+    {
+      "id": "regalia:chapter/treaty-written-in-thorns/masque-of-two-courts",
+      "mapId": "regalia:map/treaty-written-in-thorns/main-route",
+      "sceneId": "regalia:scene/treaty-written-in-thorns/masque-of-two-courts",
+      "artKey": "masque-of-two-courts",
+      "artAsset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_05_masque_of_two_courts.jpg",
+      "visualIndex": 4,
+      "title": "The Masque of Two Courts",
+      "caption": "Separate forged affection from a freely chosen truth.",
+      "startOrder": 37,
+      "endOrder": 45,
+      "difficulty": "hard",
+      "size": 8,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/treaty-written-in-thorns/clockwork-chaperone",
+        "name": "The Clockwork Chaperone",
+        "puzzleId": "regalia:puzzle/treaty-written-in-thorns/boss/clockwork-chaperone",
+        "spriteFamily": "clockwork",
+        "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/clockwork-chaperone.png",
+        "spectacleLevel": 5,
+        "finisher": {
+          "track": "brassJudgment",
+          "moveName": "Compulsory Waltz",
+          "effectLevel": 5
+        },
+        "size": 9,
+        "targetDifficulty": "hard",
+        "unlocks": "regalia:chapter/treaty-written-in-thorns/thorns-at-the-heart"
+      },
+      "encounters": [],
+      "primaryColor": "#87629B",
+      "secondaryColor": "#E8CEFF"
+    },
+    {
+      "id": "regalia:chapter/treaty-written-in-thorns/thorns-at-the-heart",
+      "mapId": "regalia:map/treaty-written-in-thorns/main-route",
+      "sceneId": "regalia:scene/treaty-written-in-thorns/thorns-at-the-heart",
+      "artKey": "thorns-at-the-heart",
+      "artAsset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_06_thorns_at_the_heart.jpg",
+      "visualIndex": 5,
+      "title": "Thorns at the Heart",
+      "caption": "Face the truths both crowns buried before peace.",
+      "startOrder": 46,
+      "endOrder": 54,
+      "difficulty": "hard",
+      "size": 9,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "snake",
+        "direction": "rightToLeft"
+      },
+      "boss": {
+        "id": "regalia:boss/treaty-written-in-thorns/war-ember-regent",
+        "name": "The War-Ember Regent",
+        "puzzleId": "regalia:puzzle/treaty-written-in-thorns/boss/war-ember-regent",
+        "spriteFamily": "volcanic",
+        "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/war-ember-regent.png",
+        "spectacleLevel": 6,
+        "finisher": {
+          "track": "cinderfall",
+          "moveName": "Inherited Command",
+          "effectLevel": 6
+        },
+        "size": 9,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/treaty-written-in-thorns/orrs-last-proof"
+      },
+      "encounters": [],
+      "primaryColor": "#C65A3D",
+      "secondaryColor": "#FFD2A1"
+    },
+    {
+      "id": "regalia:chapter/treaty-written-in-thorns/orrs-last-proof",
+      "mapId": "regalia:map/treaty-written-in-thorns/main-route",
+      "sceneId": "regalia:scene/treaty-written-in-thorns/orrs-last-proof",
+      "artKey": "orrs-last-proof",
+      "artAsset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_07_orrs_last_proof.jpg",
+      "visualIndex": 6,
+      "title": "Orr's Last Proof",
+      "caption": "Expose a conspiracy built to look inevitable.",
+      "startOrder": 55,
+      "endOrder": 63,
+      "difficulty": "expert",
+      "size": 9,
+      "mapLayout": {
+        "columns": 3,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/treaty-written-in-thorns/proof-eater",
+        "name": "The Proof-Eater",
+        "puzzleId": "regalia:puzzle/treaty-written-in-thorns/boss/proof-eater",
+        "spriteFamily": "abyssal",
+        "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/proof-eater.png",
+        "spectacleLevel": 7,
+        "finisher": {
+          "track": "skybreak",
+          "moveName": "Devour the Connection",
+          "effectLevel": 7
+        },
+        "size": 10,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:chapter/treaty-written-in-thorns/treaty-without-chains"
+      },
+      "encounters": [],
+      "primaryColor": "#3D7180",
+      "secondaryColor": "#BCE6EC"
+    },
+    {
+      "id": "regalia:chapter/treaty-written-in-thorns/treaty-without-chains",
+      "mapId": "regalia:map/treaty-written-in-thorns/main-route",
+      "sceneId": "regalia:scene/treaty-written-in-thorns/treaty-without-chains",
+      "artKey": "treaty-without-chains",
+      "artAsset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_08_treaty_without_chains.jpg",
+      "visualIndex": 7,
+      "title": "A Treaty Without Chains",
+      "caption": "Replace two bound envoys with a peace everyone can own.",
+      "startOrder": 64,
+      "endOrder": 72,
+      "difficulty": "expert",
+      "size": 10,
+      "mapLayout": {
+        "columns": 4,
+        "pattern": "rows",
+        "direction": "leftToRight"
+      },
+      "boss": {
+        "id": "regalia:boss/treaty-written-in-thorns/sovereign-knot",
+        "name": "The Sovereign Knot",
+        "puzzleId": "regalia:puzzle/treaty-written-in-thorns/boss/sovereign-knot",
+        "spriteFamily": "cosmic",
+        "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/sovereign-knot.png",
+        "spectacleLevel": 8,
+        "finisher": {
+          "track": "regaliaNova",
+          "moveName": "Peace by Compulsion",
+          "effectLevel": 8
+        },
+        "size": 12,
+        "targetDifficulty": "expert",
+        "unlocks": "regalia:unlock/treaty-written-in-thorns/finale"
+      },
+      "encounters": [],
+      "primaryColor": "#3E9A72",
+      "secondaryColor": "#FFF0C2"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "regalia:scene/treaty-written-in-thorns/living-signature",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_01_living_signature.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-1-arrival",
+          "title": "The Living Signature",
+          "paragraphs": [
+            "Before both courts, Liora and Ren arrange the treaty's living clauses so neither kingdom can hide an army inside a careful definition. They sign before either understands that the vine will punish private lies as fiercely as public ones.",
+            "The discarded loopholes twist together as The Covenant Briar, defending every ambiguity the courts hoped to exploit. Liora and Ren can cut through it only by stating what each side is truly afraid to lose."
+          ],
+          "semanticLabel": "Liora and Ren sign a green living treaty at a candlelit diplomatic table.",
+          "actionLabel": "Sign the living treaty"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/treaty-written-in-thorns/truth-under-skin",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_02_truth_under_skin.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-2-arrival",
+          "title": "Truth Under Skin",
+          "paragraphs": [
+            "Their first private negotiation becomes a lesson in strategic honesty: omissions sting, polished evasions draw blood, and truths offered as weapons grow thorns too. Liora admits she expects Ren to betray her, while Ren admits he came prepared to deserve that fear.",
+            "Their rehearsed courtly answers take form as The Courtesy Shade, speaking each pleasing falsehood in a beloved voice. Naming the motives beneath those answers clears their skin and establishes the first rules they choose together."
+          ],
+          "semanticLabel": "Thorn shadows rise behind Liora and Ren during a tense private negotiation.",
+          "actionLabel": "Tell the difficult truth"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/treaty-written-in-thorns/border-progress",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_03_border_progress.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-3-arrival",
+          "title": "The Border Progress",
+          "paragraphs": [
+            "Liora and Ren tour the frontier under the guise of a ceremonial courtship, questioning soldiers who would never speak freely to an enemy envoy. At the ruined post, formation marks prove the attackers copied Ren's tactics but never served under his command.",
+            "A standard stitched from forged loyalties unfolds into The False-Flag Shrike and scatters evidence toward both kingdoms. The pair follow what it tries hardest to destroy, finding orders written in Spymaster Orr's private cipher."
+          ],
+          "semanticLabel": "The envoys inspect a sabotaged border post while a false banner circles overhead.",
+          "actionLabel": "Track the false flag"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/treaty-written-in-thorns/flowers-in-burned-fields",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_04_flowers_in_burned_fields.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-4-arrival",
+          "title": "Flowers in Burned Fields",
+          "paragraphs": [
+            "Two villages claim the same surviving well, each with a memorial proving the other kingdom burned its fields. Liora and Ren stop arguing over whose history is complete and publicly name what both armies destroyed.",
+            "The unburied grief charges from the ash as The Cinderhart, carrying a different list of dead on every branch of its antlers. When both villages speak every name, flowers follow its path and reluctant trust takes root around a shared channel."
+          ],
+          "semanticLabel": "White flowers spread across burned fields as two border villages gather by one well.",
+          "actionLabel": "Name what was lost"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/treaty-written-in-thorns/masque-of-two-courts",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_05_masque_of_two_courts.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-5-arrival",
+          "title": "The Masque of Two Courts",
+          "paragraphs": [
+            "At a diplomatic masque, forged messages implicate both royal families while every dance is treated as evidence of the envoys' staged romance. Liora and Ren set boundaries the treaty cannot choose for them, then admit that the attraction left outside those boundaries is real.",
+            "The masque's prescribed steps assemble into The Clockwork Chaperone, forcing every gesture toward a politically useful ending. Breaking its rhythm reveals the courier who planted Orr's letters and lets Liora and Ren leave the dance on their own terms."
+          ],
+          "semanticLabel": "Masked courtiers surround Liora and Ren beneath flowering chandeliers and hidden forged letters.",
+          "actionLabel": "Unmask the forgery"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/treaty-written-in-thorns/thorns-at-the-heart",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_06_thorns_at_the_heart.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-6-arrival",
+          "title": "Thorns at the Heart",
+          "paragraphs": [
+            "The vine tightens toward Liora's and Ren's hearts as their courts issue incompatible orders. Liora learns Queen Maelin concealed early Ash provocations, while Ren refuses a Vale command to mobilize troops behind the progress.",
+            "Every old justification ignites inside The War-Ember Regent, a crowned furnace that calls inherited violence duty. Liora confronts her aunt and Ren releases his command, starving the regent of the obedience it expects."
+          ],
+          "semanticLabel": "Liora and Ren face burning royal orders while thorns climb toward their hearts.",
+          "actionLabel": "Defy the old orders"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/treaty-written-in-thorns/orrs-last-proof",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_07_orrs_last_proof.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-7-arrival",
+          "title": "Orr's Last Proof",
+          "paragraphs": [
+            "Orr arranges an assassination attempt whose evidence points cleanly to both kingdoms, certain that frightened courts will accept contradiction as proof of treachery. Liora and Ren retrace the conspiracy together, matching forged dispatches to the people ordered to carry them.",
+            "Beneath the council chamber, The Proof-Eater consumes any fact that joins one side's story to the other. The envoys feed it Orr's isolated lies in the right sequence, forcing the missing connections back into view before both courts."
+          ],
+          "semanticLabel": "Liora and Ren present linked evidence before two alarmed royal courts.",
+          "actionLabel": "Reveal Orr's design"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/treaty-written-in-thorns/treaty-without-chains",
+      "role": "chapter",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_08_treaty_without_chains.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "chapter-8-arrival",
+          "title": "A Treaty Without Chains",
+          "paragraphs": [
+            "With Orr exposed, both crowns demand that Liora and Ren preserve the magical bond as the price of peace. Instead, the envoys gather border towns, veterans, traders, and grieving families to negotiate terms no pair of exceptional people must carry alone.",
+            "The old treaty closes around them as The Sovereign Knot, a living constellation of crowns and compulsory vows. They dissolve it clause by clause, then freely choose both a public peace and a private future that no magic can enforce."
+          ],
+          "semanticLabel": "Delegates from both kingdoms surround Liora and Ren as the thorn bond blooms and falls away.",
+          "actionLabel": "Write a freer peace"
+        }
+      ]
+    },
+    {
+      "id": "regalia:scene/treaty-written-in-thorns/finale",
+      "role": "finale",
+      "defaults": {
+        "background": {
+          "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/finale_crisis.jpg",
+          "fit": "cover"
+        },
+        "characters": []
+      },
+      "frames": [
+        {
+          "id": "the-frontier-council",
+          "title": "The Frontier Council",
+          "paragraphs": [
+            "The new treaty is copied into ordinary ink and entrusted to a council drawn from the people who live with its consequences. Its clauses can be challenged, amended, and renewed without drawing anyone's blood.",
+            "Queen Maelin relinquishes the powers she hid behind necessity, and Ren's former soldiers help clear the roads they once fortified. Across the border, spring reaches fields that had forgotten its color."
+          ],
+          "semanticLabel": "A diverse frontier council signs an ordinary parchment as green fields return outside.",
+          "actionLabel": "Witness the new peace"
+        },
+        {
+          "id": "chosen-without-magic",
+          "title": "Chosen Without Magic",
+          "paragraphs": [
+            "Weeks later, Liora meets Ren at the well where the first flowers grew. Neither bears a thorn, and neither kingdom has ordered them to be there.",
+            "They tell each other what they want without pain forcing the answer, then walk the reopened border road side by side. The flowers that follow are only flowers, which makes them beautiful in a new way."
+          ],
+          "semanticLabel": "Liora and Ren meet freely beside a flower-ringed frontier well at sunrise.",
+          "actionLabel": "Return to the journeys",
+          "background": {
+            "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/finale_resolution.jpg",
+            "fit": "cover"
+          }
+        }
+      ]
+    }
+  ]
+}

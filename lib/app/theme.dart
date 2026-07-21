@@ -51,6 +51,10 @@ class RegaliaTheme {
     final theme = palette.theme;
     final secondary = palette.secondary;
     final secondaryContainer = Color.lerp(theme.surface, secondary, .24)!;
+    final inkForeground = readableAccent(
+      preferred: theme.foreground,
+      background: theme.ink,
+    );
     final baseTheme =
         theme.brightness == Brightness.dark
             ? ThemeData.dark()
@@ -190,8 +194,7 @@ class RegaliaTheme {
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: theme.ink,
-        contentTextStyle:
-            _type(baseTheme.textTheme, theme.foreground).bodyMedium,
+        contentTextStyle: _type(baseTheme.textTheme, inkForeground).bodyMedium,
         elevation: 0,
         shape: PixelOrganicBorder(side: BorderSide(color: secondary, width: 3)),
         behavior: SnackBarBehavior.floating,
@@ -203,7 +206,7 @@ class RegaliaTheme {
             side: BorderSide(color: secondary, width: 2),
           ),
         ),
-        textStyle: _type(baseTheme.textTheme, theme.foreground).labelMedium,
+        textStyle: _type(baseTheme.textTheme, inkForeground).labelMedium,
         waitDuration: const Duration(milliseconds: 500),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(

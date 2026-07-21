@@ -1,0 +1,233 @@
+{
+  "slug": "inn-at-the-end-of-yesterday",
+  "title": "The Inn at the End of Yesterday",
+  "tagline": "A wandering inn shelters people from their worst regrets—until one guest's missing yesterday threatens everyone else's tomorrow.",
+  "environment": "inn",
+  "seed": 32003,
+  "theme": {
+    "brightness": "light",
+    "backgroundColor": "#F6EAD4",
+    "surfaceColor": "#FFF8EA",
+    "surfaceLowColor": "#EBDCC2",
+    "surfaceHighColor": "#FFFDF7",
+    "surfaceContainerHighColor": "#E3CEAF",
+    "foregroundColor": "#2B201B",
+    "mutedForegroundColor": "#66564A",
+    "outlineColor": "#74604F",
+    "outlineVariantColor": "#8A6F52",
+    "inkColor": "#3C3042",
+    "dangerColor": "#8D2F3C"
+  },
+  "storefront": {
+    "tileSubtitle": "Find tomorrow beyond one last regret",
+    "keyArtPrompt": "A warm wandering fantasy inn glowing at a rainy crossroads at dusk, practical young woman innkeeper holding an old brass key in the doorway, friendly ghostly baker visible by the hearth and cheerful courier with a weathered letter satchel, one impossible dark window above, hearth gold, warm plum, oat cream, moss green, rain-dark wood, mismatched travel keepsakes, cozy mystery atmosphere, original characters, no text, vertical key art",
+    "prologueFrames": [
+      {
+        "id": "the-inherited-key",
+        "title": "The Inherited Key",
+        "paragraphs": [
+          "Tamsin Reed inherits a brass key, a handwritten book of house rules, and an inn that appears wherever someone reaches a crossroads wishing to undo a choice. Its windows glow only for travelers carrying a regret they cannot set down.",
+          "Inside, ghostly baker Corin keeps the oven warm and courier Pip Sallow arrives with the same undelivered letter he has carried for twelve years."
+        ],
+        "semanticLabel": "Tamsin unlocks a glowing inn at a rainy crossroads while Corin and Pip wait inside.",
+        "actionLabel": "Unlock the inn"
+      },
+      {
+        "id": "one-memory-only",
+        "title": "One Memory Only",
+        "paragraphs": [
+          "A guest may enter one room and relive one memory exactly as it happened. The inn can restore a voice, a scent, or a forgotten kindness, but its oldest rule forbids anyone from changing the past.",
+          "Most guests leave with a hot meal and enough courage for tomorrow. Tamsin is very good at guiding them past regrets she never has to name as her own."
+        ],
+        "semanticLabel": "A guest watches a cherished memory through an open doorway while Tamsin waits beside a warm hearth.",
+        "actionLabel": "Read the house rules"
+      },
+      {
+        "id": "the-missing-yesterday",
+        "title": "The Missing Yesterday",
+        "paragraphs": [
+          "Near midnight, a traveler arrives who remembers today and the day before yesterday, but nothing between. At the same moment, an empty guest room appears where the inn's outer wall should be.",
+          "Its clock has no hands, its window looks onto a village morning that never occurred, and somewhere beyond the crossroads tomorrow begins to lose an hour."
+        ],
+        "semanticLabel": "A bewildered traveler stands before an impossible empty room with a handless clock.",
+        "actionLabel": "Search for yesterday"
+      }
+    ]
+  },
+  "chapters": [
+    {
+      "slug": "house-at-the-crossroads",
+      "title": "The House at the Crossroads",
+      "caption": "Learn why memory may be revisited but never rewritten.",
+      "paragraphs": [
+        "On Tamsin's first night as innkeeper, she guides a weary guest through a memory of the farewell they regret. When the guest reaches for a different ending, Tamsin steadies the room and helps them hear the love inside the goodbye they actually shared.",
+        "The house rules march from their book as The Rulebook Porter, enforcing every sentence without mercy or context. Tamsin restores the room by upholding the past while making space for the guest to choose what comes next."
+      ],
+      "semanticLabel": "Tamsin holds an old rulebook in an impossible hallway lit by a warm guest-room door.",
+      "actionLabel": "Keep the first memory",
+      "primaryColor": "#B87934",
+      "secondaryColor": "#4C3B70",
+      "boss": {
+        "slug": "rulebook-porter",
+        "name": "The Rulebook Porter",
+        "family": "clockwork",
+        "moveName": "No Exceptions"
+      }
+    },
+    {
+      "slug": "guest-without-yesterday",
+      "title": "The Guest Without Yesterday",
+      "caption": "Open a room built around a day that is gone.",
+      "paragraphs": [
+        "A traveler checks in with no memory of the previous day, no gap in their journal, and mud from a road no map remembers. An impossible room appears upstairs, perfectly clean except for a handless clock and one place set for breakfast.",
+        "The missing day drifts through the room as The Blank Bellhop, politely removing every clue just after Tamsin notices it. She anchors the traveler's remaining memories long enough to hear bells from three nearby villages."
+      ],
+      "semanticLabel": "Tamsin and the traveler search a pale empty room while memories fade around them.",
+      "actionLabel": "Enter the empty room",
+      "primaryColor": "#8D668A",
+      "secondaryColor": "#47334F",
+      "boss": {
+        "slug": "blank-bellhop",
+        "name": "The Blank Bellhop",
+        "family": "spectral",
+        "moveName": "Forget the Clue"
+      }
+    },
+    {
+      "slug": "hours-on-the-menu",
+      "title": "Hours on the Menu",
+      "caption": "Recover the tastes and sounds stolen with time.",
+      "paragraphs": [
+        "Corin cooks from the traveler's last intact sensations: rain on mint, woodsmoke, and pears just beginning to brown. Each restored flavor points to an hour missing from a different village, where people remember events but not the lives lived inside them.",
+        "Stolen minutes crawl through the pantry as The Hour-Thieving Ivy, ripening fruit and fading voices with every new leaf. Tamsin and Corin prune its hours in the order they were taken, preserving a sensory trail back to the inn."
+      ],
+      "semanticLabel": "Corin serves glowing memory dishes while clock-faced ivy winds through the inn pantry.",
+      "actionLabel": "Cook the lost hours",
+      "primaryColor": "#6D8750",
+      "secondaryColor": "#344D32",
+      "boss": {
+        "slug": "hour-thieving-ivy",
+        "name": "The Hour-Thieving Ivy",
+        "family": "rootbound",
+        "moveName": "Season Out of Time"
+      }
+    },
+    {
+      "slug": "twelve-year-letter",
+      "title": "The Twelve-Year Letter",
+      "caption": "Follow a delivery route that redraws itself each night.",
+      "paragraphs": [
+        "Pip admits that his undelivered letter returns to his satchel every dawn with a different address. Its newest route marks match the stolen village hours and end at a door Tamsin insists has never belonged to the inn.",
+        "The folded map bursts into The Routefold Raven, carrying each road toward a safer but false destination. Pip chooses the uncertain route himself, guiding the household to the sealed door and finally ending twelve years of walking in circles."
+      ],
+      "semanticLabel": "Pip follows shifting ink roads from his old letter through the inn's impossible corridors.",
+      "actionLabel": "Follow the changing route",
+      "primaryColor": "#4F7690",
+      "secondaryColor": "#2D4F63",
+      "boss": {
+        "slug": "routefold-raven",
+        "name": "The Routefold Raven",
+        "family": "winged",
+        "moveName": "Return to Sender"
+      }
+    },
+    {
+      "slug": "auditor-at-the-door",
+      "title": "The Auditor at the Door",
+      "caption": "Prove the refuge is not consuming its guests' futures.",
+      "paragraphs": [
+        "Auditor Vale arrives to close the unstable rooms and seal the inn outside time. Their rulings seem heartless until Tamsin sees futures thinning around the villages; if the fractures spread, children may lose tomorrows they have not lived yet.",
+        "Those endangered possibilities gather as The Future-Horn Stag, branching into a thousand lives that cannot all occupy the same hour. Tamsin works beside Vale to protect the viable paths, earning one night to find the source before the inn is erased."
+      ],
+      "semanticLabel": "Tamsin and Auditor Vale face branching visions of possible futures in the inn's lobby.",
+      "actionLabel": "Protect the futures",
+      "primaryColor": "#806D51",
+      "secondaryColor": "#483B2D",
+      "boss": {
+        "slug": "future-horn-stag",
+        "name": "The Future-Horn Stag",
+        "family": "antlered",
+        "moveName": "Unlived Branches"
+      }
+    },
+    {
+      "slug": "room-tamsin-locked",
+      "title": "The Room Tamsin Locked",
+      "caption": "Remember the wish that first called the inn home.",
+      "paragraphs": [
+        "Behind the sealed door, Tamsin recovers the choice she buried: as a frightened child, she begged the crossroads for one day she could change, and that impossible wish helped call the inn into being. She later inherited its key but never withdrew the wish at the heart of its rules.",
+        "Her suppressed regret opens beneath the floor as The Unremembering Well, which stole the traveler's unclaimed yesterday and village hours while trying to build her a changeable past. Tamsin speaks the memory without editing it, stopping the well from taking anything more."
+      ],
+      "semanticLabel": "Tamsin faces her younger reflection above a dark well in the room she sealed away.",
+      "actionLabel": "Remember the locked day",
+      "primaryColor": "#6B557A",
+      "secondaryColor": "#463452",
+      "boss": {
+        "slug": "unremembering-well",
+        "name": "The Unremembering Well",
+        "family": "abyssal",
+        "moveName": "Wish It Never Was"
+      }
+    },
+    {
+      "slug": "yesterday-restored",
+      "title": "Yesterday Restored",
+      "caption": "Rebuild one day without smoothing away its grief.",
+      "paragraphs": [
+        "The household gathers witnesses from each village and lays their recovered hours around the traveler. Corin restores sensation, Pip restores the route, Vale preserves cause and consequence, and Tamsin leaves every painful moment intact.",
+        "Competing versions of the day become The Midnight Mosaic, offering each person the past they most wanted instead of the one they shared. By choosing the honest pieces together, they return the traveler's yesterday and every village hour to its rightful life."
+      ],
+      "semanticLabel": "Guests and villagers assemble glowing pieces of one lost day around the inn's midnight table.",
+      "actionLabel": "Restore the missing day",
+      "primaryColor": "#9B6F37",
+      "secondaryColor": "#4F3B20",
+      "boss": {
+        "slug": "midnight-mosaic",
+        "name": "The Midnight Mosaic",
+        "family": "cosmic",
+        "moveName": "Preferred Version"
+      }
+    },
+    {
+      "slug": "new-house-rules",
+      "title": "New House Rules",
+      "caption": "Keep a refuge for understanding the past, not escaping it.",
+      "paragraphs": [
+        "With chronology stable, Vale still must close any house founded on a wish to rewrite time. Tamsin gathers former guests to draft new rules: memories may be witnessed with consent, no hour may be taken, and every visitor must return to their own tomorrow.",
+        "The inn's oldest desire flares in the hearth as The Last-Regret Fire, offering Tamsin the childhood day she once demanded. She lets the vision pass unaltered, and Vale records the wandering inn as a refuge that can finally be allowed to remain."
+      ],
+      "semanticLabel": "Tamsin, Corin, Pip, Vale, and former guests write new rules around a bright hearth.",
+      "actionLabel": "Write the new rules",
+      "primaryColor": "#A85E39",
+      "secondaryColor": "#5C3528",
+      "boss": {
+        "slug": "last-regret-fire",
+        "name": "The Last-Regret Fire",
+        "family": "volcanic",
+        "moveName": "One More Chance"
+      }
+    }
+  ],
+  "finaleFrames": [
+    {
+      "id": "tomorrow-on-the-road",
+      "title": "Tomorrow on the Road",
+      "paragraphs": [
+        "Morning returns to every village with no missing hours, and the traveler leaves carrying a complete yesterday rather than a painless one. Vale places a small brass seal beside the house rules and promises to audit with questions before conclusions.",
+        "Pip's twelve-year letter finally stays delivered: it contains a welcome written by the inn's former keeper for the day Tamsin was ready to remember. Corin marks the occasion with pear cakes that taste only of pear cakes."
+      ],
+      "semanticLabel": "The traveler departs at sunrise while Pip opens his empty satchel and Vale seals the new rules.",
+      "actionLabel": "Welcome tomorrow"
+    },
+    {
+      "id": "the-next-crossroads",
+      "title": "The Next Crossroads",
+      "paragraphs": [
+        "That evening, the inn folds its hallways, lifts its glowing windows, and settles beside another rain-dark road. Somewhere nearby, a new guest has reached a choice they cannot forgive.",
+        "Tamsin opens the door with Corin at the oven and Pip ready to carry a letter forward. The past is waiting inside, but so is breakfast—and beyond it, a road into tomorrow."
+      ],
+      "semanticLabel": "The glowing inn appears at a new crossroads as Tamsin opens its door to a traveler.",
+      "actionLabel": "Return to the journeys"
+    }
+  ]
+}
