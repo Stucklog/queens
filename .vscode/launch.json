@@ -8,6 +8,12 @@
       "program": "lib/main.dart",
       "deviceId": "macos",
       "toolArgs": ["--flavor", "paid"]
+    },
+    {
+      "name": "Queen's Regalia — iPhone",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart"
     }
   ]
 }
