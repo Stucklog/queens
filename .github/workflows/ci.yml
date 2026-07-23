@@ -8,7 +8,7 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: 3.29.3
@@ -28,7 +28,7 @@ jobs:
   goldens:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: 3.29.3
@@ -74,7 +74,7 @@ jobs:
             artifact: build/ios/iphoneos/Runner.app
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: 3.29.3
@@ -99,12 +99,12 @@ jobs:
         working-directory: ${{ runner.temp }}/regalia-web
         run: dart run tool/verify_offline.dart --web-source --web-build build/web
       - if: matrix.target == 'web'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: regalia-${{ matrix.target }}
           path: ${{ runner.temp }}/regalia-web/${{ matrix.artifact }}
       - if: matrix.target != 'web'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: regalia-${{ matrix.target }}
           path: ${{ matrix.artifact }}
