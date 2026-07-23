@@ -1,9 +1,33 @@
 {
   "slug": "ninth-library",
   "title": "The Ninth Library",
+  "contentVersion": 2,
   "tagline": "A scholarship student finds a library where borrowing truth costs a memory.",
   "environment": "library",
   "seed": 33001,
+  "cast": [
+    {
+      "slug": "oriel-marr",
+      "name": "Oriel Marr",
+      "role": "Scholarship student investigating Alis's murder",
+      "visualDescription": "Young woman with olive-brown skin, dark tightly curled hair pinned in a deliberately imperfect academic updo, round brass spectacles, ink-dark university coat with restrained gold embroidery over a high cream collar, practical book satchel and red-annotated catalog card; precise compact silhouette led by the bright rectangular card.",
+      "chromaKey": "#00FF00"
+    },
+    {
+      "slug": "matias-quill",
+      "name": "Matias Quill",
+      "role": "Rival borrower whose written notes replace years of lost memory",
+      "visualDescription": "Tall narrow young scholar with warm light-brown skin, unruly black waves falling over one eye, long midnight coat with worn gold piping, charcoal waistcoat and ink-stained cuffs; carries an overfilled black notebook crossed with reminder ribbons, giving him a slouched question-mark silhouette.",
+      "chromaKey": "#00FF00"
+    },
+    {
+      "slug": "alis-shadow",
+      "name": "Alis's Shadow",
+      "role": "Living shadow of the murdered student and guide to the erased archive",
+      "visualDescription": "A human student silhouette in layered violet-black translucency, recognizable by a short cape, raised pointing hand and loose braid, with the outer edge dissolving into square ink motes and occasional red marginalia; no visible facial features except two dim pearl eyes.",
+      "chromaKey": "#00FF00"
+    }
+  ],
   "theme": {
     "brightness": "dark",
     "backgroundColor": "#100D1C",
@@ -67,6 +91,20 @@
       "actionLabel": "Open the hidden stair",
       "primaryColor": "#C96F86",
       "secondaryColor": "#EAD9B7",
+      "encounters": [
+        {
+          "slug": "callmark-tumbler",
+          "name": "Callmark Tumbler",
+          "family": "clockwork",
+          "description": "A palm-wide three-wheeled oxidized-brass catalog drawer with a rotating call-number drum, snapping card shutters and one red indexing needle probing from its front slot."
+        },
+        {
+          "slug": "shelfbranch-saiga",
+          "name": "Shelfbranch Saiga",
+          "family": "antlered",
+          "description": "A compact vellum saiga with an accordion catalog snout and small shelf-diagram horns, its drawer-label eyes and split hooves leaving false call numbers along every aisle."
+        }
+      ],
       "boss": {
         "slug": "index-hart",
         "name": "The Index Hart",
@@ -86,6 +124,20 @@
       "actionLabel": "Carry out the clue",
       "primaryColor": "#D7B76B",
       "secondaryColor": "#86D1B8",
+      "encounters": [
+        {
+          "slug": "recall-booklouse",
+          "name": "Recall Booklouse",
+          "family": "rootbound",
+          "description": "A flat leaf-bodied booklouse with thorn-thread antennae, carrying tiny illustrated memories beneath its translucent shell and replacing their faces as it feeds."
+        },
+        {
+          "slug": "farewell-topiary",
+          "name": "Farewell Topiary",
+          "family": "spectral",
+          "description": "A person-shaped clipped shrub in a station-coat silhouette, shedding gold memory berries from one side while the other side grows comforting invented blossoms."
+        }
+      ],
       "boss": {
         "slug": "mnemonic-briar",
         "name": "The Mnemonic Briar",
@@ -105,6 +157,20 @@
       "actionLabel": "Enter the erased wing",
       "primaryColor": "#76C9B4",
       "secondaryColor": "#E7C77D",
+      "encounters": [
+        {
+          "slug": "errata-kestrel",
+          "name": "Errata Kestrel",
+          "family": "winged",
+          "description": "A needle-winged bird folded from rejected abstracts, its red proofreader tail marks slicing words out of notes before the pages refold around it."
+        },
+        {
+          "slug": "thesis-clip-trilobite",
+          "name": "Thesis-Clip Trilobite",
+          "family": "clockwork",
+          "description": "A broad black binder clip segmented like a trilobite and walking on rows of brass staples, with rolled dissertations gripped beneath a numbered university seal."
+        }
+      ],
       "boss": {
         "slug": "paper-roc",
         "name": "The Paper Roc",
@@ -124,6 +190,20 @@
       "actionLabel": "Restore the citations",
       "primaryColor": "#E6827D",
       "secondaryColor": "#9AD9C5",
+      "encounters": [
+        {
+          "slug": "blackbar-planarian",
+          "name": "Blackbar Planarian",
+          "family": "abyssal",
+          "description": "A broad arrow-headed planarian cut from wet black redaction ink, broken only by pale quotation-mark eyes; it branches across pages and covers every name beneath its body."
+        },
+        {
+          "slug": "omission-aperture",
+          "name": "Omission Aperture",
+          "family": "spectral",
+          "description": "A hovering parchment camera iris rimmed with eraser crumbs and a trailing citation ribbon, closing to a black point as dates and shelf signs turn translucent."
+        }
+      ],
       "boss": {
         "slug": "redaction-maw",
         "name": "The Redaction Maw",
@@ -143,6 +223,20 @@
       "actionLabel": "Choose trust again",
       "primaryColor": "#AE9BE0",
       "secondaryColor": "#F2C77D",
+      "encounters": [
+        {
+          "slug": "superscript-ember",
+          "name": "Superscript Ember",
+          "family": "volcanic",
+          "description": "A quick four-legged coal glyph with a superscript flame for a head, racing along page bottoms and igniting any note written by only one investigator."
+        },
+        {
+          "slug": "rebuttal-kilnling",
+          "name": "Rebuttal Kilnling",
+          "family": "clockwork",
+          "description": "A squat ceramic lectern golem with a hinged jaw, furnace-red argument cards rotating through its chest and mismatched wooden scholar arms hammering opposing desks apart."
+        }
+      ],
       "boss": {
         "slug": "cinder-thesis",
         "name": "The Cinder Thesis",
@@ -162,6 +256,20 @@
       "actionLabel": "Trace every stolen name",
       "primaryColor": "#D4A95F",
       "secondaryColor": "#8FD4DC",
+      "encounters": [
+        {
+          "slug": "byline-stamper",
+          "name": "Byline Stamper",
+          "family": "clockwork",
+          "description": "A one-legged brass printing press with a laurel-shaped platen, walking on its own lever and stamping a patron's name over every loose discovery it reaches."
+        },
+        {
+          "slug": "laurel-proxy",
+          "name": "Laurel Proxy",
+          "family": "spectral",
+          "description": "An empty ceremonial scholar's robe held upright by medals and a floating gold laurel, its sleeves presenting stolen work while the true author's shadow trails behind."
+        }
+      ],
       "boss": {
         "slug": "citation-engine",
         "name": "The Citation Engine",
@@ -181,6 +289,20 @@
       "actionLabel": "Send the witnesses outward",
       "primaryColor": "#86C8D3",
       "secondaryColor": "#E9B6C4",
+      "encounters": [
+        {
+          "slug": "deanmask-familiar",
+          "name": "Deanmask Familiar",
+          "family": "spectral",
+          "description": "A hovering stack of porcelain academic faces on one tasselled spine, rotating from kindly mentor to stern examiner whenever a witness tries to speak."
+        },
+        {
+          "slug": "credential-rook",
+          "name": "Credential Rook",
+          "family": "winged",
+          "description": "A square-winged black rook with a mortarboard crest and diploma-scroll legs, dropping wax seals that grow into temporary locked doors around each messenger."
+        }
+      ],
       "boss": {
         "slug": "tenure-wraith",
         "name": "The Tenure Wraith",
@@ -200,6 +322,20 @@
       "actionLabel": "Open the catalog",
       "primaryColor": "#E9CC76",
       "secondaryColor": "#9DD9C8",
+      "encounters": [
+        {
+          "slug": "index-pulsar",
+          "name": "Index Pulsar",
+          "family": "cosmic",
+          "description": "A dark book-shaped star with catalog cards rotating in a rigid equatorial ring, sweeping two bright index beams that erase every connection outside their approved path."
+        },
+        {
+          "slug": "shelf-sky-astrolabe",
+          "name": "Shelf-Sky Astrolabe",
+          "family": "clockwork",
+          "description": "A walking cage of cold brass index rings around a shuttered star, using compass-point legs to physically sever lines between neighboring books."
+        }
+      ],
       "boss": {
         "slug": "quiet-constellation",
         "name": "The Quiet Constellation",

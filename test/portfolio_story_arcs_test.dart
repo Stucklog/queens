@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:regalia/app/journey.dart';
 import 'package:regalia/app/theme.dart';
 import 'package:regalia/content/content_ids.dart';
 import 'package:regalia/content/content_models.dart';
@@ -40,6 +41,8 @@ const _bossSizes = <int>[7, 7, 8, 8, 9, 9, 10, 12];
 
 void main() {
   late ContentRegistry registry;
+  late ContentRegistry webRegistry;
+  late List<String> webReads;
 
   setUpAll(() async {
     registry = await ContentRepository(
@@ -47,11 +50,22 @@ void main() {
       assetExists: (path) async => File(path).existsSync(),
     ).load(
       manifestAsset: 'assets/content/manifest.json',
+      policy: const ContentEntitlementPolicy.paidPlatform(),
+    );
+    webReads = <String>[];
+    webRegistry = await ContentRepository(
+      readAsset: (path) async {
+        webReads.add(path);
+        return File(path).readAsString();
+      },
+      assetExists: (path) async => File(path).existsSync(),
+    ).load(
+      manifestAsset: 'assets/content/manifest.json',
       policy: const ContentEntitlementPolicy.web(),
     );
   });
 
-  test('web release makes every portfolio story arc playable', () {
+  test('installed release makes every portfolio story arc playable', () {
     expect(_portfolioArcIds, hasLength(10));
     expect(_portfolioArcIds.toSet(), hasLength(_portfolioArcIds.length));
     expect(
@@ -70,6 +84,45 @@ void main() {
       );
       expect(availability.arc, isNotNull, reason: arcId);
       expect(availability.storefront, isNotNull, reason: arcId);
+    }
+  });
+
+  test('web exposes every portfolio prologue without loading its package', () {
+    expect(
+      webRegistry.availableArcs.map((arc) => arc.id),
+      orderedEquals([ContentIds.originArc]),
+    );
+    expect(
+      webRegistry.arcEntries.map((entry) => entry.descriptor?.arcId),
+      orderedEquals([ContentIds.originArc, ..._portfolioArcIds]),
+    );
+
+    for (final arcId in _portfolioArcIds) {
+      final availability = webRegistry.availabilityFor(arcId);
+      final descriptor = availability.descriptor;
+      expect(
+        availability.status,
+        ContentAvailabilityStatus.notInEdition,
+        reason: arcId,
+      );
+      expect(availability.arc, isNull, reason: arcId);
+      expect(availability.storefront, isNotNull, reason: arcId);
+      expect(
+        descriptor?.lockedPreviewChannels,
+        contains(ReleaseChannel.web),
+        reason: arcId,
+      );
+      expect(
+        availability.storefront!.prologuePreview.frames,
+        isNotEmpty,
+        reason: arcId,
+      );
+      final slug = ContentId.parse(arcId, expectedKind: 'arc').localName;
+      expect(
+        webReads.where((path) => path.startsWith('assets/content/arcs/$slug/')),
+        isEmpty,
+        reason: '$arcId package must stay unread on web',
+      );
     }
   });
 
@@ -106,6 +159,17 @@ void main() {
         );
         expect(chapter.startOrder, expectedStart, reason: chapter.id);
         expect(chapter.endOrder, expectedStart + 8, reason: chapter.id);
+        expect(chapter.mapLayout.columns, 3, reason: chapter.id);
+        expect(
+          chapter.mapLayout.pattern,
+          JourneyRoutePattern.snake,
+          reason: chapter.id,
+        );
+        expect(
+          chapter.mapLayout.direction,
+          JourneyRouteDirection.leftToRight,
+          reason: chapter.id,
+        );
         expect(
           arc.catalog.puzzles
               .where((puzzle) => chapter.contains(puzzle.order))
@@ -119,6 +183,37 @@ void main() {
         arc.chapters.last.boss.unlockTargetId,
         arc.unlockIds.finale,
         reason: '$arcId final boss',
+      );
+    }
+  });
+
+  test('every portfolio arc declares exactly 24 unique opponents', () {
+    for (final arcId in _portfolioArcIds) {
+      final arc = registry.arc(arcId);
+      expect(arc, isNotNull, reason: arcId);
+      if (arc == null) continue;
+
+      expect(
+        arc.chapters.every((chapter) => chapter.encounters.length == 2),
+        isTrue,
+        reason: '$arcId must declare two regular encounters per chapter',
+      );
+      final opponents = arc.combatEncounters.toList(growable: false);
+      expect(opponents, hasLength(24), reason: arcId);
+      expect(
+        opponents.map((opponent) => opponent.id).toSet(),
+        hasLength(24),
+        reason: '$arcId opponent IDs',
+      );
+      expect(
+        opponents.map((opponent) => opponent.puzzleId).toSet(),
+        hasLength(24),
+        reason: '$arcId encounter puzzle ownership',
+      );
+      expect(
+        opponents.map((opponent) => opponent.spriteAsset).toSet(),
+        hasLength(24),
+        reason: '$arcId opponent atlases',
       );
     }
   });
@@ -171,6 +266,11 @@ void main() {
       expect(storefront, isNotNull, reason: '$arcId storefront');
       expect(arc, isNotNull, reason: '$arcId package');
       if (storefront == null || arc == null) continue;
+      expect(
+        storefront.tileForegroundAsset,
+        isNotNull,
+        reason: '$arcId storefront lead character',
+      );
 
       final storefrontAssets = <String>{
         storefront.tileArtAsset,
@@ -185,6 +285,11 @@ void main() {
         ...arc.chapters.map((chapter) => chapter.artAsset),
         ...arc.scenes.expand((scene) => scene.assetPaths),
         ...arc.combatEncounters.map((encounter) => encounter.spriteAsset),
+        if (arc.hero case final hero?) ...[
+          hero.storySpriteAsset,
+          hero.combatSpriteAsset,
+          hero.finisherSpriteAsset,
+        ],
       };
       for (final path in referencedArt) {
         expect(File(path).existsSync(), isTrue, reason: '$arcId: $path');
@@ -238,7 +343,7 @@ void main() {
     }
   });
 
-  test('puzzle fingerprints and boss sprite paths are globally unique', () {
+  test('puzzles, new opponent names, and boss art are globally unique', () {
     final origin = registry.arc(ContentIds.originArc);
     expect(origin, isNotNull, reason: ContentIds.originArc);
     final portfolioArcs = <StoryArc>[];
@@ -271,6 +376,35 @@ void main() {
           0,
           (total, arc) => total + arc.catalog.puzzles.length,
         ),
+      ),
+    );
+
+    final opponentNameOwners = <String, CombatEncounter>{};
+    for (final arc in allArcs) {
+      for (final opponent in arc.combatEncounters) {
+        final foldedName = opponent.name.toLowerCase();
+        final previous = opponentNameOwners[foldedName];
+        if (previous != null) {
+          expect(opponent.name, 'Eclipse Drake');
+          expect(previous.name, 'Eclipse Drake');
+          expect(
+            {previous.id.split('/')[1], opponent.id.split('/')[1]},
+            {'origin', 'atlas-of-borrowed-winds'},
+            reason: '${opponent.id} repeats the name owned by ${previous.id}',
+          );
+        } else {
+          opponentNameOwners[foldedName] = opponent;
+        }
+      }
+    }
+    expect(
+      opponentNameOwners,
+      hasLength(
+        allArcs.fold<int>(
+              0,
+              (total, arc) => total + arc.combatEncounters.length,
+            ) -
+            1,
       ),
     );
 

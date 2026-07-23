@@ -1,6 +1,7 @@
 {
   "slug": "crimson-ledger",
   "title": "The Crimson Ledger",
+  "contentVersion": 2,
   "tagline": "A forensic illustrator hunting vampires discovers that the city's charitable blood bank is manufacturing them.",
   "environment": "gothic",
   "seed": 32004,
@@ -18,6 +19,29 @@
     "inkColor": "#080609",
     "dangerColor": "#FF8291"
   },
+  "cast": [
+    {
+      "slug": "elian-voss",
+      "name": "Elian Voss",
+      "role": "Primary protagonist; forensic illustrator and disciplined vampire hunter learning to question institutional certainty.",
+      "visualDescription": "Lean pale young man with tousled black hair and an angular clean-shaven face, wearing a rain-dark charcoal hunter coat, black waistcoat and burgundy cravat; carries a charcoal portrait folio, silver pencil and compact field instruments.",
+      "chromaKey": "#00FF66"
+    },
+    {
+      "slug": "mirelle-dane",
+      "name": "Dr. Mirelle Dane",
+      "role": "Co-protagonist; infected hematologist whose experimental treatment controls her hunger.",
+      "visualDescription": "Dark-haired adult woman with a braided Victorian updo and watchful amber-brown eyes, dressed in a fitted burgundy physician's gown beneath a black lace medical coat; carries a silver-and-crimson blood assay and an orderly belt of glass instruments.",
+      "chromaKey": "#00FF66"
+    },
+    {
+      "slug": "anja-pell",
+      "name": "Sister Anja Pell",
+      "role": "Allied investigator; dispensary nurse who preserves donor records and advocates for victims' families.",
+      "visualDescription": "Resolute young nurse in a white linen wimple and pewter-gray veil over a severe black dispensary dress, with a leather record satchel, red-bound register and ink-stained gloves; practical rather than clerical ornamentation.",
+      "chromaKey": "#00FF66"
+    }
+  ],
   "storefront": {
     "tileSubtitle": "Expose the secret beneath Bellgrave",
     "keyArtPrompt": "A rain-soaked gothic city at night, a precise forensic illustrator holding a charcoal portrait beside an infected woman physician with a silver blood assay, a charitable cathedral dispensary glowing ominously behind them, burgundy glass, gaslight amber, pewter rain, black lace and damp stone, cinematic dark fantasy mystery, original characters, no text, vertical key art",
@@ -72,7 +96,21 @@
         "name": "The Last-Memory Wraith",
         "family": "spectral",
         "moveName": "Fractured Testimony"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "afterimage-leech",
+          "name": "Afterimage Leech",
+          "family": "spectral",
+          "visualDescription": "A long translucent parasite assembled from offset human profiles and charcoal smears, with one crimson memory droplet glowing inside its otherwise hollow body."
+        },
+        {
+          "slug": "morgue-glasswing",
+          "name": "Morgue Glasswing",
+          "family": "winged",
+          "visualDescription": "A broad mothlike scavenger whose pewter-framed wings are cracked specimen glass, each pane holding a contradictory burgundy reflection under gaslight-amber edges."
+        }
+      ]
     },
     {
       "slug": "marked-donor",
@@ -91,7 +129,21 @@
         "name": "The Redaction Hart",
         "family": "antlered",
         "moveName": "Expunge the Name"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "waxseal-signetback",
+          "name": "Waxseal Signetback",
+          "family": "antlered",
+          "visualDescription": "A low six-legged beast cast from dark burgundy sealing wax, with black quill antlers, blank donor tags hanging from its neck and a broken cathedral signet rising from its back."
+        },
+        {
+          "slug": "archive-scrivener",
+          "name": "Archive Scrivener",
+          "family": "clockwork",
+          "visualDescription": "A narrow brass-and-pewter archive automaton on folded ledger legs, wielding paired blade quills while a stamping drum in its chest prints black bars across every name."
+        }
+      ]
     },
     {
       "slug": "hunger-measured",
@@ -110,7 +162,21 @@
         "name": "The Veinroot Colony",
         "family": "rootbound",
         "moveName": "Hungry Circulation"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "coagulate-creeper",
+          "name": "Coagulate Creeper",
+          "family": "rootbound",
+          "visualDescription": "A low laboratory vine grown through cracked blood ampoules, with clot-red tendrils, silver needle thorns and one pulsing root bulb calibrated like a heartbeat."
+        },
+        {
+          "slug": "assay-mireling",
+          "name": "Assay Mireling",
+          "family": "abyssal",
+          "visualDescription": "An asymmetrical creature poured from rejected samples, its translucent crimson torso ringed by false silver calibration marks and mislabeled specimen tabs."
+        }
+      ]
     },
     {
       "slug": "clinics-below",
@@ -129,7 +195,21 @@
         "name": "The Bell-Suture Automaton",
         "family": "clockwork",
         "moveName": "Ward Rotation"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "ward-key-orderly",
+          "name": "Ward-Key Orderly",
+          "family": "clockwork",
+          "visualDescription": "A tall brass hospital attendant with a tile-white ceramic mask, jangling ward keys for ribs, blue clinic lantern eyes and articulated suture shears instead of hands."
+        },
+        {
+          "slug": "restraint-revenant",
+          "name": "Restraint Revenant",
+          "family": "spectral",
+          "visualDescription": "An empty patient silhouette held together by floating leather restraints and pewter buckles, with crimson memory residue outlining the body that should be inside."
+        }
+      ]
     },
     {
       "slug": "staged-hunt",
@@ -148,7 +228,21 @@
         "name": "The Rehearsal Gargoyle",
         "family": "winged",
         "moveName": "Practiced Panic"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "cue-bell-bat",
+          "name": "Cue-Bell Bat",
+          "family": "winged",
+          "visualDescription": "A rain-black stone bat with a brass stage bell in its throat and scripted charity ribbons streaming from its wings, opening its mouth only when the planted panic is meant to begin."
+        },
+        {
+          "slug": "panic-effigy",
+          "name": "Panic Effigy",
+          "family": "spectral",
+          "visualDescription": "A victim-shaped rehearsal dummy of funeral cloth and painted blood, surrounded by translucent screaming mouths that repeat the same staged expression in sequence."
+        }
+      ]
     },
     {
       "slug": "benefactors-arithmetic",
@@ -167,7 +261,21 @@
         "name": "The Tithe Constellation",
         "family": "cosmic",
         "moveName": "Mortal Dividend"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "ledger-comet",
+          "name": "Ledger Comet",
+          "family": "cosmic",
+          "visualDescription": "A crimson glass heart orbiting through a tail of torn account pages, with cold numbered gold stars replacing every donor name along its path."
+        },
+        {
+          "slug": "abacus-exactor",
+          "name": "Abacus Exactor",
+          "family": "clockwork",
+          "visualDescription": "A thin black-brass collector with an abacus ribcage, donor tags on weighted chains and a long quill-spear that clicks each living figure into a profit column."
+        }
+      ]
     },
     {
       "slug": "cathedral-reservoir",
@@ -186,7 +294,21 @@
         "name": "The Reservoir Maw",
         "family": "abyssal",
         "moveName": "Drown the Name"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "sluicebone-eel",
+          "name": "Sluicebone Eel",
+          "family": "abyssal",
+          "visualDescription": "A long cistern predator with crimson glass vertebrae, silver valve fins and half-seen donor faces flowing beneath its transparent skin like trapped reflections."
+        },
+        {
+          "slug": "cistern-penitent",
+          "name": "Cistern Penitent",
+          "family": "spectral",
+          "visualDescription": "A bowed hooded figure formed from wet donor bracelets and pale memory silhouettes, dragging a broken intake chain while reservoir water pours through its absent face."
+        }
+      ]
     },
     {
       "slug": "names-in-daylight",
@@ -205,7 +327,21 @@
         "name": "The Mercy Crucible",
         "family": "volcanic",
         "moveName": "Necessary Sacrifice"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "ash-edict-burner",
+          "name": "Ash-Edict Burner",
+          "family": "volcanic",
+          "visualDescription": "A black-iron censor with a furnace for a hood, wearing burning dispensary decrees as robes while a narrow orange-red flame erases names before they reach daylight."
+        },
+        {
+          "slug": "votive-extractor",
+          "name": "Votive Extractor",
+          "family": "clockwork",
+          "visualDescription": "A brass cathedral-medical reliquary walking on altar legs, its articulated silver syringes feeding crimson ampoules arranged like devotional candles around a cold central halo."
+        }
+      ]
     }
   ],
   "finaleFrames": [

@@ -436,10 +436,15 @@ void main() {
     addTearDown(controller.dispose);
     final arc = controller.content!.arc('regalia:arc/atlas-of-borrowed-winds')!;
 
-    await _pumpBestiary(tester, controller, const Size(600, 6000));
+    await _pumpBestiary(tester, controller, const Size(600, 900));
+    final bestiaryScroll = find.descendant(
+      of: find.byKey(const ValueKey('bestiary-list')),
+      matching: find.byType(Scrollable),
+    );
     final surface = RegaliaTheme.midnight().colorScheme.surface;
     for (final chapter in arc.chapters) {
       final panel = find.byKey(ValueKey('bestiary-chapter-${chapter.id}'));
+      await tester.scrollUntilVisible(panel, 600, scrollable: bestiaryScroll);
       expect(panel, findsOneWidget);
       final expected = RegaliaTheme.readableAccent(
         preferred: chapter.palette.secondary,

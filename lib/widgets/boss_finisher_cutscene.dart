@@ -184,6 +184,10 @@ class BossFinisherCutscene extends StatefulWidget {
     this.effects,
     this.accentColor,
     this.energyColor,
+    this.heroName,
+    this.heroSemanticLabel,
+    this.heroCombatAssetPath,
+    this.heroFinisherAssetPath,
   }) : presentation =
            presentation ?? BossFinisherPresentation.forEncounter(boss);
 
@@ -199,6 +203,10 @@ class BossFinisherCutscene extends StatefulWidget {
   final Widget? effects;
   final Color? accentColor;
   final Color? energyColor;
+  final String? heroName;
+  final String? heroSemanticLabel;
+  final String? heroCombatAssetPath;
+  final String? heroFinisherAssetPath;
 
   @override
   State<BossFinisherCutscene> createState() => _BossFinisherCutsceneState();
@@ -277,6 +285,19 @@ class _BossFinisherCutsceneState extends State<BossFinisherCutscene>
     final colors = Theme.of(context).colorScheme;
     final accent = widget.accentColor ?? colors.secondary;
     final energy = widget.energyColor ?? colors.primary;
+    final activeHeroName = widget.heroName;
+    final specialMoveDescription =
+        activeHeroName == null
+            ? widget.presentation.specialMoveName
+            : '$activeHeroName uses ${widget.presentation.specialMoveName}';
+    final victoryDescription = switch ((
+      widget.heroSemanticLabel,
+      activeHeroName,
+    )) {
+      (final String semanticLabel, _) => '$semanticLabel. Victory.',
+      (null, final String heroName) => '$heroName is victorious.',
+      (null, null) => 'The crown-bearer is victorious.',
+    };
     return BlockSemantics(
       child: Semantics(
         container: true,
@@ -286,8 +307,8 @@ class _BossFinisherCutsceneState extends State<BossFinisherCutscene>
         liveRegion: true,
         label:
             '${widget.boss.isBoss ? 'Boss finisher' : 'Encounter victory'}. '
-            '${widget.presentation.specialMoveName}. '
-            '${widget.boss.name} is defeated. The crown-bearer is victorious.',
+            '$specialMoveDescription. '
+            '${widget.boss.name} is defeated. $victoryDescription',
         child: ExcludeSemantics(
           child: AbsorbPointer(
             child: Material(
@@ -309,6 +330,9 @@ class _BossFinisherCutsceneState extends State<BossFinisherCutscene>
                       accent: accent,
                       energy: energy,
                       restartToken: _restartToken,
+                      heroName: activeHeroName,
+                      heroCombatAssetPath: widget.heroCombatAssetPath,
+                      heroFinisherAssetPath: widget.heroFinisherAssetPath,
                     ),
               ),
             ),
@@ -333,6 +357,9 @@ class _BossFinisherFrame extends StatelessWidget {
     required this.accent,
     required this.energy,
     required this.restartToken,
+    required this.heroName,
+    required this.heroCombatAssetPath,
+    required this.heroFinisherAssetPath,
   });
 
   final double progress;
@@ -347,6 +374,9 @@ class _BossFinisherFrame extends StatelessWidget {
   final Color accent;
   final Color energy;
   final int restartToken;
+  final String? heroName;
+  final String? heroCombatAssetPath;
+  final String? heroFinisherAssetPath;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -387,10 +417,13 @@ class _BossFinisherFrame extends StatelessWidget {
               : _durationSegment(elapsed, timing.exitStart, timing.total);
       final width = constraints.maxWidth;
       final height = constraints.maxHeight;
+      final activeHeroName = heroName?.toUpperCase();
       final defaultKnight = PixelKnightSprite(
         key: const ValueKey('boss-finisher-knight-sprite'),
         animation: isVictory ? KnightAnimation.special : presentation.finisher,
         restartToken: restartToken,
+        combatAssetPath: heroCombatAssetPath,
+        finisherAssetPath: heroFinisherAssetPath,
         // Legacy victory frames are wider than they are tall. This viewport
         // preserves their complete authored canvas before the outer shot fits
         // it to the available screen space.
@@ -482,13 +515,20 @@ class _BossFinisherFrame extends StatelessWidget {
                   isVictory
                       ? 'VICTORY'
                       : boss.isBoss
-                      ? 'REGALIA SPECIAL'
+                      ? activeHeroName == null
+                          ? 'REGALIA SPECIAL'
+                          : 'HERO SPECIAL'
                       : 'ENCOUNTER SPECIAL',
               title:
                   isVictory
-                      ? 'CROWN-BEARER'
+                      ? activeHeroName ?? 'CROWN-BEARER'
                       : presentation.specialMoveName.toUpperCase(),
-              footer: isVictory ? 'THE REGALIA ENDURES' : 'FINAL MOVE',
+              footer:
+                  isVictory
+                      ? activeHeroName == null
+                          ? 'THE REGALIA ENDURES'
+                          : '$activeHeroName ENDURES'
+                      : 'FINAL MOVE',
               accent: accent,
               energy: energy,
               emphasis: isVictory ? victoryProgress : 1,

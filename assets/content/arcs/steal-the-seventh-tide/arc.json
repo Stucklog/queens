@@ -1,8 +1,16 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/steal-the-seventh-tide",
-  "contentVersion": 1,
+  "contentVersion": 2,
   "title": "Steal the Seventh Tide",
+  "hero": {
+    "id": "steal-the-seventh-tide/selke-marr",
+    "name": "Selke Marr",
+    "semanticLabel": "Selke Marr, Disgraced navigator and architect of the seventh-tide heist",
+    "storySpriteAsset": "assets/art/arcs/steal-the-seventh-tide/characters/selke-marr_story_idle.png",
+    "combatSpriteAsset": "assets/art/arcs/steal-the-seventh-tide/characters/selke-marr_combat.png",
+    "finisherSpriteAsset": "assets/art/arcs/steal-the-seventh-tide/characters/selke-marr_finishers.png"
+  },
   "theme": {
     "brightness": "dark",
     "backgroundColor": "#041824",
@@ -58,7 +66,22 @@
         "targetDifficulty": "easy",
         "unlocks": "regalia:chapter/steal-the-seventh-tide/the-eclipse-route"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/tariff-barnacle",
+          "name": "Tariff Barnacle",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/easy-003",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/tariff-barnacle.png"
+        },
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/permit-pistol-shrimp",
+          "name": "Permit Pistol-Shrimp",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/easy-006",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/permit-pistol-shrimp.png"
+        }
+      ],
       "primaryColor": "#54D5D0",
       "secondaryColor": "#FFD28A"
     },
@@ -76,9 +99,9 @@
       "difficulty": "easy",
       "size": 7,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/steal-the-seventh-tide/route-coral-warden",
@@ -96,7 +119,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/steal-the-seventh-tide/masks-beneath-the-waves"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/blueprint-polyp",
+          "name": "Blueprint Polyp",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/easy-023",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/blueprint-polyp.png"
+        },
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/moonmaze-nudibranch",
+          "name": "Moonmaze Nudibranch",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/easy-026",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/moonmaze-nudibranch.png"
+        }
+      ],
       "primaryColor": "#F08F84",
       "secondaryColor": "#8BE3D7"
     },
@@ -116,7 +154,7 @@
       "mapLayout": {
         "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/steal-the-seventh-tide/masque-manta",
@@ -134,7 +172,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/steal-the-seventh-tide/the-drowned-galleries"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/gossip-fanfish",
+          "name": "Gossip Fanfish",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/medium-003",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/gossip-fanfish.png"
+        },
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/pearlmask-crown",
+          "name": "Pearlmask Crown",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/medium-006",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/pearlmask-crown.png"
+        }
+      ],
       "primaryColor": "#B39AE8",
       "secondaryColor": "#75DDD4"
     },
@@ -152,7 +205,7 @@
       "difficulty": "medium",
       "size": 8,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
         "direction": "leftToRight"
       },
@@ -172,7 +225,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/steal-the-seventh-tide/the-living-lock"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/airpocket-sea-cucumber",
+          "name": "Airpocket Sea Cucumber",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/medium-013",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/airpocket-sea-cucumber.png"
+        },
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/exit-sign-cuttle",
+          "name": "Exit-Sign Cuttle",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/medium-016",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/exit-sign-cuttle.png"
+        }
+      ],
       "primaryColor": "#56BFE6",
       "secondaryColor": "#FFB086"
     },
@@ -191,8 +259,8 @@
       "size": 8,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/steal-the-seventh-tide/vent-crowned-judge",
@@ -210,7 +278,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/steal-the-seventh-tide/the-regents-warning"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/truthglass-limpet",
+          "name": "Truthglass Limpet",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/hard-003",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/truthglass-limpet.png"
+        },
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/perjury-chimneyworm",
+          "name": "Perjury Chimneyworm",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/hard-006",
+          "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/perjury-chimneyworm.png"
+        }
+      ],
       "primaryColor": "#F29A70",
       "secondaryColor": "#82E0D2"
     },
@@ -228,9 +311,9 @@
       "difficulty": "hard",
       "size": 9,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/steal-the-seventh-tide/pearl-orrery",
@@ -248,7 +331,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/steal-the-seventh-tide/the-seventh-tide-runs-free"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/moongear-nautilus",
+          "name": "Moongear Nautilus",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/hard-023",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/moongear-nautilus.png"
+        },
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/binary-starfish",
+          "name": "Binary Starfish",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/hard-026",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/binary-starfish.png"
+        }
+      ],
       "primaryColor": "#E7CC8A",
       "secondaryColor": "#77D6E5"
     },
@@ -267,7 +365,7 @@
       "size": 9,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -286,7 +384,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/steal-the-seventh-tide/the-moving-ritual"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/chainwake-comb-jelly",
+          "name": "Chainwake Comb-Jelly",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/expert-003",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/chainwake-comb-jelly.png"
+        },
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/channelshade-lobster",
+          "name": "Channelshade Lobster",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/expert-006",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/channelshade-lobster.png"
+        }
+      ],
       "primaryColor": "#57DDD0",
       "secondaryColor": "#F2C879"
     },
@@ -304,8 +417,8 @@
       "difficulty": "expert",
       "size": 10,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
+        "columns": 3,
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -324,7 +437,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:unlock/steal-the-seventh-tide/finale"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/trenchbell-coelacanth",
+          "name": "Trenchbell Coelacanth",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/expert-013",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/trenchbell-coelacanth.png"
+        },
+        {
+          "id": "regalia:enemy/steal-the-seventh-tide/blindmoon-siphonophore",
+          "name": "Blindmoon Siphonophore",
+          "puzzleId": "regalia:puzzle/steal-the-seventh-tide/expert-016",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/steal-the-seventh-tide/combat/opponents/blindmoon-siphonophore.png"
+        }
+      ],
       "primaryColor": "#8AAEF3",
       "secondaryColor": "#FFBD82"
     }
@@ -338,7 +466,112 @@
           "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_01_a_crew_for_a_living_current.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "selke-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/selke-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.78,
+              "y": 0.74
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Selke Marr, Disgraced navigator and architect of the seventh-tide heist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "nima-coral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/nima-coral_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.28,
+              "y": 0.65
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nima Coral, Former Pearl Court architect who can reshape living coral",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "iri-sable",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/iri-sable_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.28,
+              "y": 0.65
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Iri Sable, Pressure singer whose resonance opens the Pearl Court's living locks",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "jory-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/jory-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.78,
+              "y": 0.74
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Jory Venn, Gifted dryland thief managing a severe fear of deep water",
+            "zOrder": 4,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -361,7 +594,86 @@
           "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_02_the_eclipse_route.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "selke-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/selke-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Selke Marr, Disgraced navigator and architect of the seventh-tide heist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "nima-coral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/nima-coral_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nima Coral, Former Pearl Court architect who can reshape living coral",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "jory-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/jory-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Jory Venn, Gifted dryland thief managing a severe fear of deep water",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -384,7 +696,86 @@
           "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_03_masks_beneath_the_waves.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "selke-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/selke-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Selke Marr, Disgraced navigator and architect of the seventh-tide heist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "iri-sable",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/iri-sable_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Iri Sable, Pressure singer whose resonance opens the Pearl Court's living locks",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "jory-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/jory-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Jory Venn, Gifted dryland thief managing a severe fear of deep water",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -407,7 +798,86 @@
           "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_04_the_drowned_galleries.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "selke-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/selke-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Selke Marr, Disgraced navigator and architect of the seventh-tide heist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "nima-coral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/nima-coral_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nima Coral, Former Pearl Court architect who can reshape living coral",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "jory-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/jory-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Jory Venn, Gifted dryland thief managing a severe fear of deep water",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -430,7 +900,112 @@
           "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_05_the_living_lock.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "selke-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/selke-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.78,
+              "y": 0.74
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Selke Marr, Disgraced navigator and architect of the seventh-tide heist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "nima-coral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/nima-coral_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.28,
+              "y": 0.65
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nima Coral, Former Pearl Court architect who can reshape living coral",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "iri-sable",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/iri-sable_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.28,
+              "y": 0.65
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Iri Sable, Pressure singer whose resonance opens the Pearl Court's living locks",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "jory-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/jory-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.78,
+              "y": 0.74
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Jory Venn, Gifted dryland thief managing a severe fear of deep water",
+            "zOrder": 4,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -453,7 +1028,34 @@
           "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_06_the_regents_warning.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "selke-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/selke-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Selke Marr, Disgraced navigator and architect of the seventh-tide heist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -476,7 +1078,86 @@
           "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_07_the_seventh_tide_runs_free.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "selke-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/selke-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Selke Marr, Disgraced navigator and architect of the seventh-tide heist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "nima-coral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/nima-coral_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nima Coral, Former Pearl Court architect who can reshape living coral",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "iri-sable",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/iri-sable_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Iri Sable, Pressure singer whose resonance opens the Pearl Court's living locks",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -499,7 +1180,34 @@
           "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/chapter_08_the_moving_ritual.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "selke-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/selke-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Selke Marr, Disgraced navigator and architect of the seventh-tide heist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -522,7 +1230,112 @@
           "asset": "assets/art/arcs/steal-the-seventh-tide/backgrounds/finale_crisis.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "selke-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/selke-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.78,
+              "y": 0.74
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Selke Marr, Disgraced navigator and architect of the seventh-tide heist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "nima-coral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/nima-coral_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.28,
+              "y": 0.65
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nima Coral, Former Pearl Court architect who can reshape living coral",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "iri-sable",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/iri-sable_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.28,
+              "y": 0.65
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Iri Sable, Pressure singer whose resonance opens the Pearl Court's living locks",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "jory-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/steal-the-seventh-tide/characters/jory-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.78,
+              "y": 0.74
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Jory Venn, Gifted dryland thief managing a severe fear of deep water",
+            "zOrder": 4,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {

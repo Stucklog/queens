@@ -1,8 +1,16 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/shepherds-of-the-thunderwild",
-  "contentVersion": 1,
+  "contentVersion": 2,
   "title": "Shepherds of the Thunderwild",
+  "hero": {
+    "id": "shepherds-of-the-thunderwild/asha-neral",
+    "name": "Asha Neral",
+    "semanticLabel": "Asha Neral, Young storm-herder leading her first solo migration",
+    "storySpriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/asha-neral_story_idle.png",
+    "combatSpriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/asha-neral_combat.png",
+    "finisherSpriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/asha-neral_finishers.png"
+  },
   "theme": {
     "brightness": "dark",
     "backgroundColor": "#071B2D",
@@ -58,7 +66,22 @@
         "targetDifficulty": "easy",
         "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/the-language-below"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/loopspark-ibex",
+          "name": "Loopspark Ibex",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/easy-003",
+          "spriteFamily": "antlered",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/loopspark-ibex.png"
+        },
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/rainclapper-petrel",
+          "name": "Rainclapper Petrel",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/easy-006",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/rainclapper-petrel.png"
+        }
+      ],
       "primaryColor": "#5EC6F1",
       "secondaryColor": "#FF8DD1"
     },
@@ -76,9 +99,9 @@
       "difficulty": "easy",
       "size": 7,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/shepherds-of-the-thunderwild/lightning-root",
@@ -96,7 +119,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/the-poachers-path"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/signalroot-centipede",
+          "name": "Signalroot Centipede",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/easy-023",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/signalroot-centipede.png"
+        },
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/cadence-cicada",
+          "name": "Cadence Cicada",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/easy-026",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/cadence-cicada.png"
+        }
+      ],
       "primaryColor": "#78D7BC",
       "secondaryColor": "#FFD36F"
     },
@@ -116,7 +154,7 @@
       "mapLayout": {
         "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/shepherds-of-the-thunderwild/snarewing-kite",
@@ -134,7 +172,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/many-tempers-one-herd"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/tagwire-mantis",
+          "name": "Tagwire Mantis",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/medium-003",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/tagwire-mantis.png"
+        },
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/beacon-barb-swallow",
+          "name": "Beacon-Barb Swallow",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/medium-006",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/beacon-barb-swallow.png"
+        }
+      ],
       "primaryColor": "#F0B766",
       "secondaryColor": "#88D4F5"
     },
@@ -152,7 +205,7 @@
       "difficulty": "medium",
       "size": 8,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
         "direction": "leftToRight"
       },
@@ -172,7 +225,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/the-silent-wind-valley"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/dewdrinker-wombat",
+          "name": "Dewdrinker Wombat",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/medium-013",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/dewdrinker-wombat.png"
+        },
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/silencedust-funnel",
+          "name": "Silencedust Funnel",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/medium-016",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/silencedust-funnel.png"
+        }
+      ],
       "primaryColor": "#9ED06E",
       "secondaryColor": "#FF9ACF"
     },
@@ -191,8 +259,8 @@
       "size": 8,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/shepherds-of-the-thunderwild/heatglass-behemoth",
@@ -210,7 +278,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/the-city-of-borrowed-lightning"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/heatglass-jerboa",
+          "name": "Heatglass Jerboa",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/hard-003",
+          "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/heatglass-jerboa.png"
+        },
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/prismwing-locust",
+          "name": "Prismwing Locust",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/hard-006",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/prismwing-locust.png"
+        }
+      ],
       "primaryColor": "#F29B72",
       "secondaryColor": "#8FD8F2"
     },
@@ -228,9 +311,9 @@
       "difficulty": "hard",
       "size": 9,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/shepherds-of-the-thunderwild/loadkeeper-array",
@@ -248,7 +331,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/a-grid-that-can-migrate"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/pulseplug-anemone",
+          "name": "Pulseplug Anemone",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/hard-023",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/pulseplug-anemone.png"
+        },
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/breakerback-ox",
+          "name": "Breakerback Ox",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/hard-026",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/breakerback-ox.png"
+        }
+      ],
       "primaryColor": "#FFD166",
       "secondaryColor": "#91D9C2"
     },
@@ -267,7 +365,7 @@
       "size": 9,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -286,7 +384,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/shepherds-of-the-thunderwild/the-great-shared-migration"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/blackout-veil",
+          "name": "Blackout Veil",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/expert-003",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/blackout-veil.png"
+        },
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/coldroom-echo",
+          "name": "Coldroom Echo",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/expert-006",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/coldroom-echo.png"
+        }
+      ],
       "primaryColor": "#A999E8",
       "secondaryColor": "#FFCF70"
     },
@@ -304,8 +417,8 @@
       "difficulty": "expert",
       "size": 10,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
+        "columns": 3,
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -324,7 +437,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:unlock/shepherds-of-the-thunderwild/finale"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/isobar-roller",
+          "name": "Isobar Roller",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/expert-013",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/isobar-roller.png"
+        },
+        {
+          "id": "regalia:enemy/shepherds-of-the-thunderwild/monsoon-pinwheel",
+          "name": "Monsoon Pinwheel",
+          "puzzleId": "regalia:puzzle/shepherds-of-the-thunderwild/expert-016",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/shepherds-of-the-thunderwild/combat/opponents/monsoon-pinwheel.png"
+        }
+      ],
       "primaryColor": "#71CFF3",
       "secondaryColor": "#FF97D5"
     }
@@ -338,7 +466,34 @@
           "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_01_the_storm_that_never_came.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "asha-neral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/asha-neral_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Asha Neral, Young storm-herder leading her first solo migration",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -361,7 +516,60 @@
           "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_02_the_language_below.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "asha-neral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/asha-neral_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Asha Neral, Young storm-herder leading her first solo migration",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "boro-tem",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/boro-tem_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Boro Tem, Veteran shepherd who teaches Asha to hear the ground-song",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -384,7 +592,60 @@
           "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_03_the_poachers_path.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "asha-neral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/asha-neral_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Asha Neral, Young storm-herder leading her first solo migration",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "tavi-rook",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/tavi-rook_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Tavi Rook, Former poacher guiding the herd through the barriers he helped build",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -407,7 +668,34 @@
           "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_04_many_tempers_one_herd.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "asha-neral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/asha-neral_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Asha Neral, Young storm-herder leading her first solo migration",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -430,7 +718,60 @@
           "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_05_the_silent_wind_valley.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "asha-neral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/asha-neral_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Asha Neral, Young storm-herder leading her first solo migration",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "boro-tem",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/boro-tem_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Boro Tem, Veteran shepherd who teaches Asha to hear the ground-song",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -453,7 +794,60 @@
           "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_06_the_city_of_borrowed_lightning.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "asha-neral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/asha-neral_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Asha Neral, Young storm-herder leading her first solo migration",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "boro-tem",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/boro-tem_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Boro Tem, Veteran shepherd who teaches Asha to hear the ground-song",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -476,7 +870,60 @@
           "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_07_a_grid_that_can_migrate.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "asha-neral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/asha-neral_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Asha Neral, Young storm-herder leading her first solo migration",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "boro-tem",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/boro-tem_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Boro Tem, Veteran shepherd who teaches Asha to hear the ground-song",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -499,7 +946,34 @@
           "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/chapter_08_the_great_shared_migration.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "asha-neral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/asha-neral_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Asha Neral, Young storm-herder leading her first solo migration",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -522,7 +996,86 @@
           "asset": "assets/art/arcs/shepherds-of-the-thunderwild/backgrounds/finale_crisis.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "asha-neral",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/asha-neral_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Asha Neral, Young storm-herder leading her first solo migration",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "boro-tem",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/boro-tem_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Boro Tem, Veteran shepherd who teaches Asha to hear the ground-song",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "tavi-rook",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/shepherds-of-the-thunderwild/characters/tavi-rook_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Tavi Rook, Former poacher guiding the herd through the barriers he helped build",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {

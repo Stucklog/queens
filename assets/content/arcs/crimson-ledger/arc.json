@@ -1,8 +1,16 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/crimson-ledger",
-  "contentVersion": 1,
+  "contentVersion": 2,
   "title": "The Crimson Ledger",
+  "hero": {
+    "id": "crimson-ledger/elian-voss",
+    "name": "Elian Voss",
+    "semanticLabel": "Elian Voss, Primary protagonist; forensic illustrator and disciplined vampire hunter learning to question institutional certainty.",
+    "storySpriteAsset": "assets/art/arcs/crimson-ledger/characters/elian-voss_story_idle.png",
+    "combatSpriteAsset": "assets/art/arcs/crimson-ledger/characters/elian-voss_combat.png",
+    "finisherSpriteAsset": "assets/art/arcs/crimson-ledger/characters/elian-voss_finishers.png"
+  },
   "theme": {
     "brightness": "dark",
     "backgroundColor": "#120D12",
@@ -58,7 +66,22 @@
         "targetDifficulty": "easy",
         "unlocks": "regalia:chapter/crimson-ledger/marked-donor"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/crimson-ledger/afterimage-leech",
+          "name": "Afterimage Leech",
+          "puzzleId": "regalia:puzzle/crimson-ledger/easy-003",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/afterimage-leech.png"
+        },
+        {
+          "id": "regalia:enemy/crimson-ledger/morgue-glasswing",
+          "name": "Morgue Glasswing",
+          "puzzleId": "regalia:puzzle/crimson-ledger/easy-006",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/morgue-glasswing.png"
+        }
+      ],
       "primaryColor": "#B74262",
       "secondaryColor": "#F2C86B"
     },
@@ -76,9 +99,9 @@
       "difficulty": "easy",
       "size": 7,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/crimson-ledger/redaction-hart",
@@ -96,7 +119,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/crimson-ledger/hunger-measured"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/crimson-ledger/waxseal-signetback",
+          "name": "Waxseal Signetback",
+          "puzzleId": "regalia:puzzle/crimson-ledger/easy-023",
+          "spriteFamily": "antlered",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/waxseal-signetback.png"
+        },
+        {
+          "id": "regalia:enemy/crimson-ledger/archive-scrivener",
+          "name": "Archive Scrivener",
+          "puzzleId": "regalia:puzzle/crimson-ledger/easy-026",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/archive-scrivener.png"
+        }
+      ],
       "primaryColor": "#7B4254",
       "secondaryColor": "#E9D7C8"
     },
@@ -116,7 +154,7 @@
       "mapLayout": {
         "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/crimson-ledger/veinroot-colony",
@@ -134,7 +172,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/crimson-ledger/clinics-below"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/crimson-ledger/coagulate-creeper",
+          "name": "Coagulate Creeper",
+          "puzzleId": "regalia:puzzle/crimson-ledger/medium-003",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/coagulate-creeper.png"
+        },
+        {
+          "id": "regalia:enemy/crimson-ledger/assay-mireling",
+          "name": "Assay Mireling",
+          "puzzleId": "regalia:puzzle/crimson-ledger/medium-006",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/assay-mireling.png"
+        }
+      ],
       "primaryColor": "#C25A70",
       "secondaryColor": "#FFB3BD"
     },
@@ -152,7 +205,7 @@
       "difficulty": "medium",
       "size": 8,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
         "direction": "leftToRight"
       },
@@ -172,7 +225,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/crimson-ledger/staged-hunt"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/crimson-ledger/ward-key-orderly",
+          "name": "Ward-Key Orderly",
+          "puzzleId": "regalia:puzzle/crimson-ledger/medium-013",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/ward-key-orderly.png"
+        },
+        {
+          "id": "regalia:enemy/crimson-ledger/restraint-revenant",
+          "name": "Restraint Revenant",
+          "puzzleId": "regalia:puzzle/crimson-ledger/medium-016",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/restraint-revenant.png"
+        }
+      ],
       "primaryColor": "#52678E",
       "secondaryColor": "#BFCDF2"
     },
@@ -191,8 +259,8 @@
       "size": 8,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/crimson-ledger/rehearsal-gargoyle",
@@ -210,7 +278,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/crimson-ledger/benefactors-arithmetic"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/crimson-ledger/cue-bell-bat",
+          "name": "Cue-Bell Bat",
+          "puzzleId": "regalia:puzzle/crimson-ledger/hard-003",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/cue-bell-bat.png"
+        },
+        {
+          "id": "regalia:enemy/crimson-ledger/panic-effigy",
+          "name": "Panic Effigy",
+          "puzzleId": "regalia:puzzle/crimson-ledger/hard-006",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/panic-effigy.png"
+        }
+      ],
       "primaryColor": "#A63E58",
       "secondaryColor": "#FFD0D7"
     },
@@ -228,9 +311,9 @@
       "difficulty": "hard",
       "size": 9,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/crimson-ledger/tithe-constellation",
@@ -248,7 +331,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/crimson-ledger/cathedral-reservoir"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/crimson-ledger/ledger-comet",
+          "name": "Ledger Comet",
+          "puzzleId": "regalia:puzzle/crimson-ledger/hard-023",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/ledger-comet.png"
+        },
+        {
+          "id": "regalia:enemy/crimson-ledger/abacus-exactor",
+          "name": "Abacus Exactor",
+          "puzzleId": "regalia:puzzle/crimson-ledger/hard-026",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/abacus-exactor.png"
+        }
+      ],
       "primaryColor": "#705B9A",
       "secondaryColor": "#DCCBFF"
     },
@@ -267,7 +365,7 @@
       "size": 9,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -286,7 +384,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/crimson-ledger/names-in-daylight"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/crimson-ledger/sluicebone-eel",
+          "name": "Sluicebone Eel",
+          "puzzleId": "regalia:puzzle/crimson-ledger/expert-003",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/sluicebone-eel.png"
+        },
+        {
+          "id": "regalia:enemy/crimson-ledger/cistern-penitent",
+          "name": "Cistern Penitent",
+          "puzzleId": "regalia:puzzle/crimson-ledger/expert-006",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/cistern-penitent.png"
+        }
+      ],
       "primaryColor": "#23766F",
       "secondaryColor": "#B9E5DB"
     },
@@ -304,8 +417,8 @@
       "difficulty": "expert",
       "size": 10,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
+        "columns": 3,
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -324,7 +437,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:unlock/crimson-ledger/finale"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/crimson-ledger/ash-edict-burner",
+          "name": "Ash-Edict Burner",
+          "puzzleId": "regalia:puzzle/crimson-ledger/expert-013",
+          "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/ash-edict-burner.png"
+        },
+        {
+          "id": "regalia:enemy/crimson-ledger/votive-extractor",
+          "name": "Votive Extractor",
+          "puzzleId": "regalia:puzzle/crimson-ledger/expert-016",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/crimson-ledger/combat/opponents/votive-extractor.png"
+        }
+      ],
       "primaryColor": "#D06B48",
       "secondaryColor": "#FFF0C7"
     }
@@ -338,7 +466,34 @@
           "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_01_impossible_memory.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "elian-voss",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/crimson-ledger/characters/elian-voss_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Elian Voss, Primary protagonist; forensic illustrator and disciplined vampire hunter learning to question institutional certainty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -361,7 +516,60 @@
           "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_02_marked_donor.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "elian-voss",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/crimson-ledger/characters/elian-voss_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Elian Voss, Primary protagonist; forensic illustrator and disciplined vampire hunter learning to question institutional certainty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "anja-pell",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/crimson-ledger/characters/anja-pell_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Sister Anja Pell, Allied investigator; dispensary nurse who preserves donor records and advocates for victims' families.",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -384,7 +592,34 @@
           "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_03_hunger_measured.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "elian-voss",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/crimson-ledger/characters/elian-voss_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Elian Voss, Primary protagonist; forensic illustrator and disciplined vampire hunter learning to question institutional certainty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -407,7 +642,34 @@
           "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_04_clinics_below.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "elian-voss",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/crimson-ledger/characters/elian-voss_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Elian Voss, Primary protagonist; forensic illustrator and disciplined vampire hunter learning to question institutional certainty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -430,7 +692,34 @@
           "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_05_staged_hunt.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "elian-voss",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/crimson-ledger/characters/elian-voss_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Elian Voss, Primary protagonist; forensic illustrator and disciplined vampire hunter learning to question institutional certainty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -453,7 +742,34 @@
           "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_06_benefactors_arithmetic.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "elian-voss",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/crimson-ledger/characters/elian-voss_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Elian Voss, Primary protagonist; forensic illustrator and disciplined vampire hunter learning to question institutional certainty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -476,7 +792,34 @@
           "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_07_cathedral_reservoir.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "elian-voss",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/crimson-ledger/characters/elian-voss_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Elian Voss, Primary protagonist; forensic illustrator and disciplined vampire hunter learning to question institutional certainty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -499,7 +842,34 @@
           "asset": "assets/art/arcs/crimson-ledger/backgrounds/chapter_08_names_in_daylight.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "elian-voss",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/crimson-ledger/characters/elian-voss_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Elian Voss, Primary protagonist; forensic illustrator and disciplined vampire hunter learning to question institutional certainty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -522,7 +892,86 @@
           "asset": "assets/art/arcs/crimson-ledger/backgrounds/finale_crisis.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "elian-voss",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/crimson-ledger/characters/elian-voss_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Elian Voss, Primary protagonist; forensic illustrator and disciplined vampire hunter learning to question institutional certainty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "mirelle-dane",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/crimson-ledger/characters/mirelle-dane_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Dr. Mirelle Dane, Co-protagonist; infected hematologist whose experimental treatment controls her hunger.",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "anja-pell",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/crimson-ledger/characters/anja-pell_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Sister Anja Pell, Allied investigator; dispensary nurse who preserves donor records and advocates for victims' families.",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {

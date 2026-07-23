@@ -1,9 +1,40 @@
 {
   "slug": "steal-the-seventh-tide",
   "title": "Steal the Seventh Tide",
+  "contentVersion": 2,
   "tagline": "A disgraced navigator recruits a crew to steal a lost tide from an undersea palace.",
   "environment": "ocean",
   "seed": 33003,
+  "cast": [
+    {
+      "slug": "selke-marr",
+      "name": "Selke Marr",
+      "role": "Disgraced navigator and architect of the seventh-tide heist",
+      "visualDescription": "Commanding young woman with deep brown skin, black curls braided into a high navigator's knot with small gold rings, long midnight-teal pressure coat over close black diving layers, luminous compass chains and a rolled star-current chart; sharp forward triangular silhouette with one hand always braced on the map.",
+      "chromaKey": "#00FF00"
+    },
+    {
+      "slug": "nima-coral",
+      "name": "Nima Coral",
+      "role": "Former Pearl Court architect who can reshape living coral",
+      "visualDescription": "Tall dark-skinned architect with close-cropped silver curls, asymmetric lavender coral ear-crown, sleeveless blue-violet pressure tunic and articulated pearl forearm guards; carries crescent coral calipers and a spool of glowing plan-thread, creating a clean crescent-and-line silhouette.",
+      "chromaKey": "#00FF00"
+    },
+    {
+      "slug": "iri-sable",
+      "name": "Iri Sable",
+      "role": "Pressure singer whose resonance opens the Pearl Court's living locks",
+      "visualDescription": "Lithe warm-brown pressure singer with long indigo-black locs tied low through silver resonance rings, a pearl throat collar, cropped coral-orange sound mantle over an ink-blue diving suit, and twin shell tuning forks; luminous circular pressure notes create a tall wave-and-ring silhouette without obscuring the face.",
+      "chromaKey": "#FF00FF"
+    },
+    {
+      "slug": "jory-venn",
+      "name": "Jory Venn",
+      "role": "Gifted dryland thief managing a severe fear of deep water",
+      "visualDescription": "Compact young man with medium-brown skin, short unruly black hair, slate-gray burglar layers under a ribbed pressure harness, soft-soled boots and too many lock tools; carries a small brass reserve-air bulb close to his chest, giving his guarded silhouette one bright circular anchor.",
+      "chromaKey": "#00FF00"
+    }
+  ],
   "theme": {
     "brightness": "dark",
     "backgroundColor": "#041824",
@@ -67,6 +98,20 @@
       "actionLabel": "Escape with the plan",
       "primaryColor": "#54D5D0",
       "secondaryColor": "#FFD28A",
+      "encounters": [
+        {
+          "slug": "tariff-barnacle",
+          "name": "Tariff Barnacle",
+          "family": "abyssal",
+          "description": "A waist-high cluster of salt-white barnacles plated with stamped license coins, opening concentric collector mouths around any droplet that crosses its chained harbor-stone base."
+        },
+        {
+          "slug": "permit-pistol-shrimp",
+          "name": "Permit Pistol-Shrimp",
+          "family": "clockwork",
+          "description": "A bright brass shrimp with one enormous pearl-seal claw, snapping compressed-water stamps onto unlicensed currents while tiny filing drawers fan along its tail."
+        }
+      ],
       "boss": {
         "slug": "brinehorn-bailiff",
         "name": "Brinehorn Bailiff",
@@ -86,6 +131,20 @@
       "actionLabel": "Take the eclipse route",
       "primaryColor": "#F08F84",
       "secondaryColor": "#8BE3D7",
+      "encounters": [
+        {
+          "slug": "blueprint-polyp",
+          "name": "Blueprint Polyp",
+          "family": "rootbound",
+          "description": "A walking turquoise coral polyp with rolled palace plans for tentacles, growing walls exactly where Nima's old measurements say an intruder should turn."
+        },
+        {
+          "slug": "moonmaze-nudibranch",
+          "name": "Moonmaze Nudibranch",
+          "family": "cosmic",
+          "description": "A long midnight nudibranch whose luminous back fronds show successive lunar phases, leaving a temporary silver route that curls shut behind its tail."
+        }
+      ],
       "boss": {
         "slug": "route-coral-warden",
         "name": "The Route-Coral Warden",
@@ -105,6 +164,20 @@
       "actionLabel": "Dance out with the plan",
       "primaryColor": "#B39AE8",
       "secondaryColor": "#75DDD4",
+      "encounters": [
+        {
+          "slug": "gossip-fanfish",
+          "name": "Gossip Fanfish",
+          "family": "winged",
+          "description": "A small jewel-blue fish with enormous folding ballroom-fan fins, each rib displaying a guest's mask while its whisper bubbles swim toward the royal watchers."
+        },
+        {
+          "slug": "pearlmask-crown",
+          "name": "Pearlmask Crown",
+          "family": "cosmic",
+          "description": "Eight hand-sized porcelain mask fish orbiting an empty center like a crown, turning in perfect unison so one staring face always follows every dancer."
+        }
+      ],
       "boss": {
         "slug": "masque-manta",
         "name": "The Masque Manta",
@@ -124,6 +197,20 @@
       "actionLabel": "Cross the blackwater",
       "primaryColor": "#56BFE6",
       "secondaryColor": "#FFB086",
+      "encounters": [
+        {
+          "slug": "airpocket-sea-cucumber",
+          "name": "Airpocket Sea Cucumber",
+          "family": "abyssal",
+          "description": "A broad black sea cucumber with a row of shrinking air blisters along its back, firing narrow water jets that push swimmers toward convincing dry doorways."
+        },
+        {
+          "slug": "exit-sign-cuttle",
+          "name": "Exit-Sign Cuttle",
+          "family": "spectral",
+          "description": "A translucent cuttlefish whose rectangular mantle projects a warm dry EXIT in familiar handwriting, while its pale arms quietly point away from the crew."
+        }
+      ],
       "boss": {
         "slug": "blackwater-curator",
         "name": "The Blackwater Curator",
@@ -143,6 +230,20 @@
       "actionLabel": "Speak the honest purpose",
       "primaryColor": "#F29A70",
       "secondaryColor": "#82E0D2",
+      "encounters": [
+        {
+          "slug": "truthglass-limpet",
+          "name": "Truthglass Limpet",
+          "family": "abyssal",
+          "description": "A low transparent limpet with four contradictory motives visible as colored figures beneath its shell, clamping to the vault whenever one tries to hide."
+        },
+        {
+          "slug": "perjury-chimneyworm",
+          "name": "Perjury Chimneyworm",
+          "family": "volcanic",
+          "description": "A tall coral tube worm crowned with orange hydrothermal chimneys, each feathery plume darkening and venting a boiling speech bubble when it hears a lie."
+        }
+      ],
       "boss": {
         "slug": "vent-crowned-judge",
         "name": "The Vent-Crowned Judge",
@@ -162,6 +263,20 @@
       "actionLabel": "Chart a third outcome",
       "primaryColor": "#E7CC8A",
       "secondaryColor": "#77D6E5",
+      "encounters": [
+        {
+          "slug": "moongear-nautilus",
+          "name": "Moongear Nautilus",
+          "family": "clockwork",
+          "description": "A pearl-and-brass nautilus whose spiral shell is a nested lunar mechanism, clicking the water between two rigid channels whenever its black and white eyes align."
+        },
+        {
+          "slug": "binary-starfish",
+          "name": "Binary Starfish",
+          "family": "cosmic",
+          "description": "A large five-armed starfish tiled half moon-white and half trench-black, flipping every arm at once so projected futures alternate between only captivity and ruin."
+        }
+      ],
       "boss": {
         "slug": "pearl-orrery",
         "name": "The Pearl Orrery",
@@ -181,6 +296,20 @@
       "actionLabel": "Release the living tide",
       "primaryColor": "#57DDD0",
       "secondaryColor": "#F2C879",
+      "encounters": [
+        {
+          "slug": "chainwake-comb-jelly",
+          "name": "Chainwake Comb-Jelly",
+          "family": "spectral",
+          "description": "A ribbed spherical comb jelly with ghostly prison bars instead of cilia, trailing broken channel chains that keep reforming around the living current."
+        },
+        {
+          "slug": "channelshade-lobster",
+          "name": "Channelshade Lobster",
+          "family": "abyssal",
+          "description": "A long blue-black lobster with canal-wall claws and a segmented lock-gate tail, crouching sideways across every opening the tide remembers as forbidden."
+        }
+      ],
       "boss": {
         "slug": "aftertide-gaoler",
         "name": "The Aftertide Gaoler",
@@ -200,6 +329,20 @@
       "actionLabel": "Guide the leviathan home",
       "primaryColor": "#8AAEF3",
       "secondaryColor": "#FFBD82",
+      "encounters": [
+        {
+          "slug": "trenchbell-coelacanth",
+          "name": "Trenchbell Coelacanth",
+          "family": "abyssal",
+          "description": "A massive slate coelacanth with a bronze pressure bell suspended inside its rib cage, each slow toll sending an ancient migration command through the trench."
+        },
+        {
+          "slug": "blindmoon-siphonophore",
+          "name": "Blindmoon Siphonophore",
+          "family": "cosmic",
+          "description": "A ribbon-long colony of translucent lunar bells descending into darkness, with no eyes and one pearl lure moving through its bodies like a remembered moon."
+        }
+      ],
       "boss": {
         "slug": "vask-the-moonblind",
         "name": "Vask the Moonblind",

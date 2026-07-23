@@ -1,8 +1,16 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/atlas-of-borrowed-winds",
-  "contentVersion": 4,
+  "contentVersion": 5,
   "title": "The Atlas of Borrowed Winds",
+  "hero": {
+    "id": "atlas-of-borrowed-winds/nahla-faris",
+    "name": "Nahla Faris",
+    "semanticLabel": "Nahla Faris, free cartographer",
+    "storySpriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/characters/nahla-faris_story_idle.png",
+    "combatSpriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/characters/nahla-faris_combat.png",
+    "finisherSpriteAsset": "assets/art/arcs/atlas-of-borrowed-winds/characters/nahla-faris_finishers.png"
+  },
   "theme": {
     "brightness": "light",
     "backgroundColor": "#F2D6A2",
@@ -91,9 +99,9 @@
       "difficulty": "easy",
       "size": 7,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/atlas-of-borrowed-winds/dryroot-wyrm",
@@ -146,7 +154,7 @@
       "mapLayout": {
         "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/atlas-of-borrowed-winds/gilded-arbiter",
@@ -197,7 +205,7 @@
       "difficulty": "medium",
       "size": 8,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
         "direction": "leftToRight"
       },
@@ -265,8 +273,8 @@
       "size": 8,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/atlas-of-borrowed-winds/archive-behemoth",
@@ -331,9 +339,9 @@
       "difficulty": "hard",
       "size": 9,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/atlas-of-borrowed-winds/silent-bellkeeper",
@@ -451,8 +459,8 @@
       "difficulty": "expert",
       "size": 10,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
+        "columns": 3,
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -715,7 +723,7 @@
               "id": "nahla",
               "source": {
                 "type": "asset",
-                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/nahla_free_cartographer.png"
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/nahla-faris_story_idle.png"
               },
               "alignment": {
                 "x": -0.54,
@@ -726,13 +734,21 @@
                 "height": 171
               },
               "semanticLabel": "Nahla Faris, free cartographer",
-              "zOrder": 2
+              "zOrder": 2,
+              "animation": {
+                "frameCount": 4,
+                "columns": 4,
+                "rows": 1,
+                "frameDurationMs": 190,
+                "loop": false,
+                "reducedMotion": "firstFrame"
+              }
             },
             {
               "id": "ilyun",
               "source": {
                 "type": "asset",
-                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/ilyun_unbound.png"
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/ilyun_story_idle.png"
               },
               "alignment": {
                 "x": 0.1,
@@ -743,13 +759,21 @@
                 "height": 189
               },
               "semanticLabel": "Ilyun, teacher of boundaries",
-              "zOrder": 3
+              "zOrder": 3,
+              "animation": {
+                "frameCount": 4,
+                "columns": 4,
+                "rows": 1,
+                "frameDurationMs": 190,
+                "loop": false,
+                "reducedMotion": "firstFrame"
+              }
             },
             {
               "id": "samir",
               "source": {
                 "type": "asset",
-                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/samir_mediator.png"
+                "asset": "assets/art/arcs/atlas-of-borrowed-winds/characters/samir-qad_story_idle.png"
               },
               "alignment": {
                 "x": 0.64,
@@ -761,7 +785,15 @@
               },
               "mirrored": true,
               "semanticLabel": "Samir Qad, route mediator",
-              "zOrder": 1
+              "zOrder": 1,
+              "animation": {
+                "frameCount": 4,
+                "columns": 4,
+                "rows": 1,
+                "frameDurationMs": 190,
+                "loop": false,
+                "reducedMotion": "firstFrame"
+              }
             }
           ]
         }

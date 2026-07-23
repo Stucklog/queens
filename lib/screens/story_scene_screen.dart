@@ -283,10 +283,14 @@ class _StorySceneScreenState extends State<StorySceneScreen> {
         palette: palette,
         sceneKind: _sceneKind,
         chapter: chapter,
+        backgroundFitOverride: BoxFit.contain,
       ),
     );
-    if (widget.scene.role != StorySceneRole.chapter) return art;
-    return Align(child: AspectRatio(aspectRatio: 1, child: art));
+    final aspectRatio = switch (widget.scene.role) {
+      StorySceneRole.opening || StorySceneRole.finale => 2 / 3,
+      StorySceneRole.chapter => 1.0,
+    };
+    return Align(child: AspectRatio(aspectRatio: aspectRatio, child: art));
   }
 
   Widget _narrative(BuildContext context, StoryScenePageContent page) {

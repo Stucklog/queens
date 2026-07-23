@@ -422,14 +422,7 @@ _ContentOfflinePolicy _contentOfflinePolicy(
       final packageDirectory = metadataFile.parent;
       if (metadataAsset.startsWith('assets/content/arcs/') &&
           packageDirectory.existsSync()) {
-        packageAssets.addAll(
-          packageDirectory
-              .listSync(recursive: true)
-              .whereType<File>()
-              // Manifest and pubspec asset paths always use URL-style
-              // separators, even when the verifier runs on Windows.
-              .map((file) => file.path.replaceAll('\\', '/')),
-        );
+        _collectDirectoryAssetPaths(packageDirectory, packageAssets);
       }
       if (metadataFile.existsSync()) {
         try {
@@ -448,6 +441,13 @@ _ContentOfflinePolicy _contentOfflinePolicy(
       webPackageAssets.addAll(packageAssets);
     } else {
       webExcludedAssets.addAll(packageAssets);
+      final arcArtDirectory = _arcArtDirectory(arcId);
+      if (arcArtDirectory != null && arcArtDirectory.existsSync()) {
+        // Inventory the complete arc-owned art root, not only paths currently
+        // referenced by metadata. This keeps stale, newly added, or not-yet-
+        // wired artwork from silently entering a staged web bundle.
+        _collectDirectoryAssetPaths(arcArtDirectory, webExcludedAssets);
+      }
     }
     if (includedOnNative) {
       nativePackageAssets.addAll(packageAssets);
@@ -466,7 +466,9 @@ _ContentOfflinePolicy _contentOfflinePolicy(
     );
     if (tileArt != null) descriptorStorefrontAssets.add(tileArt);
     final tileForeground = storefront['tileForegroundAsset'];
-    if (tileForeground != null) {
+    if (tileForeground == null) {
+      failures.add('$arcId storefront has no tileForegroundAsset');
+    } else {
       final asset = _manifestAsset(
         tileForeground,
         '$arcId storefront tileForegroundAsset',
@@ -548,6 +550,24 @@ _ContentOfflinePolicy _contentOfflinePolicy(
     webExcludedAssets: Set.unmodifiable(webExcludedAssets),
     nativePackageAssets: Set.unmodifiable(nativePackageAssets),
     nativeStorefrontAssets: Set.unmodifiable(nativeStorefrontAssets),
+  );
+}
+
+Directory? _arcArtDirectory(String arcId) {
+  final match = RegExp(
+    r'^[a-z][a-z0-9-]*:arc/([a-z0-9]+(?:-[a-z0-9]+)*)$',
+  ).firstMatch(arcId);
+  return match == null ? null : Directory('assets/art/arcs/${match.group(1)}');
+}
+
+void _collectDirectoryAssetPaths(Directory directory, Set<String> result) {
+  result.addAll(
+    directory
+        .listSync(recursive: true, followLinks: false)
+        .whereType<File>()
+        // Manifest and pubspec asset paths always use URL-style separators,
+        // even when the verifier runs on Windows.
+        .map((file) => file.path.replaceAll('\\', '/')),
   );
 }
 

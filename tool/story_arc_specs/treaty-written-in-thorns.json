@@ -1,6 +1,7 @@
 {
   "slug": "treaty-written-in-thorns",
   "title": "A Treaty Written in Thorns",
+  "contentVersion": 2,
   "tagline": "Two enemy envoys are bound to a living treaty that punishes every lie they tell each other.",
   "environment": "thorns",
   "seed": 32002,
@@ -18,6 +19,22 @@
     "inkColor": "#06100C",
     "dangerColor": "#FF8491"
   },
+  "cast": [
+    {
+      "slug": "liora-ash",
+      "name": "Liora Ash",
+      "role": "Co-protagonist; disciplined Ash envoy whose strategic ambiguity becomes dangerous under the living treaty.",
+      "visualDescription": "Adult woman with an olive complexion and black hair braided into a formal crownless updo, wearing a structured deep-emerald envoy's gown with black-iron shoulder guards, parchment panels and restrained gold filigree; white blossoms and living thorn-ink circle one bare wrist.",
+      "chromaKey": "#00C8FF"
+    },
+    {
+      "slug": "ren-vale",
+      "name": "Ren Vale",
+      "role": "Co-protagonist; celebrated Vale commander learning to negotiate grief instead of defeating it.",
+      "visualDescription": "Broad-shouldered adult man with a tawny complexion, dark wavy hair and close beard, dressed in thorn-ridged blackened plate over a bruised-rose cloak and formal Vale sash; his peace-bound sword and vine-scarred wrist remain clearly visible.",
+      "chromaKey": "#00C8FF"
+    }
+  ],
   "storefront": {
     "tileSubtitle": "Tell the truth across an enemy border",
     "keyArtPrompt": "Two rival fantasy envoys standing on opposite sides of a living vine-written treaty, disciplined woman diplomat in deep emerald ceremonial dress and celebrated man commander in thorned black armor, their wrists linked by flowering ink, burned frontier fields blooming behind them, bruised rose twilight, parchment cream, candlelit court intrigue, romantic tension without embrace, original characters, no text, vertical key art",
@@ -72,7 +89,21 @@
         "name": "The Covenant Briar",
         "family": "rootbound",
         "moveName": "Loophole Labyrinth"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "clausebloom-adder",
+          "name": "Clausebloom Adder",
+          "family": "rootbound",
+          "visualDescription": "A living-vine serpent with cream parchment scales, black-ink clauses along its spine and a white treaty flower opening inside a thorn-lined jaw."
+        },
+        {
+          "slug": "wax-oath-scarab",
+          "name": "Wax-Oath Scarab",
+          "family": "clockwork",
+          "visualDescription": "A black-iron beetle plated in opposing emerald and bruised-rose seals, carrying an incomplete wax signature between calligraphy-nib mandibles."
+        }
+      ]
     },
     {
       "slug": "truth-under-skin",
@@ -91,7 +122,21 @@
         "name": "The Courtesy Shade",
         "family": "spectral",
         "moveName": "Beautiful Evasion"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "silken-alibi",
+          "name": "Silken Alibi",
+          "family": "spectral",
+          "visualDescription": "A courtly shadow wrapped in bruised-rose silk, its smooth face rotating between flattering porcelain masks while thorned hands remain hidden behind its back."
+        },
+        {
+          "slug": "needleword-vine",
+          "name": "Needleword Vine",
+          "family": "rootbound",
+          "visualDescription": "A calligraphic green-black vine that coils into a speaking profile, with fine iron needles beneath translucent parchment skin and honeyed words blooming as poisonous flowers."
+        }
+      ]
     },
     {
       "slug": "border-progress",
@@ -110,7 +155,21 @@
         "name": "The False-Flag Shrike",
         "family": "winged",
         "moveName": "Borrowed Colors"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "cipher-banner-scissortail",
+          "name": "Cipher-Banner Scissortail",
+          "family": "winged",
+          "visualDescription": "A knife-winged black bird stitched from torn Ash and Vale standards, with a long forked banner tail and Orr's private cipher picked out in pale thread across its pinfeathers."
+        },
+        {
+          "slug": "marchline-decoy",
+          "name": "Marchline Decoy",
+          "family": "clockwork",
+          "visualDescription": "A wooden-and-iron training soldier wearing mismatched halves of both armies' uniforms, stamping copied formation marks and backward footprints with jointed boot presses."
+        }
+      ]
     },
     {
       "slug": "flowers-in-burned-fields",
@@ -129,7 +188,21 @@
         "name": "The Cinderhart",
         "family": "antlered",
         "moveName": "Ashen Roll Call"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "memorial-fawn",
+          "name": "Memorial Fawn",
+          "family": "antlered",
+          "visualDescription": "A small deer of soot-black wood with two villages' memorial ribbons knotted around its legs and delicate white flowers beginning to open along its charred antlers."
+        },
+        {
+          "slug": "gravefurrow-boar",
+          "name": "Gravefurrow Boar",
+          "family": "rootbound",
+          "visualDescription": "A low armored boar grown from burned roots, disputed boundary stones and broken plow iron, with one green shoot emerging wherever its tusks cut the ash."
+        }
+      ]
     },
     {
       "slug": "masque-of-two-courts",
@@ -148,7 +221,21 @@
         "name": "The Clockwork Chaperone",
         "family": "clockwork",
         "moveName": "Compulsory Waltz"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "waltzmask-marionette",
+          "name": "Waltzmask Marionette",
+          "family": "clockwork",
+          "visualDescription": "A gilded dance puppet in split emerald-and-rose court costume, with a two-faced masque, dance-card gears in its chest and black control wires pulling every limb into prescribed steps."
+        },
+        {
+          "slug": "letterlace-mayfly",
+          "name": "Letterlace Mayfly",
+          "family": "winged",
+          "visualDescription": "A long-tailed black-lace mayfly whose four upright wings are forged love letters layered over parchment, with wax-seal eyes and flowering ink dust falling from each beat."
+        }
+      ]
     },
     {
       "slug": "thorns-at-the-heart",
@@ -167,7 +254,21 @@
         "name": "The War-Ember Regent",
         "family": "volcanic",
         "moveName": "Inherited Command"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "edict-pyre",
+          "name": "Edict Pyre",
+          "family": "volcanic",
+          "visualDescription": "A walking crown-shaped brazier in black iron, its body draped in burning royal orders and its orange core fed by miniature emerald and rose war banners."
+        },
+        {
+          "slug": "heartbind-standard",
+          "name": "Heartbind Standard",
+          "family": "rootbound",
+          "visualDescription": "A living military standard rooted on thorn legs, bearing two faded crowns while red-green vines reach from its embroidered heart toward the nearest oath scars."
+        }
+      ]
     },
     {
       "slug": "orrs-last-proof",
@@ -186,7 +287,21 @@
         "name": "The Proof-Eater",
         "family": "abyssal",
         "moveName": "Devour the Connection"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "contradiction-forkmouth",
+          "name": "Contradiction Forkmouth",
+          "family": "abyssal",
+          "visualDescription": "A broad crawling ink blot split into two opposed crested mouths, with hooked writing limbs and a lightless hollow belly where linked testimony disappears."
+        },
+        {
+          "slug": "cipher-shearer",
+          "name": "Cipher Shearer",
+          "family": "clockwork",
+          "visualDescription": "A long-legged black-iron evidence cutter with Orr's cipher engraved on scissor forelimbs, built to snip glowing witness threads without disturbing the isolated papers."
+        }
+      ]
     },
     {
       "slug": "treaty-without-chains",
@@ -205,7 +320,21 @@
         "name": "The Sovereign Knot",
         "family": "cosmic",
         "moveName": "Peace by Compulsion"
-      }
+      },
+      "encounters": [
+        {
+          "slug": "crownchain-gyre",
+          "name": "Crownchain Gyre",
+          "family": "cosmic",
+          "visualDescription": "Two empty miniature crowns orbit a white-hot compulsory vow, linked by gold thorn chains against a deep emerald-and-rose star field shaped like a closed fist."
+        },
+        {
+          "slug": "bound-vote-herald",
+          "name": "Bound-Vote Herald",
+          "family": "spectral",
+          "visualDescription": "A faceless dual-court herald in layered parchment robes, carrying two chained blank signatures while many translucent delegate hands strain outward from beneath its sleeves."
+        }
+      ]
     }
   ],
   "finaleFrames": [

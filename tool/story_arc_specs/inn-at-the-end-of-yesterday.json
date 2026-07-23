@@ -1,9 +1,33 @@
 {
   "slug": "inn-at-the-end-of-yesterday",
   "title": "The Inn at the End of Yesterday",
+  "contentVersion": 2,
   "tagline": "A wandering inn shelters people from their worst regrets—until one guest's missing yesterday threatens everyone else's tomorrow.",
   "environment": "inn",
   "seed": 32003,
+  "cast": [
+    {
+      "slug": "tamsin-reed",
+      "name": "Tamsin Reed",
+      "role": "Young innkeeper and keeper of the house rules",
+      "visualDescription": "Warm brown skin, loose chestnut curls pinned into a practical low bun, cream rolled-sleeve blouse, moss-green fitted waistcoat over an oat apron and plum split skirt, sturdy rain boots, old brass key in one hand and a plum leather rulebook under the other arm; compact upright silhouette with a crowded key ring at the hip.",
+      "chromaKey": "#00FF00"
+    },
+    {
+      "slug": "corin",
+      "name": "Corin",
+      "role": "Ghostly baker and the inn's warm-hearted memory keeper",
+      "visualDescription": "Broad older baker rendered in translucent moon-pale blue, short beard, swept-back hair beneath a soft baker's cap, rolled sleeves and long flour-dusted apron; rounded welcoming silhouette carrying a wooden peel or steaming pear cake, with softly fading feet and no green accents.",
+      "chromaKey": "#00FF00"
+    },
+    {
+      "slug": "pip-sallow",
+      "name": "Pip Sallow",
+      "role": "Cheerful courier carrying a twelve-year-undelivered letter",
+      "visualDescription": "Short wiry courier with medium-brown skin and unruly dark curls, teal travel coat, mustard scarf, patched brown boots and an oversized weathered letter satchel; triangular forward-leaning silhouette, sealed envelope in hand and brass route charms bouncing from the strap.",
+      "chromaKey": "#00FF00"
+    }
+  ],
   "theme": {
     "brightness": "light",
     "backgroundColor": "#F6EAD4",
@@ -67,6 +91,20 @@
       "actionLabel": "Keep the first memory",
       "primaryColor": "#B87934",
       "secondaryColor": "#4C3B70",
+      "encounters": [
+        {
+          "slug": "footnote-tripod",
+          "name": "Footnote Tripod",
+          "family": "clockwork",
+          "description": "A low brass book clasp walking on three oversized fountain-pen legs, with a snapping annotation ruler for a tail and tiny paper house rules feeding through its back like a receipt roll."
+        },
+        {
+          "slug": "courtesy-candlestick",
+          "name": "Courtesy Candlestick",
+          "family": "spectral",
+          "description": "A hovering three-armed hall candelabrum whose white-gloved flames point guests toward compulsory doors while wax forms a severe porter's face around its central wick."
+        }
+      ],
       "boss": {
         "slug": "rulebook-porter",
         "name": "The Rulebook Porter",
@@ -86,6 +124,20 @@
       "actionLabel": "Enter the empty room",
       "primaryColor": "#8D668A",
       "secondaryColor": "#47334F",
+      "encounters": [
+        {
+          "slug": "vacancy-ermine",
+          "name": "Vacancy Ermine",
+          "family": "spectral",
+          "description": "A long powder-white spectral ermine with room-number eyes and a broad linen tail that wipes written clues clean, leaving only its empty silhouette wherever it passes."
+        },
+        {
+          "slug": "eraser-valise",
+          "name": "Eraser Valise",
+          "family": "spectral",
+          "description": "An unattended upright suitcase walking on umbrella-handle legs, its luggage labels fading to white as a bell cord and polite empty gloves emerge from the open lid."
+        }
+      ],
       "boss": {
         "slug": "blank-bellhop",
         "name": "The Blank Bellhop",
@@ -105,6 +157,20 @@
       "actionLabel": "Cook the lost hours",
       "primaryColor": "#6D8750",
       "secondaryColor": "#344D32",
+      "encounters": [
+        {
+          "slug": "minute-mold",
+          "name": "Minute Mold",
+          "family": "rootbound",
+          "description": "A squat pantry fungus whose layered bracket caps resemble clock faces at different hours, walking on tangled pale roots that prematurely brown every crumb they touch."
+        },
+        {
+          "slug": "sundial-snail",
+          "name": "The Sundial Snail",
+          "family": "cosmic",
+          "description": "A pear-gold snail with a dark stone sundial for a shell; its luminous feelers cast two incompatible shadows while fruit ripens and spoils along its silver trail."
+        }
+      ],
       "boss": {
         "slug": "hour-thieving-ivy",
         "name": "The Hour-Thieving Ivy",
@@ -124,6 +190,20 @@
       "actionLabel": "Follow the changing route",
       "primaryColor": "#4F7690",
       "secondaryColor": "#2D4F63",
+      "encounters": [
+        {
+          "slug": "postmark-magpie",
+          "name": "Postmark Magpie",
+          "family": "winged",
+          "description": "A sharp folded-paper magpie with red wax-seal eyes, collecting address fragments in its fan tail and stamping every doorway it lands on RETURNED."
+        },
+        {
+          "slug": "compass-fold-fox",
+          "name": "Compass-Fold Fox",
+          "family": "clockwork",
+          "description": "A long angular fox folded from blue route maps, with a brass compass chest and articulated ruler legs that pivot corridors toward the safest wrong destination."
+        }
+      ],
       "boss": {
         "slug": "routefold-raven",
         "name": "The Routefold Raven",
@@ -143,6 +223,20 @@
       "actionLabel": "Protect the futures",
       "primaryColor": "#806D51",
       "secondaryColor": "#483B2D",
+      "encounters": [
+        {
+          "slug": "possibility-okapi",
+          "name": "Possibility Okapi",
+          "family": "antlered",
+          "description": "A tall smoke-brown okapi whose translucent crown branches into incompatible neck and head silhouettes, with striped legs that each land in a different possible version of the lobby."
+        },
+        {
+          "slug": "choicewheel-orb-weaver",
+          "name": "Choicewheel Orb-Weaver",
+          "family": "cosmic",
+          "description": "A prism-bodied orb-weaver suspended inside a wheel of windowpane silk, each radial thread reflecting a different future occupant before the web spins to another possibility."
+        }
+      ],
       "boss": {
         "slug": "future-horn-stag",
         "name": "The Future-Horn Stag",
@@ -162,6 +256,20 @@
       "actionLabel": "Remember the locked day",
       "primaryColor": "#6B557A",
       "secondaryColor": "#463452",
+      "encounters": [
+        {
+          "slug": "wishbucket-toad",
+          "name": "Wishbucket Toad",
+          "family": "abyssal",
+          "description": "A squat black well toad wearing an iron bucket as a head, with a knotted rope tongue and a starless opening behind the handle; droplets fall upward into its wide back."
+        },
+        {
+          "slug": "reflection-ribbon",
+          "name": "Reflection Ribbon",
+          "family": "spectral",
+          "description": "A vertical strip of mirror water wearing Tamsin's childhood reflection across its broad upper fold, while its long rippling lower edge slips silently through the floorboards."
+        }
+      ],
       "boss": {
         "slug": "unremembering-well",
         "name": "The Unremembering Well",
@@ -181,6 +289,20 @@
       "actionLabel": "Restore the missing day",
       "primaryColor": "#9B6F37",
       "secondaryColor": "#4F3B20",
+      "encounters": [
+        {
+          "slug": "keepsake-tessellate",
+          "name": "Keepsake Tessellate",
+          "family": "clockwork",
+          "description": "A walking picture frame assembled from mismatched brass hinges and memory tiles, constantly replacing its portrait with the version each viewer most wants to see."
+        },
+        {
+          "slug": "counterfactual-chimera",
+          "name": "Counterfactual Chimera",
+          "family": "cosmic",
+          "description": "A floating asymmetrical creature made from three incompatible mosaic animals sharing one gold grout outline, breaking apart and recombining whenever a witness disagrees."
+        }
+      ],
       "boss": {
         "slug": "midnight-mosaic",
         "name": "The Midnight Mosaic",
@@ -200,6 +322,20 @@
       "actionLabel": "Write the new rules",
       "primaryColor": "#A85E39",
       "secondaryColor": "#5C3528",
+      "encounters": [
+        {
+          "slug": "do-over-coalchild",
+          "name": "Do-Over Coalchild",
+          "family": "volcanic",
+          "description": "A child-sized coal figure in a crown of candle flames, clutching a glowing do-over like a toy while soot footprints reverse behind it toward the hearth."
+        },
+        {
+          "slug": "hearth-echo-salamander",
+          "name": "Hearth-Echo Salamander",
+          "family": "spectral",
+          "description": "A long translucent fireplace salamander with ember ribs and a chimney-smoke frill, replaying old voices from each bright scale as it coils around the new rules."
+        }
+      ],
       "boss": {
         "slug": "last-regret-fire",
         "name": "The Last-Regret Fire",

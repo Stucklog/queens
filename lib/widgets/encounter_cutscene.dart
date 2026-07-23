@@ -57,6 +57,7 @@ class EncounterCutscene extends StatefulWidget {
     required this.enemyName,
     required this.onFinished,
     this.knightName = 'CROWN-BEARER',
+    this.knightSemanticLabel,
     this.encounterLabel = 'ENEMY ENCOUNTER',
     this.knightEyebrow = 'THE REGALIA ANSWERS',
     this.enemyEyebrow,
@@ -72,6 +73,7 @@ class EncounterCutscene extends StatefulWidget {
   final Widget knightArt;
   final Widget enemyArt;
   final String knightName;
+  final String? knightSemanticLabel;
   final String enemyName;
   final String encounterLabel;
   final String knightEyebrow;
@@ -167,7 +169,9 @@ class _EncounterCutsceneState extends State<EncounterCutscene>
         liveRegion: true,
         label:
             widget.semanticLabel ??
-            '${widget.encounterLabel}. ${widget.knightName} versus ${widget.enemyName}.',
+            '${widget.encounterLabel}. '
+                '${widget.knightSemanticLabel ?? widget.knightName} versus '
+                '${widget.enemyName}.',
         child: ExcludeSemantics(
           child: AbsorbPointer(
             child: Material(

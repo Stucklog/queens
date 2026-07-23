@@ -1,9 +1,33 @@
 {
   "slug": "where-the-rain-trees-walk",
   "title": "Where the Rain Trees Walk",
+  "contentVersion": 2,
   "tagline": "A roof-mender discovers that storms are grown by an ancient forest walking beneath the earth.",
   "environment": "forest",
   "seed": 31002,
+  "cast": [
+    {
+      "slug": "mara-tavi",
+      "name": "Mara Tavi",
+      "role": "Roof-mender and protagonist",
+      "visualDescription": "Compact young craftswoman with deep-brown skin, thick black hair in a wrapped crown braid, an ochre work jacket, celadon rain sash, slate tool roll, and one oversized padded listening gauntlet; her grounded crouch and roof-hook silhouette emphasize repair over combat.",
+      "chromaKey": "#FF00FF"
+    },
+    {
+      "slug": "orra-fen",
+      "name": "Orra Fen",
+      "role": "Beekeeper and keeper of the migration song",
+      "visualDescription": "Small elderly beekeeper with silver coils beneath an amber mesh hood, a moss-green mantle, layered cream work skirts, and a tall forked resonator staff hung with wooden hive gourds; the staff and drifting bee halo create her unmistakable outline.",
+      "chromaKey": "#FF00FF"
+    },
+    {
+      "slug": "iven-rusk",
+      "name": "Iven Rusk",
+      "role": "Young aqueduct engineer",
+      "visualDescription": "Lanky young engineer with warm umber skin, short russet hair, a blue-gray survey coat over clay-colored waders, brass calipers at the hip, and a rectangular water-level frame rising above his shoulders; precise straight lines visibly soften over the arc.",
+      "chromaKey": "#FF00FF"
+    }
+  ],
   "theme": {
     "brightness": "light",
     "backgroundColor": "#F3E7C7",
@@ -67,6 +91,20 @@
       "actionLabel": "Settle the root",
       "primaryColor": "#1F6654",
       "secondaryColor": "#714017",
+      "encounters": [
+        {
+          "slug": "braceback-burrower",
+          "name": "Braceback Burrower",
+          "family": "rootbound",
+          "description": "A wedge-headed root mole armored in snapped rafters, tunneling under repairs and levering the square upward with its timber spine."
+        },
+        {
+          "slug": "rattlehorn-leveret",
+          "name": "Rattlehorn Leveret",
+          "family": "antlered",
+          "description": "A nervous long-eared root hare with two dry twig tines that clatter like thunder whenever villagers pull against the living root."
+        }
+      ],
       "boss": {
         "slug": "rootquake-hart",
         "name": "Rootquake Hart",
@@ -86,6 +124,20 @@
       "actionLabel": "Complete the refrain",
       "primaryColor": "#345F30",
       "secondaryColor": "#654073",
+      "encounters": [
+        {
+          "slug": "hushcomb-drone",
+          "name": "Hushcomb Drone",
+          "family": "winged",
+          "description": "A heavy bronze bee with an empty honeycomb thorax that traps one note in each cell and beats its wings without sound."
+        },
+        {
+          "slug": "refrain-lacuna",
+          "name": "Refrain Lacuna",
+          "family": "spectral",
+          "description": "A hollow person-shaped bundle of dry reeds whose open mask repeats the last phrase it heard but always omits the ending."
+        }
+      ],
       "boss": {
         "slug": "echo-shepherd",
         "name": "Echo Shepherd",
@@ -105,6 +157,20 @@
       "actionLabel": "Balance the gates",
       "primaryColor": "#2C5778",
       "secondaryColor": "#744010",
+      "encounters": [
+        {
+          "slug": "sluiceplate-terrapin",
+          "name": "Sluiceplate Terrapin",
+          "family": "clockwork",
+          "description": "A broad brass water-turtle whose shell is a turning gate plate, sealing one channel each time it withdraws its head."
+        },
+        {
+          "slug": "pressure-reed-asp",
+          "name": "Pressure-Reed Asp",
+          "family": "rootbound",
+          "description": "A thin root serpent with a clear water bladder behind its jaw, swelling into a rigid pipe whenever the gates fall out of sequence."
+        }
+      ],
       "boss": {
         "slug": "gatehouse-automaton",
         "name": "Gatehouse Automaton",
@@ -124,6 +190,20 @@
       "actionLabel": "Mend the flight paths",
       "primaryColor": "#17615C",
       "secondaryColor": "#67416F",
+      "encounters": [
+        {
+          "slug": "cloudbud-bellows",
+          "name": "Cloudbud Bellows",
+          "family": "winged",
+          "description": "A bulbous closed blossom borne on four stained-glass fan wings, inhaling loose cloud petals and carrying them away unopened."
+        },
+        {
+          "slug": "draft-eater-lung",
+          "name": "Draft-Eater Lung",
+          "family": "abyssal",
+          "description": "A twin-lobed leaf-dark lung floating upright in the chamber, its ribbed inner folds inhaling the warm updrafts that guide the pollinators."
+        }
+      ],
       "boss": {
         "slug": "shardwing-murmuration",
         "name": "Shardwing Murmuration",
@@ -143,6 +223,20 @@
       "actionLabel": "Open the foundation",
       "primaryColor": "#70401E",
       "secondaryColor": "#245F4B",
+      "encounters": [
+        {
+          "slug": "kilnscale-skink",
+          "name": "Kilnscale Skink",
+          "family": "volcanic",
+          "description": "A low quick lizard plated in glowing roof tiles, shedding hot ceramic scales into every cooling seam."
+        },
+        {
+          "slug": "buttress-knuckle",
+          "name": "Buttress Knuckle",
+          "family": "clockwork",
+          "description": "A walking stone fist on brass survey legs that hammers temporary supports into permanent obstructions."
+        }
+      ],
       "boss": {
         "slug": "kilnstone-titan",
         "name": "Kilnstone Titan",
@@ -162,6 +256,20 @@
       "actionLabel": "Answer the captive tree",
       "primaryColor": "#73333D",
       "secondaryColor": "#31566D",
+      "encounters": [
+        {
+          "slug": "thirstcup-siphon",
+          "name": "Thirstcup Siphon",
+          "family": "abyssal",
+          "description": "A pale basin-shaped siphon that walks on a fringe of wet feelers and leaves perfectly dry circles wherever its cup-mouth settles."
+        },
+        {
+          "slug": "root-siphon-heron",
+          "name": "Root-Siphon Heron",
+          "family": "winged",
+          "description": "A towering stilt-legged bird of rusted pipe whose needle beak drains green signal light from severed roots."
+        }
+      ],
       "boss": {
         "slug": "bottomless-cistern",
         "name": "Bottomless Cistern",
@@ -181,6 +289,20 @@
       "actionLabel": "Build the living channel",
       "primaryColor": "#245C45",
       "secondaryColor": "#653E22",
+      "encounters": [
+        {
+          "slug": "mortarroot-turnstile",
+          "name": "Mortarroot Turnstile",
+          "family": "rootbound",
+          "description": "A four-armed turnstile of fibrous roots and culvert stones, rotating across each new passage and stealing masonry to bar the next."
+        },
+        {
+          "slug": "culvert-ram",
+          "name": "Culvert Ram",
+          "family": "antlered",
+          "description": "A stocky masonry ram with paired drainpipe horns, charging along the obsolete channel whenever builders open a new course."
+        }
+      ],
       "boss": {
         "slug": "oldcourse-colossus",
         "name": "Oldcourse Colossus",
@@ -200,6 +322,20 @@
       "actionLabel": "Sing the forest home",
       "primaryColor": "#255A6E",
       "secondaryColor": "#684064",
+      "encounters": [
+        {
+          "slug": "lightningseed-skater",
+          "name": "Lightningseed Skater",
+          "family": "cosmic",
+          "description": "A long-legged pond skater enlarged from stormlight, carrying a constellation of charged seeds above its mirror-flat body."
+        },
+        {
+          "slug": "stormpollen-swift",
+          "name": "Stormpollen Swift",
+          "family": "winged",
+          "description": "A sickle-winged bird woven from cloud fibers, scattering bright pollen into false migration trails with every turn."
+        }
+      ],
       "boss": {
         "slug": "rainstar-canopy",
         "name": "Rainstar Canopy",

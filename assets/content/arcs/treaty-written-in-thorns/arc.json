@@ -1,8 +1,16 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/treaty-written-in-thorns",
-  "contentVersion": 1,
+  "contentVersion": 2,
   "title": "A Treaty Written in Thorns",
+  "hero": {
+    "id": "treaty-written-in-thorns/liora-ash",
+    "name": "Liora Ash",
+    "semanticLabel": "Liora Ash, Co-protagonist; disciplined Ash envoy whose strategic ambiguity becomes dangerous under the living treaty.",
+    "storySpriteAsset": "assets/art/arcs/treaty-written-in-thorns/characters/liora-ash_story_idle.png",
+    "combatSpriteAsset": "assets/art/arcs/treaty-written-in-thorns/characters/liora-ash_combat.png",
+    "finisherSpriteAsset": "assets/art/arcs/treaty-written-in-thorns/characters/liora-ash_finishers.png"
+  },
   "theme": {
     "brightness": "dark",
     "backgroundColor": "#0D1B16",
@@ -58,7 +66,22 @@
         "targetDifficulty": "easy",
         "unlocks": "regalia:chapter/treaty-written-in-thorns/truth-under-skin"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/clausebloom-adder",
+          "name": "Clausebloom Adder",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/easy-003",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/clausebloom-adder.png"
+        },
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/wax-oath-scarab",
+          "name": "Wax-Oath Scarab",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/easy-006",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/wax-oath-scarab.png"
+        }
+      ],
       "primaryColor": "#3D8B65",
       "secondaryColor": "#F0C98A"
     },
@@ -76,9 +99,9 @@
       "difficulty": "easy",
       "size": 7,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/treaty-written-in-thorns/courtesy-shade",
@@ -96,7 +119,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/treaty-written-in-thorns/border-progress"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/silken-alibi",
+          "name": "Silken Alibi",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/easy-023",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/silken-alibi.png"
+        },
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/needleword-vine",
+          "name": "Needleword Vine",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/easy-026",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/needleword-vine.png"
+        }
+      ],
       "primaryColor": "#8A5573",
       "secondaryColor": "#F1B5C3"
     },
@@ -116,7 +154,7 @@
       "mapLayout": {
         "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/treaty-written-in-thorns/false-flag-shrike",
@@ -134,7 +172,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/treaty-written-in-thorns/flowers-in-burned-fields"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/cipher-banner-scissortail",
+          "name": "Cipher-Banner Scissortail",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/medium-003",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/cipher-banner-scissortail.png"
+        },
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/marchline-decoy",
+          "name": "Marchline Decoy",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/medium-006",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/marchline-decoy.png"
+        }
+      ],
       "primaryColor": "#A34E63",
       "secondaryColor": "#FFD0D8"
     },
@@ -152,7 +205,7 @@
       "difficulty": "medium",
       "size": 8,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
         "direction": "leftToRight"
       },
@@ -172,7 +225,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/treaty-written-in-thorns/masque-of-two-courts"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/memorial-fawn",
+          "name": "Memorial Fawn",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/medium-013",
+          "spriteFamily": "antlered",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/memorial-fawn.png"
+        },
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/gravefurrow-boar",
+          "name": "Gravefurrow Boar",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/medium-016",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/gravefurrow-boar.png"
+        }
+      ],
       "primaryColor": "#6F8E46",
       "secondaryColor": "#E7D79B"
     },
@@ -191,8 +259,8 @@
       "size": 8,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/treaty-written-in-thorns/clockwork-chaperone",
@@ -210,7 +278,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/treaty-written-in-thorns/thorns-at-the-heart"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/waltzmask-marionette",
+          "name": "Waltzmask Marionette",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/hard-003",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/waltzmask-marionette.png"
+        },
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/letterlace-mayfly",
+          "name": "Letterlace Mayfly",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/hard-006",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/letterlace-mayfly.png"
+        }
+      ],
       "primaryColor": "#87629B",
       "secondaryColor": "#E8CEFF"
     },
@@ -228,9 +311,9 @@
       "difficulty": "hard",
       "size": 9,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/treaty-written-in-thorns/war-ember-regent",
@@ -248,7 +331,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/treaty-written-in-thorns/orrs-last-proof"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/edict-pyre",
+          "name": "Edict Pyre",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/hard-023",
+          "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/edict-pyre.png"
+        },
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/heartbind-standard",
+          "name": "Heartbind Standard",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/hard-026",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/heartbind-standard.png"
+        }
+      ],
       "primaryColor": "#C65A3D",
       "secondaryColor": "#FFD2A1"
     },
@@ -267,7 +365,7 @@
       "size": 9,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -286,7 +384,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/treaty-written-in-thorns/treaty-without-chains"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/contradiction-forkmouth",
+          "name": "Contradiction Forkmouth",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/expert-003",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/contradiction-forkmouth.png"
+        },
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/cipher-shearer",
+          "name": "Cipher Shearer",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/expert-006",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/cipher-shearer.png"
+        }
+      ],
       "primaryColor": "#3D7180",
       "secondaryColor": "#BCE6EC"
     },
@@ -304,8 +417,8 @@
       "difficulty": "expert",
       "size": 10,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
+        "columns": 3,
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -324,7 +437,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:unlock/treaty-written-in-thorns/finale"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/crownchain-gyre",
+          "name": "Crownchain Gyre",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/expert-013",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/crownchain-gyre.png"
+        },
+        {
+          "id": "regalia:enemy/treaty-written-in-thorns/bound-vote-herald",
+          "name": "Bound-Vote Herald",
+          "puzzleId": "regalia:puzzle/treaty-written-in-thorns/expert-016",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/treaty-written-in-thorns/combat/opponents/bound-vote-herald.png"
+        }
+      ],
       "primaryColor": "#3E9A72",
       "secondaryColor": "#FFF0C2"
     }
@@ -338,7 +466,60 @@
           "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_01_living_signature.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "liora-ash",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/liora-ash_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Liora Ash, Co-protagonist; disciplined Ash envoy whose strategic ambiguity becomes dangerous under the living treaty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "ren-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/ren-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Ren Vale, Co-protagonist; celebrated Vale commander learning to negotiate grief instead of defeating it.",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -361,7 +542,60 @@
           "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_02_truth_under_skin.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "liora-ash",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/liora-ash_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Liora Ash, Co-protagonist; disciplined Ash envoy whose strategic ambiguity becomes dangerous under the living treaty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "ren-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/ren-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Ren Vale, Co-protagonist; celebrated Vale commander learning to negotiate grief instead of defeating it.",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -384,7 +618,60 @@
           "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_03_border_progress.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "liora-ash",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/liora-ash_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Liora Ash, Co-protagonist; disciplined Ash envoy whose strategic ambiguity becomes dangerous under the living treaty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "ren-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/ren-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Ren Vale, Co-protagonist; celebrated Vale commander learning to negotiate grief instead of defeating it.",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -407,7 +694,60 @@
           "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_04_flowers_in_burned_fields.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "liora-ash",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/liora-ash_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Liora Ash, Co-protagonist; disciplined Ash envoy whose strategic ambiguity becomes dangerous under the living treaty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "ren-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/ren-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Ren Vale, Co-protagonist; celebrated Vale commander learning to negotiate grief instead of defeating it.",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -430,7 +770,60 @@
           "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_05_masque_of_two_courts.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "liora-ash",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/liora-ash_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Liora Ash, Co-protagonist; disciplined Ash envoy whose strategic ambiguity becomes dangerous under the living treaty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "ren-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/ren-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Ren Vale, Co-protagonist; celebrated Vale commander learning to negotiate grief instead of defeating it.",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -453,7 +846,60 @@
           "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_06_thorns_at_the_heart.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "liora-ash",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/liora-ash_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Liora Ash, Co-protagonist; disciplined Ash envoy whose strategic ambiguity becomes dangerous under the living treaty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "ren-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/ren-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Ren Vale, Co-protagonist; celebrated Vale commander learning to negotiate grief instead of defeating it.",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -476,7 +922,60 @@
           "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_07_orrs_last_proof.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "liora-ash",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/liora-ash_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Liora Ash, Co-protagonist; disciplined Ash envoy whose strategic ambiguity becomes dangerous under the living treaty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "ren-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/ren-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Ren Vale, Co-protagonist; celebrated Vale commander learning to negotiate grief instead of defeating it.",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -499,7 +998,60 @@
           "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/chapter_08_treaty_without_chains.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "liora-ash",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/liora-ash_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Liora Ash, Co-protagonist; disciplined Ash envoy whose strategic ambiguity becomes dangerous under the living treaty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "ren-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/ren-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Ren Vale, Co-protagonist; celebrated Vale commander learning to negotiate grief instead of defeating it.",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -522,7 +1074,60 @@
           "asset": "assets/art/arcs/treaty-written-in-thorns/backgrounds/finale_crisis.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "liora-ash",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/liora-ash_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Liora Ash, Co-protagonist; disciplined Ash envoy whose strategic ambiguity becomes dangerous under the living treaty.",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "ren-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/treaty-written-in-thorns/characters/ren-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Ren Vale, Co-protagonist; celebrated Vale commander learning to negotiate grief instead of defeating it.",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {

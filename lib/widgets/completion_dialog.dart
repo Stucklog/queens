@@ -13,6 +13,8 @@ class CompletionDialog extends StatelessWidget {
     this.advancesJourney,
     this.isJourneyComplete = false,
     this.nextLabel,
+    this.heroCombatAssetPath,
+    this.heroFinisherAssetPath,
   });
 
   final BoardState board;
@@ -21,16 +23,20 @@ class CompletionDialog extends StatelessWidget {
   final bool? advancesJourney;
   final bool isJourneyComplete;
   final String? nextLabel;
+  final String? heroCombatAssetPath;
+  final String? heroFinisherAssetPath;
 
   @override
   Widget build(BuildContext context) => PixelDialog(
     semanticLabel: board.assisted ? 'Board complete' : 'A clean coronation',
-    icon: const SizedBox(
+    icon: SizedBox(
       width: 156,
       height: 104,
       child: PixelKnightSprite(
         key: ValueKey('completion-knight'),
         animation: KnightAnimation.special,
+        combatAssetPath: heroCombatAssetPath,
+        finisherAssetPath: heroFinisherAssetPath,
         width: 156,
         height: 104,
       ),

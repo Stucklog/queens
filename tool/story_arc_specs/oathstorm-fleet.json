@@ -1,9 +1,33 @@
 {
   "slug": "oathstorm-fleet",
   "title": "The Oathstorm Fleet",
+  "contentVersion": 2,
   "tagline": "Where vows become weather, a shipwright must break a dead king's promise before it freezes the sea forever.",
   "environment": "ice",
   "seed": 31003,
+  "cast": [
+    {
+      "slug": "yrsa-vale",
+      "name": "Yrsa Vale",
+      "role": "Shipwright and protagonist",
+      "visualDescription": "Broad-shouldered shipwright with tawny skin, ash-blond side braids, a wind-cut red wool cloak over a charcoal leather apron, iron knee boots, and a long keel chisel paired with a square wooden mallet; her low braced stance reads like a ship's prow.",
+      "chromaKey": "#FF00FF"
+    },
+    {
+      "slug": "toren-ash-hand",
+      "name": "Toren Ash-Hand",
+      "role": "Skald and interpreter of oath-weather",
+      "visualDescription": "Lean older skald with dark-brown skin, a short white beard, one ember-blackened hand, a layered teal sealskin cloak, and a crooked reading staff strung with bone rune slips; fluttering clauses frame his tall narrow silhouette.",
+      "chromaKey": "#FF00FF"
+    },
+    {
+      "slug": "kell-rime",
+      "name": "Kell Rime",
+      "role": "Young clan ward and charter-maker",
+      "visualDescription": "Short young envoy with cropped dark hair, an ice-blue coat pieced from rival clan cuts, an orange scarf, compact snow boots, and a round buckler divided into mismatched heraldic wedges; layered pennants make their silhouette visibly plural rather than royal.",
+      "chromaKey": "#FF00FF"
+    }
+  ],
   "theme": {
     "brightness": "dark",
     "backgroundColor": "#101A26",
@@ -67,6 +91,20 @@
       "actionLabel": "Chart the glass",
       "primaryColor": "#8DDBE8",
       "secondaryColor": "#FFB36B",
+      "encounters": [
+        {
+          "slug": "crackwake-auk",
+          "name": "Crackwake Auk",
+          "family": "winged",
+          "description": "A stout black seabird with rune-ice flippers that pecks one stress line and sends a branching fracture racing behind it."
+        },
+        {
+          "slug": "border-tine-muskox",
+          "name": "Border-Tine Muskox",
+          "family": "antlered",
+          "description": "A broad translucent ice muskox whose ruler-straight wallwise horns grow whenever a rescuer calls someone beyond the harbor an outsider."
+        }
+      ],
       "boss": {
         "slug": "rimehorn-warden",
         "name": "Rimehorn Warden",
@@ -86,6 +124,20 @@
       "actionLabel": "Amend the keel",
       "primaryColor": "#F2C879",
       "secondaryColor": "#7FE0D0",
+      "encounters": [
+        {
+          "slug": "splinter-impounder",
+          "name": "Splinter Impounder",
+          "family": "rootbound",
+          "description": "A tall three-legged ashwood officer with clamp hands, pinning rejected oath clauses against the keel like confiscated planks."
+        },
+        {
+          "slug": "keelworm-clausegnawer",
+          "name": "Keelworm Clausegnawer",
+          "family": "clockwork",
+          "description": "A segmented iron-toothed woodworm that tunnels along carved sentences and replaces every unfinished word with a locking rune."
+        }
+      ],
       "boss": {
         "slug": "clausewood-jotun",
         "name": "Clausewood Jotun",
@@ -105,6 +157,20 @@
       "actionLabel": "Bind the free crews",
       "primaryColor": "#FF9898",
       "secondaryColor": "#80D8F0",
+      "encounters": [
+        {
+          "slug": "boastbeak-skua",
+          "name": "Boastbeak Skua",
+          "family": "winged",
+          "description": "A long-jawed storm bird whose inflated throat is a red speech pennant, shouting a captain's claim back in a harsher voice."
+        },
+        {
+          "slug": "pennon-wolf",
+          "name": "Pennon Wolf",
+          "family": "spectral",
+          "description": "A lean four-legged apparition folded from rival battle flags, splitting into a separate colored shadow for every command it hears."
+        }
+      ],
       "boss": {
         "slug": "banner-raven-parliament",
         "name": "Banner-Raven Parliament",
@@ -124,6 +190,20 @@
       "actionLabel": "Name those returning",
       "primaryColor": "#78D5E8",
       "secondaryColor": "#F3C66D",
+      "encounters": [
+        {
+          "slug": "name-eater-isopod",
+          "name": "Name-Eater Isopod",
+          "family": "abyssal",
+          "description": "A broad armored crawler beneath the ice whose overlapping shell plates scrape names from trapped ships as it passes."
+        },
+        {
+          "slug": "homecurrent-portal",
+          "name": "Homecurrent Portal",
+          "family": "cosmic",
+          "description": "A translucent ring of returning currents whose homeward glyphs orbit an open doorway, forced shut whenever the oath marks passage as invasion."
+        }
+      ],
       "boss": {
         "slug": "deepname-leviathan",
         "name": "Deepname Leviathan",
@@ -143,6 +223,20 @@
       "actionLabel": "Open the hostage harbor",
       "primaryColor": "#FFAC72",
       "secondaryColor": "#92D9D0",
+      "encounters": [
+        {
+          "slug": "lockcoal-mastiff",
+          "name": "Lockcoal Mastiff",
+          "family": "volcanic",
+          "description": "A heavy black-stone hound with a barred furnace chest, breathing warmth inward while its iron tail bolts the harbor gate."
+        },
+        {
+          "slug": "hearthchain-hoarder",
+          "name": "Hearthchain Hoarder",
+          "family": "clockwork",
+          "description": "A walking iron brazier on four bent legs, hoarding every communal fire behind a curtain of oversized lock chains."
+        }
+      ],
       "boss": {
         "slug": "hearthlaw-giant",
         "name": "Hearthlaw Giant",
@@ -162,6 +256,20 @@
       "actionLabel": "Revise the verdict",
       "primaryColor": "#A7C7FF",
       "secondaryColor": "#FFD27D",
+      "encounters": [
+        {
+          "slug": "precedent-coffer",
+          "name": "Precedent Coffer",
+          "family": "clockwork",
+          "description": "A walking iron law chest with stacked tablets for a lid, stamping each old ruling into the ice with four square piston feet."
+        },
+        {
+          "slug": "crossing-examiner",
+          "name": "Crossing Examiner",
+          "family": "spectral",
+          "description": "A faceless robed judge suspended from aurora calipers, measuring approaching vessels against a doorway that continually narrows."
+        }
+      ],
       "boss": {
         "slug": "verdict-wheel",
         "name": "Verdict Wheel",
@@ -181,6 +289,20 @@
       "actionLabel": "Answer the dead king",
       "primaryColor": "#CFB5FF",
       "secondaryColor": "#77DFC8",
+      "encounters": [
+        {
+          "slug": "snow-rune-draugr",
+          "name": "Snow-Rune Draugr",
+          "family": "spectral",
+          "description": "A tall frozen oath-warrior with no face beneath its helm, exhaling the dead king's command through cracks in its rune-carved ribs."
+        },
+        {
+          "slug": "pyre-ash-widow",
+          "name": "Pyre-Ash Widow",
+          "family": "volcanic",
+          "description": "A veiled funeral figure of banked coals and snow, gathering abandoned promises into six ember-bright arms beneath its mourning cloth."
+        }
+      ],
       "boss": {
         "slug": "dead-kings-word",
         "name": "Dead King's Word",
@@ -200,6 +322,20 @@
       "actionLabel": "Open the aurora roads",
       "primaryColor": "#82E9E3",
       "secondaryColor": "#FFCA7A",
+      "encounters": [
+        {
+          "slug": "roadlight-narwhal",
+          "name": "Roadlight Narwhal",
+          "family": "cosmic",
+          "description": "A floating aurora whale whose long spiral tusk pins two branching sea roads together until neither can change course."
+        },
+        {
+          "slug": "aurora-spindle",
+          "name": "Aurora Spindle",
+          "family": "clockwork",
+          "description": "A hovering iron reel with hooked rune arms, winding flexible bands of teal sky into one taut unbroken winter cord."
+        }
+      ],
       "boss": {
         "slug": "aurora-worldcoil",
         "name": "Aurora Worldcoil",

@@ -79,6 +79,6 @@ void main() {
 }
 
 AppController _controller() => AppController(
-  contentPolicy: const ContentEntitlementPolicy.web(),
+  contentPolicy: const ContentEntitlementPolicy.paidPlatform(),
   contentAssetReader: (path) => File(path).readAsString(),
 );

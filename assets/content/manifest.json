@@ -95,14 +95,17 @@
       "metadataAsset": "assets/content/arcs/sun-sail-covenant/arc.json",
       "entitlementId": "regalia:entitlement/base/sun-sail-covenant",
       "channels": [
-        "web",
         "paidPlatform"
+      ],
+      "lockedPreviewChannels": [
+        "web"
       ],
       "storefront": {
         "title": "The Sun-Sail Covenant",
         "tileSubtitle": "Sail beyond the eclipse",
-        "lockedTileSubtitle": "Play the complete story",
+        "lockedTileSubtitle": "Preview the prologue · Available in the apps",
         "tileArtAsset": "assets/storefront/sun-sail-covenant/tile.jpg",
+        "tileForegroundAsset": "assets/storefront/sun-sail-covenant/nera-venn.png",
         "theme": {
           "backgroundColor": "#07142F",
           "surfaceColor": "#10254A",
@@ -159,14 +162,17 @@
       "metadataAsset": "assets/content/arcs/where-the-rain-trees-walk/arc.json",
       "entitlementId": "regalia:entitlement/base/where-the-rain-trees-walk",
       "channels": [
-        "web",
         "paidPlatform"
+      ],
+      "lockedPreviewChannels": [
+        "web"
       ],
       "storefront": {
         "title": "Where the Rain Trees Walk",
         "tileSubtitle": "Follow the roots to rain",
-        "lockedTileSubtitle": "Play the complete story",
+        "lockedTileSubtitle": "Preview the prologue · Available in the apps",
         "tileArtAsset": "assets/storefront/where-the-rain-trees-walk/tile.jpg",
+        "tileForegroundAsset": "assets/storefront/where-the-rain-trees-walk/mara-tavi.png",
         "theme": {
           "backgroundColor": "#F3E7C7",
           "surfaceColor": "#FFF7E1",
@@ -223,14 +229,17 @@
       "metadataAsset": "assets/content/arcs/oathstorm-fleet/arc.json",
       "entitlementId": "regalia:entitlement/base/oathstorm-fleet",
       "channels": [
-        "web",
         "paidPlatform"
+      ],
+      "lockedPreviewChannels": [
+        "web"
       ],
       "storefront": {
         "title": "The Oathstorm Fleet",
         "tileSubtitle": "Rewrite the frozen sea",
-        "lockedTileSubtitle": "Play the complete story",
+        "lockedTileSubtitle": "Preview the prologue · Available in the apps",
         "tileArtAsset": "assets/storefront/oathstorm-fleet/tile.jpg",
+        "tileForegroundAsset": "assets/storefront/oathstorm-fleet/yrsa-vale.png",
         "theme": {
           "backgroundColor": "#101A26",
           "surfaceColor": "#1A2B39",
@@ -287,14 +296,17 @@
       "metadataAsset": "assets/content/arcs/crimson-ledger/arc.json",
       "entitlementId": "regalia:entitlement/base/crimson-ledger",
       "channels": [
-        "web",
         "paidPlatform"
+      ],
+      "lockedPreviewChannels": [
+        "web"
       ],
       "storefront": {
         "title": "The Crimson Ledger",
         "tileSubtitle": "Expose the secret beneath Bellgrave",
-        "lockedTileSubtitle": "Play the complete story",
+        "lockedTileSubtitle": "Preview the prologue · Available in the apps",
         "tileArtAsset": "assets/storefront/crimson-ledger/tile.jpg",
+        "tileForegroundAsset": "assets/storefront/crimson-ledger/elian-voss.png",
         "theme": {
           "backgroundColor": "#120D12",
           "surfaceColor": "#21171F",
@@ -351,13 +363,12 @@
       "metadataAsset": "assets/content/arcs/atlas-of-borrowed-winds/arc.json",
       "entitlementId": "regalia:entitlement/paid/atlas-of-borrowed-winds",
       "channels": [
-        "web",
         "paidPlatform"
       ],
       "storefront": {
         "title": "The Atlas of Borrowed Winds",
         "tileSubtitle": "Rewrite a desert of living roads",
-        "lockedTileSubtitle": "Play the complete story",
+        "lockedTileSubtitle": "Preview the prologue · Available in the apps",
         "tileArtAsset": "assets/storefront/atlas-of-borrowed-winds/tile.jpg",
         "tileForegroundAsset": "assets/storefront/atlas-of-borrowed-winds/nahla_apprentice.png",
         "theme": {
@@ -536,21 +547,27 @@
             }
           ]
         }
-      }
+      },
+      "lockedPreviewChannels": [
+        "web"
+      ]
     },
     {
       "arcId": "regalia:arc/treaty-written-in-thorns",
       "metadataAsset": "assets/content/arcs/treaty-written-in-thorns/arc.json",
       "entitlementId": "regalia:entitlement/base/treaty-written-in-thorns",
       "channels": [
-        "web",
         "paidPlatform"
+      ],
+      "lockedPreviewChannels": [
+        "web"
       ],
       "storefront": {
         "title": "A Treaty Written in Thorns",
         "tileSubtitle": "Tell the truth across an enemy border",
-        "lockedTileSubtitle": "Play the complete story",
+        "lockedTileSubtitle": "Preview the prologue · Available in the apps",
         "tileArtAsset": "assets/storefront/treaty-written-in-thorns/tile.jpg",
+        "tileForegroundAsset": "assets/storefront/treaty-written-in-thorns/liora-ash.png",
         "theme": {
           "backgroundColor": "#0D1B16",
           "surfaceColor": "#182922",
@@ -607,14 +624,17 @@
       "metadataAsset": "assets/content/arcs/inn-at-the-end-of-yesterday/arc.json",
       "entitlementId": "regalia:entitlement/base/inn-at-the-end-of-yesterday",
       "channels": [
-        "web",
         "paidPlatform"
+      ],
+      "lockedPreviewChannels": [
+        "web"
       ],
       "storefront": {
         "title": "The Inn at the End of Yesterday",
         "tileSubtitle": "Find tomorrow beyond one last regret",
-        "lockedTileSubtitle": "Play the complete story",
+        "lockedTileSubtitle": "Preview the prologue · Available in the apps",
         "tileArtAsset": "assets/storefront/inn-at-the-end-of-yesterday/tile.jpg",
+        "tileForegroundAsset": "assets/storefront/inn-at-the-end-of-yesterday/tamsin-reed.png",
         "theme": {
           "backgroundColor": "#F6EAD4",
           "surfaceColor": "#FFF8EA",
@@ -671,14 +691,17 @@
       "metadataAsset": "assets/content/arcs/ninth-library/arc.json",
       "entitlementId": "regalia:entitlement/base/ninth-library",
       "channels": [
-        "web",
         "paidPlatform"
+      ],
+      "lockedPreviewChannels": [
+        "web"
       ],
       "storefront": {
         "title": "The Ninth Library",
         "tileSubtitle": "Enter the archive beneath accepted truth",
-        "lockedTileSubtitle": "Play the complete story",
+        "lockedTileSubtitle": "Preview the prologue · Available in the apps",
         "tileArtAsset": "assets/storefront/ninth-library/tile.jpg",
+        "tileForegroundAsset": "assets/storefront/ninth-library/oriel-marr.png",
         "theme": {
           "backgroundColor": "#100D1C",
           "surfaceColor": "#1A1629",
@@ -735,14 +758,17 @@
       "metadataAsset": "assets/content/arcs/shepherds-of-the-thunderwild/arc.json",
       "entitlementId": "regalia:entitlement/base/shepherds-of-the-thunderwild",
       "channels": [
-        "web",
         "paidPlatform"
+      ],
+      "lockedPreviewChannels": [
+        "web"
       ],
       "storefront": {
         "title": "Shepherds of the Thunderwild",
         "tileSubtitle": "Guide the last great storm herd home",
-        "lockedTileSubtitle": "Play the complete story",
+        "lockedTileSubtitle": "Preview the prologue · Available in the apps",
         "tileArtAsset": "assets/storefront/shepherds-of-the-thunderwild/tile.jpg",
+        "tileForegroundAsset": "assets/storefront/shepherds-of-the-thunderwild/asha-neral.png",
         "theme": {
           "backgroundColor": "#071B2D",
           "surfaceColor": "#102A3E",
@@ -799,14 +825,17 @@
       "metadataAsset": "assets/content/arcs/steal-the-seventh-tide/arc.json",
       "entitlementId": "regalia:entitlement/base/steal-the-seventh-tide",
       "channels": [
-        "web",
         "paidPlatform"
+      ],
+      "lockedPreviewChannels": [
+        "web"
       ],
       "storefront": {
         "title": "Steal the Seventh Tide",
         "tileSubtitle": "Rob a palace and return the ocean's highest tide",
-        "lockedTileSubtitle": "Play the complete story",
+        "lockedTileSubtitle": "Preview the prologue · Available in the apps",
         "tileArtAsset": "assets/storefront/steal-the-seventh-tide/tile.jpg",
+        "tileForegroundAsset": "assets/storefront/steal-the-seventh-tide/selke-marr.png",
         "theme": {
           "backgroundColor": "#041824",
           "surfaceColor": "#0B2A38",

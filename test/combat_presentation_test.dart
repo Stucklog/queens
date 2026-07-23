@@ -231,6 +231,34 @@ void main() {
     },
   );
 
+  testWidgets('arc hero owns the combat status and accessibility label', (
+    tester,
+  ) async {
+    const heroLabel = 'Nera Venn, route courier and protagonist';
+    const line = 'Nera Venn is ready for your next command.';
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: CombatPresentationBar(
+            animation: KnightAnimation.bounce,
+            restartToken: 0,
+            knightLine: line,
+            heroName: 'Nera Venn',
+            heroSemanticLabel: heroLabel,
+            onKnightCompleted: () {},
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text('NERA VENN'), findsOneWidget);
+    expect(find.text('CROWN-BEARER'), findsNothing);
+    expect(find.bySemanticsLabel('$heroLabel. $line'), findsOneWidget);
+    expect(find.bySemanticsLabel(RegExp('Knight companion')), findsNothing);
+  });
+
   testWidgets('in-chapter encounters react and cannot be dismissed', (
     tester,
   ) async {

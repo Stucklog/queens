@@ -1,8 +1,16 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/oathstorm-fleet",
-  "contentVersion": 1,
+  "contentVersion": 2,
   "title": "The Oathstorm Fleet",
+  "hero": {
+    "id": "oathstorm-fleet/yrsa-vale",
+    "name": "Yrsa Vale",
+    "semanticLabel": "Yrsa Vale, Shipwright and protagonist",
+    "storySpriteAsset": "assets/art/arcs/oathstorm-fleet/characters/yrsa-vale_story_idle.png",
+    "combatSpriteAsset": "assets/art/arcs/oathstorm-fleet/characters/yrsa-vale_combat.png",
+    "finisherSpriteAsset": "assets/art/arcs/oathstorm-fleet/characters/yrsa-vale_finishers.png"
+  },
   "theme": {
     "brightness": "dark",
     "backgroundColor": "#101A26",
@@ -58,7 +66,22 @@
         "targetDifficulty": "easy",
         "unlocks": "regalia:chapter/oathstorm-fleet/amendable-keel"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/oathstorm-fleet/crackwake-auk",
+          "name": "Crackwake Auk",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/easy-003",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/crackwake-auk.png"
+        },
+        {
+          "id": "regalia:enemy/oathstorm-fleet/border-tine-muskox",
+          "name": "Border-Tine Muskox",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/easy-006",
+          "spriteFamily": "antlered",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/border-tine-muskox.png"
+        }
+      ],
       "primaryColor": "#8DDBE8",
       "secondaryColor": "#FFB36B"
     },
@@ -76,9 +99,9 @@
       "difficulty": "easy",
       "size": 7,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/oathstorm-fleet/clausewood-jotun",
@@ -96,7 +119,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/oathstorm-fleet/captains-at-cross-purposes"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/oathstorm-fleet/splinter-impounder",
+          "name": "Splinter Impounder",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/easy-023",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/splinter-impounder.png"
+        },
+        {
+          "id": "regalia:enemy/oathstorm-fleet/keelworm-clausegnawer",
+          "name": "Keelworm Clausegnawer",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/easy-026",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/keelworm-clausegnawer.png"
+        }
+      ],
       "primaryColor": "#F2C879",
       "secondaryColor": "#7FE0D0"
     },
@@ -116,7 +154,7 @@
       "mapLayout": {
         "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/oathstorm-fleet/banner-raven-parliament",
@@ -134,7 +172,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/oathstorm-fleet/names-beneath-ice"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/oathstorm-fleet/boastbeak-skua",
+          "name": "Boastbeak Skua",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/medium-003",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/boastbeak-skua.png"
+        },
+        {
+          "id": "regalia:enemy/oathstorm-fleet/pennon-wolf",
+          "name": "Pennon Wolf",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/medium-006",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/pennon-wolf.png"
+        }
+      ],
       "primaryColor": "#FF9898",
       "secondaryColor": "#80D8F0"
     },
@@ -152,7 +205,7 @@
       "difficulty": "medium",
       "size": 8,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
         "direction": "leftToRight"
       },
@@ -172,7 +225,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/oathstorm-fleet/hostages-harbor"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/oathstorm-fleet/name-eater-isopod",
+          "name": "Name-Eater Isopod",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/medium-013",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/name-eater-isopod.png"
+        },
+        {
+          "id": "regalia:enemy/oathstorm-fleet/homecurrent-portal",
+          "name": "Homecurrent Portal",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/medium-016",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/homecurrent-portal.png"
+        }
+      ],
       "primaryColor": "#78D5E8",
       "secondaryColor": "#F3C66D"
     },
@@ -191,8 +259,8 @@
       "size": 8,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/oathstorm-fleet/hearthlaw-giant",
@@ -210,7 +278,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/oathstorm-fleet/current-on-trial"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/oathstorm-fleet/lockcoal-mastiff",
+          "name": "Lockcoal Mastiff",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/hard-003",
+          "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/lockcoal-mastiff.png"
+        },
+        {
+          "id": "regalia:enemy/oathstorm-fleet/hearthchain-hoarder",
+          "name": "Hearthchain Hoarder",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/hard-006",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/hearthchain-hoarder.png"
+        }
+      ],
       "primaryColor": "#FFAC72",
       "secondaryColor": "#92D9D0"
     },
@@ -228,9 +311,9 @@
       "difficulty": "hard",
       "size": 9,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/oathstorm-fleet/verdict-wheel",
@@ -248,7 +331,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/oathstorm-fleet/heart-of-the-oathstorm"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/oathstorm-fleet/precedent-coffer",
+          "name": "Precedent Coffer",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/hard-023",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/precedent-coffer.png"
+        },
+        {
+          "id": "regalia:enemy/oathstorm-fleet/crossing-examiner",
+          "name": "Crossing Examiner",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/hard-026",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/crossing-examiner.png"
+        }
+      ],
       "primaryColor": "#A7C7FF",
       "secondaryColor": "#FFD27D"
     },
@@ -267,7 +365,7 @@
       "size": 9,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -286,7 +384,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/oathstorm-fleet/aurora-roads"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/oathstorm-fleet/snow-rune-draugr",
+          "name": "Snow-Rune Draugr",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/expert-003",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/snow-rune-draugr.png"
+        },
+        {
+          "id": "regalia:enemy/oathstorm-fleet/pyre-ash-widow",
+          "name": "Pyre-Ash Widow",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/expert-006",
+          "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/pyre-ash-widow.png"
+        }
+      ],
       "primaryColor": "#CFB5FF",
       "secondaryColor": "#77DFC8"
     },
@@ -304,8 +417,8 @@
       "difficulty": "expert",
       "size": 10,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
+        "columns": 3,
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -324,7 +437,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:unlock/oathstorm-fleet/finale"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/oathstorm-fleet/roadlight-narwhal",
+          "name": "Roadlight Narwhal",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/expert-013",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/roadlight-narwhal.png"
+        },
+        {
+          "id": "regalia:enemy/oathstorm-fleet/aurora-spindle",
+          "name": "Aurora Spindle",
+          "puzzleId": "regalia:puzzle/oathstorm-fleet/expert-016",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/oathstorm-fleet/combat/opponents/aurora-spindle.png"
+        }
+      ],
       "primaryColor": "#82E9E3",
       "secondaryColor": "#FFCA7A"
     }
@@ -338,7 +466,34 @@
           "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_01_harbor_of_glass.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "yrsa-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/yrsa-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Yrsa Vale, Shipwright and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -361,7 +516,86 @@
           "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_02_amendable_keel.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "yrsa-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/yrsa-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Yrsa Vale, Shipwright and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "toren-ash-hand",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/toren-ash-hand_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Toren Ash-Hand, Skald and interpreter of oath-weather",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "kell-rime",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/kell-rime_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Kell Rime, Young clan ward and charter-maker",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -384,7 +618,86 @@
           "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_03_captains_at_cross_purposes.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "yrsa-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/yrsa-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Yrsa Vale, Shipwright and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "toren-ash-hand",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/toren-ash-hand_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Toren Ash-Hand, Skald and interpreter of oath-weather",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "kell-rime",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/kell-rime_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Kell Rime, Young clan ward and charter-maker",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -407,7 +720,60 @@
           "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_04_names_beneath_ice.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "yrsa-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/yrsa-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Yrsa Vale, Shipwright and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "toren-ash-hand",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/toren-ash-hand_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Toren Ash-Hand, Skald and interpreter of oath-weather",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -430,7 +796,60 @@
           "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_05_hostages_harbor.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "yrsa-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/yrsa-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Yrsa Vale, Shipwright and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "kell-rime",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/kell-rime_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Kell Rime, Young clan ward and charter-maker",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -453,7 +872,60 @@
           "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_06_current_on_trial.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "yrsa-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/yrsa-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Yrsa Vale, Shipwright and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "toren-ash-hand",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/toren-ash-hand_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Toren Ash-Hand, Skald and interpreter of oath-weather",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -476,7 +948,34 @@
           "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_07_heart_of_the_oathstorm.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "yrsa-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/yrsa-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Yrsa Vale, Shipwright and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -499,7 +998,34 @@
           "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/chapter_08_aurora_roads.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "yrsa-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/yrsa-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Yrsa Vale, Shipwright and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -522,7 +1048,86 @@
           "asset": "assets/art/arcs/oathstorm-fleet/backgrounds/finale_crisis.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "yrsa-vale",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/yrsa-vale_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Yrsa Vale, Shipwright and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "toren-ash-hand",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/toren-ash-hand_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Toren Ash-Hand, Skald and interpreter of oath-weather",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "kell-rime",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/oathstorm-fleet/characters/kell-rime_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Kell Rime, Young clan ward and charter-maker",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {

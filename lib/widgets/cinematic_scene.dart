@@ -17,6 +17,7 @@ class CinematicSceneFrameView extends StatelessWidget {
     required this.palette,
     required this.sceneKind,
     this.chapter,
+    this.backgroundFitOverride,
     this.characterScale = 1,
   }) : assert(characterScale > 0);
 
@@ -24,6 +25,10 @@ class CinematicSceneFrameView extends StatelessWidget {
   final JourneyPalette palette;
   final PixelSceneKind sceneKind;
   final JourneyChapter? chapter;
+
+  /// Overrides authored background fitting for presentation surfaces that
+  /// must guarantee the complete illustration remains visible.
+  final BoxFit? backgroundFitOverride;
 
   /// Scales authored character layers without changing their stage positions.
   ///
@@ -54,6 +59,7 @@ class CinematicSceneFrameView extends StatelessWidget {
   );
 
   Widget _background(BuildContext context) {
+    final fit = backgroundFitOverride ?? _boxFit(frame.background.fit);
     final activeChapter = chapter;
     if (activeChapter != null) {
       return PixelLandscape(
@@ -61,14 +67,14 @@ class CinematicSceneFrameView extends StatelessWidget {
         brightness: palette.theme.brightness,
         sceneKind: sceneKind,
         assetPath: frame.background.asset,
-        fit: _boxFit(frame.background.fit),
+        fit: fit,
       );
     }
     return ColoredBox(
       color: palette.background,
       child: Image.asset(
         frame.background.asset,
-        fit: _boxFit(frame.background.fit),
+        fit: fit,
         filterQuality: FilterQuality.none,
         excludeFromSemantics: true,
         errorBuilder:

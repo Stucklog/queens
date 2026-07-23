@@ -68,21 +68,44 @@ void main() {
     );
   });
 
-  test('Origin declares its route layout in canonical content', () async {
-    final metadata =
-        jsonDecode(
-              await File('assets/content/arcs/origin/arc.json').readAsString(),
-            )
+  test('every bundled chapter declares one Origin-style 3x3 grid', () async {
+    final manifest =
+        jsonDecode(await File('assets/content/manifest.json').readAsString())
             as Map<String, Object?>;
-    final chapters = metadata['chapters']! as List<Object?>;
+    final descriptors = manifest['arcs']! as List<Object?>;
 
-    expect(chapters, hasLength(8));
-    for (final value in chapters) {
-      final chapter = value! as Map<String, Object?>;
-      final layout = JourneyMapLayout.fromJson(chapter['mapLayout']);
-      expect(layout.columns, 3);
-      expect(layout.pattern, JourneyRoutePattern.snake);
-      expect(layout.direction, JourneyRouteDirection.leftToRight);
+    expect(descriptors, hasLength(11));
+    for (final descriptorValue in descriptors) {
+      final descriptor = descriptorValue! as Map<String, Object?>;
+      final arcId = descriptor['arcId']! as String;
+      final metadata =
+          jsonDecode(
+                await File(
+                  descriptor['metadataAsset']! as String,
+                ).readAsString(),
+              )
+              as Map<String, Object?>;
+      final chapters = metadata['chapters']! as List<Object?>;
+
+      expect(chapters, hasLength(8), reason: arcId);
+      for (final value in chapters) {
+        final chapter = value! as Map<String, Object?>;
+        final startOrder = chapter['startOrder']! as int;
+        final endOrder = chapter['endOrder']! as int;
+        final layout = JourneyMapLayout.fromJson(chapter['mapLayout']);
+        expect(endOrder - startOrder + 1, 9, reason: chapter['id']! as String);
+        expect(layout.columns, 3, reason: chapter['id']! as String);
+        expect(
+          layout.pattern,
+          JourneyRoutePattern.snake,
+          reason: chapter['id']! as String,
+        );
+        expect(
+          layout.direction,
+          JourneyRouteDirection.leftToRight,
+          reason: chapter['id']! as String,
+        );
+      }
     }
   });
 

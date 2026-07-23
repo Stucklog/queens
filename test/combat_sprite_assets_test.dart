@@ -27,6 +27,263 @@ void main() {
   });
 
   test(
+    'declared custom hero atlases match the shared sprite ABIs',
+    () {
+      final manifest =
+          jsonDecode(File('assets/content/manifest.json').readAsStringSync())
+              as Map<String, Object?>;
+      final descriptors = manifest['arcs']! as List<Object?>;
+      final heroRecords = <(String, Map<String, Object?>)>[];
+      for (final descriptorValue in descriptors) {
+        final descriptor = descriptorValue! as Map<String, Object?>;
+        final metadata =
+            jsonDecode(
+                  File(
+                    descriptor['metadataAsset']! as String,
+                  ).readAsStringSync(),
+                )
+                as Map<String, Object?>;
+        if (metadata['hero'] case final Map<String, Object?> hero) {
+          heroRecords.add((metadata['id']! as String, hero));
+        }
+      }
+      expect(heroRecords, hasLength(10));
+
+      final allHeroAssets = <String>{};
+      final allCombatSignatures = <int>{
+        _pixelSignature(_decode('assets/art/knight_animations.png')),
+      };
+      final allFinisherSignatures = <int>{
+        _pixelSignature(_decode('assets/art/combat/knight_finishers.png')),
+      };
+      final pubspec = File('pubspec.yaml').readAsStringSync();
+      for (final (arcId, hero) in heroRecords) {
+        final storyAsset = hero['storySpriteAsset']! as String;
+        final combatAsset = hero['combatSpriteAsset']! as String;
+        final finisherAsset = hero['finisherSpriteAsset']! as String;
+        final assets = {storyAsset, combatAsset, finisherAsset};
+        expect(assets, hasLength(3), reason: arcId);
+        expect(
+          allHeroAssets.intersection(assets),
+          isEmpty,
+          reason: '$arcId reuses another hero atlas',
+        );
+        allHeroAssets.addAll(assets);
+
+        final characterDirectory = storyAsset.substring(
+          0,
+          storyAsset.lastIndexOf('/') + 1,
+        );
+        expect(
+          pubspec,
+          contains('- $characterDirectory'),
+          reason: '$arcId character assets must be bundled',
+        );
+        for (final asset in assets) {
+          expect(File(asset).existsSync(), isTrue, reason: asset);
+        }
+
+        final story = _decode(storyAsset);
+        expect(story.width, 768, reason: storyAsset);
+        expect(story.height, 288, reason: storyAsset);
+        _expectCleanPixelArtAlpha(story, reason: storyAsset);
+        _expectAnimatedAtlas(story, columns: 4, rows: 1, reason: storyAsset);
+        _expectTransparentCellGutters(
+          story,
+          columns: 4,
+          rows: 1,
+          gutter: 12,
+          reason: storyAsset,
+        );
+
+        final combat = _decode(combatAsset);
+        expect(combat.width, 1774, reason: combatAsset);
+        expect(combat.height, 887, reason: combatAsset);
+        expect(
+          allCombatSignatures.add(
+            _expectCleanPixelArtAlpha(combat, reason: combatAsset),
+          ),
+          isTrue,
+          reason: '$combatAsset duplicates another or the legacy combat atlas',
+        );
+        _expectHeroCombatAtlas(combat, reason: combatAsset);
+
+        final finishers = _decode(finisherAsset);
+        expect(finishers.width, 1776, reason: finisherAsset);
+        expect(finishers.height, 2368, reason: finisherAsset);
+        expect(
+          allFinisherSignatures.add(
+            _expectCleanPixelArtAlpha(finishers, reason: finisherAsset),
+          ),
+          isTrue,
+          reason:
+              '$finisherAsset duplicates another or the legacy finisher atlas',
+        );
+        _expectAnimatedAtlas(
+          finishers,
+          columns: 6,
+          rows: 8,
+          reason: finisherAsset,
+        );
+        _expectTransparentCellGutters(
+          finishers,
+          columns: 6,
+          rows: 8,
+          gutter: 24,
+          reason: finisherAsset,
+        );
+      }
+    },
+    timeout: const Timeout(Duration(minutes: 2)),
+  );
+
+  test(
+    'each custom arc owns a complete cast and ten production scenes',
+    () {
+      final manifest =
+          jsonDecode(File('assets/content/manifest.json').readAsStringSync())
+              as Map<String, Object?>;
+      final descriptors = manifest['arcs']! as List<Object?>;
+      final allCastAssets = <String>{};
+      final allCastSignatures = <int>{};
+      final allBackgroundAssets = <String>{};
+      final allBackgroundSignatures = <int>{};
+
+      for (final descriptorValue in descriptors) {
+        final descriptor = descriptorValue! as Map<String, Object?>;
+        final metadata =
+            jsonDecode(
+                  File(
+                    descriptor['metadataAsset']! as String,
+                  ).readAsStringSync(),
+                )
+                as Map<String, Object?>;
+        final heroValue = metadata['hero'];
+        if (heroValue is! Map<String, Object?>) continue;
+
+        final arcId = metadata['id']! as String;
+        final arcSlug = arcId.split('/').last;
+        final castAssets = <String>{};
+        final backgroundAssets = <String>{};
+
+        void collectCharacters(Object? value) {
+          if (value is! List<Object?>) return;
+          for (final characterValue in value) {
+            if (characterValue is! Map<String, Object?>) continue;
+            final source = characterValue['source'];
+            if (source is Map<String, Object?> && source['type'] == 'asset') {
+              final asset = source['asset'];
+              if (asset is String) castAssets.add(asset);
+            }
+          }
+        }
+
+        void collectBackground(Object? value) {
+          if (value is Map<String, Object?>) {
+            final asset = value['asset'];
+            if (asset is String) backgroundAssets.add(asset);
+          }
+        }
+
+        for (final sceneValue in metadata['scenes']! as List<Object?>) {
+          final scene = sceneValue! as Map<String, Object?>;
+          final defaults = scene['defaults']! as Map<String, Object?>;
+          collectBackground(defaults['background']);
+          collectCharacters(defaults['characters']);
+          for (final frameValue in scene['frames']! as List<Object?>) {
+            final frame = frameValue! as Map<String, Object?>;
+            collectBackground(frame['background']);
+            collectCharacters(frame['characters']);
+          }
+        }
+
+        expect(
+          castAssets.length,
+          inInclusiveRange(2, 4),
+          reason: '$arcId named cast',
+        );
+        expect(
+          castAssets,
+          contains(heroValue['storySpriteAsset']),
+          reason: '$arcId playable hero must belong to its cast',
+        );
+        expect(
+          allCastAssets.intersection(castAssets),
+          isEmpty,
+          reason: '$arcId reuses another arc cast strip',
+        );
+        allCastAssets.addAll(castAssets);
+
+        for (final asset in castAssets) {
+          expect(
+            asset,
+            startsWith('assets/art/arcs/$arcSlug/characters/'),
+            reason: arcId,
+          );
+          expect(asset, endsWith('_story_idle.png'), reason: arcId);
+          expect(File(asset).existsSync(), isTrue, reason: asset);
+          final story = _decode(asset);
+          expect(story.width, 768, reason: asset);
+          expect(story.height, 288, reason: asset);
+          final signature = _expectCleanPixelArtAlpha(story, reason: asset);
+          expect(
+            allCastSignatures.add(signature),
+            isTrue,
+            reason: '$asset duplicates another expansion cast strip',
+          );
+          _expectAnimatedAtlas(story, columns: 4, rows: 1, reason: asset);
+          _expectTransparentCellGutters(
+            story,
+            columns: 4,
+            rows: 1,
+            gutter: 12,
+            reason: asset,
+          );
+        }
+
+        expect(backgroundAssets, hasLength(10), reason: '$arcId scene art');
+        expect(
+          allBackgroundAssets.intersection(backgroundAssets),
+          isEmpty,
+          reason: '$arcId reuses another arc scene asset',
+        );
+        allBackgroundAssets.addAll(backgroundAssets);
+        var squareScenes = 0;
+        var finaleScenes = 0;
+        for (final asset in backgroundAssets) {
+          expect(
+            asset,
+            startsWith('assets/art/arcs/$arcSlug/backgrounds/'),
+            reason: arcId,
+          );
+          expect(File(asset).existsSync(), isTrue, reason: asset);
+          expect(
+            allBackgroundSignatures.add(_fileSignature(asset)),
+            isTrue,
+            reason: '$asset duplicates another expansion scene file',
+          );
+          final scene = _decodeAny(asset);
+          if (scene.width == 1024 && scene.height == 1024) {
+            squareScenes++;
+          } else if (scene.width == 1024 && scene.height == 1536) {
+            finaleScenes++;
+          } else {
+            fail(
+              '$asset has unexpected dimensions ${scene.width}x${scene.height}',
+            );
+          }
+        }
+        expect(squareScenes, 8, reason: '$arcId chapter paintings');
+        expect(finaleScenes, 2, reason: '$arcId finale paintings');
+      }
+
+      expect(allCastAssets, hasLength(30));
+      expect(allBackgroundAssets, hasLength(100));
+    },
+    timeout: const Timeout(Duration(minutes: 2)),
+  );
+
+  test(
     'every story arc owns a distinct complete opponent roster',
     () {
       final allAssets = <String>{};
@@ -92,7 +349,7 @@ void main() {
         }
       }
     },
-    timeout: const Timeout(Duration(minutes: 2)),
+    timeout: const Timeout(Duration(minutes: 5)),
   );
 }
 
@@ -130,10 +387,37 @@ int _expectCleanPixelArtAlpha(image_lib.Image atlas, {String? reason}) {
   return signature;
 }
 
+int _pixelSignature(image_lib.Image image) {
+  var signature = 0x811c9dc5;
+  for (final pixel in image) {
+    final rgba =
+        (pixel.r.toInt() << 24) |
+        (pixel.g.toInt() << 16) |
+        (pixel.b.toInt() << 8) |
+        pixel.a.toInt();
+    signature = ((signature ^ rgba) * 0x01000193) & 0x7fffffff;
+  }
+  return signature;
+}
+
 image_lib.Image _decode(String path) {
   final decoded = image_lib.decodePng(File(path).readAsBytesSync());
   expect(decoded, isNotNull, reason: path);
   return decoded!;
+}
+
+image_lib.Image _decodeAny(String path) {
+  final decoded = image_lib.decodeImage(File(path).readAsBytesSync());
+  expect(decoded, isNotNull, reason: path);
+  return decoded!;
+}
+
+int _fileSignature(String path) {
+  var signature = 0x811c9dc5;
+  for (final byte in File(path).readAsBytesSync()) {
+    signature = ((signature ^ byte) * 0x01000193) & 0x7fffffff;
+  }
+  return signature;
 }
 
 void _expectAnimatedAtlas(
@@ -221,6 +505,74 @@ void _expectTransparentCellGutters(
     isEmpty,
     reason:
         '${reason ?? 'atlas'} crosses a cell gutter: ${offenders.join(', ')}',
+  );
+}
+
+void _expectHeroCombatAtlas(image_lib.Image atlas, {required String reason}) {
+  const xBoundaries = <int>[0, 240, 490, 685, 900, 1110, 1310, 1520, 1774];
+  const yBoundaries = <int>[0, 220, 415, 605, 887];
+  final gutterOffenders = <String>[];
+  for (var row = 0; row < 4; row++) {
+    final activeColumns = row == 3 ? 4 : 8;
+    final signatures = <int>{};
+    for (var column = 0; column < 8; column++) {
+      final left = xBoundaries[column];
+      final right = xBoundaries[column + 1];
+      final top = yBoundaries[row];
+      final bottom = yBoundaries[row + 1];
+      var occupiedPixels = 0;
+      var gutterPixels = 0;
+      var signature = 0x811c9dc5;
+      for (var y = top; y < bottom; y++) {
+        for (var x = left; x < right; x++) {
+          final pixel = atlas.getPixel(x, y);
+          if (pixel.a == 0) continue;
+          occupiedPixels++;
+          final inGutter =
+              x < left + 10 ||
+              x >= right - 10 ||
+              y < top + 10 ||
+              y >= bottom - 10;
+          if (inGutter) gutterPixels++;
+          if (x.isEven && y.isEven) {
+            final rgba =
+                (pixel.r.toInt() << 24) |
+                (pixel.g.toInt() << 16) |
+                (pixel.b.toInt() << 8) |
+                pixel.a.toInt();
+            signature = ((signature ^ rgba) * 0x01000193) & 0x7fffffff;
+          }
+        }
+      }
+      if (column < activeColumns) {
+        expect(
+          occupiedPixels,
+          greaterThan(160),
+          reason: '$reason row $row frame $column',
+        );
+        signatures.add(signature);
+        if (gutterPixels > 0) {
+          gutterOffenders.add('row $row frame $column ($gutterPixels)');
+        }
+      } else {
+        expect(
+          occupiedPixels,
+          0,
+          reason: '$reason row $row frame $column must remain unused',
+        );
+      }
+    }
+    expect(
+      signatures,
+      hasLength(activeColumns),
+      reason: '$reason row $row repeats a frame',
+    );
+  }
+  expect(
+    gutterOffenders,
+    isEmpty,
+    reason:
+        '$reason crosses a combat cell gutter: ${gutterOffenders.join(', ')}',
   );
 }
 

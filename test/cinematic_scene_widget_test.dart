@@ -131,6 +131,14 @@ void main() {
             .asset,
         endsWith('story_opening.webp'),
       );
+      expect(
+        tester
+            .widget<CinematicSceneFrameView>(
+              find.byKey(const ValueKey('cinematic-frame-three-claimants')),
+            )
+            .backgroundFitOverride,
+        BoxFit.contain,
+      );
 
       await tester.tap(find.text('Open the gate'));
       await tester.pumpAndSettle();
@@ -154,6 +162,14 @@ void main() {
             .background
             .asset,
         endsWith('story_finale.webp'),
+      );
+      expect(
+        tester
+            .widget<CinematicSceneFrameView>(
+              find.byKey(const ValueKey('cinematic-frame-open-gate')),
+            )
+            .backgroundFitOverride,
+        BoxFit.contain,
       );
     },
   );

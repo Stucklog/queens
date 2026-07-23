@@ -14,6 +14,9 @@ jobs:
           flutter-version: 3.29.3
           cache: true
       - run: flutter pub get
+      - run: python3 -m venv /tmp/queens-art-venv
+      - run: /tmp/queens-art-venv/bin/pip install -r tool/requirements.txt
+      - run: /tmp/queens-art-venv/bin/python tool/test_art_pipeline.py
       - run: dart format --output=none --set-exit-if-changed lib test tool
       - run: flutter analyze
       - run: flutter test --exclude-tags=golden

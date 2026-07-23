@@ -68,14 +68,21 @@ class _GameScreenState extends State<GameScreen> {
 
   Future<void> _precacheEncounterPresentation() async {
     if (widget.playMode != PuzzlePlayMode.journey) return;
-    final encounter = widget.controller
-        .arcForPuzzle(widget.puzzle)
-        ?.encounterForPuzzle(widget.puzzle);
-    if (encounter == null) return;
+    final arc = widget.controller.arcForPuzzle(widget.puzzle);
+    if (arc == null) return;
+    final encounter = arc.encounterForPuzzle(widget.puzzle);
+    final hero = arc.hero;
     try {
       await Future.wait([
-        precachePixelArtAssets(context, [encounter.spriteAsset]),
-        PixelKnightSprite.preloadFinishers(),
+        if (encounter != null)
+          precachePixelArtAssets(context, [encounter.spriteAsset]),
+        PixelKnightSprite.preloadCommon(
+          combatAssetPath: hero?.combatSpriteAsset,
+        ),
+        if (encounter != null)
+          PixelKnightSprite.preloadFinishers(
+            finisherAssetPath: hero?.finisherSpriteAsset,
+          ),
       ]);
     } on Object {
       // A broken combat art asset must never make the puzzle unplayable.
@@ -128,6 +135,7 @@ class _GameScreenState extends State<GameScreen> {
         widget.playMode == PuzzlePlayMode.journey
             ? widget.controller.arcForPuzzle(puzzle)
             : null;
+    final hero = storyArc?.hero;
     final boss = storyArc?.bossForPuzzle(puzzle);
     final declaredEncounter = storyArc?.encounterForPuzzle(puzzle);
     final encounter = declaredEncounter;
@@ -210,8 +218,15 @@ class _GameScreenState extends State<GameScreen> {
                             key: const ValueKey('puzzle-knight-companion'),
                             animation: activeKnightAnimation,
                             restartToken: activeKnightRestartToken,
-                            knightLine: _knightLine(activeKnightAnimation),
+                            knightLine: _knightLine(
+                              activeKnightAnimation,
+                              heroName: hero?.name,
+                            ),
                             encounter: encounter,
+                            heroName: hero?.name,
+                            heroSemanticLabel: hero?.semanticLabel,
+                            heroCombatAssetPath: hero?.combatSpriteAsset,
+                            heroFinisherAssetPath: hero?.finisherSpriteAsset,
                             onKnightCompleted:
                                 () => _completeKnightReaction(
                                   activeKnightAnimation,
@@ -603,6 +618,16 @@ class _GameScreenState extends State<GameScreen> {
       builder:
           (context) => CompletionDialog(
             board: board,
+            heroCombatAssetPath:
+                widget.controller
+                    .arcForPuzzle(widget.puzzle)
+                    ?.hero
+                    ?.combatSpriteAsset,
+            heroFinisherAssetPath:
+                widget.controller
+                    .arcForPuzzle(widget.puzzle)
+                    ?.hero
+                    ?.finisherSpriteAsset,
             advancesJourney: outcome.advancedJourney,
             isJourneyComplete: outcome.isJourneyComplete,
             nextLabel:
@@ -792,6 +817,7 @@ class _GameScreenState extends State<GameScreen> {
     PuzzleCompletionOutcome outcome,
   ) async {
     final theme = RegaliaTheme.forChapter(chapter);
+    final hero = widget.controller.arcForPuzzle(widget.puzzle)?.hero;
     await Navigator.of(context).push<void>(
       PageRouteBuilder<void>(
         settings: RouteSettings(name: 'encounter-victory/${encounter.id}'),
@@ -812,6 +838,10 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                   accentColor: chapter.palette.secondary,
                   energyColor: chapter.palette.primary,
+                  heroName: hero?.name,
+                  heroSemanticLabel: hero?.semanticLabel,
+                  heroCombatAssetPath: hero?.combatSpriteAsset,
+                  heroFinisherAssetPath: hero?.finisherSpriteAsset,
                   onFinished: () => Navigator.of(routeContext).pop(),
                 ),
               ),
@@ -863,23 +893,44 @@ class _GameScreenState extends State<GameScreen> {
     _playKnightAnimation(KnightAnimation.bounce);
   }
 
-  String _knightLine(KnightAnimation animation) => switch (animation) {
-    KnightAnimation.walk => 'The crown-bearer presses onward.',
-    KnightAnimation.bounce => 'Ready for your next command.',
-    KnightAnimation.attack => 'A crown claims its ground.',
-    KnightAnimation.defend => 'That square is guarded.',
-    KnightAnimation.damage => 'The ranks clash. Rethink the line.',
-    KnightAnimation.special => 'The final sigil ignites!',
-    KnightAnimation.surprised => 'A new path reveals itself.',
-    KnightAnimation.crownSlash => 'Crown Slash breaks the guard!',
-    KnightAnimation.twinSigil => 'Twin Sigil cuts through!',
-    KnightAnimation.skybreak => 'Skybreak calls down the gale!',
-    KnightAnimation.tidalAegis => 'Tidal Aegis surges forward!',
-    KnightAnimation.cinderfall => 'Cinderfall shakes the arena!',
-    KnightAnimation.brassJudgment => 'Brass Judgment rings out!',
-    KnightAnimation.moonlitSever => 'Moonlit Sever parts the veil!',
-    KnightAnimation.regaliaNova => 'Regalia Nova crowns the final blow!',
-  };
+  String _knightLine(KnightAnimation animation, {String? heroName}) {
+    if (heroName != null) {
+      return switch (animation) {
+        KnightAnimation.walk => '$heroName presses onward.',
+        KnightAnimation.bounce => '$heroName is ready for your next command.',
+        KnightAnimation.attack => '$heroName strikes decisively.',
+        KnightAnimation.defend => '$heroName guards that square.',
+        KnightAnimation.damage => '$heroName regroups. Rethink the line.',
+        KnightAnimation.special => '$heroName ignites the final sigil!',
+        KnightAnimation.surprised => '$heroName discovers a new path.',
+        KnightAnimation.crownSlash ||
+        KnightAnimation.twinSigil ||
+        KnightAnimation.skybreak ||
+        KnightAnimation.tidalAegis ||
+        KnightAnimation.cinderfall ||
+        KnightAnimation.brassJudgment ||
+        KnightAnimation.moonlitSever ||
+        KnightAnimation.regaliaNova => '$heroName unleashes a finishing move!',
+      };
+    }
+    return switch (animation) {
+      KnightAnimation.walk => 'The crown-bearer presses onward.',
+      KnightAnimation.bounce => 'Ready for your next command.',
+      KnightAnimation.attack => 'A crown claims its ground.',
+      KnightAnimation.defend => 'That square is guarded.',
+      KnightAnimation.damage => 'The ranks clash. Rethink the line.',
+      KnightAnimation.special => 'The final sigil ignites!',
+      KnightAnimation.surprised => 'A new path reveals itself.',
+      KnightAnimation.crownSlash => 'Crown Slash breaks the guard!',
+      KnightAnimation.twinSigil => 'Twin Sigil cuts through!',
+      KnightAnimation.skybreak => 'Skybreak calls down the gale!',
+      KnightAnimation.tidalAegis => 'Tidal Aegis surges forward!',
+      KnightAnimation.cinderfall => 'Cinderfall shakes the arena!',
+      KnightAnimation.brassJudgment => 'Brass Judgment rings out!',
+      KnightAnimation.moonlitSever => 'Moonlit Sever parts the veil!',
+      KnightAnimation.regaliaNova => 'Regalia Nova crowns the final blow!',
+    };
+  }
 }
 
 class _Controls extends StatelessWidget {

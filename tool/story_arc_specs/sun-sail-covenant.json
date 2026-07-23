@@ -1,9 +1,33 @@
 {
   "slug": "sun-sail-covenant",
   "title": "The Sun-Sail Covenant",
+  "contentVersion": 2,
   "tagline": "A courier uncovers a survival plan that saves the center by extinguishing the frontier.",
   "environment": "space",
   "seed": 31001,
+  "cast": [
+    {
+      "slug": "nera-venn",
+      "name": "Nera Venn",
+      "role": "Route courier and protagonist",
+      "visualDescription": "Lean dark-skinned courier with close black curls, a cropped saffron flight coat over an ultramarine pressure suit, ivory ceramic shoulder plates, a glowing ledger satchel, and an asymmetric light-sail scarf that gives her a sharp forward-leaning silhouette.",
+      "chromaKey": "#FF00FF"
+    },
+    {
+      "slug": "kest-arlo",
+      "name": "Kest Arlo",
+      "role": "Frontier salvage pilot",
+      "visualDescription": "Compact salvage pilot with a copper undercut, smoke-brown coveralls, a sea-glass cutting harness, heavy magnetic boots, and a folding cable-cutter carried like a hooked boarding tool; squared layers contrast Nera's swept silhouette.",
+      "chromaKey": "#FF00FF"
+    },
+    {
+      "slug": "tor-axiom",
+      "name": "Tor Axiom",
+      "role": "Remorseful solar-engine architect",
+      "visualDescription": "Tall older engineer with silver locs tied through an ivory measuring ring, a midnight survey robe, brass instrument cuffs, and a fan of translucent route gauges rising behind one shoulder; reserved posture and long vertical shapes read distinctly at sprite scale.",
+      "chromaKey": "#FF00FF"
+    }
+  ],
   "theme": {
     "brightness": "dark",
     "backgroundColor": "#07142F",
@@ -67,6 +91,20 @@
       "actionLabel": "Break the eclipse",
       "primaryColor": "#FFD166",
       "secondaryColor": "#70D7FF",
+      "encounters": [
+        {
+          "slug": "penumbra-crownback",
+          "name": "Penumbra Crownback",
+          "family": "antlered",
+          "description": "A low six-legged sentinel of black solar glass whose spine-length compass antlers blink between safe lanes before snapping shut around them."
+        },
+        {
+          "slug": "corona-skimmer",
+          "name": "Corona Skimmer",
+          "family": "winged",
+          "description": "A flat ray-like patrol craft with two blazing sail-fins that banks across the light current and leaves a crescent of eclipse shadow."
+        }
+      ],
       "boss": {
         "slug": "eclipse-hart",
         "name": "Eclipse Hart",
@@ -86,6 +124,20 @@
       "actionLabel": "Relight the beacon",
       "primaryColor": "#F4C95D",
       "secondaryColor": "#7CE0C3",
+      "encounters": [
+        {
+          "slug": "splicevine-crawler",
+          "name": "Splicevine Crawler",
+          "family": "rootbound",
+          "description": "A low six-legged knot of live cable and ceramic plugs that grafts loose wreckage onto its widening chassis."
+        },
+        {
+          "slug": "sailcloth-medusa",
+          "name": "Sailcloth Medusa",
+          "family": "abyssal",
+          "description": "A drifting bell of torn saffron sailcloth with long tether tentacles that cinch debris into a false beacon bloom."
+        }
+      ],
       "boss": {
         "slug": "cablebloom-colossus",
         "name": "Cablebloom Colossus",
@@ -105,6 +157,20 @@
       "actionLabel": "Expose the targets",
       "primaryColor": "#84E1FF",
       "secondaryColor": "#FFD166",
+      "encounters": [
+        {
+          "slug": "seal-snipper-cherub",
+          "name": "Seal-Snipper Cherub",
+          "family": "winged",
+          "description": "A small porcelain audit drone with scissor wings and a many-eyed wax seal for a face, built to clip signatures from moving messages."
+        },
+        {
+          "slug": "quorum-notary",
+          "name": "Quorum Notary",
+          "family": "clockwork",
+          "description": "A tripod clerk-machine whose rotating stamp arms redact the floor into authorized and forbidden wedges."
+        }
+      ],
       "boss": {
         "slug": "audit-seraph",
         "name": "Audit Seraph",
@@ -124,6 +190,20 @@
       "actionLabel": "Unite the witnesses",
       "primaryColor": "#9EC5FF",
       "secondaryColor": "#FFCD70",
+      "encounters": [
+        {
+          "slug": "static-cantor",
+          "name": "Static Cantor",
+          "family": "spectral",
+          "description": "A narrow masked radio phantom wrapped in waveform ribbons, repeating one witness's voice until every other signal disappears."
+        },
+        {
+          "slug": "deadband-angler",
+          "name": "Deadband Angler",
+          "family": "abyssal",
+          "description": "A broad void-fish silhouette whose antenna imitates a friendly observatory pulse while its open rib cage drinks the reply."
+        }
+      ],
       "boss": {
         "slug": "lightless-choir",
         "name": "Lightless Choir",
@@ -143,6 +223,20 @@
       "actionLabel": "Hold the shared current",
       "primaryColor": "#FF9B73",
       "secondaryColor": "#7DE2D1",
+      "encounters": [
+        {
+          "slug": "reactor-lamprey",
+          "name": "Reactor Lamprey",
+          "family": "volcanic",
+          "description": "A long ring-mouthed ember parasite that clamps onto an engine bell and swells with stolen exhaust."
+        },
+        {
+          "slug": "wakeknife-skiff",
+          "name": "Wakeknife Skiff",
+          "family": "clockwork",
+          "description": "An unmanned wedge-shaped skiff with folding blade outriggers that slices between neighboring ships to break their formation."
+        }
+      ],
       "boss": {
         "slug": "cinderwake-behemoth",
         "name": "Cinderwake Behemoth",
@@ -162,6 +256,20 @@
       "actionLabel": "Measure an honest path",
       "primaryColor": "#B9A7FF",
       "secondaryColor": "#FFD978",
+      "encounters": [
+        {
+          "slug": "error-margin-mite",
+          "name": "Error-Margin Mite",
+          "family": "clockwork",
+          "description": "A many-legged brass abacus whose bead-filled abdomen deletes every forecast branch outside its narrowing tolerance."
+        },
+        {
+          "slug": "doomcurve-oracle",
+          "name": "Doomcurve Oracle",
+          "family": "spectral",
+          "description": "A faceless violet seer with a single fatal storm path arcing from its hood like a rigid luminous spine."
+        }
+      ],
       "boss": {
         "slug": "prognosis-engine",
         "name": "Prognosis Engine",
@@ -181,6 +289,20 @@
       "actionLabel": "Unmake the mandate",
       "primaryColor": "#E5B8FF",
       "secondaryColor": "#72E3C0",
+      "encounters": [
+        {
+          "slug": "edict-lancer",
+          "name": "Edict Lancer",
+          "family": "spectral",
+          "description": "An imperial afterimage mounted on a ribbon of light, lowering a chained decree like a lance across every independent route."
+        },
+        {
+          "slug": "crownline-clamp",
+          "name": "Crownline Clamp",
+          "family": "clockwork",
+          "description": "A squat crown-shaped channel crab whose eight locking jaws force branching solar conduits back into one trunk."
+        }
+      ],
       "boss": {
         "slug": "imperial-mandate",
         "name": "Imperial Mandate",
@@ -200,6 +322,20 @@
       "actionLabel": "Carry every world",
       "primaryColor": "#FFE08A",
       "secondaryColor": "#86E6FF",
+      "encounters": [
+        {
+          "slug": "gravity-tern",
+          "name": "Gravity Tern",
+          "family": "winged",
+          "description": "A needle-beaked starbird with impossibly long crescent wings, circling the same point until nearby sails spiral after it."
+        },
+        {
+          "slug": "routeknot-urchin",
+          "name": "Routeknot Urchin",
+          "family": "cosmic",
+          "description": "A compact black star-urchin whose radiant spines tie passing transit ribbons into an ever-tightening orbital snarl."
+        }
+      ],
       "boss": {
         "slug": "crownstorm-singularity",
         "name": "Crownstorm Singularity",

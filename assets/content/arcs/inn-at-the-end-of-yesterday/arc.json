@@ -1,8 +1,16 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/inn-at-the-end-of-yesterday",
-  "contentVersion": 1,
+  "contentVersion": 2,
   "title": "The Inn at the End of Yesterday",
+  "hero": {
+    "id": "inn-at-the-end-of-yesterday/tamsin-reed",
+    "name": "Tamsin Reed",
+    "semanticLabel": "Tamsin Reed, Young innkeeper and keeper of the house rules",
+    "storySpriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/tamsin-reed_story_idle.png",
+    "combatSpriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/tamsin-reed_combat.png",
+    "finisherSpriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/tamsin-reed_finishers.png"
+  },
   "theme": {
     "brightness": "light",
     "backgroundColor": "#F6EAD4",
@@ -58,7 +66,22 @@
         "targetDifficulty": "easy",
         "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/guest-without-yesterday"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/footnote-tripod",
+          "name": "Footnote Tripod",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/easy-003",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/footnote-tripod.png"
+        },
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/courtesy-candlestick",
+          "name": "Courtesy Candlestick",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/easy-006",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/courtesy-candlestick.png"
+        }
+      ],
       "primaryColor": "#B87934",
       "secondaryColor": "#4C3B70"
     },
@@ -76,9 +99,9 @@
       "difficulty": "easy",
       "size": 7,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/inn-at-the-end-of-yesterday/blank-bellhop",
@@ -96,7 +119,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/hours-on-the-menu"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/vacancy-ermine",
+          "name": "Vacancy Ermine",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/easy-023",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/vacancy-ermine.png"
+        },
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/eraser-valise",
+          "name": "Eraser Valise",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/easy-026",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/eraser-valise.png"
+        }
+      ],
       "primaryColor": "#8D668A",
       "secondaryColor": "#47334F"
     },
@@ -116,7 +154,7 @@
       "mapLayout": {
         "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/inn-at-the-end-of-yesterday/hour-thieving-ivy",
@@ -134,7 +172,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/twelve-year-letter"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/minute-mold",
+          "name": "Minute Mold",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/medium-003",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/minute-mold.png"
+        },
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/sundial-snail",
+          "name": "The Sundial Snail",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/medium-006",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/sundial-snail.png"
+        }
+      ],
       "primaryColor": "#6D8750",
       "secondaryColor": "#344D32"
     },
@@ -152,7 +205,7 @@
       "difficulty": "medium",
       "size": 8,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
         "direction": "leftToRight"
       },
@@ -172,7 +225,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/auditor-at-the-door"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/postmark-magpie",
+          "name": "Postmark Magpie",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/medium-013",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/postmark-magpie.png"
+        },
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/compass-fold-fox",
+          "name": "Compass-Fold Fox",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/medium-016",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/compass-fold-fox.png"
+        }
+      ],
       "primaryColor": "#4F7690",
       "secondaryColor": "#2D4F63"
     },
@@ -191,8 +259,8 @@
       "size": 8,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/inn-at-the-end-of-yesterday/future-horn-stag",
@@ -210,7 +278,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/room-tamsin-locked"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/possibility-okapi",
+          "name": "Possibility Okapi",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/hard-003",
+          "spriteFamily": "antlered",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/possibility-okapi.png"
+        },
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/choicewheel-orb-weaver",
+          "name": "Choicewheel Orb-Weaver",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/hard-006",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/choicewheel-orb-weaver.png"
+        }
+      ],
       "primaryColor": "#806D51",
       "secondaryColor": "#483B2D"
     },
@@ -228,9 +311,9 @@
       "difficulty": "hard",
       "size": 9,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/inn-at-the-end-of-yesterday/unremembering-well",
@@ -248,7 +331,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/yesterday-restored"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/wishbucket-toad",
+          "name": "Wishbucket Toad",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/hard-023",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/wishbucket-toad.png"
+        },
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/reflection-ribbon",
+          "name": "Reflection Ribbon",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/hard-026",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/reflection-ribbon.png"
+        }
+      ],
       "primaryColor": "#6B557A",
       "secondaryColor": "#463452"
     },
@@ -267,7 +365,7 @@
       "size": 9,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -286,7 +384,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/inn-at-the-end-of-yesterday/new-house-rules"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/keepsake-tessellate",
+          "name": "Keepsake Tessellate",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/expert-003",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/keepsake-tessellate.png"
+        },
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/counterfactual-chimera",
+          "name": "Counterfactual Chimera",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/expert-006",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/counterfactual-chimera.png"
+        }
+      ],
       "primaryColor": "#9B6F37",
       "secondaryColor": "#4F3B20"
     },
@@ -304,8 +417,8 @@
       "difficulty": "expert",
       "size": 10,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
+        "columns": 3,
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -324,7 +437,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:unlock/inn-at-the-end-of-yesterday/finale"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/do-over-coalchild",
+          "name": "Do-Over Coalchild",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/expert-013",
+          "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/do-over-coalchild.png"
+        },
+        {
+          "id": "regalia:enemy/inn-at-the-end-of-yesterday/hearth-echo-salamander",
+          "name": "Hearth-Echo Salamander",
+          "puzzleId": "regalia:puzzle/inn-at-the-end-of-yesterday/expert-016",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/inn-at-the-end-of-yesterday/combat/opponents/hearth-echo-salamander.png"
+        }
+      ],
       "primaryColor": "#A85E39",
       "secondaryColor": "#5C3528"
     }
@@ -338,7 +466,34 @@
           "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_01_house_at_the_crossroads.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "tamsin-reed",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/tamsin-reed_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Tamsin Reed, Young innkeeper and keeper of the house rules",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -361,7 +516,34 @@
           "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_02_guest_without_yesterday.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "tamsin-reed",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/tamsin-reed_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Tamsin Reed, Young innkeeper and keeper of the house rules",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -384,7 +566,60 @@
           "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_03_hours_on_the_menu.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "tamsin-reed",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/tamsin-reed_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Tamsin Reed, Young innkeeper and keeper of the house rules",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "corin",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/corin_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Corin, Ghostly baker and the inn's warm-hearted memory keeper",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -407,7 +642,60 @@
           "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_04_twelve_year_letter.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "tamsin-reed",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/tamsin-reed_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Tamsin Reed, Young innkeeper and keeper of the house rules",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "pip-sallow",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/pip-sallow_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Pip Sallow, Cheerful courier carrying a twelve-year-undelivered letter",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -430,7 +718,34 @@
           "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_05_auditor_at_the_door.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "tamsin-reed",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/tamsin-reed_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Tamsin Reed, Young innkeeper and keeper of the house rules",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -453,7 +768,34 @@
           "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_06_room_tamsin_locked.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "tamsin-reed",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/tamsin-reed_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Tamsin Reed, Young innkeeper and keeper of the house rules",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -476,7 +818,86 @@
           "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_07_yesterday_restored.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "tamsin-reed",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/tamsin-reed_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Tamsin Reed, Young innkeeper and keeper of the house rules",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "corin",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/corin_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Corin, Ghostly baker and the inn's warm-hearted memory keeper",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "pip-sallow",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/pip-sallow_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Pip Sallow, Cheerful courier carrying a twelve-year-undelivered letter",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -499,7 +920,86 @@
           "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/chapter_08_new_house_rules.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "tamsin-reed",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/tamsin-reed_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Tamsin Reed, Young innkeeper and keeper of the house rules",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "corin",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/corin_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Corin, Ghostly baker and the inn's warm-hearted memory keeper",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "pip-sallow",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/pip-sallow_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Pip Sallow, Cheerful courier carrying a twelve-year-undelivered letter",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -522,7 +1022,86 @@
           "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/backgrounds/finale_crisis.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "tamsin-reed",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/tamsin-reed_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Tamsin Reed, Young innkeeper and keeper of the house rules",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "corin",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/corin_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Corin, Ghostly baker and the inn's warm-hearted memory keeper",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "pip-sallow",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/inn-at-the-end-of-yesterday/characters/pip-sallow_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Pip Sallow, Cheerful courier carrying a twelve-year-undelivered letter",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {

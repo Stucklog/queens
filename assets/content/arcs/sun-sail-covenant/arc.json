@@ -1,8 +1,16 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/sun-sail-covenant",
-  "contentVersion": 1,
+  "contentVersion": 2,
   "title": "The Sun-Sail Covenant",
+  "hero": {
+    "id": "sun-sail-covenant/nera-venn",
+    "name": "Nera Venn",
+    "semanticLabel": "Nera Venn, Route courier and protagonist",
+    "storySpriteAsset": "assets/art/arcs/sun-sail-covenant/characters/nera-venn_story_idle.png",
+    "combatSpriteAsset": "assets/art/arcs/sun-sail-covenant/characters/nera-venn_combat.png",
+    "finisherSpriteAsset": "assets/art/arcs/sun-sail-covenant/characters/nera-venn_finishers.png"
+  },
   "theme": {
     "brightness": "dark",
     "backgroundColor": "#07142F",
@@ -58,7 +66,22 @@
         "targetDifficulty": "easy",
         "unlocks": "regalia:chapter/sun-sail-covenant/moon-of-wrecks"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/sun-sail-covenant/penumbra-crownback",
+          "name": "Penumbra Crownback",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/easy-003",
+          "spriteFamily": "antlered",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/penumbra-crownback.png"
+        },
+        {
+          "id": "regalia:enemy/sun-sail-covenant/corona-skimmer",
+          "name": "Corona Skimmer",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/easy-006",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/corona-skimmer.png"
+        }
+      ],
       "primaryColor": "#FFD166",
       "secondaryColor": "#70D7FF"
     },
@@ -76,9 +99,9 @@
       "difficulty": "easy",
       "size": 7,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/sun-sail-covenant/cablebloom-colossus",
@@ -96,7 +119,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/sun-sail-covenant/tithemaker"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/sun-sail-covenant/splicevine-crawler",
+          "name": "Splicevine Crawler",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/easy-023",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/splicevine-crawler.png"
+        },
+        {
+          "id": "regalia:enemy/sun-sail-covenant/sailcloth-medusa",
+          "name": "Sailcloth Medusa",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/easy-026",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/sailcloth-medusa.png"
+        }
+      ],
       "primaryColor": "#F4C95D",
       "secondaryColor": "#7CE0C3"
     },
@@ -116,7 +154,7 @@
       "mapLayout": {
         "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/sun-sail-covenant/audit-seraph",
@@ -134,7 +172,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/sun-sail-covenant/witness-worlds"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/sun-sail-covenant/seal-snipper-cherub",
+          "name": "Seal-Snipper Cherub",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/medium-003",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/seal-snipper-cherub.png"
+        },
+        {
+          "id": "regalia:enemy/sun-sail-covenant/quorum-notary",
+          "name": "Quorum Notary",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/medium-006",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/quorum-notary.png"
+        }
+      ],
       "primaryColor": "#84E1FF",
       "secondaryColor": "#FFD166"
     },
@@ -152,7 +205,7 @@
       "difficulty": "medium",
       "size": 8,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
         "direction": "leftToRight"
       },
@@ -172,7 +225,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/sun-sail-covenant/fleet-divided"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/sun-sail-covenant/static-cantor",
+          "name": "Static Cantor",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/medium-013",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/static-cantor.png"
+        },
+        {
+          "id": "regalia:enemy/sun-sail-covenant/deadband-angler",
+          "name": "Deadband Angler",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/medium-016",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/deadband-angler.png"
+        }
+      ],
       "primaryColor": "#9EC5FF",
       "secondaryColor": "#FFCD70"
     },
@@ -191,8 +259,8 @@
       "size": 8,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/sun-sail-covenant/cinderwake-behemoth",
@@ -210,7 +278,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/sun-sail-covenant/storms-measure"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/sun-sail-covenant/reactor-lamprey",
+          "name": "Reactor Lamprey",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/hard-003",
+          "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/reactor-lamprey.png"
+        },
+        {
+          "id": "regalia:enemy/sun-sail-covenant/wakeknife-skiff",
+          "name": "Wakeknife Skiff",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/hard-006",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/wakeknife-skiff.png"
+        }
+      ],
       "primaryColor": "#FF9B73",
       "secondaryColor": "#7DE2D1"
     },
@@ -228,9 +311,9 @@
       "difficulty": "hard",
       "size": 9,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/sun-sail-covenant/prognosis-engine",
@@ -248,7 +331,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/sun-sail-covenant/capital-current"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/sun-sail-covenant/error-margin-mite",
+          "name": "Error-Margin Mite",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/hard-023",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/error-margin-mite.png"
+        },
+        {
+          "id": "regalia:enemy/sun-sail-covenant/doomcurve-oracle",
+          "name": "Doomcurve Oracle",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/hard-026",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/doomcurve-oracle.png"
+        }
+      ],
       "primaryColor": "#B9A7FF",
       "secondaryColor": "#FFD978"
     },
@@ -267,7 +365,7 @@
       "size": 9,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -286,7 +384,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/sun-sail-covenant/covenant-of-light"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/sun-sail-covenant/edict-lancer",
+          "name": "Edict Lancer",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/expert-003",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/edict-lancer.png"
+        },
+        {
+          "id": "regalia:enemy/sun-sail-covenant/crownline-clamp",
+          "name": "Crownline Clamp",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/expert-006",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/crownline-clamp.png"
+        }
+      ],
       "primaryColor": "#E5B8FF",
       "secondaryColor": "#72E3C0"
     },
@@ -304,8 +417,8 @@
       "difficulty": "expert",
       "size": 10,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
+        "columns": 3,
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -324,7 +437,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:unlock/sun-sail-covenant/finale"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/sun-sail-covenant/gravity-tern",
+          "name": "Gravity Tern",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/expert-013",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/gravity-tern.png"
+        },
+        {
+          "id": "regalia:enemy/sun-sail-covenant/routeknot-urchin",
+          "name": "Routeknot Urchin",
+          "puzzleId": "regalia:puzzle/sun-sail-covenant/expert-016",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/sun-sail-covenant/combat/opponents/routeknot-urchin.png"
+        }
+      ],
       "primaryColor": "#FFE08A",
       "secondaryColor": "#86E6FF"
     }
@@ -338,7 +466,34 @@
           "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_01_dimming_sun.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "nera-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/nera-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nera Venn, Route courier and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -361,7 +516,60 @@
           "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_02_moon_of_wrecks.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "nera-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/nera-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nera Venn, Route courier and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "kest-arlo",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/kest-arlo_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Kest Arlo, Frontier salvage pilot",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -384,7 +592,86 @@
           "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_03_tithemaker.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "nera-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/nera-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nera Venn, Route courier and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "kest-arlo",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/kest-arlo_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Kest Arlo, Frontier salvage pilot",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "tor-axiom",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/tor-axiom_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Tor Axiom, Remorseful solar-engine architect",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -407,7 +694,34 @@
           "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_04_witness_worlds.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "nera-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/nera-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nera Venn, Route courier and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -430,7 +744,34 @@
           "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_05_fleet_divided.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "nera-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/nera-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nera Venn, Route courier and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -453,7 +794,60 @@
           "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_06_storms_measure.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "nera-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/nera-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nera Venn, Route courier and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "tor-axiom",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/tor-axiom_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Tor Axiom, Remorseful solar-engine architect",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -476,7 +870,86 @@
           "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_07_capital_current.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "nera-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/nera-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nera Venn, Route courier and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "kest-arlo",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/kest-arlo_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Kest Arlo, Frontier salvage pilot",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "tor-axiom",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/tor-axiom_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Tor Axiom, Remorseful solar-engine architect",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -499,7 +972,34 @@
           "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/chapter_08_covenant_of_light.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "nera-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/nera-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nera Venn, Route courier and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -522,7 +1022,86 @@
           "asset": "assets/art/arcs/sun-sail-covenant/backgrounds/finale_crisis.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "nera-venn",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/nera-venn_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Nera Venn, Route courier and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "kest-arlo",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/kest-arlo_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Kest Arlo, Frontier salvage pilot",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "tor-axiom",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/sun-sail-covenant/characters/tor-axiom_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Tor Axiom, Remorseful solar-engine architect",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {

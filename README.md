@@ -17,7 +17,7 @@ the idle loop and return to idle; defeat alone holds on its final frame.
 
 “Just Puzzle!” is a separate endless run of puzzles generated and verified entirely on the device. Players can choose Easy, Medium, Hard, Expert, 12×12 Extreme, or a rotating Mixed run; the next board is prepared while the current one is played. Its boards, marks, elapsed time, assistance, and run statistics resume after relaunch without changing any story frontier.
 
-After the tutorial, the home screen lists every available story arc in a single metadata-driven column and keeps the Academy, “Just Puzzle!”, and master settings at the top level. Selecting an arc opens its own opening scene when needed and then that arc’s map. The GitHub Pages/web edition and every native build currently include the complete Origin arc and all ten portfolio arcs alongside the Academy and “Just Puzzle!”. A missing, corrupt, or future channel-restricted package is isolated without preventing other arcs, the Academy, or puzzle-only mode from loading.
+After the tutorial, the home screen lists every story arc in a single metadata-driven column and keeps the Academy, “Just Puzzle!”, and master settings at the top level. The GitHub Pages/web edition makes only Origin playable; every portfolio arc appears as a locked tile whose lightweight prologue ends with links to the installed apps. Native builds include the complete Origin arc and all ten portfolio arcs. A missing or corrupt package is isolated without preventing other arcs, the Academy, or puzzle-only mode from loading.
 
 It has no backend, accounts, analytics, ads, or automatic runtime network
 services. Story progress, puzzle-only runs, story scenes, Bestiary discoveries,
@@ -35,17 +35,17 @@ flutter pub get
 flutter run -d chrome
 ```
 
-The checked-in workspace is the complete app source. Normal web, iOS, Android,
+The checked-in workspace is the complete app source. Normal iOS, Android,
 macOS, Windows, and Linux `flutter run` and `flutter build` commands include
 every current story; there is no paid flavor and no per-story purchase. Web
-runtime content is selected with Flutter's `kIsWeb`. The GitHub Pages workflow
-creates an untracked temporary copy and removes any asset roots marked
-`# web-excluded` for a future channel-restricted package. The current all-web
-source has no such roots, so staging zero exclusions is valid. A release web
-build includes Flutter's generated service worker, which caches the app shell
-and caches bundled story resources as the player loads them. Metadata and
-catalogs are read during startup; unvisited cinematic and combat art remains
-an on-demand cache entry rather than an eager offline download.
+runtime content is selected with Flutter's `kIsWeb`: Origin loads normally,
+while the ten portfolio descriptors expose only locked storefront previews.
+The GitHub Pages workflow creates an untracked temporary copy and removes each
+full-package asset root marked `# web-excluded` before building. Build release
+web artifacts from that staged copy so app-only metadata, puzzle catalogs,
+chapter art, character sprites, and opponent sprites do not ship to browsers.
+Flutter's generated service worker then caches only the web app shell, Origin,
+and the lightweight storefront assets needed by those previews.
 
 For local macOS animation review, choose **Queen's Regalia — macOS** in VS
 Code's Run and Debug view. It includes the complete story portfolio. In debug
@@ -67,10 +67,12 @@ Generation fails with rejection diagnostics if any requested tier cannot be fill
 
 The nine portfolio expansion packages are reproducible from their authored
 specs in `tool/story_arc_specs/`. The generator writes committed runtime JSON,
-fresh namespaced puzzle catalogs, compact chapter art, and boss reaction
-atlases. Existing hand-authored storefront key art is preserved; a procedural
-fallback is created only when a storefront image is missing. The Python
-dependency is development-only:
+fresh namespaced puzzle catalogs, and fills missing visual slots with compact
+procedural chapter art and opponent reaction atlases. Checked-in production art is
+preserved by default. Use `--force-procedural-art` only when intentionally
+replacing chapter, finale, and opponent art with the deterministic fallbacks;
+hand-authored storefront key art remains protected. The Python dependency is
+development-only:
 
 ```sh
 python3 -m venv .venv
@@ -79,9 +81,13 @@ python3 -m venv .venv
 dart run tool/generate_puzzles.dart validate-all
 ```
 
+Asset geometry, visual direction, viewport QA, and the replacement rollout are
+documented in [`docs/ART_PRODUCTION.md`](docs/ART_PRODUCTION.md).
+
 ## Verification
 
 ```sh
+.venv/bin/python tool/test_art_pipeline.py
 dart format --output=none --set-exit-if-changed lib test tool
 flutter analyze
 flutter test --exclude-tags=golden

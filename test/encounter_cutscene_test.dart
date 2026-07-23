@@ -162,6 +162,40 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('arc hero identity replaces the legacy encounter title', (
+    tester,
+  ) async {
+    const heroLabel = 'Nera Venn, route courier and protagonist';
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MediaQuery(
+          data: const MediaQueryData(disableAnimations: true),
+          child: EncounterCutscene(
+            background: _testBackground,
+            knightArt: _testKnightArt,
+            enemyArt: _testEnemyArt,
+            knightName: 'NERA VENN',
+            knightSemanticLabel: heroLabel,
+            knightEyebrow: 'THE HERO ANSWERS',
+            enemyName: 'Clockwork Warden',
+            onFinished: () {},
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('NERA VENN'), findsOneWidget);
+    expect(find.text('THE HERO ANSWERS'), findsOneWidget);
+    expect(find.text('CROWN-BEARER'), findsNothing);
+    expect(find.text('THE REGALIA ANSWERS'), findsNothing);
+    expect(
+      find.bySemanticsLabel(
+        'ENEMY ENCOUNTER. $heroLabel versus Clockwork Warden.',
+      ),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('background is blurred and moves throughout the presentation', (
     tester,
   ) async {

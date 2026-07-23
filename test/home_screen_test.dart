@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:regalia/app/app_controller.dart';
 import 'package:regalia/content/content_ids.dart';
+import 'package:regalia/content/content_models.dart';
 import 'package:regalia/content/entitlements.dart';
 import 'package:regalia/core/models.dart';
 import 'package:regalia/main.dart';
@@ -23,7 +24,7 @@ void main() {
   testWidgets('home presents arc art, hero, puzzle-only, and master settings', (
     tester,
   ) async {
-    final controller = await _controller(tester, openingSeen: true);
+    final controller = await _webControllerWithRealManifest(tester, <String>[]);
     await tester.pumpWidget(RegaliaApp(controller: controller));
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -43,28 +44,47 @@ void main() {
               entry.isAvailable || controller.showsLockedPreviewFor(entry),
         )
         .toList(growable: false);
-    expect(visibleEntries, hasLength(controller.availableStoryArcs.length));
+    expect(visibleEntries, hasLength(11));
+    expect(controller.availableStoryArcs, hasLength(1));
+    expect(visibleEntries.where((entry) => entry.isAvailable), hasLength(1));
+    expect(
+      visibleEntries.where(
+        (entry) =>
+            !entry.isAvailable && controller.showsLockedPreviewFor(entry),
+      ),
+      hasLength(10),
+    );
     for (final entry in visibleEntries) {
       final tile = find.byKey(
         ValueKey('story-arc-tile-${entry.descriptor!.arcId}'),
       );
       await tester.scrollUntilVisible(tile, 240, scrollable: homeScroll);
       expect(tile, findsOneWidget, reason: entry.descriptor!.arcId);
+      final tileSize = tester.getSize(tile);
+      expect(
+        tileSize.width,
+        closeTo(tileSize.height, .01),
+        reason: '${entry.descriptor!.arcId} must match its square cover art',
+      );
+      expect(
+        entry.storefront!.tileForegroundAsset,
+        isNotNull,
+        reason: '${entry.descriptor!.arcId} must identify its lead character',
+      );
       if (entry.isAvailable) {
-        expect(
-          find.descendant(of: tile, matching: find.byType(PixelLandscape)),
-          findsOneWidget,
-          reason: entry.descriptor!.arcId,
+        final landscape = find.descendant(
+          of: tile,
+          matching: find.byType(PixelLandscape),
         );
+        expect(landscape, findsOneWidget, reason: entry.descriptor!.arcId);
+        expect(tester.widget<PixelLandscape>(landscape).fit, BoxFit.contain);
       }
       expect(
         find.descendant(
           of: tile,
           matching: find.byKey(const ValueKey('home-story-main-character')),
         ),
-        entry.storefront!.tileForegroundAsset == null
-            ? findsNothing
-            : findsOneWidget,
+        findsOneWidget,
         reason: entry.descriptor!.arcId,
       );
     }
@@ -196,7 +216,7 @@ void main() {
     expect(find.text('The Stolen Dawn'), findsOneWidget);
   });
 
-  testWidgets('web opens the complete Atlas prologue and journey', (
+  testWidgets('web keeps Origin as the only playable story arc', (
     tester,
   ) async {
     final reads = <String>[];
@@ -204,63 +224,138 @@ void main() {
     await tester.pumpWidget(RegaliaApp(controller: controller));
     await tester.pump();
 
-    const arcId = 'regalia:arc/atlas-of-borrowed-winds';
-    const openingId = 'regalia:scene/atlas-of-borrowed-winds/opening';
-    final tile = find.byKey(const ValueKey('story-arc-tile-$arcId'));
-    await tester.scrollUntilVisible(
-      tile,
-      240,
-      scrollable: find.descendant(
-        of: find.byKey(const ValueKey('home-content-list')),
-        matching: find.byType(Scrollable),
-      ),
-    );
-    await Scrollable.ensureVisible(
-      tester.element(tile),
-      alignment: .5,
-      duration: Duration.zero,
-    );
-    await tester.pump();
-    expect(find.text('The Atlas of Borrowed Winds'), findsOneWidget);
-    expect(tile, findsOneWidget);
     expect(
-      reads,
-      contains('assets/content/arcs/atlas-of-borrowed-winds/arc.json'),
+      controller.availableStoryArcs.map((arc) => arc.id),
+      orderedEquals([ContentIds.originArc]),
     );
-    expect(find.byKey(const ValueKey('locked-story-$arcId')), findsNothing);
+    const originTile = ValueKey('story-arc-tile-regalia:arc/origin');
+    expect(find.byKey(originTile), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('locked-story-regalia:arc/origin')),
+      findsNothing,
+    );
 
-    await tester.tap(tile);
+    await tester.tap(find.byKey(originTile));
     await _pumpFrames(tester);
-    expect(find.text('A Trapped Caravan'), findsOneWidget);
 
-    for (final transition in const [
-      ('Open the atlas', 'The Bound Jinn'),
-      ('Make the rescue', 'The Cost of Rescue'),
-    ]) {
-      await tester.ensureVisible(find.text(transition.$1));
-      await tester.tap(find.text(transition.$1));
-      await _pumpFrames(tester);
-      expect(find.text(transition.$2), findsOneWidget);
-    }
-
-    await tester.ensureVisible(find.text('Begin the atlas journey'));
-    await tester.tap(find.text('Begin the atlas journey'));
-    await _pumpFrames(tester);
-    expect(find.text('The Unbound Page'), findsOneWidget);
-    await tester.ensureVisible(find.text('Trace the cost'));
-    await tester.tap(find.text('Trace the cost'));
-    await _pumpFrames(tester);
     expect(find.byType(JourneyScreen), findsOneWidget);
     expect(find.byKey(const ValueKey('apps-only-story-dialog')), findsNothing);
-    expect(controller.hasSeenStoryBeat(openingId), isTrue);
-    expect(
-      reads.where(
-        (path) =>
-            path.startsWith('assets/content/arcs/atlas-of-borrowed-winds/'),
-      ),
-      isNotEmpty,
-    );
+    expect(reads, contains('assets/content/arcs/origin/arc.json'));
   });
+
+  testWidgets(
+    'web locks every app story and the real Atlas preview links to the apps',
+    (tester) async {
+      final reads = <String>[];
+      final launches = <Uri>[];
+      var throwOnLaunch = false;
+      final controller = await _webControllerWithRealManifest(tester, reads);
+      await tester.pumpWidget(
+        RegaliaApp(
+          controller: controller,
+          externalUrlLauncher: (uri) async {
+            launches.add(uri);
+            if (throwOnLaunch) throw StateError('store unavailable');
+            return true;
+          },
+        ),
+      );
+      await tester.pump();
+
+      final lockedEntries = controller.storyArcEntries
+          .where((entry) => entry.descriptor?.arcId != ContentIds.originArc)
+          .toList(growable: false);
+      expect(lockedEntries, hasLength(10));
+      final homeScroll = find.descendant(
+        of: find.byKey(const ValueKey('home-content-list')),
+        matching: find.byType(Scrollable),
+      );
+      for (final entry in lockedEntries) {
+        final arcId = entry.descriptor!.arcId;
+        final tile = find.byKey(ValueKey('story-arc-tile-$arcId'));
+        await tester.scrollUntilVisible(tile, 240, scrollable: homeScroll);
+        expect(entry.status, ContentAvailabilityStatus.notInEdition);
+        expect(entry.arc, isNull);
+        expect(controller.showsLockedPreviewFor(entry), isTrue);
+        expect(
+          find.descendant(
+            of: tile,
+            matching: find.byKey(ValueKey('locked-story-$arcId')),
+          ),
+          findsOneWidget,
+          reason: arcId,
+        );
+        final slug = ContentId.parse(arcId, expectedKind: 'arc').localName;
+        expect(
+          reads.where((path) => path.startsWith('assets/content/arcs/$slug/')),
+          isEmpty,
+          reason: '$arcId package must stay unread on web',
+        );
+      }
+
+      const arcId = 'regalia:arc/atlas-of-borrowed-winds';
+      const openingId = 'regalia:scene/atlas-of-borrowed-winds/opening';
+      final tile = find.byKey(const ValueKey('story-arc-tile-$arcId'));
+      await tester.scrollUntilVisible(tile, -240, scrollable: homeScroll);
+      await Scrollable.ensureVisible(
+        tester.element(tile),
+        alignment: .5,
+        duration: Duration.zero,
+      );
+      await tester.pump();
+      expect(find.text('The Atlas of Borrowed Winds'), findsOneWidget);
+      expect(tile, findsOneWidget);
+      expect(
+        reads,
+        isNot(contains('assets/content/arcs/atlas-of-borrowed-winds/arc.json')),
+      );
+      expect(find.byKey(const ValueKey('locked-story-$arcId')), findsOneWidget);
+
+      await tester.tap(tile);
+      await _pumpFrames(tester);
+      expect(find.text('A Trapped Caravan'), findsOneWidget);
+
+      for (final transition in const [
+        ('Open the atlas', 'The Bound Jinn'),
+        ('Make the rescue', 'The Cost of Rescue'),
+      ]) {
+        await tester.ensureVisible(find.text(transition.$1));
+        await tester.tap(find.text(transition.$1));
+        await _pumpFrames(tester);
+        expect(find.text(transition.$2), findsOneWidget);
+      }
+
+      await tester.ensureVisible(find.text('Begin the atlas journey'));
+      await tester.tap(find.text('Begin the atlas journey'));
+      await _pumpFrames(tester);
+      expect(
+        find.byKey(const ValueKey('apps-only-story-dialog')),
+        findsOneWidget,
+      );
+      expect(find.text('Continue in the app'), findsOneWidget);
+      expect(find.byKey(const ValueKey('open-app-store')), findsOneWidget);
+      expect(find.byKey(const ValueKey('open-play-store')), findsOneWidget);
+      expect(find.byType(JourneyScreen), findsNothing);
+      expect(controller.hasSeenStoryBeat(openingId), isFalse);
+      expect(
+        reads.where(
+          (path) =>
+              path.startsWith('assets/content/arcs/atlas-of-borrowed-winds/'),
+        ),
+        isEmpty,
+      );
+
+      await tester.tap(find.byKey(const ValueKey('open-app-store')));
+      await tester.pump();
+      expect(launches, [Uri.parse('https://apps.apple.com/')]);
+
+      throwOnLaunch = true;
+      await tester.tap(find.byKey(const ValueKey('open-play-store')));
+      await tester.pump();
+      expect(launches.last, Uri.parse('https://play.google.com/store/apps'));
+      expect(find.text('Could not open Google Play.'), findsOneWidget);
+    },
+  );
 
   testWidgets(
     'web shows a locked manifest tile, previews it, then links to the apps',
@@ -281,9 +376,24 @@ void main() {
       );
       expect(reads, isNot(contains('must-not-load.json')));
 
-      await tester.tap(
-        find.byKey(const ValueKey('story-arc-tile-regalia:arc/moon-court')),
+      final tile = find.byKey(
+        const ValueKey('story-arc-tile-regalia:arc/moon-court'),
       );
+      await tester.scrollUntilVisible(
+        tile,
+        240,
+        scrollable: find.descendant(
+          of: find.byKey(const ValueKey('home-content-list')),
+          matching: find.byType(Scrollable),
+        ),
+      );
+      await Scrollable.ensureVisible(
+        tester.element(tile),
+        alignment: .2,
+        duration: Duration.zero,
+      );
+      await tester.pump();
+      await tester.tap(tile);
       await _pumpFrames(tester);
       expect(find.byType(StorySceneScreen), findsOneWidget);
       expect(find.text('A Moonless Welcome'), findsOneWidget);

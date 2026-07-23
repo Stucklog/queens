@@ -1773,6 +1773,8 @@ class PixelKnightSprite extends StatefulWidget {
     this.loop = false,
     this.restartToken = 0,
     this.onCompleted,
+    this.combatAssetPath,
+    this.finisherAssetPath,
     this.width = 48,
     this.height = 72,
   });
@@ -1782,19 +1784,52 @@ class PixelKnightSprite extends StatefulWidget {
   final bool loop;
   final int restartToken;
   final VoidCallback? onCompleted;
+  final String? combatAssetPath;
+  final String? finisherAssetPath;
   final double width;
   final double height;
 
+  static const defaultCombatAssetPath = 'assets/art/knight_animations.png';
+  static const defaultFinisherAssetPath =
+      'assets/art/combat/knight_finishers.png';
+
   /// Decodes the shared atlas before a sprite-heavy scene is presented.
-  static Future<void> preload() async {
-    await Future.wait([_KnightAtlas.image, _KnightFinisherAtlas.image]);
+  static Future<void> preload({
+    String? combatAssetPath,
+    String? finisherAssetPath,
+  }) async {
+    await Future.wait([
+      _KnightAtlas.imageFor(combatAssetPath ?? defaultCombatAssetPath),
+      _KnightFinisherAtlas.imageFor(
+        finisherAssetPath ?? defaultFinisherAssetPath,
+      ),
+    ]);
   }
 
   /// Decodes the small, commonly used movement atlas during app startup.
-  static Future<void> preloadCommon() => _KnightAtlas.image;
+  static Future<void> preloadCommon({String? combatAssetPath}) =>
+      _KnightAtlas.imageFor(combatAssetPath ?? defaultCombatAssetPath);
 
   /// Decodes the larger finisher atlas only when combat is approaching.
-  static Future<void> preloadFinishers() => _KnightFinisherAtlas.image;
+  static Future<void> preloadFinishers({String? finisherAssetPath}) =>
+      _KnightFinisherAtlas.imageFor(
+        finisherAssetPath ?? defaultFinisherAssetPath,
+      );
+
+  @visibleForTesting
+  static List<String> get debugCachedCombatAssetPaths =>
+      _KnightAtlas.debugCachedAssetPaths;
+
+  @visibleForTesting
+  static List<String> get debugCachedFinisherAssetPaths =>
+      _KnightFinisherAtlas.debugCachedAssetPaths;
+
+  /// Clears decoded atlas handles after a test has unmounted every sprite.
+  @visibleForTesting
+  static void debugClearAtlasCaches() {
+    _KnightAtlas.debugClear();
+    _KnightFinisherAtlas.debugClear();
+  }
 
   @override
   State<PixelKnightSprite> createState() => _PixelKnightSpriteState();
@@ -1808,8 +1843,17 @@ class _PixelKnightSpriteState extends State<PixelKnightSprite>
   bool _reduceMotion = false;
   bool _tickerEnabled = true;
   bool _completionDelivered = false;
+  _KnightImageLease? _atlasLease;
+  _KnightAtlasKind? _leasedAtlasKind;
+  String? _leasedAssetPath;
 
   _KnightAnimationSpec get _spec => _knightAnimationSpecs[widget.animation]!;
+
+  @override
+  void initState() {
+    super.initState();
+    _syncAtlasLease();
+  }
 
   @override
   void didChangeDependencies() {
@@ -1829,12 +1873,39 @@ class _PixelKnightSpriteState extends State<PixelKnightSprite>
   @override
   void didUpdateWidget(PixelKnightSprite oldWidget) {
     super.didUpdateWidget(oldWidget);
+    _syncAtlasLease();
     final restart =
         oldWidget.animation != widget.animation ||
         oldWidget.restartToken != widget.restartToken ||
         oldWidget.frame != widget.frame ||
-        oldWidget.loop != widget.loop;
+        oldWidget.loop != widget.loop ||
+        oldWidget.combatAssetPath != widget.combatAssetPath ||
+        oldWidget.finisherAssetPath != widget.finisherAssetPath;
     _syncAnimation(restart: restart);
+  }
+
+  void _syncAtlasLease() {
+    final atlasKind = _spec.atlas;
+    final assetPath = switch (atlasKind) {
+      _KnightAtlasKind.legacy =>
+        widget.combatAssetPath ?? PixelKnightSprite.defaultCombatAssetPath,
+      _KnightAtlasKind.finisher =>
+        widget.finisherAssetPath ?? PixelKnightSprite.defaultFinisherAssetPath,
+    };
+    if (_atlasLease != null &&
+        _leasedAtlasKind == atlasKind &&
+        _leasedAssetPath == assetPath) {
+      return;
+    }
+
+    final oldLease = _atlasLease;
+    _atlasLease = switch (atlasKind) {
+      _KnightAtlasKind.legacy => _KnightAtlas.acquire(assetPath),
+      _KnightAtlasKind.finisher => _KnightFinisherAtlas.acquire(assetPath),
+    };
+    _leasedAtlasKind = atlasKind;
+    _leasedAssetPath = assetPath;
+    oldLease?.release();
   }
 
   void _syncAnimation({required bool restart}) {
@@ -1887,6 +1958,7 @@ class _PixelKnightSpriteState extends State<PixelKnightSprite>
 
   @override
   void dispose() {
+    _atlasLease?.release();
     _controller.dispose();
     super.dispose();
   }
@@ -1900,19 +1972,14 @@ class _PixelKnightSpriteState extends State<PixelKnightSprite>
         animation: _controller,
         builder: (context, _) {
           final frame = _frame;
-          final usesFinisherAtlas = _spec.atlas == _KnightAtlasKind.finisher;
-          final cachedImage =
-              usesFinisherAtlas
-                  ? _KnightFinisherAtlas.currentImage
-                  : _KnightAtlas.currentImage;
+          final lease = _atlasLease!;
+          final cachedImage = lease.currentImage;
           if (cachedImage != null) {
             return _paintAtlasFrame(cachedImage, frame);
           }
           return FutureBuilder<ui.Image>(
-            future:
-                usesFinisherAtlas
-                    ? _KnightFinisherAtlas.image
-                    : _KnightAtlas.image,
+            key: ValueKey(lease),
+            future: lease.image,
             builder: (context, snapshot) {
               final image = snapshot.data;
               if (image == null) {
@@ -2094,50 +2161,180 @@ const _knightAnimationSpecs = <KnightAnimation, _KnightAnimationSpec>{
 };
 
 abstract final class _KnightAtlas {
-  static const _assetPath = 'assets/art/knight_animations.png';
-  static Future<ui.Image>? _cachedImage;
-  static ui.Image? currentImage;
+  static final _cache = _BoundedKnightImageCache(maxEntries: 2);
 
-  static Future<ui.Image> get image => _cachedImage ??= _load();
+  static Future<ui.Image> imageFor(String assetPath) =>
+      _cache.imageFor(assetPath);
 
-  static Future<ui.Image> _load() async {
-    final data = await rootBundle.load(_assetPath);
-    final bytes = data.buffer.asUint8List(
-      data.offsetInBytes,
-      data.lengthInBytes,
-    );
-    final codec = await ui.instantiateImageCodec(bytes);
+  static _KnightImageLease acquire(String assetPath) =>
+      _cache.acquire(assetPath);
+
+  static List<String> get debugCachedAssetPaths => _cache.assetPaths;
+
+  static void debugClear() => _cache.debugClear();
+}
+
+abstract final class _KnightFinisherAtlas {
+  static final _cache = _BoundedKnightImageCache(maxEntries: 2);
+
+  static Future<ui.Image> imageFor(String assetPath) =>
+      _cache.imageFor(assetPath);
+
+  static _KnightImageLease acquire(String assetPath) =>
+      _cache.acquire(assetPath);
+
+  static List<String> get debugCachedAssetPaths => _cache.assetPaths;
+
+  static void debugClear() => _cache.debugClear();
+}
+
+/// A small LRU of decoded atlas handles.
+///
+/// Mounted sprites hold leases, so an entry can temporarily exceed the cache
+/// limit when multiple routes display different heroes. Once those sprites
+/// unmount, the least-recent unleased handles are disposed after the frame.
+final class _BoundedKnightImageCache {
+  _BoundedKnightImageCache({required this.maxEntries});
+
+  final int maxEntries;
+  final Map<String, _KnightImageCacheEntry> _entries = {};
+
+  List<String> get assetPaths => List.unmodifiable(_entries.keys);
+
+  Future<ui.Image> imageFor(String assetPath) {
+    final entry = _entryFor(assetPath);
+    _touch(entry);
+    _trim();
+    return entry.imageFuture;
+  }
+
+  _KnightImageLease acquire(String assetPath) {
+    final entry = _entryFor(assetPath);
+    entry.leaseCount++;
+    _touch(entry);
+    _trim();
+    return _KnightImageLease._(this, entry);
+  }
+
+  _KnightImageCacheEntry _entryFor(String assetPath) {
+    final cached = _entries[assetPath];
+    if (cached != null) return cached;
+
+    final entry = _KnightImageCacheEntry(assetPath);
+    _entries[assetPath] = entry;
+    entry.imageFuture = _load(entry);
+    return entry;
+  }
+
+  Future<ui.Image> _load(_KnightImageCacheEntry entry) async {
     try {
-      final image = (await codec.getNextFrame()).image;
-      currentImage = image;
+      final assetPath = entry.assetPath;
+      final data = await rootBundle.load(assetPath);
+      final bytes = data.buffer.asUint8List(
+        data.offsetInBytes,
+        data.lengthInBytes,
+      );
+      final codec = await ui.instantiateImageCodec(bytes);
+      late final ui.Image image;
+      try {
+        image = (await codec.getNextFrame()).image;
+      } finally {
+        codec.dispose();
+      }
+
+      if (identical(_entries[assetPath], entry)) {
+        entry.currentImage = image;
+        _touch(entry);
+        _trim();
+      } else {
+        // This unleased load was evicted while its codec was still running.
+        image.dispose();
+      }
       return image;
-    } finally {
-      codec.dispose();
+    } on Object {
+      if (identical(_entries[entry.assetPath], entry)) {
+        _entries.remove(entry.assetPath);
+      }
+      rethrow;
+    }
+  }
+
+  void _touch(_KnightImageCacheEntry entry) {
+    if (!identical(_entries[entry.assetPath], entry)) return;
+    _entries.remove(entry.assetPath);
+    _entries[entry.assetPath] = entry;
+  }
+
+  void _release(_KnightImageCacheEntry entry) {
+    assert(entry.leaseCount > 0);
+    // State updates replace the old painter later in the same frame. Keep its
+    // image leased until that frame has been submitted before considering it
+    // for eviction and disposal.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      entry.leaseCount--;
+      _trim();
+    });
+  }
+
+  void _trim() {
+    while (_entries.length > maxEntries) {
+      _KnightImageCacheEntry? evictionCandidate;
+      for (final entry in _entries.values) {
+        if (entry.leaseCount == 0) {
+          evictionCandidate = entry;
+          break;
+        }
+      }
+      if (evictionCandidate == null) return;
+      _evict(evictionCandidate);
+    }
+  }
+
+  void _evict(_KnightImageCacheEntry entry) {
+    if (!identical(_entries[entry.assetPath], entry)) return;
+    _entries.remove(entry.assetPath);
+    entry.currentImage?.dispose();
+    entry.currentImage = null;
+  }
+
+  void debugClear() {
+    assert(
+      _entries.values.every((entry) => entry.leaseCount == 0),
+      'Unmount every PixelKnightSprite before clearing its atlas cache.',
+    );
+    final entries = _entries.values.toList(growable: false);
+    _entries.clear();
+    for (final entry in entries) {
+      entry.currentImage?.dispose();
+      entry.currentImage = null;
     }
   }
 }
 
-abstract final class _KnightFinisherAtlas {
-  static const _assetPath = 'assets/art/combat/knight_finishers.png';
-  static Future<ui.Image>? _cachedImage;
-  static ui.Image? currentImage;
+final class _KnightImageCacheEntry {
+  _KnightImageCacheEntry(this.assetPath);
 
-  static Future<ui.Image> get image => _cachedImage ??= _load();
+  final String assetPath;
+  late Future<ui.Image> imageFuture;
+  ui.Image? currentImage;
+  int leaseCount = 0;
+}
 
-  static Future<ui.Image> _load() async {
-    final data = await rootBundle.load(_assetPath);
-    final bytes = data.buffer.asUint8List(
-      data.offsetInBytes,
-      data.lengthInBytes,
-    );
-    final codec = await ui.instantiateImageCodec(bytes);
-    try {
-      final image = (await codec.getNextFrame()).image;
-      currentImage = image;
-      return image;
-    } finally {
-      codec.dispose();
-    }
+final class _KnightImageLease {
+  _KnightImageLease._(this._cache, this._entry);
+
+  final _BoundedKnightImageCache _cache;
+  final _KnightImageCacheEntry _entry;
+  bool _released = false;
+
+  Future<ui.Image> get image => _entry.imageFuture;
+  ui.Image? get currentImage => _entry.currentImage;
+
+  void release() {
+    assert(!_released);
+    if (_released) return;
+    _released = true;
+    _cache._release(_entry);
   }
 }
 

@@ -2,9 +2,11 @@
 """Build playable portfolio arc packages from the checked-in source specs.
 
 The source specs contain authored story copy and visual direction. This tool
-turns them into runtime metadata, validated puzzle catalogs, compact pixel-art
-backgrounds, and eight unique boss reaction atlases per arc. Generated package
-files are committed so release builds never need Python or Pillow.
+turns them into runtime metadata and validated puzzle catalogs, and fills any
+missing visual slots with compact procedural pixel-art fallbacks. Existing
+production artwork is preserved unless procedural replacement is explicitly
+requested. Generated package files are committed so release builds never need
+Python or Pillow.
 """
 
 from __future__ import annotations
@@ -14,6 +16,7 @@ import hashlib
 import json
 import math
 import random
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -68,16 +71,11 @@ FINISHER_TRACKS = [
     "skybreak",
     "regaliaNova",
 ]
-MAP_LAYOUTS = [
-    {"columns": 3, "pattern": "snake", "direction": "leftToRight"},
-    {"columns": 4, "pattern": "rows", "direction": "rightToLeft"},
-    {"columns": 3, "pattern": "snake", "direction": "rightToLeft"},
-    {"columns": 4, "pattern": "snake", "direction": "leftToRight"},
-    {"columns": 3, "pattern": "rows", "direction": "rightToLeft"},
-    {"columns": 4, "pattern": "snake", "direction": "rightToLeft"},
-    {"columns": 3, "pattern": "rows", "direction": "leftToRight"},
-    {"columns": 4, "pattern": "rows", "direction": "leftToRight"},
-]
+STANDARD_MAP_LAYOUT = {
+    "columns": 3,
+    "pattern": "snake",
+    "direction": "leftToRight",
+}
 FAMILIES = {
     "antlered",
     "rootbound",
@@ -88,6 +86,19 @@ FAMILIES = {
     "spectral",
     "cosmic",
 }
+ENCOUNTER_ORDER_OFFSETS = (2, 5)
+CHARACTER_LAYOUTS = {
+    1: ((-0.52, 0.68, False),),
+    2: ((-0.58, 0.7, False), (0.58, 0.7, True)),
+    3: ((-0.66, 0.72, False), (0.0, 0.64, False), (0.66, 0.72, True)),
+    4: (
+        (-0.78, 0.74, False),
+        (-0.28, 0.65, False),
+        (0.28, 0.65, True),
+        (0.78, 0.74, True),
+    ),
+}
+SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 
 def main() -> None:
@@ -96,6 +107,14 @@ def main() -> None:
     parser.add_argument("--only", action="append", default=[])
     parser.add_argument("--skip-puzzles", action="store_true")
     parser.add_argument("--skip-assets", action="store_true")
+    parser.add_argument(
+        "--force-procedural-art",
+        action="store_true",
+        help=(
+            "replace existing chapter, finale, and opponent art with the "
+            "deterministic procedural fallbacks"
+        ),
+    )
     args = parser.parse_args()
 
     specs = _load_specs(args.spec_dir)
@@ -110,9 +129,14 @@ def main() -> None:
 
     for spec in specs:
         _validate_spec(spec)
+    _validate_portfolio_identity(specs)
+
+    for spec in specs:
         print(f"Building {spec['title']}...")
         if not args.skip_assets:
-            _generate_visual_assets(spec)
+            _generate_visual_assets(
+                spec, overwrite=args.force_procedural_art
+            )
         if not args.skip_puzzles:
             _generate_catalog(spec)
         _write_arc_metadata(spec)
@@ -143,25 +167,61 @@ def _validate_spec(spec: dict[str, Any]) -> None:
     required = {
         "slug",
         "title",
+        "contentVersion",
         "tagline",
         "environment",
         "seed",
         "theme",
         "storefront",
+        "cast",
         "chapters",
         "finaleFrames",
     }
     missing = required.difference(spec)
     if missing:
         raise ValueError(f"{label} is missing {sorted(missing)}")
+    content_version = spec["contentVersion"]
+    if (
+        isinstance(content_version, bool)
+        or not isinstance(content_version, int)
+        or content_version < 1
+    ):
+        raise ValueError(f"{label} must define a positive integer contentVersion")
     slug = spec["slug"]
     if slug not in PORTFOLIO_ORDER or slug == "atlas-of-borrowed-winds":
         raise ValueError(f"{label} has unsupported slug {slug!r}")
     chapters = spec["chapters"]
     if not isinstance(chapters, list) or len(chapters) != 8:
         raise ValueError(f"{label} must define exactly eight chapters")
+    cast = spec["cast"]
+    if not isinstance(cast, list) or not 2 <= len(cast) <= 4:
+        raise ValueError(f"{label} must define two to four main characters")
+    character_slugs: set[str] = set()
+    character_names: set[str] = set()
+    for index, character in enumerate(cast):
+        if not isinstance(character, dict):
+            raise ValueError(f"{label} cast entry {index + 1} must be an object")
+        for key in ("slug", "name", "role", "visualDescription", "chromaKey"):
+            if not isinstance(character.get(key), str) or not character[key].strip():
+                raise ValueError(f"{label} cast entry {index + 1} needs {key}")
+        if not SLUG_PATTERN.fullmatch(character["slug"]):
+            raise ValueError(
+                f"{label} cast entry {index + 1} has invalid slug "
+                f"{character['slug']}"
+            )
+        if character["slug"] in character_slugs:
+            raise ValueError(f"{label} repeats character slug {character['slug']}")
+        folded_name = character["name"].casefold()
+        if folded_name in character_names:
+            raise ValueError(f"{label} repeats character name {character['name']}")
+        character_slugs.add(character["slug"])
+        character_names.add(folded_name)
+        _parse_hex(character["chromaKey"])
+
     families = []
     ids: set[str] = set()
+    opponent_slugs: set[str] = set()
+    opponent_names: set[str] = set()
     for index, chapter in enumerate(chapters):
         _require_story_frame(chapter, f"{label} chapter {index + 1}")
         chapter_slug = chapter.get("slug")
@@ -178,6 +238,12 @@ def _validate_spec(spec: dict[str, Any]) -> None:
                 raise ValueError(f"{label} chapter {index + 1} boss needs {key}")
         if boss["family"] not in FAMILIES:
             raise ValueError(f"{label} has unknown boss family {boss['family']}")
+        _register_opponent_identity(
+            label,
+            boss,
+            slugs=opponent_slugs,
+            names=opponent_names,
+        )
         families.append(boss["family"])
         if boss["name"] not in " ".join(chapter["paragraphs"]):
             raise ValueError(
@@ -185,6 +251,41 @@ def _validate_spec(spec: dict[str, Any]) -> None:
             )
         for key in ("primaryColor", "secondaryColor"):
             _parse_hex(chapter[key])
+        encounters = chapter.get("encounters")
+        if not isinstance(encounters, list) or len(encounters) != 2:
+            raise ValueError(
+                f"{label} chapter {index + 1} must define exactly two encounters"
+            )
+        for encounter_index, encounter in enumerate(encounters):
+            if not isinstance(encounter, dict):
+                raise ValueError(
+                    f"{label} chapter {index + 1} encounter "
+                    f"{encounter_index + 1} must be an object"
+                )
+            for key in ("slug", "name", "family"):
+                if not isinstance(encounter.get(key), str) or not encounter[key].strip():
+                    raise ValueError(
+                        f"{label} chapter {index + 1} encounter "
+                        f"{encounter_index + 1} needs {key}"
+                    )
+            description = encounter.get(
+                "visualDescription", encounter.get("description")
+            )
+            if not isinstance(description, str) or not description.strip():
+                raise ValueError(
+                    f"{label} chapter {index + 1} encounter "
+                    f"{encounter_index + 1} needs a visual description"
+                )
+            if encounter["family"] not in FAMILIES:
+                raise ValueError(
+                    f"{label} has unknown encounter family {encounter['family']}"
+                )
+            _register_opponent_identity(
+                label,
+                encounter,
+                slugs=opponent_slugs,
+                names=opponent_names,
+            )
     if set(families) != FAMILIES:
         raise ValueError(f"{label} must use every combat family exactly once")
     storefront = spec["storefront"]
@@ -236,6 +337,47 @@ def _validate_spec(spec: dict[str, Any]) -> None:
             raise ValueError(
                 f"{label} outlineVariantColor needs 3:1 contrast on {surface_key}"
             )
+
+
+def _register_opponent_identity(
+    label: str,
+    opponent: dict[str, Any],
+    *,
+    slugs: set[str],
+    names: set[str],
+) -> None:
+    slug = opponent["slug"]
+    name = opponent["name"]
+    if slug in slugs:
+        raise ValueError(f"{label} repeats opponent slug {slug}")
+    if name.casefold() in names:
+        raise ValueError(f"{label} repeats opponent name {name}")
+    slugs.add(slug)
+    names.add(name.casefold())
+
+
+def _validate_portfolio_identity(specs: list[dict[str, Any]]) -> None:
+    opponent_names: dict[str, str] = {}
+    opponent_slugs: dict[str, str] = {}
+    for spec in specs:
+        slug = spec["slug"]
+        for chapter in spec["chapters"]:
+            for opponent in [*chapter["encounters"], chapter["boss"]]:
+                folded_name = opponent["name"].casefold()
+                previous_name = opponent_names.get(folded_name)
+                if previous_name is not None:
+                    raise ValueError(
+                        f"opponent name {opponent['name']} is shared by "
+                        f"{previous_name} and {slug}"
+                    )
+                previous_slug = opponent_slugs.get(opponent["slug"])
+                if previous_slug is not None:
+                    raise ValueError(
+                        f"opponent slug {opponent['slug']} is shared by "
+                        f"{previous_slug} and {slug}"
+                    )
+                opponent_names[folded_name] = slug
+                opponent_slugs[opponent["slug"]] = slug
 
 
 def _require_story_frame(frame: dict[str, Any], label: str) -> None:
@@ -301,6 +443,7 @@ def _write_arc_metadata(spec: dict[str, Any]) -> None:
     arc_id = f"regalia:arc/{slug}"
     map_id = f"regalia:map/{slug}/main-route"
     finale_unlock = f"regalia:unlock/{slug}/finale"
+    puzzle_ids = _catalog_puzzle_ids_by_order(slug)
     chapters = []
     scenes = []
     for index, source in enumerate(spec["chapters"]):
@@ -313,6 +456,22 @@ def _write_arc_metadata(spec: dict[str, Any]) -> None:
             if index + 1 < len(spec["chapters"])
             else finale_unlock
         )
+        encounters = []
+        for encounter, offset in zip(
+            source["encounters"], ENCOUNTER_ORDER_OFFSETS
+        ):
+            puzzle_order = index * 9 + offset + 1
+            encounters.append(
+                {
+                    "id": f"regalia:enemy/{slug}/{encounter['slug']}",
+                    "name": encounter["name"],
+                    "puzzleId": puzzle_ids[puzzle_order],
+                    "spriteFamily": encounter["family"],
+                    "spriteAsset": _opponent_asset_path(
+                        slug, encounter["slug"]
+                    ),
+                }
+            )
         chapters.append(
             {
                 "id": chapter_id,
@@ -327,7 +486,7 @@ def _write_arc_metadata(spec: dict[str, Any]) -> None:
                 "endOrder": (index + 1) * 9,
                 "difficulty": CHAPTER_DIFFICULTIES[index],
                 "size": CHAPTER_SIZES[index],
-                "mapLayout": MAP_LAYOUTS[index],
+                "mapLayout": STANDARD_MAP_LAYOUT.copy(),
                 "boss": {
                     "id": f"regalia:boss/{slug}/{boss['slug']}",
                     "name": boss["name"],
@@ -347,7 +506,7 @@ def _write_arc_metadata(spec: dict[str, Any]) -> None:
                     "targetDifficulty": BOSS_DIFFICULTIES[index],
                     "unlocks": next_unlock,
                 },
-                "encounters": [],
+                "encounters": encounters,
                 "primaryColor": source["primaryColor"],
                 "secondaryColor": source["secondaryColor"],
             }
@@ -358,7 +517,16 @@ def _write_arc_metadata(spec: dict[str, Any]) -> None:
                 "role": "chapter",
                 "defaults": {
                     "background": {"asset": background, "fit": "cover"},
-                    "characters": [],
+                    "characters": _character_layers_for_text(
+                        spec,
+                        " ".join(
+                            [
+                                source["caption"],
+                                *source["paragraphs"],
+                                source["semanticLabel"],
+                            ]
+                        ),
+                    ),
                 },
                 "frames": [
                     {
@@ -395,7 +563,7 @@ def _write_arc_metadata(spec: dict[str, Any]) -> None:
                     "asset": _finale_background_path(slug, resolved=False),
                     "fit": "cover",
                 },
-                "characters": [],
+                "characters": _character_layers(spec, spec["cast"]),
             },
             "frames": finale_frames,
         }
@@ -403,8 +571,9 @@ def _write_arc_metadata(spec: dict[str, Any]) -> None:
     metadata = {
         "schemaVersion": 1,
         "id": arc_id,
-        "contentVersion": 1,
+        "contentVersion": spec["contentVersion"],
         "title": spec["title"],
+        "hero": _hero_descriptor(spec),
         "theme": spec["theme"],
         "mapId": map_id,
         "puzzleCatalogAsset": f"assets/content/arcs/{slug}/catalog.json",
@@ -419,6 +588,87 @@ def _write_arc_metadata(spec: dict[str, Any]) -> None:
     _write_json(target, metadata)
 
 
+def _catalog_puzzle_ids_by_order(slug: str) -> dict[int, str]:
+    path = ROOT / "assets" / "content" / "arcs" / slug / "catalog.json"
+    with path.open(encoding="utf-8") as source:
+        catalog = json.load(source)
+    puzzles = catalog.get("puzzles")
+    if not isinstance(puzzles, list) or len(puzzles) != 72:
+        raise ValueError(f"{path} must contain 72 puzzles before metadata is built")
+    return {puzzle["order"]: puzzle["id"] for puzzle in puzzles}
+
+
+def _hero_descriptor(spec: dict[str, Any]) -> dict[str, Any]:
+    slug = spec["slug"]
+    hero = spec["cast"][0]
+    return {
+        "id": f"{slug}/{hero['slug']}",
+        "name": hero["name"],
+        "semanticLabel": f"{hero['name']}, {hero['role']}",
+        "storySpriteAsset": _character_story_asset_path(slug, hero["slug"]),
+        "combatSpriteAsset": _character_combat_asset_path(slug, hero["slug"]),
+        "finisherSpriteAsset": _character_finisher_asset_path(
+            slug, hero["slug"]
+        ),
+    }
+
+
+def _character_layers_for_text(
+    spec: dict[str, Any], text: str
+) -> list[dict[str, Any]]:
+    folded = text.casefold()
+    selected = [
+        character
+        for character in spec["cast"]
+        if re.search(
+            rf"(?<![a-z0-9])"
+            rf"{re.escape(character['name'].split()[0].casefold())}"
+            rf"(?![a-z0-9])",
+            folded,
+        )
+    ]
+    if not selected:
+        selected = [spec["cast"][0]]
+    return _character_layers(spec, selected)
+
+
+def _character_layers(
+    spec: dict[str, Any], characters: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    slug = spec["slug"]
+    layout = CHARACTER_LAYOUTS[len(characters)]
+    layers = []
+    for index, (character, placement) in enumerate(zip(characters, layout)):
+        x, y, mirrored = placement
+        layers.append(
+            {
+                "id": character["slug"],
+                "source": {
+                    "type": "asset",
+                    "asset": _character_story_asset_path(
+                        slug, character["slug"]
+                    ),
+                },
+                "alignment": {"x": x, "y": y},
+                "size": {"width": 112, "height": 168},
+                "mirrored": mirrored,
+                "semanticLabel": (
+                    f"{character['name']}, {character['role']}"
+                ),
+                "zOrder": index + 1,
+                "animation": {
+                    "frameCount": 4,
+                    "columns": 4,
+                    "rows": 1,
+                    "frameDurationMs": 190,
+                    "loop": False,
+                    "reducedMotion": "firstFrame",
+                },
+            }
+        )
+    return layers
+
+
 def _write_manifest(specs: list[dict[str, Any]]) -> None:
     target = ROOT / "assets" / "content" / "manifest.json"
     with target.open(encoding="utf-8") as source:
@@ -428,8 +678,11 @@ def _write_manifest(specs: list[dict[str, Any]]) -> None:
     atlas = existing.get("atlas-of-borrowed-winds")
     if atlas is None:
         raise ValueError("the Atlas descriptor is missing from the manifest")
-    atlas["channels"] = ["web", "paidPlatform"]
-    atlas.pop("lockedPreviewChannels", None)
+    atlas["channels"] = ["paidPlatform"]
+    atlas["lockedPreviewChannels"] = ["web"]
+    atlas["storefront"]["lockedTileSubtitle"] = (
+        "Preview the prologue · Available in the apps"
+    )
 
     generated = {spec["slug"]: _manifest_descriptor(spec) for spec in specs}
     ordered = [existing["origin"]]
@@ -453,12 +706,18 @@ def _manifest_descriptor(spec: dict[str, Any]) -> dict[str, Any]:
         "arcId": f"regalia:arc/{slug}",
         "metadataAsset": f"assets/content/arcs/{slug}/arc.json",
         "entitlementId": f"regalia:entitlement/base/{slug}",
-        "channels": ["web", "paidPlatform"],
+        "channels": ["paidPlatform"],
+        "lockedPreviewChannels": ["web"],
         "storefront": {
             "title": spec["title"],
             "tileSubtitle": storefront["tileSubtitle"],
-            "lockedTileSubtitle": "Play the complete story",
+            "lockedTileSubtitle": (
+                "Preview the prologue · Available in the apps"
+            ),
             "tileArtAsset": f"assets/storefront/{slug}/tile.jpg",
+            "tileForegroundAsset": _storefront_hero_asset_path(
+                slug, spec["cast"][0]["slug"]
+            ),
             "theme": {
                 "backgroundColor": theme["backgroundColor"],
                 "surfaceColor": theme["surfaceColor"],
@@ -481,14 +740,18 @@ def _manifest_descriptor(spec: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _generate_visual_assets(spec: dict[str, Any]) -> None:
+def _generate_visual_assets(
+    spec: dict[str, Any], *, overwrite: bool = False
+) -> None:
     slug = spec["slug"]
     storefront = ROOT / "assets" / "storefront" / slug
     backgrounds = ROOT / "assets" / "art" / "arcs" / slug / "backgrounds"
     opponents = ROOT / "assets" / "art" / "arcs" / slug / "combat" / "opponents"
+    characters = ROOT / "assets" / "art" / "arcs" / slug / "characters"
     storefront.mkdir(parents=True, exist_ok=True)
     backgrounds.mkdir(parents=True, exist_ok=True)
     opponents.mkdir(parents=True, exist_ok=True)
+    characters.mkdir(parents=True, exist_ok=True)
 
     # Storefront key art is hand-authored separately from this deterministic
     # package generator. Supply the procedural fallback only when an arc does
@@ -507,33 +770,54 @@ def _generate_visual_assets(spec: dict[str, Any]) -> None:
         )
         _save_scaled_jpeg(tile, tile_target, (1024, 1024))
 
-    for index, chapter in enumerate(spec["chapters"]):
-        background = _paint_environment(
-            spec, chapter_index=index, width=256, height=256, opening=False
-        )
-        target = ROOT / _chapter_background_path(slug, index, chapter["slug"])
-        _save_scaled_jpeg(background, target, (1024, 1024))
-        base = _paint_creature(
-            family=chapter["boss"]["family"],
-            primary=_parse_hex(chapter["primaryColor"]),
-            secondary=_parse_hex(chapter["secondaryColor"]),
-            seed=_stable_seed(slug, chapter["boss"]["slug"]),
-        )
-        atlas = _build_reaction_atlas(base, _stable_seed(slug, str(index)))
-        atlas.save(opponents / f"{chapter['boss']['slug']}.png", optimize=True)
+    _export_storefront_hero(spec)
 
-    crisis = _paint_environment(
-        spec, chapter_index=7, width=256, height=384, opening=False, crisis=True
-    )
-    resolved = _paint_environment(
-        spec, chapter_index=8, width=256, height=384, opening=False, resolved=True
-    )
-    _save_scaled_jpeg(
-        crisis, ROOT / _finale_background_path(slug, resolved=False), (1024, 1536)
-    )
-    _save_scaled_jpeg(
-        resolved, ROOT / _finale_background_path(slug, resolved=True), (1024, 1536)
-    )
+    for index, chapter in enumerate(spec["chapters"]):
+        target = ROOT / _chapter_background_path(slug, index, chapter["slug"])
+        if overwrite or not target.exists():
+            background = _paint_environment(
+                spec, chapter_index=index, width=256, height=256, opening=False
+            )
+            _save_scaled_jpeg(background, target, (1024, 1024))
+
+        for opponent in [*chapter["encounters"], chapter["boss"]]:
+            opponent_target = opponents / f"{opponent['slug']}.png"
+            if overwrite or not opponent_target.exists():
+                base = _paint_creature(
+                    family=opponent["family"],
+                    primary=_parse_hex(chapter["primaryColor"]),
+                    secondary=_parse_hex(chapter["secondaryColor"]),
+                    seed=_stable_seed(slug, opponent["slug"]),
+                )
+                atlas = _build_reaction_atlas(
+                    base,
+                    _stable_seed(slug, str(index), opponent["slug"]),
+                )
+                atlas.save(opponent_target, optimize=True)
+
+    crisis_target = ROOT / _finale_background_path(slug, resolved=False)
+    if overwrite or not crisis_target.exists():
+        crisis = _paint_environment(
+            spec,
+            chapter_index=7,
+            width=256,
+            height=384,
+            opening=False,
+            crisis=True,
+        )
+        _save_scaled_jpeg(crisis, crisis_target, (1024, 1536))
+
+    resolved_target = ROOT / _finale_background_path(slug, resolved=True)
+    if overwrite or not resolved_target.exists():
+        resolved = _paint_environment(
+            spec,
+            chapter_index=8,
+            width=256,
+            height=384,
+            opening=False,
+            resolved=True,
+        )
+        _save_scaled_jpeg(resolved, resolved_target, (1024, 1536))
 
 
 def _paint_environment(
@@ -1033,6 +1317,64 @@ def _save_scaled_jpeg(source: Image.Image, target: Path, size: tuple[int, int]) 
 def _chapter_background_path(slug: str, index: int, chapter_slug: str) -> str:
     filename = f"chapter_{index + 1:02d}_{chapter_slug.replace('-', '_')}.jpg"
     return f"assets/art/arcs/{slug}/backgrounds/{filename}"
+
+
+def _opponent_asset_path(slug: str, opponent_slug: str) -> str:
+    return (
+        f"assets/art/arcs/{slug}/combat/opponents/{opponent_slug}.png"
+    )
+
+
+def _character_story_asset_path(slug: str, character_slug: str) -> str:
+    return (
+        f"assets/art/arcs/{slug}/characters/"
+        f"{character_slug}_story_idle.png"
+    )
+
+
+def _storefront_hero_asset_path(slug: str, character_slug: str) -> str:
+    return f"assets/storefront/{slug}/{character_slug}.png"
+
+
+def _export_storefront_hero(spec: dict[str, Any]) -> None:
+    slug = spec["slug"]
+    hero_slug = spec["cast"][0]["slug"]
+    source_path = ROOT / _character_story_asset_path(slug, hero_slug)
+    if not source_path.exists():
+        return
+
+    with Image.open(source_path) as source_image:
+        source = source_image.convert("RGBA")
+    if source.width % 4 != 0:
+        raise ValueError(
+            f"{source_path} width must contain four equal story frames"
+        )
+    frame_width = source.width // 4
+    if (frame_width, source.height) != (192, 288):
+        raise ValueError(
+            f"{source_path} story frames must be 192x288, got "
+            f"{frame_width}x{source.height}"
+        )
+
+    target = ROOT / _storefront_hero_asset_path(slug, hero_slug)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    source.crop((0, 0, frame_width, source.height)).save(
+        target, format="PNG", optimize=True
+    )
+
+
+def _character_combat_asset_path(slug: str, character_slug: str) -> str:
+    return (
+        f"assets/art/arcs/{slug}/characters/"
+        f"{character_slug}_combat.png"
+    )
+
+
+def _character_finisher_asset_path(slug: str, character_slug: str) -> str:
+    return (
+        f"assets/art/arcs/{slug}/characters/"
+        f"{character_slug}_finishers.png"
+    )
 
 
 def _finale_background_path(slug: str, *, resolved: bool) -> str:

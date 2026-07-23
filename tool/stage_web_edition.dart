@@ -1,11 +1,10 @@
 import 'dart:io';
 
-/// Creates an isolated web-build workspace and removes any asset declarations
-/// explicitly reserved for non-web release channels.
+/// Creates an isolated web-build workspace with app-only story packages
+/// removed from Flutter's asset declarations.
 ///
-/// The current release shares the complete portfolio with web, so a valid
-/// staging run may remove nothing. The marker remains available for future
-/// channel-restricted packages.
+/// The checked-in source remains the complete installed app. This temporary
+/// copy keeps only Origin plus lightweight storefront previews for web.
 Future<void> main(List<String> arguments) async {
   final outputIndex = arguments.indexOf('--output');
   if (outputIndex < 0 || outputIndex + 1 >= arguments.length) {
@@ -47,7 +46,7 @@ Future<void> main(List<String> arguments) async {
   final (filteredPubspec, removedCount) = _removeWebExcludedAssets(
     sourcePubspec,
   );
-  if (filteredPubspec.contains('# web-excluded')) {
+  if (removedCount == 0 || filteredPubspec.contains('# web-excluded')) {
     stderr.writeln(
       'Could not remove the web-excluded Flutter asset declarations.',
     );

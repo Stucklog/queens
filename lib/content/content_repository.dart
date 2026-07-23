@@ -161,6 +161,10 @@ class ContentRepository {
       unlockIds: ArcUnlockIds.fromJson(
         metadata['unlocks']! as Map<String, Object?>,
       ),
+      hero:
+          metadata['hero'] == null
+              ? null
+              : ArcHero.fromJson(metadata['hero']! as Map<String, Object?>),
       chapters:
           (metadata['chapters']! as List<Object?>)
               .map(

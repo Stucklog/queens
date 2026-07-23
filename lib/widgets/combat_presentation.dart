@@ -52,6 +52,10 @@ class CombatPresentationBar extends StatelessWidget {
     required this.knightLine,
     required this.onKnightCompleted,
     this.encounter,
+    this.heroName,
+    this.heroSemanticLabel,
+    this.heroCombatAssetPath,
+    this.heroFinisherAssetPath,
   });
 
   final KnightAnimation animation;
@@ -59,6 +63,10 @@ class CombatPresentationBar extends StatelessWidget {
   final String knightLine;
   final VoidCallback onKnightCompleted;
   final CombatEncounter? encounter;
+  final String? heroName;
+  final String? heroSemanticLabel;
+  final String? heroCombatAssetPath;
+  final String? heroFinisherAssetPath;
 
   /// The puzzle header keeps one stage geometry whether an encounter is
   /// present or not, so the crown-bearer never jumps when combat begins.
@@ -81,6 +89,8 @@ class CombatPresentationBar extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final activeEncounter = encounter;
     final reaction = enemyReactionFor(animation);
+    final activeHeroName = heroName ?? 'CROWN-BEARER';
+    final activeHeroSemanticLabel = heroSemanticLabel ?? 'Knight companion';
     final encounterDescription =
         activeEncounter == null
             ? ''
@@ -89,7 +99,7 @@ class CombatPresentationBar extends StatelessWidget {
     return Semantics(
       container: true,
       liveRegion: true,
-      label: 'Knight companion. $knightLine$encounterDescription',
+      label: '$activeHeroSemanticLabel. $knightLine$encounterDescription',
       child: Container(
         key: const ValueKey('combat-presentation-bar-surface'),
         height: height,
@@ -128,13 +138,18 @@ class CombatPresentationBar extends StatelessWidget {
                       restartToken: restartToken,
                       onKnightCompleted: onKnightCompleted,
                       encounter: activeEncounter,
+                      heroCombatAssetPath: heroCombatAssetPath,
+                      heroFinisherAssetPath: heroFinisherAssetPath,
                     ),
                     const SizedBox(width: 4),
                     Expanded(
                       key: const ValueKey('combat-presentation-status'),
                       child:
                           activeEncounter == null
-                              ? _KnightStatus(line: knightLine)
+                              ? _KnightStatus(
+                                name: activeHeroName,
+                                line: knightLine,
+                              )
                               : _EncounterStatus(
                                 encounter: activeEncounter,
                                 reaction: reaction,
@@ -157,12 +172,16 @@ class _CombatantStage extends StatelessWidget {
     required this.restartToken,
     required this.onKnightCompleted,
     this.encounter,
+    this.heroCombatAssetPath,
+    this.heroFinisherAssetPath,
   });
 
   final KnightAnimation animation;
   final int restartToken;
   final VoidCallback onKnightCompleted;
   final CombatEncounter? encounter;
+  final String? heroCombatAssetPath;
+  final String? heroFinisherAssetPath;
 
   @override
   Widget build(BuildContext context) {
@@ -190,6 +209,8 @@ class _CombatantStage extends StatelessWidget {
               loop: animation == KnightAnimation.bounce,
               restartToken: restartToken,
               onCompleted: onKnightCompleted,
+              combatAssetPath: heroCombatAssetPath,
+              finisherAssetPath: heroFinisherAssetPath,
               width: CombatPresentationBar.knightWidth,
               height: CombatPresentationBar.knightHeight,
             ),
@@ -218,8 +239,9 @@ class _CombatantStage extends StatelessWidget {
 }
 
 class _KnightStatus extends StatelessWidget {
-  const _KnightStatus({required this.line});
+  const _KnightStatus({required this.name, required this.line});
 
+  final String name;
   final String line;
 
   @override
@@ -233,7 +255,7 @@ class _KnightStatus extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'CROWN-BEARER',
+              name.toUpperCase(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(

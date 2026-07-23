@@ -1,8 +1,16 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/where-the-rain-trees-walk",
-  "contentVersion": 1,
+  "contentVersion": 2,
   "title": "Where the Rain Trees Walk",
+  "hero": {
+    "id": "where-the-rain-trees-walk/mara-tavi",
+    "name": "Mara Tavi",
+    "semanticLabel": "Mara Tavi, Roof-mender and protagonist",
+    "storySpriteAsset": "assets/art/arcs/where-the-rain-trees-walk/characters/mara-tavi_story_idle.png",
+    "combatSpriteAsset": "assets/art/arcs/where-the-rain-trees-walk/characters/mara-tavi_combat.png",
+    "finisherSpriteAsset": "assets/art/arcs/where-the-rain-trees-walk/characters/mara-tavi_finishers.png"
+  },
   "theme": {
     "brightness": "light",
     "backgroundColor": "#F3E7C7",
@@ -58,7 +66,22 @@
         "targetDifficulty": "easy",
         "unlocks": "regalia:chapter/where-the-rain-trees-walk/forgotten-song"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/braceback-burrower",
+          "name": "Braceback Burrower",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/easy-003",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/braceback-burrower.png"
+        },
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/rattlehorn-leveret",
+          "name": "Rattlehorn Leveret",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/easy-006",
+          "spriteFamily": "antlered",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/rattlehorn-leveret.png"
+        }
+      ],
       "primaryColor": "#1F6654",
       "secondaryColor": "#714017"
     },
@@ -76,9 +99,9 @@
       "difficulty": "easy",
       "size": 7,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/where-the-rain-trees-walk/echo-shepherd",
@@ -96,7 +119,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/where-the-rain-trees-walk/under-the-waterway"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/hushcomb-drone",
+          "name": "Hushcomb Drone",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/easy-023",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/hushcomb-drone.png"
+        },
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/refrain-lacuna",
+          "name": "Refrain Lacuna",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/easy-026",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/refrain-lacuna.png"
+        }
+      ],
       "primaryColor": "#345F30",
       "secondaryColor": "#654073"
     },
@@ -116,7 +154,7 @@
       "mapLayout": {
         "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/where-the-rain-trees-walk/gatehouse-automaton",
@@ -134,7 +172,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/where-the-rain-trees-walk/cloud-garden"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/sluiceplate-terrapin",
+          "name": "Sluiceplate Terrapin",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/medium-003",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/sluiceplate-terrapin.png"
+        },
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/pressure-reed-asp",
+          "name": "Pressure-Reed Asp",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/medium-006",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/pressure-reed-asp.png"
+        }
+      ],
       "primaryColor": "#2C5778",
       "secondaryColor": "#744010"
     },
@@ -152,7 +205,7 @@
       "difficulty": "medium",
       "size": 8,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
         "direction": "leftToRight"
       },
@@ -172,7 +225,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/where-the-rain-trees-walk/stone-barrier"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/cloudbud-bellows",
+          "name": "Cloudbud Bellows",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/medium-013",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/cloudbud-bellows.png"
+        },
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/draft-eater-lung",
+          "name": "Draft-Eater Lung",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/medium-016",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/draft-eater-lung.png"
+        }
+      ],
       "primaryColor": "#17615C",
       "secondaryColor": "#67416F"
     },
@@ -191,8 +259,8 @@
       "size": 8,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/where-the-rain-trees-walk/kilnstone-titan",
@@ -210,7 +278,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/where-the-rain-trees-walk/captive-tree"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/kilnscale-skink",
+          "name": "Kilnscale Skink",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/hard-003",
+          "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/kilnscale-skink.png"
+        },
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/buttress-knuckle",
+          "name": "Buttress Knuckle",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/hard-006",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/buttress-knuckle.png"
+        }
+      ],
       "primaryColor": "#70401E",
       "secondaryColor": "#245F4B"
     },
@@ -228,9 +311,9 @@
       "difficulty": "hard",
       "size": 9,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/where-the-rain-trees-walk/bottomless-cistern",
@@ -248,7 +331,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/where-the-rain-trees-walk/living-channel"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/thirstcup-siphon",
+          "name": "Thirstcup Siphon",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/hard-023",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/thirstcup-siphon.png"
+        },
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/root-siphon-heron",
+          "name": "Root-Siphon Heron",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/hard-026",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/root-siphon-heron.png"
+        }
+      ],
       "primaryColor": "#73333D",
       "secondaryColor": "#31566D"
     },
@@ -267,7 +365,7 @@
       "size": 9,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -286,7 +384,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/where-the-rain-trees-walk/when-the-trees-return"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/mortarroot-turnstile",
+          "name": "Mortarroot Turnstile",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/expert-003",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/mortarroot-turnstile.png"
+        },
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/culvert-ram",
+          "name": "Culvert Ram",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/expert-006",
+          "spriteFamily": "antlered",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/culvert-ram.png"
+        }
+      ],
       "primaryColor": "#245C45",
       "secondaryColor": "#653E22"
     },
@@ -304,8 +417,8 @@
       "difficulty": "expert",
       "size": 10,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
+        "columns": 3,
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -324,7 +437,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:unlock/where-the-rain-trees-walk/finale"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/lightningseed-skater",
+          "name": "Lightningseed Skater",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/expert-013",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/lightningseed-skater.png"
+        },
+        {
+          "id": "regalia:enemy/where-the-rain-trees-walk/stormpollen-swift",
+          "name": "Stormpollen Swift",
+          "puzzleId": "regalia:puzzle/where-the-rain-trees-walk/expert-016",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/where-the-rain-trees-walk/combat/opponents/stormpollen-swift.png"
+        }
+      ],
       "primaryColor": "#255A6E",
       "secondaryColor": "#684064"
     }
@@ -338,7 +466,34 @@
           "asset": "assets/art/arcs/where-the-rain-trees-walk/backgrounds/chapter_01_roots_in_the_square.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "mara-tavi",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/mara-tavi_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Mara Tavi, Roof-mender and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -361,7 +516,86 @@
           "asset": "assets/art/arcs/where-the-rain-trees-walk/backgrounds/chapter_02_forgotten_song.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "mara-tavi",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/mara-tavi_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Mara Tavi, Roof-mender and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "orra-fen",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/orra-fen_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Orra Fen, Beekeeper and keeper of the migration song",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "iven-rusk",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/iven-rusk_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Iven Rusk, Young aqueduct engineer",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -384,7 +618,60 @@
           "asset": "assets/art/arcs/where-the-rain-trees-walk/backgrounds/chapter_03_under_the_waterway.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "mara-tavi",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/mara-tavi_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Mara Tavi, Roof-mender and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "iven-rusk",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/iven-rusk_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Iven Rusk, Young aqueduct engineer",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -407,7 +694,60 @@
           "asset": "assets/art/arcs/where-the-rain-trees-walk/backgrounds/chapter_04_cloud_garden.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "mara-tavi",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/mara-tavi_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Mara Tavi, Roof-mender and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "orra-fen",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/orra-fen_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Orra Fen, Beekeeper and keeper of the migration song",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -430,7 +770,60 @@
           "asset": "assets/art/arcs/where-the-rain-trees-walk/backgrounds/chapter_05_stone_barrier.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "mara-tavi",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/mara-tavi_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Mara Tavi, Roof-mender and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "iven-rusk",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/iven-rusk_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Iven Rusk, Young aqueduct engineer",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -453,7 +846,60 @@
           "asset": "assets/art/arcs/where-the-rain-trees-walk/backgrounds/chapter_06_captive_tree.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "mara-tavi",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/mara-tavi_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Mara Tavi, Roof-mender and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "iven-rusk",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/iven-rusk_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Iven Rusk, Young aqueduct engineer",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -476,7 +922,34 @@
           "asset": "assets/art/arcs/where-the-rain-trees-walk/backgrounds/chapter_07_living_channel.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "mara-tavi",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/mara-tavi_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Mara Tavi, Roof-mender and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -499,7 +972,86 @@
           "asset": "assets/art/arcs/where-the-rain-trees-walk/backgrounds/chapter_08_when_the_trees_return.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "mara-tavi",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/mara-tavi_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Mara Tavi, Roof-mender and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "orra-fen",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/orra-fen_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Orra Fen, Beekeeper and keeper of the migration song",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "iven-rusk",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/iven-rusk_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Iven Rusk, Young aqueduct engineer",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -522,7 +1074,86 @@
           "asset": "assets/art/arcs/where-the-rain-trees-walk/backgrounds/finale_crisis.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "mara-tavi",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/mara-tavi_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Mara Tavi, Roof-mender and protagonist",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "orra-fen",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/orra-fen_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Orra Fen, Beekeeper and keeper of the migration song",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "iven-rusk",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/where-the-rain-trees-walk/characters/iven-rusk_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Iven Rusk, Young aqueduct engineer",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {

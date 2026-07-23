@@ -473,8 +473,8 @@ class _StoryArcTile extends StatelessWidget {
         child: InkWell(
           onTap: onPressed,
           customBorder: const PixelOrganicBorder(),
-          child: SizedBox(
-            height: 250,
+          child: AspectRatio(
+            aspectRatio: 1,
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -484,6 +484,7 @@ class _StoryArcTile extends StatelessWidget {
                     brightness: chapter.palette.theme.brightness,
                     placement: PixelArtPlacement.banner,
                     assetPath: storefront.tileArtAsset,
+                    fit: BoxFit.contain,
                   )
                 else
                   _StorefrontTileArt(storefront: storefront),
@@ -540,10 +541,7 @@ class _StoryArcTile extends StatelessWidget {
                   ),
                 Positioned(
                   left: 18,
-                  right:
-                      storefront.tileForegroundAsset == null || locked
-                          ? 18
-                          : 92,
+                  right: storefront.tileForegroundAsset == null ? 18 : 116,
                   bottom: 20,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -606,7 +604,7 @@ class _StorefrontTileArt extends StatelessWidget {
     color: Color(storefront.theme.backgroundColor),
     child: Image.asset(
       storefront.tileArtAsset,
-      fit: BoxFit.cover,
+      fit: BoxFit.contain,
       alignment: const Alignment(0, -.1),
       filterQuality: FilterQuality.none,
       excludeFromSemantics: true,

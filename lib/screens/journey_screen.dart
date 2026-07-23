@@ -105,12 +105,21 @@ class _JourneyScreenState extends State<JourneyScreen> {
                             brightness: Theme.of(context).brightness,
                             placement: PixelArtPlacement.banner,
                           ),
-                          knightArt: const PixelKnightSprite(
+                          knightArt: PixelKnightSprite(
                             animation: KnightAnimation.bounce,
                             loop: true,
+                            combatAssetPath: _arc.hero?.combatSpriteAsset,
+                            finisherAssetPath: _arc.hero?.finisherSpriteAsset,
                             width: 154,
                             height: 218,
                           ),
+                          knightName:
+                              _arc.hero?.name.toUpperCase() ?? 'CROWN-BEARER',
+                          knightSemanticLabel: _arc.hero?.semanticLabel,
+                          knightEyebrow:
+                              _arc.hero == null
+                                  ? 'THE REGALIA ANSWERS'
+                                  : 'THE HERO ANSWERS',
                           enemyArt: PixelEnemySprite(
                             encounter: encounter,
                             stimulus: KnightAnimation.bounce,
@@ -369,7 +378,10 @@ class _JourneyScreenState extends State<JourneyScreen> {
     try {
       await Future.wait([
         precachePixelArtAssets(context, [encounter.spriteAsset]),
-        PixelKnightSprite.preloadFinishers(),
+        PixelKnightSprite.preload(
+          combatAssetPath: _arc.hero?.combatSpriteAsset,
+          finisherAssetPath: _arc.hero?.finisherSpriteAsset,
+        ),
       ]);
     } on Object {
       // The puzzle remains playable with its true-error sprite fallbacks.
@@ -558,6 +570,10 @@ class _JourneyScreenState extends State<JourneyScreen> {
                                     PixelKnightSprite(
                                       animation: KnightAnimation.walk,
                                       frame: _walkFrame,
+                                      combatAssetPath:
+                                          _arc.hero?.combatSpriteAsset,
+                                      finisherAssetPath:
+                                          _arc.hero?.finisherSpriteAsset,
                                       width: 24,
                                       height: 36,
                                     ),
@@ -1008,13 +1024,17 @@ class _RouteSection extends StatelessWidget {
                             child: Semantics(
                               image: true,
                               label:
-                                  'Crown bearer at puzzle ${markerPosition!.round()}',
+                                  '${arc.hero?.semanticLabel ?? 'Crown bearer'} '
+                                  'at puzzle ${markerPosition!.round()}',
                               child: PixelKnightSprite(
                                 animation:
                                     moving
                                         ? KnightAnimation.walk
                                         : KnightAnimation.bounce,
                                 frame: moving ? walkFrame : null,
+                                combatAssetPath: arc.hero?.combatSpriteAsset,
+                                finisherAssetPath:
+                                    arc.hero?.finisherSpriteAsset,
                                 width: 44,
                                 height: 66,
                               ),

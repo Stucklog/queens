@@ -25,7 +25,7 @@ void main() {
   );
 
   test(
-    'web loads the complete Atlas package and keeps its authored prologue',
+    'web exposes the Atlas preview without reading its full package',
     () async {
       final reads = <String>[];
       final registry = await repository(reads: reads).load(
@@ -34,8 +34,8 @@ void main() {
       );
       final availability = registry.availabilityFor(atlasArc);
 
-      expect(availability.status, ContentAvailabilityStatus.available);
-      expect(availability.arc, isNotNull);
+      expect(availability.status, ContentAvailabilityStatus.notInEdition);
+      expect(availability.arc, isNull);
       expect(availability.storefront, isNotNull);
       expect(availability.storefront!.title, 'The Atlas of Borrowed Winds');
       expect(availability.storefront!.prologuePreview.frames, hasLength(3));
@@ -53,7 +53,7 @@ void main() {
         ),
         orderedEquals([2, 2, 3]),
       );
-      expect(reads.where((path) => path.startsWith(atlasPackage)), isNotEmpty);
+      expect(reads.where((path) => path.startsWith(atlasPackage)), isEmpty);
     },
   );
 
@@ -73,7 +73,24 @@ void main() {
       final arc = availability.arc!;
 
       expect(arc.title, 'The Atlas of Borrowed Winds');
-      expect(arc.contentVersion, 4);
+      expect(arc.contentVersion, 5);
+      expect(arc.hero?.id, 'atlas-of-borrowed-winds/nahla-faris');
+      expect(arc.hero?.name, 'Nahla Faris');
+      expect(
+        arc.hero?.storySpriteAsset,
+        'assets/art/arcs/atlas-of-borrowed-winds/characters/'
+        'nahla-faris_story_idle.png',
+      );
+      expect(
+        arc.hero?.combatSpriteAsset,
+        'assets/art/arcs/atlas-of-borrowed-winds/characters/'
+        'nahla-faris_combat.png',
+      );
+      expect(
+        arc.hero?.finisherSpriteAsset,
+        'assets/art/arcs/atlas-of-borrowed-winds/characters/'
+        'nahla-faris_finishers.png',
+      );
       expect(arc.chapters, hasLength(8));
       expect(arc.catalog.puzzles, hasLength(72));
       expect(arc.scenes, hasLength(10));
@@ -141,7 +158,7 @@ void main() {
   );
 
   test(
-    'Atlas themes, routes, and finale casts vary entirely through data',
+    'Atlas themes, standard routes, and finale casts load from data',
     () async {
       final arc =
           (await repository().load(
@@ -159,21 +176,15 @@ void main() {
       expect(arc.chapters[6].palette.theme.brightness, Brightness.dark);
       expect(arc.chapters.last.palette.theme.brightness, Brightness.light);
 
-      final layouts =
-          arc.chapters
-              .map(
-                (chapter) => (
-                  chapter.mapLayout.columns,
-                  chapter.mapLayout.pattern,
-                  chapter.mapLayout.direction,
-                ),
-              )
-              .toSet();
-      expect(layouts.length, greaterThanOrEqualTo(6));
-      expect(arc.chapters[1].mapLayout.pattern, JourneyRoutePattern.rows);
       expect(
-        arc.chapters[2].mapLayout.direction,
-        JourneyRouteDirection.rightToLeft,
+        arc.chapters.every(
+          (chapter) =>
+              chapter.endOrder - chapter.startOrder + 1 == 9 &&
+              chapter.mapLayout.columns == 3 &&
+              chapter.mapLayout.pattern == JourneyRoutePattern.snake &&
+              chapter.mapLayout.direction == JourneyRouteDirection.leftToRight,
+        ),
+        isTrue,
       );
 
       final finale = arc.finaleScene.frames;
@@ -190,6 +201,15 @@ void main() {
         finale
             .expand((frame) => frame.characterLayers)
             .every((layer) => layer.source is CinematicAssetCharacterSource),
+        isTrue,
+      );
+      expect(
+        finale.last.characterLayers.every(
+          (layer) =>
+              layer.animation?.frameCount == 4 &&
+              layer.animation?.columns == 4 &&
+              layer.animation?.rows == 1,
+        ),
         isTrue,
       );
       expect(finale.first.background.asset, endsWith('finale_storm.jpg'));
@@ -316,7 +336,11 @@ void main() {
         expect(file.existsSync(), isTrue, reason: path);
         final decoded = image.decodeImage(file.readAsBytesSync());
         expect(decoded, isNotNull, reason: path);
-        if (path.endsWith('.png')) {
+        if (path.endsWith('_story_idle.png')) {
+          expect(decoded!.width, 768, reason: path);
+          expect(decoded.height, 288, reason: path);
+          expect(decoded.numChannels, 4, reason: path);
+        } else if (path.endsWith('.png')) {
           expect(decoded!.width, 1024, reason: path);
           expect(decoded.height, 1536, reason: path);
           expect(decoded.numChannels, 4, reason: path);

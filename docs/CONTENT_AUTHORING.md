@@ -2,10 +2,11 @@
 
 Queen’s Regalia treats every story arc as an independently loadable content
 package. The common manifest is also a lightweight storefront catalog. The
-current web/GitHub Pages and installed editions load the complete Origin arc
-and all ten portfolio arcs alongside the system Academy and “Just Puzzle!”.
-Every current story descriptor lists both shipping channels, so its complete
-metadata, catalog, and gameplay art belong in both release families.
+web/GitHub Pages edition loads the complete Origin arc alongside the system
+Academy and “Just Puzzle!”. Its ten portfolio entries are locked storefront
+previews: their prologues remain in the common manifest, but their full story
+packages belong only to installed editions. Native builds load Origin and all
+ten portfolio arcs.
 
 The iOS, Android, macOS, Windows, and Linux editions are one-time-purchase apps,
 not containers for per-arc in-app purchases. Every ordinary native build loads
@@ -57,8 +58,8 @@ the arc, not chapter positions or display labels.
 4. Add arc-specific art/assets under edition-aware paths. Every runtime content
    read uses Flutter’s bundled asset system; remote metadata, downloadable
    catalogs, and runtime art downloads are unsupported. Declare the complete
-   package in the canonical asset list. If a future descriptor omits the `web`
-   channel, mark its full-package roots `# web-excluded`; declare its lightweight
+   package in the canonical asset list. When a descriptor omits the `web`
+   channel, mark its full-package roots `# web-excluded`; keep its lightweight
    storefront assets on web only when it is available there or has a web locked
    preview.
 5. Add a descriptor to `assets/content/manifest.json`. An installed-app-only arc uses
@@ -209,21 +210,22 @@ loading the arc metadata.
 
 ### Journey map layout
 
-Each chapter may configure its route independently:
+Every story chapter owns exactly nine sequential puzzles and displays them as
+one Origin-style 3×3 route grid:
 
 ```json
 "mapLayout": {
-  "columns": 4,
+  "columns": 3,
   "pattern": "snake",
-  "direction": "rightToLeft"
+  "direction": "leftToRight"
 }
 ```
 
-`columns` must be positive. `pattern` is `snake`, which reverses each successive
-row, or `rows`, which starts every row on the same side. `direction` is
-`leftToRight` or `rightToLeft` and selects the first row’s starting side. If
-`mapLayout` or any of its fields is omitted, the defaults are three columns, a
-snake, and left-to-right. Node order remains the catalog/chapter order; layout
+Keep `startOrder` and `endOrder` nine positions apart, use three columns, and
+retain the left-to-right snake so the route flows continuously across all three
+rows. These are also the parser defaults when `mapLayout` is omitted. The schema
+still reads legacy `rows` and right-to-left data, but bundled story content must
+use the standard grid. Node order remains the catalog/chapter order; layout
 changes presentation only and does not change progression or durable IDs.
 
 ### Cinematic scenes
@@ -592,10 +594,8 @@ download-on-demand package fallback.
 
 This runtime short-circuit is necessary but is not a packaging filter. Flutter
 copies declared assets into the web output whether or not Dart code reads them.
-The current manifest gives every story the `web` channel, so every complete
-package is intentionally part of `build/web`. For a future installed-app-only
-package, merely using `"channels": ["paidPlatform"]` or omitting an arc from
-the manifest does not remove a declared file from the build; its package roots
+Merely using `"channels": ["paidPlatform"]` or omitting an arc from the
+manifest does not remove a declared file from the build; app-only package roots
 must also be excluded during web staging. A directory entry in `pubspec.yaml`
 includes its direct children, not arbitrary nested directories, so explicitly
 declare each package, background, character, opponent, and storefront directory
@@ -622,14 +622,15 @@ reviewable. A descriptor with neither web availability nor a web locked preview
 must keep its storefront-only art out of the staged web asset declarations too.
 
 The checked-in `pubspec.yaml` is the complete native source of truth. Assets
-used by every current edition have ordinary scalar declarations, and the
-current full-portfolio release has no `# web-excluded` roots. If a future story
-does not list the `web` channel, mark each root used only by its full package:
+used by every edition have ordinary scalar declarations. Every non-Origin arc
+omits the `web` channel, so each root used only by its full package carries a
+`# web-excluded` marker:
 
 ```yaml
 - assets/storefront/moon-court/
 - assets/content/arcs/moon-court/ # web-excluded
 - assets/art/arcs/moon-court/backgrounds/ # web-excluded
+- assets/art/arcs/moon-court/characters/ # web-excluded
 - assets/art/arcs/moon-court/combat/opponents/ # web-excluded
 ```
 
@@ -640,7 +641,7 @@ web locked preview. Mark it as excluded too if neither `channels` nor
 Do not add `default-flavor` or a paid Flutter flavor. Native builds run directly
 from the checked-in source, so iOS and every other installed target receive all
 `paidPlatform` stories automatically. Materialize an isolated temporary web
-workspace even when every current story is web-enabled:
+workspace for every browser release:
 
 ```sh
 web_stage=/absolute/path/to/an/empty/staging-directory
@@ -656,10 +657,10 @@ The staging tool refuses a directory inside the repository and refuses to
 overwrite a non-empty directory. It copies neither `.git`, `.dart_tool`,
 `build`, nor `tmp`, then removes any marked asset declarations from the staged
 pubspec.
-Removing zero declarations is valid for the current all-web portfolio. This
-workspace is a disposable CI/build artifact, not a separately maintained Git
-branch or app edition. Never build a native target from it; the verifier rejects
-combining `--web-source` with `--native-build`.
+Removing zero declarations is an error because it would silently ship the
+installed-app packages. This workspace is a disposable CI/build artifact, not
+a separately maintained Git branch or app edition. Never build a native target
+from it; the verifier rejects combining `--web-source` with `--native-build`.
 
 For every release:
 
@@ -668,13 +669,12 @@ For every release:
    represented object changed.
 2. Validate the common manifest and both store URLs. Confirm every referenced
    asset exists and is declared in each intended edition’s Flutter asset list.
-3. For the current release, confirm Origin and all ten portfolio descriptors
-   list `web` and that their full packages are declared in the staged pubspec.
-   For a future app-only descriptor, limit `channels` to `paidPlatform` and add
-   `web` only to `lockedPreviewChannels` when a web preview is intended. Keep
-   that preview art in the web bundle while excluding the full package. Build
-   and inspect both the generated asset manifest and service-worker resource
-   list; these assets may enter the cache on demand rather than at install time.
+3. For the current release, confirm only Origin lists `web`. Every portfolio
+   descriptor must limit `channels` to `paidPlatform` and list `web` only in
+   `lockedPreviewChannels`. Keep each prologue and its preview art in the web
+   bundle while excluding the full package. Build and inspect both the generated
+   asset manifest and service-worker resource list; preview assets may enter the
+   cache on demand rather than at install time.
 4. For native platforms, package every intended `paidPlatform` arc and all of
    its referenced assets. The store’s one-time app purchase unlocks the entire
    app; do not wire per-arc receipts to `grantedEntitlementIds`. Test a fresh
@@ -701,9 +701,9 @@ For every release:
 
 6. Smoke-test origin from a fresh save and a migrated legacy save. Separately
    start/resume Just Puzzle with the origin package deliberately unavailable.
-   On web and in a native build, confirm every current packaged arc is available
-   without a per-arc purchase. If a future release adds a locked web preview,
-   play it and confirm its full story package is never read.
+   On web, confirm all ten portfolio tiles are locked, each prologue reaches the
+   app-store dialog, and no full package is read. In a native build, confirm
+   every current packaged arc is available without a per-arc purchase.
 
 The legacy migration writes all current values before deleting old keys. It
 maps old puzzle, board, scene, challenge, unlock, and save identifiers into the

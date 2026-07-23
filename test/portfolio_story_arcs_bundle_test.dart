@@ -7,7 +7,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   test(
-    'default bundle contains every manifest story package and its art',
+    'default native bundle contains every story package and its art',
     () async {
       final manifest =
           jsonDecode(
@@ -22,11 +22,25 @@ void main() {
         final arcId = descriptor['arcId']! as String;
         final channels =
             (descriptor['channels']! as List<Object?>).cast<String>();
-        expect(
-          channels,
-          containsAll(<String>['web', 'paidPlatform']),
-          reason: arcId,
-        );
+        if (arcId == 'regalia:arc/origin') {
+          expect(
+            channels,
+            containsAll(<String>['web', 'paidPlatform']),
+            reason: arcId,
+          );
+          expect(descriptor['lockedPreviewChannels'], isNull);
+        } else {
+          expect(
+            channels,
+            orderedEquals(<String>['paidPlatform']),
+            reason: arcId,
+          );
+          expect(
+            descriptor['lockedPreviewChannels'],
+            orderedEquals(<String>['web']),
+            reason: arcId,
+          );
+        }
 
         final metadataPath = descriptor['metadataAsset']! as String;
         final metadata =

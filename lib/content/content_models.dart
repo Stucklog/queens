@@ -109,6 +109,74 @@ class ArcUnlockIds {
   }
 }
 
+class ArcHero {
+  const ArcHero({
+    required this.id,
+    required this.name,
+    required this.semanticLabel,
+    required this.storySpriteAsset,
+    required this.combatSpriteAsset,
+    required this.finisherSpriteAsset,
+  });
+
+  /// Arc-local `<arc-slug>/<hero-slug>` key used to bind the three sprite ABIs.
+  final String id;
+  final String name;
+  final String semanticLabel;
+  final String storySpriteAsset;
+  final String combatSpriteAsset;
+  final String finisherSpriteAsset;
+
+  factory ArcHero.fromJson(Map<String, Object?> json) {
+    String requiredString(String key) {
+      final value = json[key];
+      if (value is! String) {
+        throw FormatException('Arc hero needs $key');
+      }
+      return value;
+    }
+
+    final hero = ArcHero(
+      id: requiredString('id'),
+      name: requiredString('name'),
+      semanticLabel: requiredString('semanticLabel'),
+      storySpriteAsset: requiredString('storySpriteAsset'),
+      combatSpriteAsset: requiredString('combatSpriteAsset'),
+      finisherSpriteAsset: requiredString('finisherSpriteAsset'),
+    );
+    if (!_arcHeroIdPattern.hasMatch(hero.id) ||
+        hero.name.trim().isEmpty ||
+        hero.semanticLabel.trim().isEmpty ||
+        !_isArcCharacterAsset(
+          hero.storySpriteAsset,
+          expectedSuffix: '_story_idle.png',
+        ) ||
+        !_isArcCharacterAsset(
+          hero.combatSpriteAsset,
+          expectedSuffix: '_combat.png',
+        ) ||
+        !_isArcCharacterAsset(
+          hero.finisherSpriteAsset,
+          expectedSuffix: '_finishers.png',
+        )) {
+      throw FormatException('Invalid arc hero ${hero.id}');
+    }
+    return hero;
+  }
+}
+
+final RegExp _arcHeroIdPattern = RegExp(
+  r'^[a-z0-9]+(?:-[a-z0-9]+)*/[a-z0-9]+(?:-[a-z0-9]+)*$',
+);
+
+bool _isArcCharacterAsset(String path, {required String expectedSuffix}) =>
+    RegExp(
+      '^assets/art/arcs/'
+      r'[a-z0-9]+(?:-[a-z0-9]+)*/characters/'
+      r'[a-z0-9]+(?:-[a-z0-9]+)*'
+      '${RegExp.escape(expectedSuffix)}\$',
+    ).hasMatch(path);
+
 class StoryArc {
   StoryArc({
     required this.id,
@@ -116,6 +184,7 @@ class StoryArc {
     required this.title,
     required this.mapId,
     required this.unlockIds,
+    this.hero,
     required List<JourneyChapter> chapters,
     required List<StorySceneContent> scenes,
     required this.catalog,
@@ -129,6 +198,7 @@ class StoryArc {
   final String title;
   final String mapId;
   final ArcUnlockIds unlockIds;
+  final ArcHero? hero;
   final List<JourneyChapter> chapters;
   final List<StorySceneContent> scenes;
   final PuzzleCatalog catalog;
@@ -181,6 +251,20 @@ class StoryArc {
     }
     if (map.arcName != arc.localName) {
       throw FormatException('$mapId does not belong to $id');
+    }
+    final activeHero = hero;
+    if (activeHero != null) {
+      final expectedPrefix = 'assets/art/arcs/${arc.localName}/characters/';
+      final heroSlug = activeHero.id.split('/').last;
+      if (!activeHero.id.startsWith('${arc.localName}/') ||
+          activeHero.storySpriteAsset !=
+              '$expectedPrefix${heroSlug}_story_idle.png' ||
+          activeHero.combatSpriteAsset !=
+              '$expectedPrefix${heroSlug}_combat.png' ||
+          activeHero.finisherSpriteAsset !=
+              '$expectedPrefix${heroSlug}_finishers.png') {
+        throw FormatException('${activeHero.id} does not belong to $id');
+      }
     }
     var nextOrder = 1;
     final ids = <String>{id, mapId, unlockIds.fullMap, unlockIds.finale};

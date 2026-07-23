@@ -218,9 +218,43 @@ void main() {
       await tester.tap(find.text('See what happened'));
       await tester.pump(const Duration(milliseconds: 300));
       expect(find.text('PROLOGUE · 2 of 3'), findsOneWidget);
+      final openingArtSize = tester.getSize(
+        find.byKey(
+          ValueKey(
+            'cinematic-frame-${controller.originArc!.openingScene.frames[1].id}',
+          ),
+        ),
+      );
+      expect(
+        openingArtSize.aspectRatio,
+        closeTo(2 / 3, .01),
+        reason: 'opening artwork at ${size.width}x${size.height}',
+      );
       _expectNoLayoutException(
         tester,
         reason: 'second prologue page at ${size.width}x${size.height}',
+      );
+
+      await _pumpScreen(
+        tester,
+        StorySceneScreen.finale(controller: controller),
+        reason: 'finale story at ${size.width}x${size.height}',
+      );
+      final finaleArtSize = tester.getSize(
+        find.byKey(
+          ValueKey(
+            'cinematic-frame-${controller.originArc!.finaleScene.frames.first.id}',
+          ),
+        ),
+      );
+      expect(
+        finaleArtSize.aspectRatio,
+        closeTo(2 / 3, .01),
+        reason: 'finale artwork at ${size.width}x${size.height}',
+      );
+      _expectNoLayoutException(
+        tester,
+        reason: 'finale story text at ${size.width}x${size.height}',
       );
     }
   });

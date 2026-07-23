@@ -368,6 +368,60 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
+  testWidgets('arc hero owns finisher titles and victory semantics', (
+    tester,
+  ) async {
+    const timing = BossFinisherTiming(
+      finalMove: Duration(milliseconds: 100),
+      panToBoss: Duration(milliseconds: 50),
+      bossDefeat: Duration(milliseconds: 100),
+      panToKnight: Duration(milliseconds: 50),
+      victory: Duration(milliseconds: 100),
+      exit: Duration(milliseconds: 50),
+      reducedMotion: Duration(milliseconds: 50),
+    );
+    const presentation = BossFinisherPresentation(
+      spectacleLevel: 1,
+      finisher: KnightAnimation.crownSlash,
+      specialMoveName: 'Sunbreak Turn',
+      timing: timing,
+      effectLevel: 1,
+    );
+    const heroLabel = 'Nera Venn, route courier and protagonist';
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: BossFinisherCutscene(
+          boss: _testBoss,
+          presentation: presentation,
+          background: const ColoredBox(color: Color(0xff20385f)),
+          heroName: 'Nera Venn',
+          heroSemanticLabel: heroLabel,
+          onFinished: () {},
+        ),
+      ),
+    );
+
+    expect(find.text('HERO SPECIAL'), findsOneWidget);
+    expect(find.text('SUNBREAK TURN'), findsOneWidget);
+    expect(find.text('REGALIA SPECIAL'), findsNothing);
+    expect(
+      find.bySemanticsLabel(
+        'Boss finisher. Nera Venn uses Sunbreak Turn. '
+        '${_testBoss.name} is defeated. '
+        '$heroLabel. Victory.',
+      ),
+      findsOneWidget,
+    );
+
+    await tester.pump(timing.victoryStart);
+    expect(find.text('NERA VENN'), findsOneWidget);
+    expect(find.text('NERA VENN ENDURES'), findsOneWidget);
+    expect(find.text('CROWN-BEARER'), findsNothing);
+    expect(find.text('THE REGALIA ENDURES'), findsNothing);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   testWidgets('reduced motion shows the resolved blow on its short deadline', (
     tester,
   ) async {

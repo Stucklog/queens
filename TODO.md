@@ -77,6 +77,14 @@ This is the working backlog for the remaining gameplay, story, presentation, and
 
 ## Combat animation and boss presentation
 
+- [ ] **P2 — Remove unused enemy sprite animations and prevent future overproduction.**
+  - Use the shared sprite-sheet layout and standard animation set as the source of truth for enemy assets.
+  - Remove unused animation rows/frames from the common layout and update the shared animation definitions accordingly.
+  - Check individual enemies only for deviations or special-case animations that do not follow the standard layout.
+  - Update asset references, manifests, tests, and documentation after cleanup.
+  - Document the standard required animation set so future art production creates only animations with a confirmed use case.
+  - Add an asset-review or validation step that flags deviations or unused animations before new enemy art is added.
+
 - [x] **P1 — Fix the Drowned Acolyte’s inconsistent facing direction.**
   - Review every frame of the Drowned Acolyte animation for incorrect left/right orientation.
   - Correct the frames that face the wrong way and ensure direction changes are intentional and consistent.

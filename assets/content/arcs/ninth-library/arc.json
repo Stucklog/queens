@@ -1,8 +1,16 @@
 {
   "schemaVersion": 1,
   "id": "regalia:arc/ninth-library",
-  "contentVersion": 1,
+  "contentVersion": 2,
   "title": "The Ninth Library",
+  "hero": {
+    "id": "ninth-library/oriel-marr",
+    "name": "Oriel Marr",
+    "semanticLabel": "Oriel Marr, Scholarship student investigating Alis's murder",
+    "storySpriteAsset": "assets/art/arcs/ninth-library/characters/oriel-marr_story_idle.png",
+    "combatSpriteAsset": "assets/art/arcs/ninth-library/characters/oriel-marr_combat.png",
+    "finisherSpriteAsset": "assets/art/arcs/ninth-library/characters/oriel-marr_finishers.png"
+  },
   "theme": {
     "brightness": "dark",
     "backgroundColor": "#100D1C",
@@ -58,7 +66,22 @@
         "targetDifficulty": "easy",
         "unlocks": "regalia:chapter/ninth-library/the-price-of-entry"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/ninth-library/callmark-tumbler",
+          "name": "Callmark Tumbler",
+          "puzzleId": "regalia:puzzle/ninth-library/easy-003",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/callmark-tumbler.png"
+        },
+        {
+          "id": "regalia:enemy/ninth-library/shelfbranch-saiga",
+          "name": "Shelfbranch Saiga",
+          "puzzleId": "regalia:puzzle/ninth-library/easy-006",
+          "spriteFamily": "antlered",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/shelfbranch-saiga.png"
+        }
+      ],
       "primaryColor": "#C96F86",
       "secondaryColor": "#EAD9B7"
     },
@@ -76,9 +99,9 @@
       "difficulty": "easy",
       "size": 7,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "columns": 3,
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/ninth-library/mnemonic-briar",
@@ -96,7 +119,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/ninth-library/the-rival-borrower"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/ninth-library/recall-booklouse",
+          "name": "Recall Booklouse",
+          "puzzleId": "regalia:puzzle/ninth-library/easy-023",
+          "spriteFamily": "rootbound",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/recall-booklouse.png"
+        },
+        {
+          "id": "regalia:enemy/ninth-library/farewell-topiary",
+          "name": "Farewell Topiary",
+          "puzzleId": "regalia:puzzle/ninth-library/easy-026",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/farewell-topiary.png"
+        }
+      ],
       "primaryColor": "#D7B76B",
       "secondaryColor": "#86D1B8"
     },
@@ -116,7 +154,7 @@
       "mapLayout": {
         "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/ninth-library/paper-roc",
@@ -134,7 +172,22 @@
         "targetDifficulty": "medium",
         "unlocks": "regalia:chapter/ninth-library/annotations-in-red"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/ninth-library/errata-kestrel",
+          "name": "Errata Kestrel",
+          "puzzleId": "regalia:puzzle/ninth-library/medium-003",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/errata-kestrel.png"
+        },
+        {
+          "id": "regalia:enemy/ninth-library/thesis-clip-trilobite",
+          "name": "Thesis-Clip Trilobite",
+          "puzzleId": "regalia:puzzle/ninth-library/medium-006",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/thesis-clip-trilobite.png"
+        }
+      ],
       "primaryColor": "#76C9B4",
       "secondaryColor": "#E7C77D"
     },
@@ -152,7 +205,7 @@
       "difficulty": "medium",
       "size": 8,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
         "direction": "leftToRight"
       },
@@ -172,7 +225,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/ninth-library/what-we-forgot-together"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/ninth-library/blackbar-planarian",
+          "name": "Blackbar Planarian",
+          "puzzleId": "regalia:puzzle/ninth-library/medium-013",
+          "spriteFamily": "abyssal",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/blackbar-planarian.png"
+        },
+        {
+          "id": "regalia:enemy/ninth-library/omission-aperture",
+          "name": "Omission Aperture",
+          "puzzleId": "regalia:puzzle/ninth-library/medium-016",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/omission-aperture.png"
+        }
+      ],
       "primaryColor": "#E6827D",
       "secondaryColor": "#9AD9C5"
     },
@@ -191,8 +259,8 @@
       "size": 8,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
-        "direction": "rightToLeft"
+        "pattern": "snake",
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/ninth-library/cinder-thesis",
@@ -210,7 +278,22 @@
         "targetDifficulty": "hard",
         "unlocks": "regalia:chapter/ninth-library/the-prestige-of-silence"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/ninth-library/superscript-ember",
+          "name": "Superscript Ember",
+          "puzzleId": "regalia:puzzle/ninth-library/hard-003",
+          "spriteFamily": "volcanic",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/superscript-ember.png"
+        },
+        {
+          "id": "regalia:enemy/ninth-library/rebuttal-kilnling",
+          "name": "Rebuttal Kilnling",
+          "puzzleId": "regalia:puzzle/ninth-library/hard-006",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/rebuttal-kilnling.png"
+        }
+      ],
       "primaryColor": "#AE9BE0",
       "secondaryColor": "#F2C77D"
     },
@@ -228,9 +311,9 @@
       "difficulty": "hard",
       "size": 9,
       "mapLayout": {
-        "columns": 4,
+        "columns": 3,
         "pattern": "snake",
-        "direction": "rightToLeft"
+        "direction": "leftToRight"
       },
       "boss": {
         "id": "regalia:boss/ninth-library/citation-engine",
@@ -248,7 +331,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/ninth-library/witnesses-beyond-the-stacks"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/ninth-library/byline-stamper",
+          "name": "Byline Stamper",
+          "puzzleId": "regalia:puzzle/ninth-library/hard-023",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/byline-stamper.png"
+        },
+        {
+          "id": "regalia:enemy/ninth-library/laurel-proxy",
+          "name": "Laurel Proxy",
+          "puzzleId": "regalia:puzzle/ninth-library/hard-026",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/laurel-proxy.png"
+        }
+      ],
       "primaryColor": "#D4A95F",
       "secondaryColor": "#8FD4DC"
     },
@@ -267,7 +365,7 @@
       "size": 9,
       "mapLayout": {
         "columns": 3,
-        "pattern": "rows",
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -286,7 +384,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:chapter/ninth-library/the-open-catalog"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/ninth-library/deanmask-familiar",
+          "name": "Deanmask Familiar",
+          "puzzleId": "regalia:puzzle/ninth-library/expert-003",
+          "spriteFamily": "spectral",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/deanmask-familiar.png"
+        },
+        {
+          "id": "regalia:enemy/ninth-library/credential-rook",
+          "name": "Credential Rook",
+          "puzzleId": "regalia:puzzle/ninth-library/expert-006",
+          "spriteFamily": "winged",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/credential-rook.png"
+        }
+      ],
       "primaryColor": "#86C8D3",
       "secondaryColor": "#E9B6C4"
     },
@@ -304,8 +417,8 @@
       "difficulty": "expert",
       "size": 10,
       "mapLayout": {
-        "columns": 4,
-        "pattern": "rows",
+        "columns": 3,
+        "pattern": "snake",
         "direction": "leftToRight"
       },
       "boss": {
@@ -324,7 +437,22 @@
         "targetDifficulty": "expert",
         "unlocks": "regalia:unlock/ninth-library/finale"
       },
-      "encounters": [],
+      "encounters": [
+        {
+          "id": "regalia:enemy/ninth-library/index-pulsar",
+          "name": "Index Pulsar",
+          "puzzleId": "regalia:puzzle/ninth-library/expert-013",
+          "spriteFamily": "cosmic",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/index-pulsar.png"
+        },
+        {
+          "id": "regalia:enemy/ninth-library/shelf-sky-astrolabe",
+          "name": "Shelf-Sky Astrolabe",
+          "puzzleId": "regalia:puzzle/ninth-library/expert-016",
+          "spriteFamily": "clockwork",
+          "spriteAsset": "assets/art/arcs/ninth-library/combat/opponents/shelf-sky-astrolabe.png"
+        }
+      ],
       "primaryColor": "#E9CC76",
       "secondaryColor": "#9DD9C8"
     }
@@ -338,7 +466,60 @@
           "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_01_a_card_from_a_shadow.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "oriel-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/oriel-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Oriel Marr, Scholarship student investigating Alis's murder",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "alis-shadow",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/alis-shadow_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Alis's Shadow, Living shadow of the murdered student and guide to the erased archive",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -361,7 +542,34 @@
           "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_02_the_price_of_entry.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "oriel-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/oriel-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.52,
+              "y": 0.68
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Oriel Marr, Scholarship student investigating Alis's murder",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -384,7 +592,86 @@
           "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_03_the_rival_borrower.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "oriel-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/oriel-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Oriel Marr, Scholarship student investigating Alis's murder",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "matias-quill",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/matias-quill_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Matias Quill, Rival borrower whose written notes replace years of lost memory",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "alis-shadow",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/alis-shadow_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Alis's Shadow, Living shadow of the murdered student and guide to the erased archive",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -407,7 +694,86 @@
           "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_04_annotations_in_red.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "oriel-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/oriel-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Oriel Marr, Scholarship student investigating Alis's murder",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "matias-quill",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/matias-quill_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Matias Quill, Rival borrower whose written notes replace years of lost memory",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "alis-shadow",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/alis-shadow_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Alis's Shadow, Living shadow of the murdered student and guide to the erased archive",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -430,7 +796,60 @@
           "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_05_what_we_forgot_together.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "oriel-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/oriel-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Oriel Marr, Scholarship student investigating Alis's murder",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "matias-quill",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/matias-quill_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Matias Quill, Rival borrower whose written notes replace years of lost memory",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -453,7 +872,86 @@
           "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_06_the_prestige_of_silence.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "oriel-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/oriel-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Oriel Marr, Scholarship student investigating Alis's murder",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "matias-quill",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/matias-quill_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Matias Quill, Rival borrower whose written notes replace years of lost memory",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "alis-shadow",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/alis-shadow_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Alis's Shadow, Living shadow of the murdered student and guide to the erased archive",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -476,7 +974,60 @@
           "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_07_witnesses_beyond_the_stacks.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "oriel-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/oriel-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Oriel Marr, Scholarship student investigating Alis's murder",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "alis-shadow",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/alis-shadow_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Alis's Shadow, Living shadow of the murdered student and guide to the erased archive",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -499,7 +1050,60 @@
           "asset": "assets/art/arcs/ninth-library/backgrounds/chapter_08_the_open_catalog.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "oriel-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/oriel-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Oriel Marr, Scholarship student investigating Alis's murder",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "alis-shadow",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/alis-shadow_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.58,
+              "y": 0.7
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Alis's Shadow, Living shadow of the murdered student and guide to the erased archive",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {
@@ -522,7 +1126,86 @@
           "asset": "assets/art/arcs/ninth-library/backgrounds/finale_crisis.jpg",
           "fit": "cover"
         },
-        "characters": []
+        "characters": [
+          {
+            "id": "oriel-marr",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/oriel-marr_story_idle.png"
+            },
+            "alignment": {
+              "x": -0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Oriel Marr, Scholarship student investigating Alis's murder",
+            "zOrder": 1,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "matias-quill",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/matias-quill_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.0,
+              "y": 0.64
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": false,
+            "semanticLabel": "Matias Quill, Rival borrower whose written notes replace years of lost memory",
+            "zOrder": 2,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          },
+          {
+            "id": "alis-shadow",
+            "source": {
+              "type": "asset",
+              "asset": "assets/art/arcs/ninth-library/characters/alis-shadow_story_idle.png"
+            },
+            "alignment": {
+              "x": 0.66,
+              "y": 0.72
+            },
+            "size": {
+              "width": 112,
+              "height": 168
+            },
+            "mirrored": true,
+            "semanticLabel": "Alis's Shadow, Living shadow of the murdered student and guide to the erased archive",
+            "zOrder": 3,
+            "animation": {
+              "frameCount": 4,
+              "columns": 4,
+              "rows": 1,
+              "frameDurationMs": 190,
+              "loop": false,
+              "reducedMotion": "firstFrame"
+            }
+          }
+        ]
       },
       "frames": [
         {

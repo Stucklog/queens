@@ -1,9 +1,33 @@
 {
   "slug": "shepherds-of-the-thunderwild",
   "title": "Shepherds of the Thunderwild",
+  "contentVersion": 2,
   "tagline": "Young storm-herders guide the last thunderbeasts across a continent losing its weather.",
   "environment": "thunderwild",
   "seed": 33002,
+  "cast": [
+    {
+      "slug": "asha-neral",
+      "name": "Asha Neral",
+      "role": "Young storm-herder leading her first solo migration",
+      "visualDescription": "Lean young woman with deep brown skin, large dark eyes and wind-tossed black curls tied high with copper rings, layered cobalt-and-teal riding wraps over weathered brown leathers, insulated forearm bands and high prairie boots; carries a forked storm-bell staff and torn green-blue shepherd banner for a tall unmistakable silhouette.",
+      "chromaKey": "#FF0000"
+    },
+    {
+      "slug": "boro-tem",
+      "name": "Boro Tem",
+      "role": "Veteran shepherd who teaches Asha to hear the ground-song",
+      "visualDescription": "Broad weathered older man with dark umber skin, close iron-gray braids and a square beard, heavy navy herder coat with a pale storm-wool collar, vibration plates strapped across both palms and a low resonant bell at the belt; grounded crouching silhouette built around one hand touching the earth.",
+      "chromaKey": "#FF0000"
+    },
+    {
+      "slug": "tavi-rook",
+      "name": "Tavi Rook",
+      "role": "Former poacher guiding the herd through the barriers he helped build",
+      "visualDescription": "Long-limbed young man with tawny-brown skin, shaved sides and a loose black topknot, charcoal cable-cutter coat patched with ochre and teal, climbing harness and coils of deactivated tag wire; angular guarded silhouette with oversized insulated shears carried low rather than raised as a weapon.",
+      "chromaKey": "#FF0000"
+    }
+  ],
   "theme": {
     "brightness": "dark",
     "backgroundColor": "#071B2D",
@@ -67,6 +91,20 @@
       "actionLabel": "Bring the straggler home",
       "primaryColor": "#5EC6F1",
       "secondaryColor": "#FF8DD1",
+      "encounters": [
+        {
+          "slug": "loopspark-ibex",
+          "name": "Loopspark Ibex",
+          "family": "antlered",
+          "description": "A frightened silver ibex with backward glass fork horns, oversized climbing hooves and a looping pink charge tethered from horn to tail like a lasso."
+        },
+        {
+          "slug": "rainclapper-petrel",
+          "name": "Rainclapper Petrel",
+          "family": "winged",
+          "description": "A long-winged cobalt prairie petrel with a hollow brass breast that rings false herd calls, trailing a narrow rain curtain beneath its wedge-shaped tail."
+        }
+      ],
       "boss": {
         "slug": "forkhorn-staticback",
         "name": "Forkhorn Staticback",
@@ -86,6 +124,20 @@
       "actionLabel": "Send the ground-song",
       "primaryColor": "#78D7BC",
       "secondaryColor": "#FFD36F",
+      "encounters": [
+        {
+          "slug": "signalroot-centipede",
+          "name": "Signalroot Centipede",
+          "family": "rootbound",
+          "description": "A long prairie-sod centipede with dozens of luminous yellow root legs and a blind stone head, braiding every hoof-message beneath its body into static."
+        },
+        {
+          "slug": "cadence-cicada",
+          "name": "Cadence Cicada",
+          "family": "cosmic",
+          "description": "A turquoise crystal cicada with a metronome abdomen and transparent waveform wings, pulsing the right ground-song one beat too early until the herd loses step."
+        }
+      ],
       "boss": {
         "slug": "lightning-root",
         "name": "The Lightning Root",
@@ -105,6 +157,20 @@
       "actionLabel": "Clear the poacher's path",
       "primaryColor": "#F0B766",
       "secondaryColor": "#88D4F5",
+      "encounters": [
+        {
+          "slug": "tagwire-mantis",
+          "name": "Tagwire Mantis",
+          "family": "clockwork",
+          "description": "A tall copper tracking mantis on spool-shaped joints, with barcode antennae and cable-launching forearms that knot bright license tags around thunderbeast footprints."
+        },
+        {
+          "slug": "beacon-barb-swallow",
+          "name": "Beacon-Barb Swallow",
+          "family": "winged",
+          "description": "A tiny fast swallow armored in black signal foil, its needle beak and detachable glowing tail feathers designed to mark matriarchs for the hunter circling above."
+        }
+      ],
       "boss": {
         "slug": "snarewing-kite",
         "name": "The Snarewing Kite",
@@ -124,6 +190,20 @@
       "actionLabel": "Unite the herd's tempers",
       "primaryColor": "#9ED06E",
       "secondaryColor": "#FF9ACF",
+      "encounters": [
+        {
+          "slug": "dewdrinker-wombat",
+          "name": "Dewdrinker Wombat",
+          "family": "abyssal",
+          "description": "A low dust-colored wombat with a cracked black cistern sunk into its broad back, drawing beads of water and sound into the dry opening with each slow breath."
+        },
+        {
+          "slug": "silencedust-funnel",
+          "name": "Silencedust Funnel",
+          "family": "cosmic",
+          "description": "A walking inverted dust devil balanced on three pebble feet, with bands of stolen moisture orbiting a lightless throat and different animal calls trapped between its rings."
+        }
+      ],
       "boss": {
         "slug": "thirst-hollow",
         "name": "The Thirst Hollow",
@@ -143,6 +223,20 @@
       "actionLabel": "Find the true route",
       "primaryColor": "#F29B72",
       "secondaryColor": "#8FD8F2",
+      "encounters": [
+        {
+          "slug": "heatglass-jerboa",
+          "name": "Heatglass Jerboa",
+          "family": "volcanic",
+          "description": "A long-legged obsidian jerboa with sail-like heatglass ears reflecting a false valley exit, orange furnace seams opening across its body whenever anyone follows the reflection."
+        },
+        {
+          "slug": "prismwing-locust",
+          "name": "Prismwing Locust",
+          "family": "winged",
+          "description": "A long pale locust with mirrored cliff-slab wings and sun-hot joints, multiplying into rainbow afterimages that land several body lengths from the real insect."
+        }
+      ],
       "boss": {
         "slug": "heatglass-behemoth",
         "name": "The Heatglass Behemoth",
@@ -162,6 +256,20 @@
       "actionLabel": "Keep the city breathing",
       "primaryColor": "#FFD166",
       "secondaryColor": "#91D9C2",
+      "encounters": [
+        {
+          "slug": "pulseplug-anemone",
+          "name": "Pulseplug Anemone",
+          "family": "clockwork",
+          "description": "A hand-sized brass wall anemone with six plug-tipped arms and a glowing medicine vial at its center, reflexively clamping any circuit that separates from the matriarch's pulse."
+        },
+        {
+          "slug": "breakerback-ox",
+          "name": "Breakerback Ox",
+          "family": "clockwork",
+          "description": "A square industrial ox built from ceramic switchgear, carrying a row of city breakers along its spine and locking its broad copper horns across every alternate route."
+        }
+      ],
       "boss": {
         "slug": "loadkeeper-array",
         "name": "The Loadkeeper Array",
@@ -181,6 +289,20 @@
       "actionLabel": "Set the grid in motion",
       "primaryColor": "#A999E8",
       "secondaryColor": "#FFCF70",
+      "encounters": [
+        {
+          "slug": "blackout-veil",
+          "name": "Blackout Veil",
+          "family": "spectral",
+          "description": "A tall floating curtain of midnight cloth with apartment windows blinking across its folds, wrapping relay workers in remembered rooms where the lights never returned."
+        },
+        {
+          "slug": "coldroom-echo",
+          "name": "Coldroom Echo",
+          "family": "abyssal",
+          "description": "A hollow hunched figure made from blankets, visible breath and extinguished lamp chimneys, with a dark doorway in its chest repeating one family's worst outage."
+        }
+      ],
       "boss": {
         "slug": "brownout-choir",
         "name": "The Brownout Choir",
@@ -200,6 +322,20 @@
       "actionLabel": "Turn the weather home",
       "primaryColor": "#71CFF3",
       "secondaryColor": "#FF97D5",
+      "encounters": [
+        {
+          "slug": "isobar-roller",
+          "name": "Isobar Roller",
+          "family": "cosmic",
+          "description": "A silver cloud-armadillo rolled into a perfect weather ring, with pink lightning tracing pressure lines across its plates as it barrels around the calving pattern."
+        },
+        {
+          "slug": "monsoon-pinwheel",
+          "name": "Monsoon Pinwheel",
+          "family": "winged",
+          "description": "A riderless six-bladed pinwheel made from rain-frayed storm banners, its long central mast hopping like one leg while the spinning vanes drag wind fronts out of alignment."
+        }
+      ],
       "boss": {
         "slug": "skywheel-colossus",
         "name": "The Skywheel Colossus",
